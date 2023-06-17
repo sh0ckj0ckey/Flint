@@ -7,6 +7,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -68,6 +69,12 @@ namespace Flint
                     // 参数
                     rootFrame.Navigate(typeof(MainPage), e.Arguments);
                 }
+
+                // For best results, set the PreferredLaunchViewSize before setting
+                // the PreferredLaunchWindowingMode.
+                //ApplicationView.PreferredLaunchViewSize = new Size { Width = 860, Height = 540 };
+                //ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
+
                 // 确保当前窗口处于活动状态
                 Window.Current.Activate();
             }
