@@ -12,17 +12,20 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="32"/>
+            <RowDefinition Height="42"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="1" Padding="16,8" Margin="0,0,0,0">
+        <Grid Grid.Row="0" Background="Transparent">
+            <TextBlock Text="Flint" Margin="20,0,0,0" FontWeight="SemiBold" FontSize="16" CharacterSpacing="40" VerticalAlignment="Center"/>
+        </Grid>
+        <Grid Grid.Row="1" Padding="16,0" Margin="0,0,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <TextBox Grid.Column="0" Grid.ColumnSpan="2" x:Name="SearchTextBox" PlaceholderText="开始键入..." FontWeight="Medium"/>
+            <TextBox x:Name="SearchTextBox" Grid.Column="0" Grid.ColumnSpan="2" Height="40" PlaceholderText="开始键入..." FontWeight="Medium"/>
             <Button Grid.Column="1" Margin="8,0,0,0" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Center" VerticalAlignment="Center" 
                     Click="OnClickSearchButton">
                 <ToolTipService.ToolTip>

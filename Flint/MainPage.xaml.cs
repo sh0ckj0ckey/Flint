@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Flint.Views;
 
 // https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x804 上介绍了“空白页”项模板
 
@@ -30,7 +31,7 @@ namespace Flint
             this.InitializeComponent();
 
             var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
-            coreTitleBar.ExtendViewIntoTitleBar = true; 
+            coreTitleBar.ExtendViewIntoTitleBar = true;
             var titleBar = ApplicationView.GetForCurrentView().TitleBar;
             titleBar.ButtonBackgroundColor = Colors.Transparent;
             titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
@@ -38,12 +39,12 @@ namespace Flint
 
         private void OnClickSettingsButton(object sender, RoutedEventArgs e)
         {
-
+            this.Frame.Navigate(typeof(SettingsPage));
         }
 
         private void OnClickSearchButton(object sender, RoutedEventArgs e)
         {
-
+            this.Frame.Navigate(typeof(DetailPage));
         }
     }
 }
