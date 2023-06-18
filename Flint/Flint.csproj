@@ -139,7 +139,6 @@
   <ItemGroup>
     <Content Include="Assets\flint_logo.png" />
     <Content Include="Assets\flint_logo_background.png" />
-    <Content Include="Assets\flint_logo_background_small.png" />
     <Content Include="Assets\Manifest\LargeTile.scale-100.png" />
     <Content Include="Assets\Manifest\LargeTile.scale-125.png" />
     <Content Include="Assets\Manifest\LargeTile.scale-150.png" />
