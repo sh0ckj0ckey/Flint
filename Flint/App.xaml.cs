@@ -69,15 +69,20 @@ namespace Flint
                     // 参数
                     rootFrame.Navigate(typeof(MainPage), e.Arguments);
                 }
-
-                // For best results, set the PreferredLaunchViewSize before setting
-                // the PreferredLaunchWindowingMode.
-                //ApplicationView.PreferredLaunchViewSize = new Size { Width = 860, Height = 540 };
-                //ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
-
-                // 确保当前窗口处于活动状态
-                Window.Current.Activate();
             }
+
+            ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(420, 240));
+            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+            if (localSettings.Values["launchedWithPrefSize"] == null)
+            {
+                ApplicationView.PreferredLaunchViewSize = new Size(620, 380);
+                ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
+                localSettings.Values["launchedWithPrefSize"] = true;
+            }
+            ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.Auto;
+
+            // 确保当前窗口处于活动状态
+            Window.Current.Activate();
         }
 
         /// <summary>

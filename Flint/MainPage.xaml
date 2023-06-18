@@ -7,10 +7,67 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls" 
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
-    mc:Ignorable="d"
+    mc:Ignorable="d" d:Width="620" d:Height="380" d:RequestedTheme="Dark"
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True" Background="Transparent">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="1" Padding="16,8" Margin="0,0,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBox Grid.Column="0" Grid.ColumnSpan="2" x:Name="SearchTextBox" PlaceholderText="开始键入..." FontWeight="Medium"/>
+            <Button Grid.Column="1" Margin="8,0,0,0" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                    Click="OnClickSearchButton">
+                <ToolTipService.ToolTip>
+                    <ToolTip>
+                        <TextBlock>
+                        <Run Text="search" FontWeight="Bold"/>
+                        <Run Text="/sɜːtʃ/"/>
+                        <Run Text="verb" FontStyle="Italic" FontWeight="Medium"/>
+                        <Run Text="搜索"/>
+                        </TextBlock>
+                    </ToolTip>
+                </ToolTipService.ToolTip>
+                <muxc:AnimatedIcon Height="22" Width="22">
+                    <muxc:AnimatedIcon.Source>
+                        <animatedvisuals:AnimatedFindVisualSource/>
+                    </muxc:AnimatedIcon.Source>
+                    <muxc:AnimatedIcon.FallbackIconSource>
+                        <muxc:SymbolIconSource Symbol="Find"/>
+                    </muxc:AnimatedIcon.FallbackIconSource>
+                </muxc:AnimatedIcon>
+            </Button>
+        </Grid>
+        <Grid Grid.Row="2">
+            <Image Source="Assets/flint_logo.png" Height="72" Width="72" Opacity="0.3"/>
+        </Grid>
+        <Button Grid.Row="3" Margin="8,0,0,8" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Left" VerticalAlignment="Bottom" 
+                Click="OnClickSettingsButton">
+            <ToolTipService.ToolTip>
+                <ToolTip>
+                    <TextBlock>
+                        <Run Text="setting" FontWeight="Bold"/>
+                        <Run Text="/ˈset.ɪŋ/"/>
+                        <Run Text="noun" FontStyle="Italic" FontWeight="Medium"/>
+                        <Run Text="设置"/>
+                    </TextBlock>
+                </ToolTip>
+            </ToolTipService.ToolTip>
+            <muxc:AnimatedIcon x:Name="SettingsAnimatedIcon" Height="22" Width="22" Opacity="0.8">
+                <muxc:AnimatedIcon.Source>
+                    <animatedvisuals:AnimatedSettingsVisualSource/>
+                </muxc:AnimatedIcon.Source>
+                <muxc:AnimatedIcon.FallbackIconSource>
+                    <muxc:SymbolIconSource Symbol="Setting"/>
+                </muxc:AnimatedIcon.FallbackIconSource>
+            </muxc:AnimatedIcon>
+        </Button>
     </Grid>
 </Page>
