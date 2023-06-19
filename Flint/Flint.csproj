@@ -139,6 +139,9 @@
   <ItemGroup>
     <Content Include="Assets\flint_logo.png" />
     <Content Include="Assets\flint_logo_background.png" />
+    <Content Include="Assets\icon_github_dark.png" />
+    <Content Include="Assets\icon_github_light.png" />
+    <Content Include="Assets\icon_mail.png" />
     <Content Include="Assets\Manifest\LargeTile.scale-100.png" />
     <Content Include="Assets\Manifest\LargeTile.scale-125.png" />
     <Content Include="Assets\Manifest\LargeTile.scale-150.png" />
@@ -189,6 +192,7 @@
     <Content Include="Assets\Manifest\Wide310x150Logo.scale-150.png" />
     <Content Include="Assets\Manifest\Wide310x150Logo.scale-200.png" />
     <Content Include="Assets\Manifest\Wide310x150Logo.scale-400.png" />
+    <Content Include="Assets\photo.png" />
     <Content Include="Properties\Default.rd.xml" />
   </ItemGroup>
   <ItemGroup>

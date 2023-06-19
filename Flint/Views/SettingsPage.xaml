@@ -8,7 +8,7 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls" 
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
     xmlns:ui="using:Microsoft.Toolkit.Uwp.UI"
-    mc:Ignorable="d" d:Width="620" d:Height="380" d:RequestedTheme="Dark"
+    mc:Ignorable="d" d:Width="620" d:Height="380" d:RequestedTheme="Light"
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True" Background="Transparent">
     <Page.Resources>
         <ui:AttachedDropShadow x:Key="CommonShadow" BlurRadius="16" IsMasked="True" Color="Black" Offset="0" Opacity="1" CastTo="{Binding ElementName=SettingTitleShadowRecvBorder}"/>
@@ -31,7 +31,7 @@
                             </ImageBrush.ImageSource>
                         </ImageBrush>
                     </Grid.Background>
-                    <Border x:Name="SettingTitleShadowRecvBorder" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#99000000"/>
+                    <Border x:Name="SettingTitleShadowRecvBorder" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{ThemeResource FLINT_LOGO_MASK_BK}"/>
                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -46,17 +46,56 @@
                                 <BitmapImage UriSource="ms-appx:///Assets/flint_logo.png" DecodePixelHeight="48" DecodePixelType="Logical"/>
                             </Image.Source>
                         </Image>
-                        <TextBlock Grid.Column="1" Grid.Row="0" Margin="12,0,0,0" Foreground="White" CharacterSpacing="40"
-                                   ui:Effects.Shadow="{StaticResource CommonShadow}" HorizontalAlignment="Left" VerticalAlignment="Center">
-                            <Run Text="Flint" FontWeight="SemiBold" FontSize="26"/>
+                        <TextBlock Grid.Column="1" Grid.Row="0" Margin="12,0,0,0" CharacterSpacing="56"
+                                   ui:Effects.Shadow="{StaticResource CommonShadow}" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center">
+                            <Run Text="Flint" FontFamily="Times New Roman" FontWeight="SemiBold" FontSize="26"/>
                         </TextBlock>
-                        <TextBlock Grid.Column="1" Grid.Row="1" Margin="12,0,0,0" Foreground="White" CharacterSpacing="20" 
-                                   ui:Effects.Shadow="{StaticResource CommonShadow}" HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <TextBlock Grid.Column="1" Grid.Row="1" Margin="12,0,0,0" CharacterSpacing="20" 
+                                   ui:Effects.Shadow="{StaticResource CommonShadow}" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center">
                             <Run Text="/flɪnt/" FontWeight="Normal" FontSize="15"/>
                             <Run Text="noun" FontWeight="SemiBold" FontSize="15" FontStyle="Italic"/>
                             <Run Text="燧石" FontWeight="SemiBold" FontSize="14"/>
                         </TextBlock>
                     </Grid>
+                </Grid>
+                <TextBlock Text="常规" Margin="20,12,0,0" FontWeight="Bold" FontSize="14" CharacterSpacing="64"/>
+                <Grid Margin="16,8,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="8" Background="{ThemeResource SETTING_BK}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <FontIcon Grid.Column="0" FontFamily="Segoe Fluent Icons" Glyph="&#xE790;" FontSize="20" Margin="0,0,16,0"/>
+                    <StackPanel Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Vertical">
+                        <TextBlock Text="主题" FontSize="14" CharacterSpacing="64"/>
+                        <TextBlock Text="选择Flint的外观" FontSize="12" Opacity="0.6" CharacterSpacing="64"/>
+                    </StackPanel>
+                    <ComboBox Grid.Column="3" MinWidth="128" SelectedIndex="0">
+                        <ComboBoxItem Content="跟随系统"/>
+                        <ComboBoxItem Content="深色"/>
+                        <ComboBoxItem Content="浅色"/>
+                    </ComboBox>
+                </Grid>
+                <TextBlock Text="关于" Margin="20,12,0,0" FontWeight="Bold" FontSize="14" CharacterSpacing="64"/>
+                <Grid Margin="16,8,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="8" Background="{ThemeResource SETTING_BK}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <FontIcon Grid.Column="0" FontFamily="Segoe Fluent Icons" Glyph="&#xE1D3;" FontSize="20" Margin="0,0,16,0"/>
+                    <StackPanel Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Vertical">
+                        <TextBlock Text="数据来源" FontSize="14" CharacterSpacing="64"/>
+                        <TextBlock Text="离线词典数据来源于ECDICT" FontSize="12" Opacity="0.6" CharacterSpacing="64"/>
+                    </StackPanel>
+                    <Button Grid.Column="3" MinWidth="128">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Image Source="{ThemeResource ABOUT_GITHUB_IMG}" Width="24" Height="24" Margin="0,0,0,0"/>
+                            <TextBlock Text="ECDICT on GitHub" VerticalAlignment="Center" FontSize="13" Margin="8,0,2,0" FontWeight="Medium"/>
+                        </StackPanel>
+                    </Button>
                 </Grid>
             </StackPanel>
         </ScrollViewer>

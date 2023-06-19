@@ -18,7 +18,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" Background="Transparent">
-            <TextBlock Text="Flint" Margin="20,0,0,0" FontWeight="SemiBold" FontSize="16" CharacterSpacing="40" VerticalAlignment="Center"/>
+            <TextBlock Text="Flint" FontFamily="Times New Roman" Margin="20,0,0,0" FontWeight="SemiBold" FontSize="16" CharacterSpacing="40" VerticalAlignment="Center"/>
         </Grid>
         <Grid Grid.Row="1" Padding="16,0" Margin="0,0,0,0">
             <Grid.ColumnDefinitions>
