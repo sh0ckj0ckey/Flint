@@ -7,6 +7,7 @@
                 <ResourceDictionary>
                     <Color x:Key="SETTING_BK">#08FFFFFF</Color>
                     <Color x:Key="FLINT_LOGO_MASK_BK">#99000000</Color>
+                    <Color x:Key="FLINT_LOGO_SHADOW_BK">#80000000</Color>
                     <BitmapImage x:Key="FLINT_LOGO_IMG" UriSource="ms-appx:///Assets/flint_logo.png"/>
                     <BitmapImage x:Key="ABOUT_GITHUB_IMG" UriSource="ms-appx:///Assets/icon_github_dark.png"/>
                 </ResourceDictionary>
@@ -16,7 +17,8 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
                     <Color x:Key="SETTING_BK">#08000000</Color>
-                    <Color x:Key="FLINT_LOGO_MASK_BK">#99000000</Color>
+                    <Color x:Key="FLINT_LOGO_MASK_BK">#33FFFFFF</Color>
+                    <Color x:Key="FLINT_LOGO_SHADOW_BK">#FFFFFF</Color>
                     <BitmapImage x:Key="FLINT_LOGO_IMG" UriSource="ms-appx:///Assets/flint_logo.png"/>
                     <BitmapImage x:Key="ABOUT_GITHUB_IMG" UriSource="ms-appx:///Assets/icon_github_light.png"/>
                 </ResourceDictionary>

@@ -11,55 +11,60 @@
     mc:Ignorable="d" d:Width="620" d:Height="380" d:RequestedTheme="Dark"
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True" Background="Transparent">
     <Page.Resources>
-        <ui:AttachedDropShadow x:Key="CommonShadow" BlurRadius="16" IsMasked="True" Color="Black" Offset="0" Opacity="1" CastTo="{Binding ElementName=SettingTitleShadowRecvBorder}"/>
+        <ui:AttachedDropShadow x:Key="CommonShadow" BlurRadius="32" IsMasked="False" Color="{ThemeResource FLINT_LOGO_SHADOW_BK}" Offset="0" Opacity="1" CastTo="{Binding ElementName=SettingTitleShadowRecvBorder}"/>
     </Page.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="48"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Text="设置" Margin="16,0,0,0" FontSize="18" FontWeight="Bold" CharacterSpacing="40" VerticalAlignment="Center"/>
-        <ScrollViewer Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <ScrollViewer Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="0,42,0,0">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Top">
-                <Grid Margin="16,0,16,0" CornerRadius="8" Height="100" Width="256" HorizontalAlignment="Left">
-                    <Grid.Background>
-                        <ImageBrush Stretch="UniformToFill">
-                            <ImageBrush.ImageSource>
-                                <BitmapImage UriSource="ms-appx:///Assets/flint_logo_background.png" DecodePixelHeight="800" DecodePixelType="Logical"/>
-                            </ImageBrush.ImageSource>
-                        </ImageBrush>
-                    </Grid.Background>
-                    <Border x:Name="SettingTitleShadowRecvBorder" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{ThemeResource FLINT_LOGO_MASK_BK}"/>
-                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <Image Height="48" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" ui:Effects.Shadow="{StaticResource CommonShadow}">
-                            <Image.Source>
-                                <BitmapImage UriSource="ms-appx:///Assets/flint_logo.png" DecodePixelHeight="48" DecodePixelType="Logical"/>
-                            </Image.Source>
-                        </Image>
-                        <TextBlock Grid.Column="1" Grid.Row="0" Margin="12,0,0,0" CharacterSpacing="56"
-                                   ui:Effects.Shadow="{StaticResource CommonShadow}" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center">
-                            <Run Text="Flint" FontFamily="Times New Roman" FontWeight="SemiBold" FontSize="26"/>
-                        </TextBlock>
-                        <TextBlock Grid.Column="1" Grid.Row="1" Margin="12,0,0,0" CharacterSpacing="20" 
-                                   ui:Effects.Shadow="{StaticResource CommonShadow}" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center">
-                            <Run Text="/flɪnt/" FontWeight="Normal" FontSize="15"/>
-                            <Run Text="noun" FontWeight="SemiBold" FontSize="15" FontStyle="Italic"/>
-                            <Run Text="燧石" FontWeight="SemiBold" FontSize="14"/>
-                        </TextBlock>
+                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="设置" Margin="16,0,0,0" FontSize="42" FontWeight="Bold" CharacterSpacing="60" VerticalAlignment="Top"/>
+                    <Grid Grid.Column="1" Margin="16,0,16,0" CornerRadius="4" Height="96" Width="256" HorizontalAlignment="Right">
+                        <Grid.Background>
+                            <ImageBrush Stretch="UniformToFill">
+                                <ImageBrush.ImageSource>
+                                    <BitmapImage UriSource="ms-appx:///Assets/flint_logo_background.png" DecodePixelHeight="200" DecodePixelType="Logical"/>
+                                </ImageBrush.ImageSource>
+                            </ImageBrush>
+                        </Grid.Background>
+                        <Border x:Name="SettingTitleShadowRecvBorder" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{ThemeResource FLINT_LOGO_MASK_BK}"/>
+                        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Image Height="42" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" ui:Effects.Shadow="{StaticResource CommonShadow}">
+                                <Image.Source>
+                                    <BitmapImage UriSource="ms-appx:///Assets/flint_logo.png" DecodePixelHeight="42" DecodePixelType="Logical"/>
+                                </Image.Source>
+                            </Image>
+                            <TextBlock Grid.Column="1" Grid.Row="0" Margin="12,0,0,0" CharacterSpacing="56"
+                                       ui:Effects.Shadow="{StaticResource CommonShadow}" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <Run Text="Flint" FontFamily="Times New Roman" FontWeight="SemiBold" FontSize="24"/>
+                            </TextBlock>
+                            <TextBlock Grid.Column="1" Grid.Row="1" Margin="12,-4,0,0" CharacterSpacing="20"
+                                       ui:Effects.Shadow="{StaticResource CommonShadow}" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <Run Text="/flɪnt/" FontWeight="Normal" FontSize="15"/>
+                                <Run Text="noun" FontWeight="SemiBold" FontSize="15" FontStyle="Italic"/>
+                                <Run Text="燧石" FontWeight="SemiBold" FontSize="14"/>
+                            </TextBlock>
+                        </Grid>
                     </Grid>
                 </Grid>
                 <TextBlock Text="常规" Margin="20,12,0,0" FontWeight="Bold" FontSize="14" CharacterSpacing="64"/>
-                <Grid Margin="16,8,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="8,8,0,0" Background="{ThemeResource SETTING_BK}">
+                <Grid Margin="16,8,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="4,4,0,0" Background="{ThemeResource SETTING_BK}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
@@ -79,7 +84,7 @@
                         <ComboBoxItem Content="浅色"/>
                     </ComboBox>
                 </Grid>
-                <Grid Margin="16,4,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="0,0,8,8" Background="{ThemeResource SETTING_BK}">
+                <Grid Margin="16,4,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="0,0,4,4" Background="{ThemeResource SETTING_BK}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
@@ -101,7 +106,7 @@
                     </ComboBox>
                 </Grid>
                 <TextBlock Text="关于" Margin="20,12,0,0" FontWeight="Bold" FontSize="14" CharacterSpacing="64"/>
-                <Grid Margin="16,8,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="8" Background="{ThemeResource SETTING_BK}">
+                <Grid Margin="16,8,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="4" Background="{ThemeResource SETTING_BK}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
@@ -122,7 +127,7 @@
                 </Grid>
             </StackPanel>
         </ScrollViewer>
-        <Button Grid.Row="2" Margin="8,0,0,8" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Left" VerticalAlignment="Bottom" 
+        <Button Grid.Row="1" Margin="8,0,0,8" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Left" VerticalAlignment="Bottom" 
                 Click="OnClickBackButton">
             <ToolTipService.ToolTip>
                 <ToolTip>
