@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Flint.ViewModels;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
@@ -54,6 +55,19 @@ namespace Flint
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {
                     //TODO: 从之前挂起的应用程序加载状态
+                }
+
+                if (MainViewModel.Instance.AppSettings.AppearanceIndex == 1)
+                {
+                    rootFrame.RequestedTheme = ElementTheme.Dark;
+                }
+                else if (MainViewModel.Instance.AppSettings.AppearanceIndex == 2)
+                {
+                    rootFrame.RequestedTheme = ElementTheme.Light;
+                }
+                else
+                {
+                    rootFrame.RequestedTheme = ElementTheme.Default;
                 }
 
                 // 将框架放在当前窗口中

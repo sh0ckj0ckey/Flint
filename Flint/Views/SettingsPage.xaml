@@ -23,7 +23,7 @@
         <TextBlock Grid.Row="0" Text="设置" Margin="16,0,0,0" FontSize="18" FontWeight="Bold" CharacterSpacing="40" VerticalAlignment="Center"/>
         <ScrollViewer Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Top">
-                <Grid Margin="16,0,16,0" CornerRadius="8" Height="100" HorizontalAlignment="Stretch">
+                <Grid Margin="16,0,16,0" CornerRadius="8" Height="100" Width="256" HorizontalAlignment="Left">
                     <Grid.Background>
                         <ImageBrush Stretch="UniformToFill">
                             <ImageBrush.ImageSource>
@@ -71,7 +71,9 @@
                         <TextBlock Text="主题" FontSize="14" CharacterSpacing="64"/>
                         <TextBlock Text="选择Flint的外观" FontSize="12" Opacity="0.6" CharacterSpacing="64"/>
                     </StackPanel>
-                    <ComboBox Grid.Column="3" MinWidth="128" SelectedIndex="0">
+                    <ComboBox Grid.Column="3" MinWidth="128" 
+                              SelectionChanged="OnAppearanceSelectiongChanged"
+                              SelectedIndex="{x:Bind _viewModel.AppSettings.AppearanceIndex,Mode=TwoWay}">
                         <ComboBoxItem Content="跟随系统"/>
                         <ComboBoxItem Content="深色"/>
                         <ComboBoxItem Content="浅色"/>
@@ -93,7 +95,7 @@
                         <TextBlock Text="搜索结果预览将只展示简洁内容" FontSize="12" Opacity="0.6" CharacterSpacing="64"/>
                         <TextBlock Text="搜索结果预览将展示详细内容" Visibility="Collapsed" FontSize="12" Opacity="0.6" CharacterSpacing="64"/>
                     </StackPanel>
-                    <ComboBox Grid.Column="3" MinWidth="128" SelectedIndex="0">
+                    <ComboBox Grid.Column="3" MinWidth="128" SelectedIndex="{x:Bind _viewModel.AppSettings.SearchPreviewMode,Mode=TwoWay}">
                         <ComboBoxItem Content="简洁"/>
                         <ComboBoxItem Content="详细"/>
                     </ComboBox>
