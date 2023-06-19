@@ -8,7 +8,7 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls" 
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
     xmlns:ui="using:Microsoft.Toolkit.Uwp.UI"
-    mc:Ignorable="d" d:Width="620" d:Height="380" d:RequestedTheme="Light"
+    mc:Ignorable="d" d:Width="620" d:Height="380" d:RequestedTheme="Dark"
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True" Background="Transparent">
     <Page.Resources>
         <ui:AttachedDropShadow x:Key="CommonShadow" BlurRadius="16" IsMasked="True" Color="Black" Offset="0" Opacity="1" CastTo="{Binding ElementName=SettingTitleShadowRecvBorder}"/>
@@ -59,7 +59,7 @@
                     </Grid>
                 </Grid>
                 <TextBlock Text="常规" Margin="20,12,0,0" FontWeight="Bold" FontSize="14" CharacterSpacing="64"/>
-                <Grid Margin="16,8,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="8" Background="{ThemeResource SETTING_BK}">
+                <Grid Margin="16,8,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="8,8,0,0" Background="{ThemeResource SETTING_BK}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
@@ -75,6 +75,27 @@
                         <ComboBoxItem Content="跟随系统"/>
                         <ComboBoxItem Content="深色"/>
                         <ComboBoxItem Content="浅色"/>
+                    </ComboBox>
+                </Grid>
+                <Grid Margin="16,4,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="0,0,8,8" Background="{ThemeResource SETTING_BK}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <FontIcon Grid.Column="0" FontFamily="Segoe Fluent Icons" Glyph="&#xE773;" FontSize="20" Margin="0,0,16,0"/>
+                    <StackPanel Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Vertical">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="搜索预览" FontSize="14" CharacterSpacing="64"/>
+                            <Button Style="{ThemeResource TextBlockButtonStyle}" Padding="0" Margin="4,0,0,0" Content="&#xE9CE;" FontFamily="Segoe Fluent Icons"/>
+                        </StackPanel>
+                        <TextBlock Text="搜索结果预览将只展示简洁内容" FontSize="12" Opacity="0.6" CharacterSpacing="64"/>
+                        <TextBlock Text="搜索结果预览将展示详细内容" Visibility="Collapsed" FontSize="12" Opacity="0.6" CharacterSpacing="64"/>
+                    </StackPanel>
+                    <ComboBox Grid.Column="3" MinWidth="128" SelectedIndex="0">
+                        <ComboBoxItem Content="简洁"/>
+                        <ComboBoxItem Content="详细"/>
                     </ComboBox>
                 </Grid>
                 <TextBlock Text="关于" Margin="20,12,0,0" FontWeight="Bold" FontSize="14" CharacterSpacing="64"/>
