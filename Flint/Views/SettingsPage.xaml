@@ -66,7 +66,7 @@
                         <ComboBoxItem Content="浅色"/>
                     </ComboBox>
                 </Grid>
-                <Grid Margin="16,4,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="0,0,4,4" Background="{ThemeResource SETTING_ITEM_BK}">
+                <Grid Margin="16,4,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="0,0,0,0" Background="{ThemeResource SETTING_ITEM_BK}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
@@ -86,6 +86,20 @@
                         <ComboBoxItem Content="简洁"/>
                         <ComboBoxItem Content="详细"/>
                     </ComboBox>
+                </Grid>
+                <Grid Margin="16,4,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="0,0,4,4" Background="{ThemeResource SETTING_ITEM_BK}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <FontIcon Grid.Column="0" FontFamily="Segoe Fluent Icons" Glyph="&#xE81C;" FontSize="20" Margin="0,0,16,0"/>
+                    <StackPanel Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Vertical">
+                        <TextBlock Text="历史记录" FontSize="14" CharacterSpacing="64"/>
+                        <TextBlock Text="记录最近搜索过的单词并展示" FontSize="12" Opacity="0.6" CharacterSpacing="64"/>
+                    </StackPanel>
+                    <ToggleSwitch Grid.Column="3" MinWidth="0" Background="Transparent" IsOn="{x:Bind _viewModel.AppSettings.EnableHistory,Mode=TwoWay}"/>
                 </Grid>
                 <TextBlock Text="关于" Margin="20,12,0,0" FontWeight="Bold" FontSize="14" CharacterSpacing="64"/>
                 <Grid Margin="16,8,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="4,4,0,0" Background="{ThemeResource SETTING_ITEM_BK}">
@@ -167,7 +181,7 @@
                         </StackPanel>
                     </Button>
                 </Grid>
-                <TextBlock Text="2019 - 2023 sh0ckj0ckey." FontSize="12" FontFamily="Consolas" Opacity="0.5" Margin="20,8,0,0"/>
+                <TextBlock Text="©2023 sh0ckj0ckey." FontSize="12" FontWeight="Light" Opacity="0.5" CharacterSpacing="40" Margin="20,8,0,8"/>
             </StackPanel>
         </ScrollViewer>
         <Grid Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">

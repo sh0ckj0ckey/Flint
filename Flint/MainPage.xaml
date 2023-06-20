@@ -24,9 +24,23 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="SearchTextBox" Grid.Column="0" Grid.ColumnSpan="2" Height="40" PlaceholderText="开始键入..." FontWeight="Medium"/>
+            <TextBox Style="{StaticResource SearchTextBoxStyle}" x:Name="SearchTextBox" Grid.Column="0" Grid.ColumnSpan="3" Height="40" PlaceholderText="开始键入..." FontWeight="Medium"/>
             <Button Grid.Column="1" Margin="8,0,0,0" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                    Click="OnClickClearButton">
+                <ToolTipService.ToolTip>
+                    <ToolTip>
+                        <TextBlock>
+                        <Run Text="search" FontWeight="Bold"/>
+                        <Run Text="/sɜːtʃ/"/>
+                        <Run Text="verb" FontStyle="Italic" FontWeight="Medium"/>
+                        <Run Text="搜索"/>
+                        </TextBlock>
+                    </ToolTip>
+                </ToolTipService.ToolTip>
+            </Button>
+            <Button Grid.Column="2" Margin="8,0,0,0" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Center" VerticalAlignment="Center" 
                     Click="OnClickSearchButton">
                 <ToolTipService.ToolTip>
                     <ToolTip>

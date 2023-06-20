@@ -12,6 +12,7 @@ namespace Flint.Core
     {
         private const string SETTING_NAME_APPEARANCEINDEX = "AppearanceIndex";
         private const string SETTING_NAME_SEARCHPREVIEWMODE = "SearchPreviewMode";
+        private const string SETTING_NAME_ENABLEHISTORY = "EnableHistory";
 
         private ApplicationDataContainer _localSettings = ApplicationData.Current.LocalSettings;
 
@@ -97,39 +98,39 @@ namespace Flint.Core
             }
         }
 
-        // 是否开启单词本
-        //private bool? _enableNotebook = null;
-        //public bool EnableNotebook
-        //{
-        //    get
-        //    {
-        //        try
-        //        {
-        //            if (_enableNotebook is null)
-        //            {
-        //                if (_localSettings.Values[SETTING_NAME_ENABLENOTEBOOK] == null)
-        //                {
-        //                    _enableNotebook = true;
-        //                }
-        //                else if (_localSettings.Values[SETTING_NAME_ENABLENOTEBOOK]?.ToString() == "True")
-        //                {
-        //                    _enableNotebook = true;
-        //                }
-        //                else
-        //                {
-        //                    _enableNotebook = false;
-        //                }
-        //            }
-        //        }
-        //        catch { }
-        //        if (_enableNotebook is null) _enableNotebook = true;
-        //        return _enableNotebook != false;
-        //    }
-        //    set
-        //    {
-        //        SetProperty(ref _enableNotebook, value);
-        //        ApplicationData.Current.LocalSettings.Values[SETTING_NAME_ENABLENOTEBOOK] = _enableNotebook;
-        //    }
-        //}
+        // 是否开启历史记录
+        private bool? _enableHistory = null;
+        public bool EnableHistory
+        {
+            get
+            {
+                try
+                {
+                    if (_enableHistory is null)
+                    {
+                        if (_localSettings.Values[SETTING_NAME_ENABLEHISTORY] == null)
+                        {
+                            _enableHistory = true;
+                        }
+                        else if (_localSettings.Values[SETTING_NAME_ENABLEHISTORY]?.ToString() == "True")
+                        {
+                            _enableHistory = true;
+                        }
+                        else
+                        {
+                            _enableHistory = false;
+                        }
+                    }
+                }
+                catch { }
+                if (_enableHistory is null) _enableHistory = true;
+                return _enableHistory != false;
+            }
+            set
+            {
+                SetProperty(ref _enableHistory, value);
+                ApplicationData.Current.LocalSettings.Values[SETTING_NAME_ENABLEHISTORY] = _enableHistory;
+            }
+        }
     }
 }
