@@ -12,7 +12,6 @@ namespace Flint.Core
     {
         private const string SETTING_NAME_APPEARANCEINDEX = "AppearanceIndex";
         private const string SETTING_NAME_SEARCHPREVIEWMODE = "SearchPreviewMode";
-        private const string SETTING_NAME_ENABLENOTEBOOK = "EnableNotebook";
 
         private ApplicationDataContainer _localSettings = ApplicationData.Current.LocalSettings;
 
@@ -99,38 +98,38 @@ namespace Flint.Core
         }
 
         // 是否开启单词本
-        private bool? _enableNotebook = null;
-        public bool EnableNotebook
-        {
-            get
-            {
-                try
-                {
-                    if (_enableNotebook is null)
-                    {
-                        if (_localSettings.Values[SETTING_NAME_ENABLENOTEBOOK] == null)
-                        {
-                            _enableNotebook = true;
-                        }
-                        else if (_localSettings.Values[SETTING_NAME_ENABLENOTEBOOK]?.ToString() == "True")
-                        {
-                            _enableNotebook = true;
-                        }
-                        else
-                        {
-                            _enableNotebook = false;
-                        }
-                    }
-                }
-                catch { }
-                if (_enableNotebook is null) _enableNotebook = true;
-                return _enableNotebook != false;
-            }
-            set
-            {
-                SetProperty(ref _enableNotebook, value);
-                ApplicationData.Current.LocalSettings.Values[SETTING_NAME_ENABLENOTEBOOK] = _enableNotebook;
-            }
-        }
+        //private bool? _enableNotebook = null;
+        //public bool EnableNotebook
+        //{
+        //    get
+        //    {
+        //        try
+        //        {
+        //            if (_enableNotebook is null)
+        //            {
+        //                if (_localSettings.Values[SETTING_NAME_ENABLENOTEBOOK] == null)
+        //                {
+        //                    _enableNotebook = true;
+        //                }
+        //                else if (_localSettings.Values[SETTING_NAME_ENABLENOTEBOOK]?.ToString() == "True")
+        //                {
+        //                    _enableNotebook = true;
+        //                }
+        //                else
+        //                {
+        //                    _enableNotebook = false;
+        //                }
+        //            }
+        //        }
+        //        catch { }
+        //        if (_enableNotebook is null) _enableNotebook = true;
+        //        return _enableNotebook != false;
+        //    }
+        //    set
+        //    {
+        //        SetProperty(ref _enableNotebook, value);
+        //        ApplicationData.Current.LocalSettings.Values[SETTING_NAME_ENABLENOTEBOOK] = _enableNotebook;
+        //    }
+        //}
     }
 }
