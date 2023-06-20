@@ -138,7 +138,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\flint_logo.png" />
-    <Content Include="Assets\flint_logo_background.png" />
+    <Content Include="Assets\flint_logo_background_dark.png" />
+    <Content Include="Assets\flint_logo_background_light.png" />
     <Content Include="Assets\icon_github_dark.png" />
     <Content Include="Assets\icon_github_light.png" />
     <Content Include="Assets\icon_mail.png" />

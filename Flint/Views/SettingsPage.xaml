@@ -11,60 +11,42 @@
     mc:Ignorable="d" d:Width="620" d:Height="380" d:RequestedTheme="Dark"
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True" Background="Transparent">
     <Page.Resources>
-        <ui:AttachedDropShadow x:Key="CommonShadow" BlurRadius="32" IsMasked="False" Color="{ThemeResource FLINT_LOGO_SHADOW_BK}" Offset="0" Opacity="1" CastTo="{Binding ElementName=SettingTitleShadowRecvBorder}"/>
+        <ui:AttachedDropShadow x:Key="CommonShadow" BlurRadius="16" IsMasked="False" Color="{ThemeResource FLINT_LOGO_SHADOW_BK}" Offset="4,4" Opacity="1" CastTo="{Binding ElementName=FlintLogoMaskBorder}"/>
     </Page.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <ScrollViewer Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="0,42,0,0">
+        <Grid Grid.Row="0" Margin="0,0,0,0" CornerRadius="0,0,0,0" Height="96" HorizontalAlignment="Stretch">
+            <Grid.Background>
+                <ImageBrush Stretch="UniformToFill" ImageSource="{ThemeResource FLINT_LOGO_BK_IMG}"/>
+            </Grid.Background>
+            <Border x:Name="FlintLogoMaskBorder" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Opacity="0.7" Background="{ThemeResource FLINT_LOGO_MASK_BK}"/>
+            <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Image Height="42" ui:Effects.Shadow="{StaticResource CommonShadow}">
+                    <Image.Source>
+                        <BitmapImage UriSource="ms-appx:///Assets/flint_logo.png" DecodePixelHeight="42" DecodePixelType="Logical"/>
+                    </Image.Source>
+                </Image>
+                <StackPanel Orientation="Vertical" Spacing="-4">
+                    <TextBlock CharacterSpacing="56" ui:Effects.Shadow="{StaticResource CommonShadow}" HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <Run Text="Flint" FontFamily="Times New Roman" FontWeight="SemiBold" FontSize="24"/>
+                    </TextBlock>
+                    <TextBlock CharacterSpacing="20" ui:Effects.Shadow="{StaticResource CommonShadow}" HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <Run Text="/flɪnt/" FontWeight="Normal" FontSize="15"/>
+                        <Run Text="noun" FontWeight="SemiBold" FontSize="15" FontStyle="Italic"/>
+                        <Run Text="燧石" FontWeight="SemiBold" FontSize="14"/>
+                    </TextBlock>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+        <ScrollViewer Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="0,0,0,0">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Top">
-                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Top">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="设置" Margin="16,0,0,0" FontSize="42" FontWeight="Bold" CharacterSpacing="60" VerticalAlignment="Top"/>
-                    <Grid Grid.Column="1" Margin="16,0,16,0" CornerRadius="4" Height="96" Width="256" HorizontalAlignment="Right">
-                        <Grid.Background>
-                            <ImageBrush Stretch="UniformToFill">
-                                <ImageBrush.ImageSource>
-                                    <BitmapImage UriSource="ms-appx:///Assets/flint_logo_background.png" DecodePixelHeight="200" DecodePixelType="Logical"/>
-                                </ImageBrush.ImageSource>
-                            </ImageBrush>
-                        </Grid.Background>
-                        <Border x:Name="SettingTitleShadowRecvBorder" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{ThemeResource FLINT_LOGO_MASK_BK}"/>
-                        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <Image Height="42" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" ui:Effects.Shadow="{StaticResource CommonShadow}">
-                                <Image.Source>
-                                    <BitmapImage UriSource="ms-appx:///Assets/flint_logo.png" DecodePixelHeight="42" DecodePixelType="Logical"/>
-                                </Image.Source>
-                            </Image>
-                            <TextBlock Grid.Column="1" Grid.Row="0" Margin="12,0,0,0" CharacterSpacing="56"
-                                       ui:Effects.Shadow="{StaticResource CommonShadow}" HorizontalAlignment="Left" VerticalAlignment="Center">
-                                <Run Text="Flint" FontFamily="Times New Roman" FontWeight="SemiBold" FontSize="24"/>
-                            </TextBlock>
-                            <TextBlock Grid.Column="1" Grid.Row="1" Margin="12,-4,0,0" CharacterSpacing="20"
-                                       ui:Effects.Shadow="{StaticResource CommonShadow}" HorizontalAlignment="Left" VerticalAlignment="Center">
-                                <Run Text="/flɪnt/" FontWeight="Normal" FontSize="15"/>
-                                <Run Text="noun" FontWeight="SemiBold" FontSize="15" FontStyle="Italic"/>
-                                <Run Text="燧石" FontWeight="SemiBold" FontSize="14"/>
-                            </TextBlock>
-                        </Grid>
-                    </Grid>
-                </Grid>
-                <TextBlock Text="常规" Margin="20,12,0,0" FontWeight="Bold" FontSize="14" CharacterSpacing="64"/>
-                <Grid Margin="16,8,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="4,4,0,0" Background="{ThemeResource SETTING_BK}">
+                <TextBlock Text="设置" Margin="20,12,0,0" FontWeight="Bold" FontSize="14" CharacterSpacing="64"/>
+                <Grid Margin="16,8,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="4,4,0,0" Background="{ThemeResource SETTING_ITEM_BK}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
@@ -76,7 +58,7 @@
                         <TextBlock Text="主题" FontSize="14" CharacterSpacing="64"/>
                         <TextBlock Text="选择Flint的外观" FontSize="12" Opacity="0.6" CharacterSpacing="64"/>
                     </StackPanel>
-                    <ComboBox Grid.Column="3" MinWidth="128" 
+                    <ComboBox Grid.Column="3" MinWidth="128"
                               SelectionChanged="OnAppearanceSelectiongChanged"
                               SelectedIndex="{x:Bind _viewModel.AppSettings.AppearanceIndex,Mode=TwoWay}">
                         <ComboBoxItem Content="跟随系统"/>
@@ -84,7 +66,7 @@
                         <ComboBoxItem Content="浅色"/>
                     </ComboBox>
                 </Grid>
-                <Grid Margin="16,4,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="0,0,4,4" Background="{ThemeResource SETTING_BK}">
+                <Grid Margin="16,4,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="0,0,0,0" Background="{ThemeResource SETTING_ITEM_BK}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
@@ -105,8 +87,41 @@
                         <ComboBoxItem Content="详细"/>
                     </ComboBox>
                 </Grid>
+                <Grid Margin="16,4,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="0,0,4,4" Background="{ThemeResource SETTING_ITEM_BK}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <FontIcon Grid.Column="0" FontFamily="Segoe Fluent Icons" Glyph="&#xE82D;" FontSize="20" Margin="0,0,16,0"/>
+                    <StackPanel Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Vertical">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="单词本" FontSize="14" CharacterSpacing="64"/>
+                        </StackPanel>
+                        <TextBlock Text="将在主界面显示单词本功能" FontSize="12" Opacity="0.6" CharacterSpacing="64"/>
+                        <TextBlock Text="不会在主界面显示单词本" Visibility="Collapsed" FontSize="12" Opacity="0.6" CharacterSpacing="64"/>
+                    </StackPanel>
+                    <ToggleSwitch Grid.Column="3" IsOn="{x:Bind _viewModel.AppSettings.EnableNotebook,Mode=TwoWay}" Margin="0,0,-28,0" Background="Transparent" OnContent="启用" OffContent="关闭"/>
+                </Grid>
                 <TextBlock Text="关于" Margin="20,12,0,0" FontWeight="Bold" FontSize="14" CharacterSpacing="64"/>
-                <Grid Margin="16,8,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="4" Background="{ThemeResource SETTING_BK}">
+                <Grid Margin="16,8,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="4,4,0,0" Background="{ThemeResource SETTING_ITEM_BK}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <FontIcon Grid.Column="0" FontFamily="Segoe Fluent Icons" Glyph="&#xE946;" FontSize="20" Margin="0,0,16,0"/>
+                    <StackPanel Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Vertical">
+                        <TextBlock Text="Flint" FontSize="14" CharacterSpacing="64"/>
+                        <TextBlock Text="{x:Bind _appVersion,Mode=OneWay}" FontSize="12" Opacity="0.6" CharacterSpacing="64"/>
+                    </StackPanel>
+                    <Button Grid.Column="3" Click="OnClickGoToStoreRate">
+                        <TextBlock Text="打分 &amp; 评价" VerticalAlignment="Center" FontSize="13" CharacterSpacing="40"/>
+                    </Button>
+                </Grid>
+                <Grid Margin="16,4,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="0,0,0,0" Background="{ThemeResource SETTING_ITEM_BK}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
@@ -116,37 +131,84 @@
                     <FontIcon Grid.Column="0" FontFamily="Segoe Fluent Icons" Glyph="&#xE1D3;" FontSize="20" Margin="0,0,16,0"/>
                     <StackPanel Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Vertical">
                         <TextBlock Text="数据来源" FontSize="14" CharacterSpacing="64"/>
-                        <TextBlock Text="离线词典数据来源于ECDICT" FontSize="12" Opacity="0.6" CharacterSpacing="64"/>
+                        <TextBlock Text="离线词典数据来自ECDICT" FontSize="12" Opacity="0.6" CharacterSpacing="64"/>
                     </StackPanel>
-                    <Button Grid.Column="3" MinWidth="128">
+                    <HyperlinkButton Grid.Column="3" NavigateUri="https://github.com/skywind3000/ECDICT">
+                        <TextBlock Text="ECDICT on GitHub" VerticalAlignment="Center" FontSize="13" CharacterSpacing="40"/>
+                    </HyperlinkButton>
+                </Grid>
+                <Grid Margin="16,4,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="0,0,0,0" Background="{ThemeResource SETTING_ITEM_BK}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <FontIcon Grid.Column="0" FontFamily="Segoe Fluent Icons" Glyph="&#xED15;" FontSize="20" Margin="0,0,16,0"/>
+                    <StackPanel Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Vertical">
+                        <TextBlock Text="反馈" FontSize="14" CharacterSpacing="64"/>
+                        <TextBlock Text="如果您遇到Bug或有任何建议" FontSize="12" Opacity="0.6" CharacterSpacing="64"/>
+                    </StackPanel>
+                    <Button Grid.Column="3">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <Image Source="{ThemeResource ABOUT_GITHUB_IMG}" Width="24" Height="24" Margin="0,0,0,0"/>
-                            <TextBlock Text="ECDICT on GitHub" VerticalAlignment="Center" FontSize="13" Margin="8,0,2,0" FontWeight="Medium"/>
+                            <Image Width="20" Height="20" Margin="0,0,0,0">
+                                <Image.Source>
+                                    <BitmapImage UriSource="ms-appx:///Assets/icon_mail.png" DecodePixelHeight="20" DecodePixelType="Logical"/>
+                                </Image.Source>
+                            </Image>
+                            <TextBlock Text="发送邮件" VerticalAlignment="Center" FontSize="13" Margin="8,0,2,0" CharacterSpacing="40"/>
+                        </StackPanel>
+                        <Button.Flyout>
+                            <Flyout>
+                                <HyperlinkButton Content="yaoyiming123@live.com" ToolTipService.ToolTip="点击向我发送邮件" NavigateUri="mailto:yaoyiming123@live.com"/>
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
+                </Grid>
+                <Grid Margin="16,4,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="0,0,4,4" Background="{ThemeResource SETTING_ITEM_BK}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <FontIcon Grid.Column="0" FontFamily="Segoe Fluent Icons" Glyph="&#xE943;" FontSize="20" Margin="0,0,16,0"/>
+                    <StackPanel Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Vertical">
+                        <TextBlock Text="源代码" FontSize="14" CharacterSpacing="64"/>
+                        <TextBlock Text="Flint是一款开源应用程序" FontSize="12" Opacity="0.6" CharacterSpacing="64"/>
+                    </StackPanel>
+                    <Button Grid.Column="3" Click="OnClickGitHub">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Image Width="20" Height="20" Margin="0,0,0,0" Source="{ThemeResource ABOUT_GITHUB_IMG}"/>
+                            <TextBlock Text="GitHub" VerticalAlignment="Center" FontSize="13" Margin="8,0,2,0" CharacterSpacing="40"/>
                         </StackPanel>
                     </Button>
                 </Grid>
+                <TextBlock Text="2019 - 2023 sh0ckj0ckey." FontSize="12" FontFamily="Consolas" Opacity="0.5" Margin="20,8,0,0"/>
             </StackPanel>
         </ScrollViewer>
-        <Button Grid.Row="1" Margin="8,0,0,8" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Left" VerticalAlignment="Bottom" 
-                Click="OnClickBackButton">
-            <ToolTipService.ToolTip>
-                <ToolTip>
-                    <TextBlock>
+        <Grid Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Rectangle Height="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" Fill="{ThemeResource SETTING_LINE_BK}"/>
+            <Button Margin="8,8,0,8" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Left" VerticalAlignment="Center" Click="OnClickBackButton">
+                <ToolTipService.ToolTip>
+                    <ToolTip>
+                        <TextBlock>
                         <Run Text="back" FontWeight="Bold"/>
                         <Run Text="/bæk/"/>
                         <Run Text="adverb" FontStyle="Italic" FontWeight="Medium"/>
                         <Run Text="返回"/>
-                    </TextBlock>
-                </ToolTip>
-            </ToolTipService.ToolTip>
-            <muxc:AnimatedIcon Height="22" Width="22" Opacity="0.8">
-                <muxc:AnimatedIcon.Source>
-                    <animatedvisuals:AnimatedBackVisualSource/>
-                </muxc:AnimatedIcon.Source>
-                <muxc:AnimatedIcon.FallbackIconSource>
-                    <muxc:SymbolIconSource Symbol="Back"/>
-                </muxc:AnimatedIcon.FallbackIconSource>
-            </muxc:AnimatedIcon>
-        </Button>
+                        </TextBlock>
+                    </ToolTip>
+                </ToolTipService.ToolTip>
+                <muxc:AnimatedIcon Height="22" Width="22" Opacity="0.8">
+                    <muxc:AnimatedIcon.Source>
+                        <animatedvisuals:AnimatedBackVisualSource/>
+                    </muxc:AnimatedIcon.Source>
+                    <muxc:AnimatedIcon.FallbackIconSource>
+                        <muxc:SymbolIconSource Symbol="Back"/>
+                    </muxc:AnimatedIcon.FallbackIconSource>
+                </muxc:AnimatedIcon>
+            </Button>
+        </Grid>
     </Grid>
 </Page>

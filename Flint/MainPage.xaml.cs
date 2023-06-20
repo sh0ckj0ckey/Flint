@@ -20,6 +20,7 @@ using System.Runtime;
 using Flint.Core;
 using Flint.ViewModels;
 using System.Reflection;
+using System.Threading.Tasks;
 
 // https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x804 上介绍了“空白页”项模板
 
@@ -124,8 +125,9 @@ namespace Flint
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnClickSettingsButton(object sender, RoutedEventArgs e)
+        private async void OnClickSettingsButton(object sender, RoutedEventArgs e)
         {
+            await Task.Delay(200);
             this.Frame.Navigate(typeof(SettingsPage));
         }
 
@@ -134,8 +136,9 @@ namespace Flint
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnClickSearchButton(object sender, RoutedEventArgs e)
+        private async void OnClickSearchButton(object sender, RoutedEventArgs e)
         {
+            await Task.Delay(200);
             this.Frame.Navigate(typeof(DetailPage));
         }
     }

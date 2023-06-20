@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Flint.Core.Utils;
 using Flint.ViewModels;
 using Windows.ApplicationModel;
@@ -76,8 +77,9 @@ namespace Flint.Views
             catch { }
         }
 
-        private void OnClickBackButton(object sender, RoutedEventArgs e)
+        private async void OnClickBackButton(object sender, RoutedEventArgs e)
         {
+            await Task.Delay(300);
             if (this.Frame.CanGoBack)
             {
                 this.Frame.GoBack();
