@@ -8,7 +8,7 @@
         <muxc:XamlControlsResources>
             <muxc:XamlControlsResources.MergedDictionaries>
                 <ResourceDictionary Source="/ThemeResource/ThemeDictionary.xaml"/>
-                <ResourceDictionary Source="/ThemeResource/TextBoxStyle.xaml"/>
+                <ResourceDictionary Source="/ThemeResource/CustomControlStyle.xaml"/>
 
                 <ResourceDictionary>
                     <!--<Color x:Key="SystemAccentColor">#333333</Color>

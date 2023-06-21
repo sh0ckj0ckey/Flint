@@ -141,5 +141,10 @@ namespace Flint
             await Task.Delay(200);
             this.Frame.Navigate(typeof(DetailPage));
         }
+
+        private void OnClickClearButton(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

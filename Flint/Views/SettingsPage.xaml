@@ -8,7 +8,7 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls" 
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
     xmlns:ui="using:Microsoft.Toolkit.Uwp.UI"
-    mc:Ignorable="d" d:Width="620" d:Height="380" d:RequestedTheme="Dark"
+    mc:Ignorable="d" d:Width="620" d:Height="680" d:RequestedTheme="Dark"
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True" Background="Transparent">
     <Page.Resources>
         <ui:AttachedDropShadow x:Key="CommonShadow" BlurRadius="16" IsMasked="False" Color="{ThemeResource FLINT_LOGO_SHADOW_BK}" Offset="4,4" Opacity="1" CastTo="{Binding ElementName=FlintLogoMaskBorder}"/>
@@ -73,7 +73,7 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <FontIcon Grid.Column="0" FontFamily="Segoe Fluent Icons" Glyph="&#xE773;" FontSize="20" Margin="0,0,16,0"/>
+                    <FontIcon Grid.Column="0" FontFamily="Segoe Fluent Icons" Glyph="&#xE161;" FontSize="20" Margin="0,0,16,0"/>
                     <StackPanel Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Vertical">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="搜索预览" FontSize="14" CharacterSpacing="64"/>
@@ -87,7 +87,7 @@
                         <ComboBoxItem Content="详细"/>
                     </ComboBox>
                 </Grid>
-                <Grid Margin="16,4,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="0,0,4,4" Background="{ThemeResource SETTING_ITEM_BK}">
+                <Grid Margin="16,4,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="0,0,0,0" Background="{ThemeResource SETTING_ITEM_BK}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
@@ -100,6 +100,89 @@
                         <TextBlock Text="记录最近搜索过的单词并展示" FontSize="12" Opacity="0.6" CharacterSpacing="64"/>
                     </StackPanel>
                     <ToggleSwitch Grid.Column="3" MinWidth="0" Background="Transparent" IsOn="{x:Bind _viewModel.AppSettings.EnableHistory,Mode=TwoWay}"/>
+                </Grid>
+                <Grid Margin="16,4,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="0,0,0,0" Background="{ThemeResource SETTING_ITEM_BK}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <FontIcon Grid.Column="0" FontFamily="Segoe Fluent Icons" Glyph="&#xE773;" FontSize="20" Margin="0,0,16,0"/>
+                    <StackPanel Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Vertical">
+                        <TextBlock Text="搜索框样式" FontSize="14" CharacterSpacing="64"/>
+                        <TextBlock Text="选择主页搜索框的外观" FontSize="12" Opacity="0.6" CharacterSpacing="64"/>
+                    </StackPanel>
+                </Grid>
+                <Grid Margin="16,0,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="0,0,8,8" BorderThickness="1.5" BorderBrush="{ThemeResource SETTING_ITEM_BK}">
+                    <Grid.Background>
+                        <SolidColorBrush Color="{ThemeResource SETTING_ITEM_BK}" Opacity="0.5"/>
+                    </Grid.Background>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <RadioButton Grid.Column="0" Style="{StaticResource SettingsRadioButtonStyle}" HorizontalAlignment="Center" Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                        <RadioButton.Content>
+                            <Grid Height="72" Width="108" CornerRadius="8" BorderBrush="Black" BorderThickness="4" Background="{ThemeResource SystemAccentColorDark3}">
+                                <Border Height="28" Width="64" HorizontalAlignment="Right" VerticalAlignment="Center" CornerRadius="4,0,0,4" BorderThickness="0,0,0,2"
+                                        BorderBrush="{ThemeResource SystemAccentColorDark1}" Background="#20FFFFFF">
+                                    <TextBlock Text="搜索" Margin="8,-1,0,1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="12.5" CharacterSpacing="64" FontWeight="SemiBold" Foreground="#33FFFFFF"/>
+                                </Border>
+                            </Grid>
+                        </RadioButton.Content>
+                        <ToolTipService.ToolTip>
+                            <ToolTip>
+                                <TextBlock>
+                                    <Run Text="modern" FontWeight="Bold"/>
+                                    <Run Text="/ˈmɑː.dɚn/"/>
+                                    <Run Text="adjective" FontStyle="Italic" FontWeight="Medium"/>
+                                    <Run Text="新式的"/>
+                                </TextBlock>
+                            </ToolTip>
+                        </ToolTipService.ToolTip>
+                    </RadioButton>
+                    <RadioButton Grid.Column="1" Style="{StaticResource SettingsRadioButtonStyle}" HorizontalAlignment="Center" Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                        <RadioButton.Content>
+                            <Grid Height="72" Width="108" CornerRadius="8" BorderBrush="Black" BorderThickness="4" Background="{ThemeResource SystemAccentColorDark3}">
+                                <Border Height="28" Width="64" HorizontalAlignment="Right" VerticalAlignment="Center" CornerRadius="12,0,0,12" BorderThickness="0,0,0,0"
+                                        BorderBrush="{ThemeResource SystemAccentColorDark1}" Background="#20FFFFFF">
+                                    <TextBlock Text="搜索" Margin="10,-1,0,1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="12.5" CharacterSpacing="64" FontWeight="SemiBold" Foreground="#33FFFFFF"/>
+                                </Border>
+                            </Grid>
+                        </RadioButton.Content>
+                        <ToolTipService.ToolTip>
+                            <ToolTip>
+                                <TextBlock>
+                                    <Run Text="round" FontWeight="Bold"/>
+                                    <Run Text="/raʊnd/"/>
+                                    <Run Text="adjective" FontStyle="Italic" FontWeight="Medium"/>
+                                    <Run Text="圆形的"/>
+                                </TextBlock>
+                            </ToolTip>
+                        </ToolTipService.ToolTip>
+                    </RadioButton>
+                    <RadioButton Grid.Column="2" Style="{StaticResource SettingsRadioButtonStyle}" HorizontalAlignment="Center" Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                        <RadioButton.Content>
+                            <Grid Height="72" Width="108" CornerRadius="8" BorderBrush="Black" BorderThickness="4" Background="{ThemeResource SystemAccentColorDark3}">
+                                <Border Height="28" Width="64" HorizontalAlignment="Right" VerticalAlignment="Center" CornerRadius="2,0,0,2" BorderThickness="1.5,1.5,0,1.5"
+                                        BorderBrush="#33FFFFFF" Background="#20FFFFFF">
+                                    <TextBlock Text="搜索" Margin="8,-1,0,1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="12.5" CharacterSpacing="64" FontWeight="SemiBold" Foreground="#33FFFFFF"/>
+                                </Border>
+                            </Grid>
+                        </RadioButton.Content>
+                        <ToolTipService.ToolTip>
+                            <ToolTip>
+                                <TextBlock>
+                                    <Run Text="classic" FontWeight="Bold"/>
+                                    <Run Text="/ˈklæs.ɪk/"/>
+                                    <Run Text="adjective" FontStyle="Italic" FontWeight="Medium"/>
+                                    <Run Text="经典的"/>
+                                </TextBlock>
+                            </ToolTip>
+                        </ToolTipService.ToolTip>
+                    </RadioButton>
                 </Grid>
                 <TextBlock Text="关于" Margin="20,12,0,0" FontWeight="Bold" FontSize="14" CharacterSpacing="64"/>
                 <Grid Margin="16,8,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="4,4,0,0" Background="{ThemeResource SETTING_ITEM_BK}">
