@@ -119,6 +119,14 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\Bool2VisibilityConverter.cs" />
+    <Compile Include="Converters\BoolReverseConverter.cs" />
+    <Compile Include="Converters\Equal2BoolConverter.cs" />
+    <Compile Include="Converters\Equal2VisibilityConverter.cs" />
+    <Compile Include="Converters\Int2BoolConverter.cs" />
+    <Compile Include="Converters\Int2VisibilityConverter.cs" />
+    <Compile Include="Converters\NullOrEmpty2VisibilityConverter.cs" />
+    <Compile Include="Converters\Unequal2VisibilityConverter.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>

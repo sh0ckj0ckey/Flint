@@ -7,11 +7,15 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls" 
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
-    xmlns:ui="using:Microsoft.Toolkit.Uwp.UI"
+    xmlns:ui="using:Microsoft.Toolkit.Uwp.UI" 
+    xmlns:cvt="using:Flint.Converters"
     mc:Ignorable="d" d:Width="620" d:Height="680" d:RequestedTheme="Dark"
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True" Background="Transparent">
     <Page.Resources>
         <ui:AttachedDropShadow x:Key="CommonShadow" BlurRadius="16" IsMasked="False" Color="{ThemeResource FLINT_LOGO_SHADOW_BK}" Offset="4,4" Opacity="1" CastTo="{Binding ElementName=FlintLogoMaskBorder}"/>
+
+        <cvt:Int2VisibilityConverter x:Key="Int2Vis"/>
+        <cvt:Equal2BoolConverter x:Key="Eql2Bool"/>
     </Page.Resources>
 
     <Grid>
@@ -123,7 +127,8 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <RadioButton Grid.Column="0" Style="{StaticResource SettingsRadioButtonStyle}" HorizontalAlignment="Center" Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                    <RadioButton Grid.Column="0" Style="{StaticResource SettingsRadioButtonStyle}" HorizontalAlignment="Center" Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                 IsChecked="{x:Bind _viewModel.AppSettings.SearchBoxStyle,Mode=OneWay,Converter={StaticResource Eql2Bool},ConverterParameter=0}" Tag="0" Checked="OnSearchBoxStyleChecked">
                         <RadioButton.Content>
                             <Grid Height="72" Width="108" CornerRadius="8" BorderBrush="Black" BorderThickness="4" Background="{ThemeResource SystemAccentColorDark3}">
                                 <Border Height="28" Width="64" HorizontalAlignment="Right" VerticalAlignment="Center" CornerRadius="4,0,0,4" BorderThickness="0,0,0,2"
@@ -143,7 +148,8 @@
                             </ToolTip>
                         </ToolTipService.ToolTip>
                     </RadioButton>
-                    <RadioButton Grid.Column="1" Style="{StaticResource SettingsRadioButtonStyle}" HorizontalAlignment="Center" Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                    <RadioButton Grid.Column="1" Style="{StaticResource SettingsRadioButtonStyle}" HorizontalAlignment="Center" Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                 IsChecked="{x:Bind _viewModel.AppSettings.SearchBoxStyle,Mode=OneWay,Converter={StaticResource Eql2Bool},ConverterParameter=1}" Tag="1" Checked="OnSearchBoxStyleChecked">
                         <RadioButton.Content>
                             <Grid Height="72" Width="108" CornerRadius="8" BorderBrush="Black" BorderThickness="4" Background="{ThemeResource SystemAccentColorDark3}">
                                 <Border Height="28" Width="64" HorizontalAlignment="Right" VerticalAlignment="Center" CornerRadius="12,0,0,12" BorderThickness="0,0,0,0"
@@ -163,7 +169,8 @@
                             </ToolTip>
                         </ToolTipService.ToolTip>
                     </RadioButton>
-                    <RadioButton Grid.Column="2" Style="{StaticResource SettingsRadioButtonStyle}" HorizontalAlignment="Center" Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                    <RadioButton Grid.Column="2" Style="{StaticResource SettingsRadioButtonStyle}" HorizontalAlignment="Center" Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                 IsChecked="{x:Bind _viewModel.AppSettings.SearchBoxStyle,Mode=OneWay,Converter={StaticResource Eql2Bool},ConverterParameter=2}" Tag="2" Checked="OnSearchBoxStyleChecked">
                         <RadioButton.Content>
                             <Grid Height="72" Width="108" CornerRadius="8" BorderBrush="Black" BorderThickness="4" Background="{ThemeResource SystemAccentColorDark3}">
                                 <Border Height="28" Width="64" HorizontalAlignment="Right" VerticalAlignment="Center" CornerRadius="2,0,0,2" BorderThickness="1.5,1.5,0,1.5"

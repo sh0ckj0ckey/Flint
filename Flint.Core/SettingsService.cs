@@ -13,6 +13,7 @@ namespace Flint.Core
         private const string SETTING_NAME_APPEARANCEINDEX = "AppearanceIndex";
         private const string SETTING_NAME_SEARCHPREVIEWMODE = "SearchPreviewMode";
         private const string SETTING_NAME_ENABLEHISTORY = "EnableHistory";
+        private const string SETTING_NAME_SEARCHBOXSTYLE = "SearchBoxStyle";
 
         private ApplicationDataContainer _localSettings = ApplicationData.Current.LocalSettings;
 
@@ -132,5 +133,49 @@ namespace Flint.Core
                 ApplicationData.Current.LocalSettings.Values[SETTING_NAME_ENABLEHISTORY] = _enableHistory;
             }
         }
+
+        // 搜索框样式
+        private int _searchBoxStyle = -1;
+        public int SearchBoxStyle
+        {
+            get
+            {
+                try
+                {
+                    if (_searchBoxStyle < 0)
+                    {
+                        if (_localSettings.Values[SETTING_NAME_SEARCHBOXSTYLE] == null)
+                        {
+                            _searchBoxStyle = 0;
+                        }
+                        else if (_localSettings.Values[SETTING_NAME_SEARCHBOXSTYLE]?.ToString() == "0")
+                        {
+                            _searchBoxStyle = 0;
+                        }
+                        else if (_localSettings.Values[SETTING_NAME_SEARCHBOXSTYLE]?.ToString() == "1")
+                        {
+                            _searchBoxStyle = 1;
+                        }
+                        else if (_localSettings.Values[SETTING_NAME_SEARCHBOXSTYLE]?.ToString() == "2")
+                        {
+                            _searchBoxStyle = 2;
+                        }
+                        else
+                        {
+                            _searchBoxStyle = 0;
+                        }
+                    }
+                }
+                catch { }
+                if (_searchBoxStyle < 0) _searchBoxStyle = 0;
+                return _searchBoxStyle < 0 ? 0 : _searchBoxStyle;
+            }
+            set
+            {
+                SetProperty(ref _searchBoxStyle, value);
+                ApplicationData.Current.LocalSettings.Values[SETTING_NAME_SEARCHBOXSTYLE] = _searchBoxStyle;
+            }
+        }
+
     }
 }

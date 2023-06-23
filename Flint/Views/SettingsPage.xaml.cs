@@ -85,5 +85,31 @@ namespace Flint.Views
                 this.Frame.GoBack();
             }
         }
+
+        private void OnSearchBoxStyleChecked(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender is RadioButton rb)
+                {
+                    string tag = rb?.Tag?.ToString();
+                    switch (tag)
+                    {
+                        case "0":
+                            _viewModel.AppSettings.SearchBoxStyle = 0;
+                            break;
+                        case "1":
+                            _viewModel.AppSettings.SearchBoxStyle = 1;
+                            break;
+                        case "2":
+                            _viewModel.AppSettings.SearchBoxStyle = 2;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+            catch { }
+        }
     }
 }
