@@ -31,10 +31,13 @@ namespace Flint
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private MainViewModel _viewModel = null;
         private UISettings _uiSettings;
         public MainPage()
         {
             this.InitializeComponent();
+
+            _viewModel = MainViewModel.Instance;
 
             // 设置自定义标题栏
             var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
@@ -127,24 +130,8 @@ namespace Flint
         /// <param name="e"></param>
         private async void OnClickSettingsButton(object sender, RoutedEventArgs e)
         {
-            await Task.Delay(200);
+            await Task.Delay(150);
             this.Frame.Navigate(typeof(SettingsPage));
-        }
-
-        /// <summary>
-        /// 前往搜索详情页面
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private async void OnClickSearchButton(object sender, RoutedEventArgs e)
-        {
-            await Task.Delay(200);
-            this.Frame.Navigate(typeof(DetailPage));
-        }
-
-        private void OnClickClearButton(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

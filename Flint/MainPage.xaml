@@ -12,6 +12,7 @@
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True" Background="Transparent">
     <Page.Resources>
         <cvt:Int2VisibilityConverter x:Key="Int2Vis"/>
+        <cvt:Equal2VisibilityConverter x:Key="Eql2Vis"/>
     </Page.Resources>
 
     <Grid>
@@ -25,40 +26,25 @@
             <TextBlock Text="Flint" FontFamily="Times New Roman" Margin="20,0,0,0" FontWeight="SemiBold" FontSize="16" CharacterSpacing="40" VerticalAlignment="Center"/>
         </Grid>
         <Grid Grid.Row="1" Padding="16,0" Margin="0,0,0,0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0">
-                <TextBox x:Name="SearchTextBox" Padding="12,8,0,0" Height="40" FontWeight="Medium" FontSize="16" CharacterSpacing="64"/>
+            <Grid Visibility="{x:Bind _viewModel.AppSettings.SearchBoxStyle,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=0}">
+                <TextBox x:Name="SearchTextBox1" Padding="12,8,0,0" Height="40" FontWeight="Medium" FontSize="16" CharacterSpacing="64">
+                    <ToolTipService.ToolTip>
+                        <ToolTip>
+                            <TextBlock>
+                                <Run Text="search" FontWeight="Bold"/>
+                                <Run Text="/sɜːtʃ/"/>
+                                <Run Text="verb" FontStyle="Italic" FontWeight="Medium"/>
+                                <Run Text="搜索"/>
+                            </TextBlock>
+                        </ToolTip>
+                    </ToolTipService.ToolTip>
+                </TextBox>
                 <TextBlock Text="开始键入..." Margin="16,6,0,0" FontSize="18" Opacity="0.3" HorizontalAlignment="Left" CharacterSpacing="64" IsHitTestVisible="False" VerticalAlignment="Top"
-                           Visibility="{x:Bind SearchTextBox.Text.Length,Mode=OneWay,Converter={StaticResource Int2Vis},ConverterParameter=-}"/>
+                           Visibility="{x:Bind SearchTextBox1.Text.Length,Mode=OneWay,Converter={StaticResource Int2Vis},ConverterParameter=-}"/>
             </Grid>
-            <Button Grid.Column="1" Margin="8,0,0,0" Height="40" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                    Click="OnClickSearchButton">
-                <ToolTipService.ToolTip>
-                    <ToolTip>
-                        <TextBlock>
-                        <Run Text="search" FontWeight="Bold"/>
-                        <Run Text="/sɜːtʃ/"/>
-                        <Run Text="verb" FontStyle="Italic" FontWeight="Medium"/>
-                        <Run Text="搜索"/>
-                        </TextBlock>
-                    </ToolTip>
-                </ToolTipService.ToolTip>
-                <muxc:AnimatedIcon Height="22" Width="22">
-                    <muxc:AnimatedIcon.Source>
-                        <animatedvisuals:AnimatedFindVisualSource/>
-                    </muxc:AnimatedIcon.Source>
-                    <muxc:AnimatedIcon.FallbackIconSource>
-                        <muxc:SymbolIconSource Symbol="Find"/>
-                    </muxc:AnimatedIcon.FallbackIconSource>
-                </muxc:AnimatedIcon>
-            </Button>
         </Grid>
         <Grid Grid.Row="2">
-            <Image Source="Assets/flint_logo.png" Height="72" Width="72" Opacity="0.3"/>
+            <Image Source="Assets/flint_logo.png" Height="72" Width="72" Opacity="0.1"/>
         </Grid>
         <Button Grid.Row="3" Margin="8,0,0,8" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Left" VerticalAlignment="Bottom" 
                 Click="OnClickSettingsButton">

@@ -79,7 +79,7 @@ namespace Flint.Views
 
         private async void OnClickBackButton(object sender, RoutedEventArgs e)
         {
-            await Task.Delay(300);
+            await Task.Delay(150);
             if (this.Frame.CanGoBack)
             {
                 this.Frame.GoBack();
