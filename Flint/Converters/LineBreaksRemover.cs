@@ -4,28 +4,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml;
 
 namespace Flint.Converters
 {
-    internal class NullOrEmpty2VisibilityConverter : IValueConverter
+    internal class LineBreaksRemover : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             try
             {
-                if (parameter == null)
+                if (value is string)
                 {
-                    return (value == null || string.IsNullOrWhiteSpace(value?.ToString())) ? Visibility.Collapsed : Visibility.Visible;
-                }
-
-                if (parameter != null && parameter.ToString() == "-")
-                {
-                    return (value == null || string.IsNullOrWhiteSpace(value?.ToString())) ? Visibility.Visible : Visibility.Collapsed;
+                    string text = value.ToString();
+                    if (!string.IsNullOrWhiteSpace(text))
+                    {
+                        text = text.Trim();
+                        text.Replace("\r\n", "   ");
+                        text = text.Replace("\n", "   ");
+                        return text;
+                    }
                 }
             }
             catch { }
-            return Visibility.Collapsed;
+            return value;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

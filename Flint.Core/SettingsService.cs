@@ -11,8 +11,7 @@ namespace Flint.Core
     public class SettingsService : ObservableObject
     {
         private const string SETTING_NAME_APPEARANCEINDEX = "AppearanceIndex";
-        private const string SETTING_NAME_SEARCHPREVIEWMODE = "SearchPreviewMode";
-        private const string SETTING_NAME_ENABLEHISTORY = "EnableHistory";
+        private const string SETTING_NAME_ENABLEENGDEF = "EnableEngDefinition";
         private const string SETTING_NAME_SEARCHBOXSTYLE = "SearchBoxStyle";
 
         private ApplicationDataContainer _localSettings = ApplicationData.Current.LocalSettings;
@@ -60,77 +59,38 @@ namespace Flint.Core
             }
         }
 
-        // 搜索预览 0-简洁 1-详细
-        private int _searchPreviewMode = -1;
-        public int SearchPreviewMode
+        // 是否显示英英释义
+        private bool? _enableEngDefinition = null;
+        public bool EnableEngDefinition
         {
             get
             {
                 try
                 {
-                    if (_searchPreviewMode < 0)
+                    if (_enableEngDefinition is null)
                     {
-                        if (_localSettings.Values[SETTING_NAME_SEARCHPREVIEWMODE] == null)
+                        if (_localSettings.Values[SETTING_NAME_ENABLEENGDEF] == null)
                         {
-                            _searchPreviewMode = 0;
+                            _enableEngDefinition = true;
                         }
-                        else if (_localSettings.Values[SETTING_NAME_SEARCHPREVIEWMODE]?.ToString() == "0")
+                        else if (_localSettings.Values[SETTING_NAME_ENABLEENGDEF]?.ToString() == "True")
                         {
-                            _searchPreviewMode = 0;
-                        }
-                        else if (_localSettings.Values[SETTING_NAME_SEARCHPREVIEWMODE]?.ToString() == "1")
-                        {
-                            _searchPreviewMode = 1;
+                            _enableEngDefinition = true;
                         }
                         else
                         {
-                            _searchPreviewMode = 0;
+                            _enableEngDefinition = false;
                         }
                     }
                 }
                 catch { }
-                if (_searchPreviewMode < 0) _searchPreviewMode = 0;
-                return _searchPreviewMode < 0 ? 0 : _searchPreviewMode;
+                if (_enableEngDefinition is null) _enableEngDefinition = true;
+                return _enableEngDefinition != false;
             }
             set
             {
-                SetProperty(ref _searchPreviewMode, value);
-                ApplicationData.Current.LocalSettings.Values[SETTING_NAME_SEARCHPREVIEWMODE] = _searchPreviewMode;
-            }
-        }
-
-        // 是否开启历史记录
-        private bool? _enableHistory = null;
-        public bool EnableHistory
-        {
-            get
-            {
-                try
-                {
-                    if (_enableHistory is null)
-                    {
-                        if (_localSettings.Values[SETTING_NAME_ENABLEHISTORY] == null)
-                        {
-                            _enableHistory = true;
-                        }
-                        else if (_localSettings.Values[SETTING_NAME_ENABLEHISTORY]?.ToString() == "True")
-                        {
-                            _enableHistory = true;
-                        }
-                        else
-                        {
-                            _enableHistory = false;
-                        }
-                    }
-                }
-                catch { }
-                if (_enableHistory is null) _enableHistory = true;
-                return _enableHistory != false;
-            }
-            set
-            {
-                SetProperty(ref _enableHistory, value);
-                ApplicationData.Current.LocalSettings.Values[SETTING_NAME_ENABLEHISTORY] = _enableHistory;
+                SetProperty(ref _enableEngDefinition, value);
+                ApplicationData.Current.LocalSettings.Values[SETTING_NAME_ENABLEENGDEF] = _enableEngDefinition;
             }
         }
 

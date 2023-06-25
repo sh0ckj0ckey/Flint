@@ -9,8 +9,8 @@
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
     xmlns:ui="using:Microsoft.Toolkit.Uwp.UI" 
     xmlns:cvt="using:Flint.Converters"
-    mc:Ignorable="d" d:Width="620" d:Height="680" d:RequestedTheme="Dark"
-    muxc:BackdropMaterial.ApplyToRootOrPageBackground="True" Background="Transparent">
+    mc:Ignorable="d" d:Width="620" d:Height="980" d:RequestedTheme="Dark"
+    muxc:BackdropMaterial.ApplyToRootOrPageBackground="True" Background="Transparent" NavigationCacheMode="Required">
     <Page.Resources>
         <ui:AttachedDropShadow x:Key="CommonShadow" BlurRadius="16" IsMasked="False" Color="{ThemeResource FLINT_LOGO_SHADOW_BK}" Offset="4,4" Opacity="1" CastTo="{Binding ElementName=FlintLogoMaskBorder}"/>
 
@@ -77,33 +77,12 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <FontIcon Grid.Column="0" FontFamily="Segoe Fluent Icons" Glyph="&#xE161;" FontSize="20" Margin="0,0,16,0"/>
+                    <FontIcon Grid.Column="0" FontFamily="Segoe Fluent Icons" Glyph="&#xE8D2;" FontSize="20" Margin="0,0,16,0"/>
                     <StackPanel Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Vertical">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="搜索预览" FontSize="14" CharacterSpacing="64"/>
-                            <Button Style="{ThemeResource TextBlockButtonStyle}" Padding="0" Margin="4,0,0,0" Content="&#xE9CE;" FontFamily="Segoe Fluent Icons"/>
-                        </StackPanel>
-                        <TextBlock Text="搜索结果预览将只展示简洁内容" FontSize="12" Opacity="0.6" CharacterSpacing="64"/>
-                        <TextBlock Text="搜索结果预览将展示详细内容" Visibility="Collapsed" FontSize="12" Opacity="0.6" CharacterSpacing="64"/>
+                        <TextBlock Text="英文释义" FontSize="14" CharacterSpacing="64"/>
+                        <TextBlock Text="选择是否显示英英释义" FontSize="12" Opacity="0.6" CharacterSpacing="64"/>
                     </StackPanel>
-                    <ComboBox Grid.Column="3" MinWidth="128" SelectedIndex="{x:Bind _viewModel.AppSettings.SearchPreviewMode,Mode=TwoWay}">
-                        <ComboBoxItem Content="简洁"/>
-                        <ComboBoxItem Content="详细"/>
-                    </ComboBox>
-                </Grid>
-                <Grid Margin="16,4,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="0,0,0,0" Background="{ThemeResource SETTING_ITEM_BK}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <FontIcon Grid.Column="0" FontFamily="Segoe Fluent Icons" Glyph="&#xE81C;" FontSize="20" Margin="0,0,16,0"/>
-                    <StackPanel Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Vertical">
-                        <TextBlock Text="历史记录" FontSize="14" CharacterSpacing="64"/>
-                        <TextBlock Text="记录最近搜索过的单词并展示" FontSize="12" Opacity="0.6" CharacterSpacing="64"/>
-                    </StackPanel>
-                    <ToggleSwitch Grid.Column="3" MinWidth="0" Background="Transparent" IsOn="{x:Bind _viewModel.AppSettings.EnableHistory,Mode=TwoWay}"/>
+                    <ToggleSwitch Grid.Column="3" MinWidth="0" Background="Transparent" IsOn="{x:Bind _viewModel.AppSettings.EnableEngDefinition,Mode=TwoWay}"/>
                 </Grid>
                 <Grid Margin="16,4,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="0,0,0,0" Background="{ThemeResource SETTING_ITEM_BK}">
                     <Grid.ColumnDefinitions>
@@ -118,7 +97,7 @@
                         <TextBlock Text="选择主页搜索框的外观" FontSize="12" Opacity="0.6" CharacterSpacing="64"/>
                     </StackPanel>
                 </Grid>
-                <Grid Margin="16,0,16,0" Padding="16,12,16,8" HorizontalAlignment="Stretch" CornerRadius="0,0,8,8" BorderThickness="0" BorderBrush="{ThemeResource SETTING_ITEM_BK}">
+                <Grid Margin="16,1,16,0" Padding="16,12,16,8" HorizontalAlignment="Stretch" CornerRadius="0,0,8,8" BorderThickness="0" BorderBrush="{ThemeResource SETTING_ITEM_BK}">
                     <Grid.Background>
                         <SolidColorBrush Color="{ThemeResource SETTING_ITEM_BK}" Opacity="0.5"/>
                     </Grid.Background>

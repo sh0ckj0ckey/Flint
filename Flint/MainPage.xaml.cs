@@ -21,6 +21,9 @@ using Flint.Core;
 using Flint.ViewModels;
 using System.Reflection;
 using System.Threading.Tasks;
+using Flint.Data;
+using Windows.UI.Core;
+using Windows.System;
 
 // https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x804 上介绍了“空白页”项模板
 
@@ -48,6 +51,12 @@ namespace Flint
             _uiSettings.ColorValuesChanged += OnUISettingsColorValuesChanged;
 
             MainViewModel.Instance.ActSwitchAppTheme = () => SwitchAppTheme();
+            MainViewModel.Instance.ActClearTextBoxes = () =>
+            {
+                SearchTextBox1.Text = string.Empty;
+                SearchTextBox2.Text = string.Empty;
+                SearchTextBox3.Text = string.Empty;
+            };
             SwitchAppTheme();
         }
 
@@ -60,6 +69,14 @@ namespace Flint
                     SwitchAppTheme();
                 });
             }
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            // 处理系统的返回键
+            Window.Current.CoreWindow.Dispatcher.AcceleratorKeyActivated += CoreDispatcher_AcceleratorKeyActivated;
+            Window.Current.CoreWindow.PointerPressed += CoreWindow_PointerPressed;
+            SystemNavigationManager.GetForCurrentView().BackRequested += System_BackRequested;
         }
 
         /// <summary>
@@ -133,5 +150,71 @@ namespace Flint
             await Task.Delay(150);
             this.Frame.Navigate(typeof(SettingsPage));
         }
+
+        /// <summary>
+        /// 即时搜索
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnSearchTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (sender is TextBox tb && !string.IsNullOrWhiteSpace(tb?.Text))
+            {
+                //_viewModel.QueryWord(tb.Text);
+                _viewModel.MatchWord(tb.Text);
+            }
+            else
+            {
+                _viewModel.MatchWord(string.Empty);
+            }
+        }
+
+        #region 返回
+
+        private void CoreDispatcher_AcceleratorKeyActivated(CoreDispatcher sender, AcceleratorKeyEventArgs e)
+        {
+            // When Alt+Left are pressed navigate back
+            if (e.EventType == CoreAcceleratorKeyEventType.SystemKeyDown
+                && e.VirtualKey == VirtualKey.Left
+                && e.KeyStatus.IsMenuKeyDown == true
+                && !e.Handled)
+            {
+                e.Handled = TryGoBack();
+            }
+        }
+
+        private void System_BackRequested(object sender, BackRequestedEventArgs e)
+        {
+            if (!e.Handled)
+            {
+                e.Handled = TryGoBack();
+            }
+        }
+
+        private void CoreWindow_PointerPressed(CoreWindow sender, PointerEventArgs e)
+        {
+            // Handle mouse back button.
+            if (e.CurrentPoint.Properties.IsXButton1Pressed)
+            {
+                e.Handled = TryGoBack();
+            }
+        }
+
+        private bool TryGoBack()
+        {
+            try
+            {
+                if (!this.Frame.CanGoBack)
+                    return false;
+
+                this.Frame.GoBack();
+                return true;
+            }
+            catch { }
+            return false;
+        }
+
+        #endregion
+
     }
 }

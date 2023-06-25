@@ -8,24 +8,19 @@ using Windows.UI.Xaml;
 
 namespace Flint.Converters
 {
-    internal class NullOrEmpty2VisibilityConverter : IValueConverter
+    internal class IsExpanded2OpacityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             try
             {
-                if (parameter == null)
+                if (value != null)
                 {
-                    return (value == null || string.IsNullOrWhiteSpace(value?.ToString())) ? Visibility.Collapsed : Visibility.Visible;
-                }
-
-                if (parameter != null && parameter.ToString() == "-")
-                {
-                    return (value == null || string.IsNullOrWhiteSpace(value?.ToString())) ? Visibility.Visible : Visibility.Collapsed;
+                    return bool.Parse(value?.ToString() ?? "False") ? 0.3 : 0.7;
                 }
             }
             catch { }
-            return Visibility.Collapsed;
+            return 0.7;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

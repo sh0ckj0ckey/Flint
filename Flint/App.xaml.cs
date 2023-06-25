@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Flint.Data;
 using Flint.ViewModels;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -32,6 +33,8 @@ namespace Flint
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+
+            StarDictDataAccess.InitializeDatabase();
         }
 
         /// <summary>
