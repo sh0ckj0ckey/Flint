@@ -14,7 +14,7 @@
   <mp:PhoneIdentity PhoneProductId="d15c371a-06d1-4129-ac40-3ffcc7a9fb3a" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>Flint</DisplayName>
+    <DisplayName>燧石 - 随时随地查单词</DisplayName>
     <PublisherDisplayName>No Mewing</PublisherDisplayName>
     <Logo>Assets\Manifest\StoreLogo.png</Logo>
   </Properties>
@@ -32,7 +32,7 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="Flint.App">
       <uap:VisualElements
-        DisplayName="Flint"
+        DisplayName="燧石 - 随时随地查单词"
         Square150x150Logo="Assets\Manifest\Square150x150Logo.png"
         Square44x44Logo="Assets\Manifest\Square44x44Logo.png"
         Description="面向 Windows 11 的离线英文词典，&quot;燧石&quot;随地查单词~"
@@ -53,8 +53,4 @@
       </uap:VisualElements>
     </Application>
   </Applications>
-
-  <Capabilities>
-    <Capability Name="internetClient" />
-  </Capabilities>
 </Package>
