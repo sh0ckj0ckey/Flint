@@ -7,15 +7,15 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="52188846-5173-4ef3-a5b7-9f09737b3d14"
-    Publisher="CN=Shock Jockey"
+    Name="22189NoMewing.6191006733C16"
+    Publisher="CN=E6D8FAFA-3EF4-4E47-B885-52144C67BFF5"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="52188846-5173-4ef3-a5b7-9f09737b3d14" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="d15c371a-06d1-4129-ac40-3ffcc7a9fb3a" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>Flint</DisplayName>
-    <PublisherDisplayName>Shock Jockey</PublisherDisplayName>
+    <PublisherDisplayName>No Mewing</PublisherDisplayName>
     <Logo>Assets\Manifest\StoreLogo.png</Logo>
   </Properties>
 

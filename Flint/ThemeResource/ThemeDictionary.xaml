@@ -5,6 +5,9 @@
         <ResourceDictionary x:Key="Dark">
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
+                    <Color x:Key="SEARCHBOX_NORMAL_BD">#16FFFFFF</Color>
+                    <Color x:Key="SEARCHBOX_HOVER_BD">#20FFFFFF</Color>
+                    
                     <Color x:Key="SETTING_ITEM_BK">#08FFFFFF</Color>
                     <Color x:Key="SETTING_LINE_BK">#10FFFFFF</Color>
                     
@@ -20,6 +23,9 @@
         <ResourceDictionary x:Key="Light">
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
+                    <Color x:Key="SEARCHBOX_NORMAL_BD">#10000000</Color>
+                    <Color x:Key="SEARCHBOX_HOVER_BD">#20000000</Color>
+                    
                     <Color x:Key="SETTING_ITEM_BK">#08000000</Color>
                     <Color x:Key="SETTING_LINE_BK">#10000000</Color>
 

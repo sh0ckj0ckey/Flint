@@ -24,6 +24,7 @@ using System.Threading.Tasks;
 using Flint.Data;
 using Windows.UI.Core;
 using Windows.System;
+using System.Diagnostics;
 
 // https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x804 上介绍了“空白页”项模板
 
@@ -141,13 +142,41 @@ namespace Flint
         }
 
         /// <summary>
+        /// 点击空白区域，自动聚焦
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void OnMainGridPointerAct(object sender, PointerRoutedEventArgs e)
+        {
+            try
+            {
+                await Task.Delay(100);
+                switch (MainViewModel.Instance.AppSettings.SearchBoxStyle)
+                {
+                    case 0:
+                        SearchTextBox1.Focus(FocusState.Keyboard);
+                        break;
+                    case 1:
+                        SearchTextBox2.Focus(FocusState.Keyboard);
+                        break;
+                    case 2:
+                        SearchTextBox3.Focus(FocusState.Keyboard);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch { }
+        }
+
+        /// <summary>
         /// 前往设置页面
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void OnClickSettingsButton(object sender, RoutedEventArgs e)
+        private void OnClickSettingsButton(object sender, RoutedEventArgs e)
         {
-            await Task.Delay(150);
+            //await Task.Delay(100);
             this.Frame.Navigate(typeof(SettingsPage));
         }
 
@@ -158,15 +187,36 @@ namespace Flint
         /// <param name="e"></param>
         private void OnSearchTextChanged(object sender, TextChangedEventArgs e)
         {
-            if (sender is TextBox tb && !string.IsNullOrWhiteSpace(tb?.Text))
+            try
             {
-                //_viewModel.QueryWord(tb.Text);
-                _viewModel.MatchWord(tb.Text);
+                if (sender is TextBox tb && !string.IsNullOrWhiteSpace(tb?.Text))
+                {
+                    //_viewModel.QueryWord(tb.Text);
+                    _viewModel.MatchWord(tb.Text);
+                }
+                else
+                {
+                    _viewModel.MatchWord(string.Empty);
+                }
             }
-            else
+            catch { }
+        }
+
+        /// <summary>
+        /// 取得焦点后，选中所有文字
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnSearchBoxGotFocus(object sender, RoutedEventArgs e)
+        {
+            try
             {
-                _viewModel.MatchWord(string.Empty);
+                if (sender is TextBox tb && !string.IsNullOrEmpty(tb?.Text))
+                {
+                    tb.SelectAll();
+                }
             }
+            catch { }
         }
 
         #region 返回
