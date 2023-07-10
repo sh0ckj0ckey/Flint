@@ -89,7 +89,7 @@
             <Image Source="Assets/flint_logo.png" Height="72" Width="72" Opacity="0.1"/>
         </Grid>
         <Grid Grid.Row="2">
-            <ListView ItemsSource="{x:Bind _viewModel.SearchResultWordItems,Mode=OneWay}"
+            <ListView ItemsSource="{x:Bind _viewModel.SearchResultWordItems,Mode=OneWay}" HorizontalContentAlignment="Stretch"
                       Margin="0,4,0,0" Padding="0,8,2,8" HorizontalAlignment="Stretch" SelectionMode="None" IsItemClickEnabled="False">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="mdl:StarDictWordItem">

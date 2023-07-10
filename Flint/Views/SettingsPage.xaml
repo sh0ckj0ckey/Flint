@@ -57,7 +57,7 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <FontIcon Grid.Column="0" FontFamily="Segoe Fluent Icons" Glyph="&#xE790;" FontSize="20" Margin="0,0,16,0"/>
+                    <FontIcon Grid.Column="0" FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE790;" FontSize="20" Margin="0,0,16,0"/>
                     <StackPanel Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Vertical">
                         <TextBlock Text="主题" FontSize="14" CharacterSpacing="64"/>
                         <TextBlock Text="选择Flint的外观" FontSize="12" Opacity="0.6" CharacterSpacing="64"/>
@@ -77,7 +77,7 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <FontIcon Grid.Column="0" FontFamily="Segoe Fluent Icons" Glyph="&#xE8D2;" FontSize="20" Margin="0,0,16,0"/>
+                    <FontIcon Grid.Column="0" FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8D2;" FontSize="20" Margin="0,0,16,0"/>
                     <StackPanel Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Vertical">
                         <TextBlock Text="英文释义" FontSize="14" CharacterSpacing="64"/>
                         <TextBlock Text="选择是否显示英英释义" FontSize="12" Opacity="0.6" CharacterSpacing="64"/>
@@ -91,7 +91,7 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <FontIcon Grid.Column="0" FontFamily="Segoe Fluent Icons" Glyph="&#xE773;" FontSize="20" Margin="0,0,16,0"/>
+                    <FontIcon Grid.Column="0" FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE773;" FontSize="20" Margin="0,0,16,0"/>
                     <StackPanel Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Vertical">
                         <TextBlock Text="搜索框样式" FontSize="14" CharacterSpacing="64"/>
                         <TextBlock Text="选择主页搜索框的外观" FontSize="12" Opacity="0.6" CharacterSpacing="64"/>
@@ -178,7 +178,7 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <FontIcon Grid.Column="0" FontFamily="Segoe Fluent Icons" Glyph="&#xE946;" FontSize="20" Margin="0,0,16,0"/>
+                    <FontIcon Grid.Column="0" FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE946;" FontSize="20" Margin="0,0,16,0"/>
                     <StackPanel Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Vertical">
                         <TextBlock Text="Flint" FontSize="14" CharacterSpacing="64"/>
                         <TextBlock Text="{x:Bind _appVersion,Mode=OneWay}" FontSize="12" Opacity="0.6" CharacterSpacing="64"/>
@@ -194,7 +194,7 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <FontIcon Grid.Column="0" FontFamily="Segoe Fluent Icons" Glyph="&#xE1D3;" FontSize="20" Margin="0,0,16,0"/>
+                    <FontIcon Grid.Column="0" FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE1D3;" FontSize="20" Margin="0,0,16,0"/>
                     <StackPanel Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Vertical">
                         <TextBlock Text="数据来源" FontSize="14" CharacterSpacing="64"/>
                         <TextBlock Text="离线词典数据来自ECDICT" FontSize="12" Opacity="0.6" CharacterSpacing="64"/>
@@ -210,7 +210,7 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <FontIcon Grid.Column="0" FontFamily="Segoe Fluent Icons" Glyph="&#xED15;" FontSize="20" Margin="0,0,16,0"/>
+                    <FontIcon Grid.Column="0" FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xED15;" FontSize="20" Margin="0,0,16,0"/>
                     <StackPanel Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Vertical">
                         <TextBlock Text="反馈" FontSize="14" CharacterSpacing="64"/>
                         <TextBlock Text="如果您遇到Bug或有任何建议" FontSize="12" Opacity="0.6" CharacterSpacing="64"/>
@@ -238,7 +238,7 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <FontIcon Grid.Column="0" FontFamily="Segoe Fluent Icons" Glyph="&#xE943;" FontSize="20" Margin="0,0,16,0"/>
+                    <FontIcon Grid.Column="0" FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE943;" FontSize="20" Margin="0,0,16,0"/>
                     <StackPanel Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Vertical">
                         <TextBlock Text="源代码" FontSize="14" CharacterSpacing="64"/>
                         <TextBlock Text="Flint是一款开源应用程序" FontSize="12" Opacity="0.6" CharacterSpacing="64"/>
