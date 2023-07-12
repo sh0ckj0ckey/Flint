@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Flint3 (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "Flint3 (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

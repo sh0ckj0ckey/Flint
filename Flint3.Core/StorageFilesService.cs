@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Windows.Storage.Streams;
 using Windows.Storage;
 
-namespace Flint.Core
+namespace Flint3.Core
 {
     public static class StorageFilesService
     {

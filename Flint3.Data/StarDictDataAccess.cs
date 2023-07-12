@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
-using Flint.Data.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
+using Flint3.Data.Models;
 using Microsoft.Data.Sqlite;
 
-namespace Flint.Data
+namespace Flint3.Data
 {
     public static class StarDictDataAccess
     {
@@ -10,7 +13,7 @@ namespace Flint.Data
 
         public static void InitializeDatabase()
         {
-            string dbpath = "Data\\stardict.db";
+            string dbpath = Path.Combine(AppContext.BaseDirectory, "Data/stardict.db");
             _starDictDb = new SqliteConnection($"Filename={dbpath}");
             _starDictDb.Open();
 
