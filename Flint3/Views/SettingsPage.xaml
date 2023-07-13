@@ -120,10 +120,11 @@
                         <TextBlock Text="搜索框样式" FontSize="14" CharacterSpacing="64"/>
                         <TextBlock Text="选择主页搜索框的外观" FontSize="12" Opacity="0.6" CharacterSpacing="64"/>
                     </StackPanel>
+                    <FontIcon Grid.Column="3" FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE70D;" FontSize="14" Opacity="0.5" Margin="0,0,4,0"/>
                 </Grid>
-                <Grid Margin="16,1,16,0" Padding="16,12,16,8" HorizontalAlignment="Stretch" CornerRadius="0,0,8,8" BorderThickness="0" BorderBrush="{ThemeResource SETTING_ITEM_BK}">
+                <Grid Margin="16,1,16,0" Padding="16,16,16,8" HorizontalAlignment="Stretch" CornerRadius="0,0,8,8" BorderThickness="0" BorderBrush="{ThemeResource SETTING_ITEM_BK}">
                     <Grid.Background>
-                        <SolidColorBrush Color="{ThemeResource SETTING_ITEM_BK}" Opacity="0.5"/>
+                        <SolidColorBrush Color="{ThemeResource SETTING_ITEM_BK}" Opacity="0.7"/>
                     </Grid.Background>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
