@@ -20,6 +20,8 @@ namespace Flint3.ViewModels
 
         public Action ActSwitchAppTheme { get; set; } = null;
         public Action ActClearTextBoxes { get; set; } = null;
+        public Action ActHideWindow { get; set; } = null;
+        public Action<bool> ActPinWindow { get; set; } = null;
 
         private string _name;
         public string Name

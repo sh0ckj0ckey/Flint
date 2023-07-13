@@ -62,7 +62,7 @@
                         <TextBlock Text="主题" FontSize="14" CharacterSpacing="64"/>
                         <TextBlock Text="选择Flint的外观" FontSize="12" Opacity="0.6" CharacterSpacing="64"/>
                     </StackPanel>
-                    <ComboBox Grid.Column="3" MinWidth="128"
+                    <ComboBox Grid.Column="3" MinWidth="128" IsTabStop="False"
                               SelectionChanged="OnAppearanceSelectiongChanged"
                               SelectedIndex="{x:Bind _viewModel.AppSettings.AppearanceIndex,Mode=TwoWay}">
                         <ComboBoxItem Content="跟随系统"/>
@@ -94,8 +94,19 @@
                     <FontIcon Grid.Column="0" FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE945;" FontSize="20" Margin="0,0,16,0"/>
                     <StackPanel Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Vertical">
                         <TextBlock Text="唤醒" FontSize="14" CharacterSpacing="64"/>
-                        <TextBlock Text="设置快捷键唤起窗口" FontSize="12" Opacity="0.6" CharacterSpacing="64"/>
+                        <TextBlock Text="自定义唤起窗口的快捷键" FontSize="12" Opacity="0.6" CharacterSpacing="64"/>
                     </StackPanel>
+                    <Button Grid.Column="3" MinHeight="38" Padding="8,8,12,8">
+                        <StackPanel Orientation="Horizontal" Spacing="6">
+                            <Border Background="{ThemeResource SETTING_KEY_BK}" CornerRadius="4" Padding="4,4">
+                                <TextBlock Text="Ctrl" Foreground="{ThemeResource SETTING_KEY_FR}" FontSize="14" FontWeight="Medium" Padding="6,2" VerticalAlignment="Center"/>
+                            </Border>
+                            <Border Background="{ThemeResource SETTING_KEY_BK}" CornerRadius="4" Padding="4,4">
+                                <TextBlock Text="Space" Foreground="{ThemeResource SETTING_KEY_FR}" FontSize="14" FontWeight="Medium" Padding="6,2" VerticalAlignment="Center"/>
+                            </Border>
+                            <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE104;" FontSize="14" Margin="6,0,0,0"/>
+                        </StackPanel>
+                    </Button>
                 </Grid>
                 <Grid Margin="16,4,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="0,0,0,0" Background="{ThemeResource SETTING_ITEM_BK}">
                     <Grid.ColumnDefinitions>

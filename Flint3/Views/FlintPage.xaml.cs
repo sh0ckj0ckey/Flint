@@ -185,5 +185,30 @@ namespace Flint3.Views
             }
             catch { }
         }
+
+        private void OnClickHide(object sender, RoutedEventArgs e)
+        {
+            MainViewModel.Instance.ActHideWindow?.Invoke();
+        }
+
+        private void OnClickPin(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (PinToggleButton?.IsChecked == true)
+                {
+                    MainViewModel.Instance.ActPinWindow?.Invoke(true);
+                }
+                else
+                {
+                    MainViewModel.Instance.ActPinWindow?.Invoke(false);
+                }
+            }
+            catch
+            {
+                PinToggleButton.IsChecked = false;
+                MainViewModel.Instance.ActPinWindow?.Invoke(false);
+            }
+        }
     }
 }

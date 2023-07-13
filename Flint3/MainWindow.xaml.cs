@@ -25,6 +25,7 @@ using Flint3.Helpers;
 
 using static Flint3.Helpers.NotifyIconTools;
 using ABI.Windows.Foundation;
+using Flint3.ViewModels;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -47,6 +48,10 @@ namespace Flint3
             // 初始导航页面，注册后退快捷键
             MainFrame.Loaded += (s, e) =>
             {
+                MainViewModel.Instance.ActHideWindow = () => HideInTray();
+
+                MainViewModel.Instance.ActPinWindow = (on) => { this.IsAlwaysOnTop = on; };
+
                 MainFrame.Navigate(typeof(FlintPage));
 
                 // 处理系统的返回键
@@ -69,31 +74,6 @@ namespace Flint3
         private void OnMainWindowClosed(object sender, WindowEventArgs args)
         {
             CleanTray();
-        }
-
-        private void OnClickHide(object sender, RoutedEventArgs e)
-        {
-            HideInTray();
-        }
-
-        private void OnClickPin(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (PinToggleButton?.IsChecked == true)
-                {
-                    this.IsAlwaysOnTop = true;
-                }
-                else
-                {
-                    this.IsAlwaysOnTop = false;
-                }
-            }
-            catch
-            {
-                PinToggleButton.IsChecked = false;
-                this.IsAlwaysOnTop = false;
-            }
         }
 
         #region Go Back

@@ -165,6 +165,39 @@
                     </muxc:AnimatedIcon.FallbackIconSource>
                 </muxc:AnimatedIcon>
             </Button>
+            <StackPanel Margin="0,8,8,8" Spacing="4" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                <ToggleButton x:Name="PinToggleButton" Height="34" Width="42" IsChecked="False" Padding="0" Background="Transparent" BorderBrush="Transparent" Click="OnClickPin">
+                    <ToolTipService.ToolTip>
+                        <ToolTip>
+                            <TextBlock>
+                                <Run Text="topmost" FontWeight="Bold"/>
+                                <Run Text="/ˈtɒp.məʊst/"/>
+                                <Run Text="adjective" FontStyle="Italic" FontWeight="Medium"/>
+                                <Run Text="置顶"/>
+                            </TextBlock>
+                        </ToolTip>
+                    </ToolTipService.ToolTip>
+                    <Grid>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE141;" FontSize="16" Height="22" Width="22" Opacity="0.8"
+                                  Visibility="{x:Bind PinToggleButton.IsChecked,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}"/>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE196;" FontSize="16" Height="22" Width="22" Opacity="0.8"
+                                  Visibility="{x:Bind PinToggleButton.IsChecked,Mode=OneWay,Converter={StaticResource Bool2Vis}}"/>
+                    </Grid>
+                </ToggleButton>
+                <Button Height="34" Width="42" Padding="0" Background="Transparent" BorderBrush="Transparent" Click="OnClickHide">
+                    <ToolTipService.ToolTip>
+                        <ToolTip>
+                            <TextBlock>
+                                <Run Text="hide" FontWeight="Bold"/>
+                                <Run Text="/haɪd/"/>
+                                <Run Text="verb" FontStyle="Italic" FontWeight="Medium"/>
+                                <Run Text="隐藏"/>
+                            </TextBlock>
+                        </ToolTip>
+                    </ToolTipService.ToolTip>
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8AD;" FontSize="16" UseLayoutRounding="False" CenterPoint="11,11,0" Rotation="90" Height="22" Width="22" Opacity="0.8"/>
+                </Button>
+            </StackPanel>
         </Grid>
     </Grid>
 </Page>
