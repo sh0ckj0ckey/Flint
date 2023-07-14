@@ -1,18 +1,19 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows10.0.22000.0</TargetFramework>
+    <TargetFramework>net7.0-windows10.0.22000.0</TargetFramework>
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
     <RootNamespace>Flint3</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <Platforms>x86;x64;ARM64</Platforms>
-    <RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
+    <RuntimeIdentifiers>win10-x64;win10-arm64</RuntimeIdentifiers>
     <PublishProfile>win10-$(Platform).pubxml</PublishProfile>
     <UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
     <PackageCertificateThumbprint>04D8CC40A318924D78CF923787628717EAA8188E</PackageCertificateThumbprint>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
     <DefaultLanguage>zh-CN</DefaultLanguage>
+    <ApplicationIcon>Assets\Logos\flint_logo.ico</ApplicationIcon>
     <SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
   </PropertyGroup>
   <ItemGroup>
@@ -74,6 +75,9 @@
     <None Remove="Assets\Manifests\Wide310x150Logo.scale-200.png" />
     <None Remove="Assets\Manifests\Wide310x150Logo.scale-400.png" />
     <None Remove="Assets\photo.png" />
+    <None Remove="Controls\KeyVisual\KeyVisual.xaml" />
+    <None Remove="Controls\ShortcutControl\ShortcutControl.xaml" />
+    <None Remove="Controls\ShortcutControl\ShortcutDialogContentControl.xaml" />
     <None Remove="Data\stardict.db" />
     <None Remove="ThemeResource\CustomControlStyle.xaml" />
     <None Remove="ThemeResource\ThemeDictionary.xaml" />
@@ -88,7 +92,7 @@
     <PackageReference Include="CommunityToolkit.WinUI.UI" Version="7.1.2" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.3.230502000" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.755" />
-    <PackageReference Include="WinUIEx" Version="1.8.0" />
+    <PackageReference Include="WinUIEx" Version="2.2.0" />
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
 
@@ -103,6 +107,12 @@
   <ItemGroup>
     <ProjectReference Include="..\Flint3.Core\Flint3.Core.csproj" />
     <ProjectReference Include="..\Flint3.Data\Flint3.Data.csproj" />
+    <ProjectReference Include="..\Flint3.Interop\Flint3.Interop.vcxproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\ShortcutControl\ShortcutDialogContentControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Views\SettingsPage.xaml">
@@ -119,6 +129,16 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="ThemeResource\ThemeDictionary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\ShortcutControl\ShortcutControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\KeyVisual\KeyVisual.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

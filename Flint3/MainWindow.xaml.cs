@@ -48,10 +48,6 @@ namespace Flint3
             // 初始导航页面，注册后退快捷键
             MainFrame.Loaded += (s, e) =>
             {
-                MainViewModel.Instance.ActHideWindow = () => HideInTray();
-
-                MainViewModel.Instance.ActPinWindow = (on) => { this.IsAlwaysOnTop = on; };
-
                 MainFrame.Navigate(typeof(FlintPage));
 
                 // 处理系统的返回键
@@ -60,10 +56,13 @@ namespace Flint3
                 MainFrame.KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.XButton1));
             };
 
+            MainViewModel.Instance.ActHideWindow = () => HideInTray();
+            MainViewModel.Instance.ActPinWindow = (on) => { this.IsAlwaysOnTop = on; };
+
+            // 准备托盘图标
             hWndMain = WinRT.Interop.WindowNative.GetWindowHandle(this);
             SubClassDelegate = new SUBCLASSPROC(WindowSubClass);
             bool bRet = SetWindowSubclass(hWndMain, SubClassDelegate, 0, 0);
-
             m_hIcon = LoadImage(IntPtr.Zero, @"Assets\Logos\flint_logo.ico", IMAGE_ICON, 32, 32, LR_LOADFROMFILE);
             m_hBalloonIcon = LoadImage(IntPtr.Zero, @"Assets\Logos\flint_logo.ico", IMAGE_ICON, 128, 128, LR_LOADFROMFILE);
 
