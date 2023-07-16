@@ -17,8 +17,6 @@ namespace Flint3.Controls.ShortcutControl
         private readonly UIntPtr ignoreKeyEventFlag = (UIntPtr)0x5555;
         private bool _shiftKeyDownOnEntering;
         private bool _shiftToggled;
-        private bool _enabled;
-        private HotkeySettings hotkeySettings;
         private HotkeySettings internalSettings;
         private HotkeySettings lastValidSettings;
         private HotkeySettingsControlHook hook;
@@ -29,42 +27,15 @@ namespace Flint3.Controls.ShortcutControl
 
         public string Keys { get; set; }
 
-        public static readonly DependencyProperty IsActiveProperty = DependencyProperty.Register("Enabled", typeof(bool), typeof(ShortcutControl), null);
+        private ShortcutDialogContentControl _shortcutDialogContent = new ShortcutDialogContentControl();
+        private ContentDialog _settingShortcutDialog = null;
+
+
+        private HotkeySettings hotkeySettings;
         public static readonly DependencyProperty HotkeySettingsProperty = DependencyProperty.Register("HotkeySettings", typeof(HotkeySettings), typeof(ShortcutControl), null);
-
-        private ShortcutDialogContentControl c = new ShortcutDialogContentControl();
-        private ContentDialog shortcutDialog;
-
-        public bool Enabled
-        {
-            get
-            {
-                return _enabled;
-            }
-
-            set
-            {
-                SetValue(IsActiveProperty, value);
-                _enabled = value;
-
-                if (value)
-                {
-                    EditButton.IsEnabled = true;
-                }
-                else
-                {
-                    EditButton.IsEnabled = false;
-                }
-            }
-        }
-
         public HotkeySettings HotkeySettings
         {
-            get
-            {
-                return hotkeySettings;
-            }
-
+            get { return hotkeySettings; }
             set
             {
                 if (hotkeySettings != value)
@@ -72,8 +43,7 @@ namespace Flint3.Controls.ShortcutControl
                     hotkeySettings = value;
                     SetValue(HotkeySettingsProperty, value);
                     PreviewKeysControl.ItemsSource = HotkeySettings.GetKeysList();
-                    AutomationProperties.SetHelpText(EditButton, HotkeySettings.ToString());
-                    c.Keys = HotkeySettings.GetKeysList();
+                    _shortcutDialogContent.Keys = HotkeySettings.GetKeysList();
                 }
             }
         }
@@ -85,7 +55,6 @@ namespace Flint3.Controls.ShortcutControl
 
             this.Unloaded += ShortcutControl_Unloaded;
             hook = new HotkeySettingsControlHook(Hotkey_KeyDown, Hotkey_KeyUp, Hotkey_IsActive, FilterAccessibleKeyboardEvents);
-            ResourceLoader resourceLoader = ResourceLoader.GetForViewIndependentUse();
 
             if (App.MainWindow != null)
             {
@@ -93,41 +62,36 @@ namespace Flint3.Controls.ShortcutControl
             }
 
             // We create the Dialog in C# because doing it in XAML is giving WinUI/XAML Island bugs when using dark theme.
-            shortcutDialog = new ContentDialog
+            _settingShortcutDialog = new ContentDialog
             {
                 XamlRoot = this.XamlRoot,
-                Title = resourceLoader.GetString("Activation_Shortcut_Title"),
-                Content = c,
-                PrimaryButtonText = resourceLoader.GetString("Activation_Shortcut_Save"),
-                SecondaryButtonText = resourceLoader.GetString("Activation_Shortcut_Reset"),
-                CloseButtonText = resourceLoader.GetString("Activation_Shortcut_Cancel"),
+                Title = "激活快捷键",
+                Content = _shortcutDialogContent,
+                PrimaryButtonText = "保存",
+                SecondaryButtonText = "重置",
+                CloseButtonText = "取消",
                 DefaultButton = ContentDialogButton.Primary,
             };
-            shortcutDialog.PrimaryButtonClick += ShortcutDialog_PrimaryButtonClick;
-            shortcutDialog.SecondaryButtonClick += ShortcutDialog_Reset;
-            shortcutDialog.Opened += ShortcutDialog_Opened;
-            shortcutDialog.Closing += ShortcutDialog_Closing;
-            AutomationProperties.SetName(EditButton, resourceLoader.GetString("Activation_Shortcut_Title"));
+            _settingShortcutDialog.PrimaryButtonClick += ShortcutDialog_PrimaryButtonClick;
+            _settingShortcutDialog.SecondaryButtonClick += ShortcutDialog_Reset;
+            _settingShortcutDialog.Opened += ShortcutDialog_Opened;
+            _settingShortcutDialog.Closing += ShortcutDialog_Closing;
         }
 
         private void ShortcutControl_Unloaded(object sender, RoutedEventArgs e)
         {
-            shortcutDialog.PrimaryButtonClick -= ShortcutDialog_PrimaryButtonClick;
-            shortcutDialog.Opened -= ShortcutDialog_Opened;
-            shortcutDialog.Closing -= ShortcutDialog_Closing;
+            // Dispose the HotkeySettingsControlHook object to terminate the hook threads when the textbox is unloaded
+            hook?.Dispose();
+            hook = null;
 
             if (App.MainWindow != null)
             {
                 App.MainWindow.Activated -= ShortcutDialog_SettingsWindow_Activated;
             }
 
-            // Dispose the HotkeySettingsControlHook object to terminate the hook threads when the textbox is unloaded
-            if (hook != null)
-            {
-                hook.Dispose();
-            }
-
-            hook = null;
+            _settingShortcutDialog.PrimaryButtonClick -= ShortcutDialog_PrimaryButtonClick;
+            _settingShortcutDialog.Opened -= ShortcutDialog_Opened;
+            _settingShortcutDialog.Closing -= ShortcutDialog_Closing;
         }
 
         private void KeyEventHandler(int key, bool matchValue, int matchValueCode)
@@ -156,7 +120,7 @@ namespace Flint3.Controls.ShortcutControl
                     break;
                 case VirtualKey.Escape:
                     internalSettings = new HotkeySettings();
-                    shortcutDialog.IsPrimaryButtonEnabled = false;
+                    _settingShortcutDialog.IsPrimaryButtonEnabled = false;
                     return;
                 default:
                     internalSettings.Code = matchValueCode;
@@ -256,26 +220,26 @@ namespace Flint3.Controls.ShortcutControl
         {
             KeyEventHandler(key, true, key);
 
-            c.Keys = internalSettings.GetKeysList();
+            _shortcutDialogContent.Keys = internalSettings.GetKeysList();
 
             if (internalSettings.GetKeysList().Count == 0)
             {
                 // Empty, disable save button
-                shortcutDialog.IsPrimaryButtonEnabled = false;
+                _settingShortcutDialog.IsPrimaryButtonEnabled = false;
             }
             else if (internalSettings.GetKeysList().Count == 1)
             {
                 // 1 key, disable save button
-                shortcutDialog.IsPrimaryButtonEnabled = false;
+                _settingShortcutDialog.IsPrimaryButtonEnabled = false;
 
                 // Check if the one key is a hotkey
                 if (internalSettings.Shift || internalSettings.Win || internalSettings.Alt || internalSettings.Ctrl)
                 {
-                    c.IsError = false;
+                    _shortcutDialogContent.IsError = false;
                 }
                 else
                 {
-                    c.IsError = true;
+                    _shortcutDialogContent.IsError = true;
                 }
             }
 
@@ -297,18 +261,14 @@ namespace Flint3.Controls.ShortcutControl
 
         private void EnableKeys()
         {
-            shortcutDialog.IsPrimaryButtonEnabled = true;
-            c.IsError = false;
-
-            // WarningLabel.Style = (Style)App.Current.Resources["SecondaryTextStyle"];
+            _settingShortcutDialog.IsPrimaryButtonEnabled = true;
+            _shortcutDialogContent.IsError = false;
         }
 
         private void DisableKeys()
         {
-            shortcutDialog.IsPrimaryButtonEnabled = false;
-            c.IsError = true;
-
-            // WarningLabel.Style = (Style)App.Current.Resources["SecondaryWarningTextStyle"];
+            _settingShortcutDialog.IsPrimaryButtonEnabled = false;
+            _shortcutDialogContent.IsError = true;
         }
 
         private void Hotkey_KeyUp(int key)
@@ -347,12 +307,12 @@ namespace Flint3.Controls.ShortcutControl
 
         private async void OpenDialogButton_Click(object sender, RoutedEventArgs e)
         {
-            c.Keys = null;
-            c.Keys = HotkeySettings.GetKeysList();
+            _shortcutDialogContent.Keys = null;
+            _shortcutDialogContent.Keys = HotkeySettings.GetKeysList();
 
-            shortcutDialog.XamlRoot = this.XamlRoot;
-            shortcutDialog.RequestedTheme = this.ActualTheme;
-            await shortcutDialog.ShowAsync();
+            _settingShortcutDialog.XamlRoot = this.XamlRoot;
+            _settingShortcutDialog.RequestedTheme = this.ActualTheme;
+            await _settingShortcutDialog.ShowAsync();
         }
 
         private void ShortcutDialog_Reset(ContentDialog sender, ContentDialogButtonClickEventArgs args)
@@ -364,8 +324,7 @@ namespace Flint3.Controls.ShortcutControl
 
             lastValidSettings = hotkeySettings;
 
-            AutomationProperties.SetHelpText(EditButton, HotkeySettings.ToString());
-            shortcutDialog.Hide();
+            _settingShortcutDialog.Hide();
         }
 
         private void ShortcutDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
@@ -376,8 +335,7 @@ namespace Flint3.Controls.ShortcutControl
             }
 
             PreviewKeysControl.ItemsSource = hotkeySettings.GetKeysList();
-            AutomationProperties.SetHelpText(EditButton, HotkeySettings.ToString());
-            shortcutDialog.Hide();
+            _settingShortcutDialog.Hide();
         }
 
         private static bool ComboIsValid(HotkeySettings settings)
@@ -392,17 +350,18 @@ namespace Flint3.Controls.ShortcutControl
             }
         }
 
+        // 失去焦点时禁用钩子，获得焦点则重新启用钩子
         private void ShortcutDialog_SettingsWindow_Activated(object sender, WindowActivatedEventArgs args)
         {
             args.Handled = true;
             if (args.WindowActivationState != WindowActivationState.Deactivated && (hook == null || hook.GetDisposedState() == true))
             {
-                // If the PT settings window gets focussed/activated again, we enable the keyboard hook to catch the keyboard input.
+                // If settings window gets focussed/activated again, we enable the keyboard hook to catch the keyboard input.
                 hook = new HotkeySettingsControlHook(Hotkey_KeyDown, Hotkey_KeyUp, Hotkey_IsActive, FilterAccessibleKeyboardEvents);
             }
             else if (args.WindowActivationState == WindowActivationState.Deactivated && hook != null && hook.GetDisposedState() == false)
             {
-                // If the PT settings window lost focus/activation, we disable the keyboard hook to allow keyboard input on other windows.
+                // If settings window lost focus/activation, we disable the keyboard hook to allow keyboard input on other windows.
                 hook.Dispose();
                 hook = null;
             }
