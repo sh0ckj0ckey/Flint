@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Flint3.Controls.KeyVisual;
 using Flint3.Data;
 using Flint3.Helpers;
 using Flint3.ViewModels;
@@ -47,12 +48,6 @@ namespace Flint3.Views
             };
 
             MainViewModel.Instance.ActSwitchAppTheme = () => SwitchAppTheme();
-            MainViewModel.Instance.ActClearTextBoxes = () =>
-            {
-                SearchTextBox1.Text = string.Empty;
-                SearchTextBox2.Text = string.Empty;
-                SearchTextBox3.Text = string.Empty;
-            };
 
             SwitchAppTheme();
 
@@ -64,6 +59,29 @@ namespace Flint3.Views
         {
             App.MainWindow.SetTitleBar(AppTitleBar);
             TitleBarHelper.UpdateTitleBar(App.MainWindow, ActualTheme);
+
+            SearchTextBox.Style = GetSearchTextBoxStyle(MainViewModel.Instance.AppSettings.SearchBoxStyle);
+        }
+
+        /// <summary>
+        /// 获取搜索输入框样式
+        /// </summary>
+        /// <param name="styleName"></param>
+        /// <returns></returns>
+        private Style GetSearchTextBoxStyle(int searchBoxStyle)
+        {
+            if (searchBoxStyle == 0)
+            {
+                return (Style)App.Current.Resources["ModernTextBoxStyle"];
+            }
+            else if (searchBoxStyle == 1)
+            {
+                return (Style)App.Current.Resources["RoundTextBoxStyle"];
+            }
+            else
+            {
+                return (Style)App.Current.Resources["ClassicTextBoxStyle"];
+            }
         }
 
         /// <summary>
@@ -118,20 +136,7 @@ namespace Flint3.Views
             try
             {
                 await Task.Delay(100);
-                switch (MainViewModel.Instance.AppSettings.SearchBoxStyle)
-                {
-                    case 0:
-                        SearchTextBox1.Focus(FocusState.Keyboard);
-                        break;
-                    case 1:
-                        SearchTextBox2.Focus(FocusState.Keyboard);
-                        break;
-                    case 2:
-                        SearchTextBox3.Focus(FocusState.Keyboard);
-                        break;
-                    default:
-                        break;
-                }
+                SearchTextBox.Focus(FocusState.Keyboard);
             }
             catch { }
         }
@@ -186,11 +191,21 @@ namespace Flint3.Views
             catch { }
         }
 
+        /// <summary>
+        /// 点击隐藏窗口到系统托盘
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnClickHide(object sender, RoutedEventArgs e)
         {
             MainViewModel.Instance.ActHideWindow?.Invoke();
         }
 
+        /// <summary>
+        /// 点击置顶窗口
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnClickPin(object sender, RoutedEventArgs e)
         {
             try

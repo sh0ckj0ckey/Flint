@@ -93,7 +93,6 @@ namespace Flint3.Controls.KeyVisual
 
                     switch ((int)_keyVisual.Content)
                     {
-                        /* We can enable other glyphs in the future
                         case 13: // The Enter key or button.
                             _keyVisual._keyPresenter.Content = "\uE751"; break;
 
@@ -103,7 +102,7 @@ namespace Flint3.Controls.KeyVisual
                         case 16: // The right Shift key or button.
                         case 160: // The left Shift key or button.
                         case 161: // The Shift key or button.
-                            _keyVisual._keyPresenter.Content = "\uE752"; break; */
+                            _keyVisual._keyPresenter.Content = "\uE752"; break;
 
                         case 38: _keyVisual._keyPresenter.Content = "\uE0E4"; break; // The Up Arrow key or button.
                         case 40: _keyVisual._keyPresenter.Content = "\uE0E5"; break; // The Down Arrow key or button.

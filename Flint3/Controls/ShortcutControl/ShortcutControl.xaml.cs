@@ -23,24 +23,21 @@ namespace Flint3.Controls.ShortcutControl
         private bool _isActive;
         private bool disposedValue;
 
-        public string Header { get; set; }
-
-        public string Keys { get; set; }
-
         private ShortcutDialogContentControl _shortcutDialogContent = new ShortcutDialogContentControl();
         private ContentDialog _settingShortcutDialog = null;
 
 
-        private HotkeySettings hotkeySettings;
         public static readonly DependencyProperty HotkeySettingsProperty = DependencyProperty.Register("HotkeySettings", typeof(HotkeySettings), typeof(ShortcutControl), null);
+
+        private HotkeySettings _hotkeySettings;
         public HotkeySettings HotkeySettings
         {
-            get { return hotkeySettings; }
+            get { return _hotkeySettings; }
             set
             {
-                if (hotkeySettings != value)
+                if (_hotkeySettings != value)
                 {
-                    hotkeySettings = value;
+                    _hotkeySettings = value;
                     SetValue(HotkeySettingsProperty, value);
                     PreviewKeysControl.ItemsSource = HotkeySettings.GetKeysList();
                     _shortcutDialogContent.Keys = HotkeySettings.GetKeysList();
@@ -283,7 +280,7 @@ namespace Flint3.Controls.ShortcutControl
 
         private void ShortcutDialog_Opened(ContentDialog sender, ContentDialogOpenedEventArgs args)
         {
-            if (!ComboIsValid(hotkeySettings))
+            if (!ComboIsValid(_hotkeySettings))
             {
                 DisableKeys();
             }
@@ -317,12 +314,12 @@ namespace Flint3.Controls.ShortcutControl
 
         private void ShortcutDialog_Reset(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
-            hotkeySettings = null;
+            _hotkeySettings = null;
 
-            SetValue(HotkeySettingsProperty, hotkeySettings);
+            SetValue(HotkeySettingsProperty, _hotkeySettings);
             PreviewKeysControl.ItemsSource = HotkeySettings.GetKeysList();
 
-            lastValidSettings = hotkeySettings;
+            lastValidSettings = _hotkeySettings;
 
             _settingShortcutDialog.Hide();
         }
@@ -334,7 +331,7 @@ namespace Flint3.Controls.ShortcutControl
                 HotkeySettings = lastValidSettings.Clone();
             }
 
-            PreviewKeysControl.ItemsSource = hotkeySettings.GetKeysList();
+            PreviewKeysControl.ItemsSource = _hotkeySettings.GetKeysList();
             _settingShortcutDialog.Hide();
         }
 

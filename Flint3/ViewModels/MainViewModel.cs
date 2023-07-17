@@ -8,6 +8,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using Flint3.Core;
 using Flint3.Data;
 using Flint3.Data.Models;
+using Flint3.Helpers;
 
 namespace Flint3.ViewModels
 {
@@ -16,6 +17,11 @@ namespace Flint3.ViewModels
         private static Lazy<MainViewModel> _lazyVM = new Lazy<MainViewModel>(() => new MainViewModel());
         public static MainViewModel Instance => _lazyVM.Value;
 
+        /// <summary>
+        /// 默认快捷键 Alt+Space
+        /// </summary>
+        public HotkeySettings DefaultActivationShortcut => new HotkeySettings(false, false, true, true, 0x20);
+
         public SettingsService AppSettings { get; set; } = new SettingsService();
 
         public Action ActSwitchAppTheme { get; set; } = null;
@@ -23,16 +29,19 @@ namespace Flint3.ViewModels
         public Action ActHideWindow { get; set; } = null;
         public Action<bool> ActPinWindow { get; set; } = null;
 
-        private string _name;
-        public string Name
+        private HotkeySettings _activationShortcut;
+        public HotkeySettings ActivationShortcut
         {
-            get => _name;
-            set => SetProperty(ref _name, value);
+            get => _activationShortcut;
+            set => SetProperty(ref _activationShortcut, value);
         }
 
         public ObservableCollection<StarDictWordItem> SearchResultWordItems { get; private set; } = new ObservableCollection<StarDictWordItem>();
 
-        public MainViewModel() { }
+        public MainViewModel()
+        {
+            ActivationShortcut = DefaultActivationShortcut;
+        }
 
         public void QueryWord(string word)
         {

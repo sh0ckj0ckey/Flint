@@ -11,6 +11,7 @@
                 <!-- Other merged dictionaries here -->
                 <ResourceDictionary Source="/ThemeResource/ThemeDictionary.xaml"/>
                 <ResourceDictionary Source="/ThemeResource/CustomControlStyle.xaml"/>
+                <ResourceDictionary Source="/Controls/KeyVisual/KeyVisual.xaml"/>
                 <ResourceDictionary>
                     <!--<Color x:Key="SystemAccentColor">#333333</Color>
                     <Color x:Key="SystemAccentColorLight1">#333333</Color>

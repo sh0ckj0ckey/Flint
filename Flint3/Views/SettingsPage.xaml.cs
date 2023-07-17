@@ -95,7 +95,6 @@ namespace Flint3.Views
                         default:
                             break;
                     }
-                    _viewModel.ActClearTextBoxes?.Invoke();
                 }
             }
             catch { }
