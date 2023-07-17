@@ -12,11 +12,11 @@
     <Grid MinWidth="498" MinHeight="220">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition MinHeight="110"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Text="按下组合键以更改此快捷键"/>
-        <ItemsControl x:Name="KeysControl" Grid.Row="1" Height="56" Margin="0,64,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" HorizontalContentAlignment="Center" ItemsSource="{x:Bind Keys, Mode=OneWay}">
+        <ItemsControl x:Name="KeysControl" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" ItemsSource="{x:Bind Keys, Mode=OneWay}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel Orientation="Horizontal" Spacing="8"/>
@@ -29,9 +29,9 @@
             </ItemsControl.ItemTemplate>
         </ItemsControl>
 
-        <StackPanel Grid.Row="2" Margin="0,24,0,0" VerticalAlignment="Top" Orientation="Vertical" Spacing="8">
-            <Grid Height="62">
-                <InfoBar Content="这个快捷键无效" IsClosable="False" Severity="Error" IsOpen="{Binding ElementName=ShortcutContentControl, Path=IsError, Mode=OneWay}" IsTabStop="{Binding ElementName=ShortcutContentControl, Path=IsError, Mode=OneWay}"/>
+        <StackPanel Grid.Row="2" Margin="0,0,0,0" VerticalAlignment="Top" Orientation="Vertical" Spacing="8">
+            <Grid>
+                <InfoBar Title="这个快捷键无效" IsClosable="False" Severity="Error" IsOpen="{Binding ElementName=ShortcutContentControl, Path=IsError, Mode=OneWay}" IsTabStop="{Binding ElementName=ShortcutContentControl, Path=IsError, Mode=OneWay}"/>
             </Grid>
             <TextBlock Text="只有以 Windows 键、Ctrl、Alt 或 Shift 开头的快捷键才有效。" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
         </StackPanel>

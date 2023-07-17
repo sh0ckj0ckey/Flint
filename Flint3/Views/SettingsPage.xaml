@@ -98,7 +98,7 @@
                         <TextBlock Text="快捷键" FontSize="14" CharacterSpacing="64"/>
                         <TextBlock Text="自定义唤起窗口的快捷键" FontSize="12" Opacity="0.6" CharacterSpacing="64"/>
                     </StackPanel>
-                    <control:ShortcutControl Grid.Column="3" HotkeySettings="{x:Bind _viewModel.ActivationShortcut,Mode=TwoWay}"/>
+                    <control:ShortcutControl Grid.Column="3" Margin="0,8" HotkeySettings="{x:Bind _viewModel.ActivationShortcut,Mode=TwoWay}"/>
                 </Grid>
                 <Grid Margin="16,4,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="0,0,0,0" Background="{ThemeResource SETTING_ITEM_BK}">
                     <Grid.ColumnDefinitions>
