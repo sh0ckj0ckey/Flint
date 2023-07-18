@@ -33,8 +33,7 @@
             <TextBlock Text="Flint" FontFamily="Times New Roman" Margin="20,0,0,0" FontWeight="SemiBold" FontSize="16" CharacterSpacing="40" VerticalAlignment="Center"/>
         </Grid>
         <Grid Grid.Row="1" Padding="16,0" Margin="0,0,0,0">
-            <TextBox x:Name="SearchTextBox" Padding="12,8,0,0" Height="40" FontWeight="Medium" FontSize="16" CharacterSpacing="64"
-                     TextChanged="OnSearchTextChanged" GotFocus="OnSearchBoxGotFocus">
+            <TextBox x:Name="SearchTextBox" TextChanged="OnSearchTextChanged" GotFocus="OnSearchBoxGotFocus">
                 <ToolTipService.ToolTip>
                     <ToolTip>
                         <TextBlock>

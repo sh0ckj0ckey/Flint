@@ -78,12 +78,13 @@
         x:Key="SmallTextKeyVisualStyle"
         BasedOn="{StaticResource DefaultTextKeyVisualStyle}"
         TargetType="local:KeyVisual">
-        <Setter Property="MinWidth" Value="32" />
-        <Setter Property="Height" Value="32" />
+        <Setter Property="MinWidth" Value="40" />
+        <Setter Property="Height" Value="36" />
         <Setter Property="FontWeight" Value="SemiBold" />
-        <Setter Property="Padding" Value="12,0,12,2" />
+        <Setter Property="Padding" Value="8,0,8,2" />
         <Setter Property="FontSize" Value="13" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="Margin" Value="0,0,0,0" />
     </Style>
 
     <Style

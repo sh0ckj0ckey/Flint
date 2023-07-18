@@ -187,7 +187,7 @@
         <Setter Property="CornerRadius" Value="18" />
     </Style>
     <Style x:Key="ClassicTextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource CustomTextBoxStyle}">
-        <Setter Property="Padding" Value="12,7,0,0" />
+        <Setter Property="Padding" Value="12,6,0,0" />
         <Setter Property="Height" Value="40" />
         <Setter Property="FontWeight" Value="Medium" />
         <Setter Property="FontSize" Value="16" />

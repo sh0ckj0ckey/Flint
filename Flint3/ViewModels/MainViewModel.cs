@@ -12,15 +12,10 @@ using Flint3.Helpers;
 
 namespace Flint3.ViewModels
 {
-    public class MainViewModel : ObservableObject
+    public partial class MainViewModel : ObservableObject
     {
         private static Lazy<MainViewModel> _lazyVM = new Lazy<MainViewModel>(() => new MainViewModel());
         public static MainViewModel Instance => _lazyVM.Value;
-
-        /// <summary>
-        /// 默认快捷键 Alt+Space
-        /// </summary>
-        public HotkeySettings DefaultActivationShortcut => new HotkeySettings(false, false, true, true, 0x20);
 
         public SettingsService AppSettings { get; set; } = new SettingsService();
 
@@ -29,18 +24,11 @@ namespace Flint3.ViewModels
         public Action ActHideWindow { get; set; } = null;
         public Action<bool> ActPinWindow { get; set; } = null;
 
-        private HotkeySettings _activationShortcut;
-        public HotkeySettings ActivationShortcut
-        {
-            get => _activationShortcut;
-            set => SetProperty(ref _activationShortcut, value);
-        }
-
         public ObservableCollection<StarDictWordItem> SearchResultWordItems { get; private set; } = new ObservableCollection<StarDictWordItem>();
 
         public MainViewModel()
         {
-            ActivationShortcut = DefaultActivationShortcut;
+            ReadActivationSettings();
         }
 
         public void QueryWord(string word)

@@ -1,5 +1,6 @@
 using System;
 using Flint3.Helpers;
+using Flint3.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Automation;
 using Microsoft.UI.Xaml.Controls;
@@ -26,7 +27,6 @@ namespace Flint3.Controls.ShortcutControl
         private ShortcutDialogContentControl _shortcutDialogContent = new ShortcutDialogContentControl();
         private ContentDialog _settingShortcutDialog = null;
 
-
         public static readonly DependencyProperty HotkeySettingsProperty = DependencyProperty.Register("HotkeySettings", typeof(HotkeySettings), typeof(ShortcutControl), null);
 
         private HotkeySettings _hotkeySettings;
@@ -51,6 +51,7 @@ namespace Flint3.Controls.ShortcutControl
             internalSettings = new HotkeySettings();
 
             this.Unloaded += ShortcutControl_Unloaded;
+
             hook = new HotkeySettingsControlHook(Hotkey_KeyDown, Hotkey_KeyUp, Hotkey_IsActive, FilterAccessibleKeyboardEvents);
 
             if (App.MainWindow != null)
@@ -87,6 +88,7 @@ namespace Flint3.Controls.ShortcutControl
             }
 
             _settingShortcutDialog.PrimaryButtonClick -= ShortcutDialog_PrimaryButtonClick;
+            _settingShortcutDialog.SecondaryButtonClick -= ShortcutDialog_Reset;
             _settingShortcutDialog.Opened -= ShortcutDialog_Opened;
             _settingShortcutDialog.Closing -= ShortcutDialog_Closing;
         }
@@ -314,7 +316,7 @@ namespace Flint3.Controls.ShortcutControl
 
         private void ShortcutDialog_Reset(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
-            _hotkeySettings = null;
+            _hotkeySettings = null/*MainViewModel.Instance.DefaultActivationShortcut*/;
 
             SetValue(HotkeySettingsProperty, _hotkeySettings);
             PreviewKeysControl.ItemsSource = HotkeySettings.GetKeysList();
