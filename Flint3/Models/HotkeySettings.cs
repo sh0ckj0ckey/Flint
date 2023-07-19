@@ -84,7 +84,7 @@ namespace Flint3.Models
 
             if (Code > 0)
             {
-                var localKey = LayoutMapHelper.GetKeyName((uint)Code);
+                var localKey = KeyboardHelper.GetKeyName((uint)Code);
                 output.Append(localKey);
             }
             else if (output.Length >= 2)
@@ -135,7 +135,7 @@ namespace Flint3.Models
                         shortcutList.Add(Code);
                         break;
                     default:
-                        var localKey = LayoutMapHelper.GetKeyName((uint)Code);
+                        var localKey = KeyboardHelper.GetKeyName((uint)Code);
                         shortcutList.Add(localKey);
                         break;
                 }

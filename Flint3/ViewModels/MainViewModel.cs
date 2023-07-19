@@ -28,7 +28,7 @@ namespace Flint3.ViewModels
 
         public MainViewModel()
         {
-            ReadActivationSettings();
+            InitializeViewModelForShortcut();
         }
 
         public void QueryWord(string word)

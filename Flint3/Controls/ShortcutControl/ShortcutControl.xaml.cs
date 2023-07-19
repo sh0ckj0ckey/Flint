@@ -102,7 +102,7 @@ namespace Flint3.Controls.ShortcutControl
                 case VirtualKey.RightWindows:
                     if (!matchValue && modifierKeysOnEntering.ContainsKey(virtualKey))
                     {
-                        SendSingleKeyboardInput((short)virtualKey, (uint)NativeKeyboardHelper.KeyEventF.KeyUp);
+                        SendSingleKeyboardInput((short)virtualKey, (uint)KeyboardHelper.KeyEventF.KeyUp);
                         modifierKeysOnEntering.Remove(virtualKey);
                     }
                     internalSettings.Win = matchValue;
@@ -112,7 +112,7 @@ namespace Flint3.Controls.ShortcutControl
                 case VirtualKey.RightControl:
                     if (!matchValue && modifierKeysOnEntering.ContainsKey(VirtualKey.Control))
                     {
-                        SendSingleKeyboardInput((short)VirtualKey.Control, (uint)NativeKeyboardHelper.KeyEventF.KeyUp);
+                        SendSingleKeyboardInput((short)VirtualKey.Control, (uint)KeyboardHelper.KeyEventF.KeyUp);
                         modifierKeysOnEntering.Remove(VirtualKey.Control);
                     }
                     internalSettings.Ctrl = matchValue;
@@ -122,7 +122,7 @@ namespace Flint3.Controls.ShortcutControl
                 case VirtualKey.RightMenu:
                     if (!matchValue && modifierKeysOnEntering.ContainsKey(VirtualKey.Menu))
                     {
-                        SendSingleKeyboardInput((short)VirtualKey.Menu, (uint)NativeKeyboardHelper.KeyEventF.KeyUp);
+                        SendSingleKeyboardInput((short)VirtualKey.Menu, (uint)KeyboardHelper.KeyEventF.KeyUp);
                         modifierKeysOnEntering.Remove(VirtualKey.Menu);
                     }
                     internalSettings.Alt = matchValue;
@@ -132,7 +132,7 @@ namespace Flint3.Controls.ShortcutControl
                 case VirtualKey.RightShift:
                     if (!matchValue && modifierKeysOnEntering.ContainsKey(VirtualKey.Shift))
                     {
-                        SendSingleKeyboardInput((short)VirtualKey.Shift, (uint)NativeKeyboardHelper.KeyEventF.KeyUp);
+                        SendSingleKeyboardInput((short)VirtualKey.Shift, (uint)KeyboardHelper.KeyEventF.KeyUp);
                         modifierKeysOnEntering.Remove(VirtualKey.Shift);
                     }
                     internalSettings.Shift = matchValue;
@@ -150,12 +150,12 @@ namespace Flint3.Controls.ShortcutControl
         // Function to send a single key event to the system which would be ignored by the hotkey control.
         private void SendSingleKeyboardInput(short keyCode, uint keyStatus)
         {
-            NativeKeyboardHelper.INPUT inputShift = new NativeKeyboardHelper.INPUT
+            KeyboardHelper.INPUT inputShift = new KeyboardHelper.INPUT
             {
-                type = NativeKeyboardHelper.INPUTTYPE.INPUT_KEYBOARD,
-                data = new NativeKeyboardHelper.InputUnion
+                type = KeyboardHelper.INPUTTYPE.INPUT_KEYBOARD,
+                data = new KeyboardHelper.InputUnion
                 {
-                    ki = new NativeKeyboardHelper.KEYBDINPUT
+                    ki = new KeyboardHelper.KEYBDINPUT
                     {
                         wVk = keyCode,
                         dwFlags = keyStatus,
@@ -166,9 +166,9 @@ namespace Flint3.Controls.ShortcutControl
                 },
             };
 
-            NativeKeyboardHelper.INPUT[] inputs = new NativeKeyboardHelper.INPUT[] { inputShift };
+            KeyboardHelper.INPUT[] inputs = new KeyboardHelper.INPUT[] { inputShift };
 
-            _ = NativeMethods.SendInput(1, inputs, NativeKeyboardHelper.INPUT.Size);
+            _ = KeyboardHelper.SendInput(1, inputs, KeyboardHelper.INPUT.Size);
 
             Debug.WriteLine($"SendSingleKeyboardInput: {keyCode}");
         }
@@ -196,7 +196,7 @@ namespace Flint3.Controls.ShortcutControl
                     // This is to reset the shift key press within the control as it was not used within the control but rather was used to leave the hotkey.
                     internalSettings.Shift = false;
 
-                    SendSingleKeyboardInput((short)VirtualKey.Shift, (uint)NativeKeyboardHelper.KeyEventF.KeyDown);
+                    SendSingleKeyboardInput((short)VirtualKey.Shift, (uint)KeyboardHelper.KeyEventF.KeyDown);
 
                     return false;
                 }
@@ -299,23 +299,23 @@ namespace Flint3.Controls.ShortcutControl
 
 
             // To keep track of the modifier keys, whether it was pressed on entering.
-            if ((NativeMethods.GetAsyncKeyState((int)VirtualKey.Shift) & 0x8000) != 0)
+            if ((KeyboardHelper.GetAsyncKeyState((int)VirtualKey.Shift) & 0x8000) != 0)
             {
                 modifierKeysOnEntering.Add(VirtualKey.Shift, true);
             }
-            if ((NativeMethods.GetAsyncKeyState((int)VirtualKey.Control) & 0x8000) != 0)
+            if ((KeyboardHelper.GetAsyncKeyState((int)VirtualKey.Control) & 0x8000) != 0)
             {
                 modifierKeysOnEntering.Add(VirtualKey.Control, true);
             }
-            if ((NativeMethods.GetAsyncKeyState((int)VirtualKey.Menu) & 0x8000) != 0)
+            if ((KeyboardHelper.GetAsyncKeyState((int)VirtualKey.Menu) & 0x8000) != 0)
             {
                 modifierKeysOnEntering.Add(VirtualKey.Menu, true);
             }
-            if ((NativeMethods.GetAsyncKeyState((int)VirtualKey.LeftWindows) & 0x8000) != 0)
+            if ((KeyboardHelper.GetAsyncKeyState((int)VirtualKey.LeftWindows) & 0x8000) != 0)
             {
                 modifierKeysOnEntering.Add(VirtualKey.LeftWindows, true);
             }
-            if ((NativeMethods.GetAsyncKeyState((int)VirtualKey.RightWindows) & 0x8000) != 0)
+            if ((KeyboardHelper.GetAsyncKeyState((int)VirtualKey.RightWindows) & 0x8000) != 0)
             {
                 modifierKeysOnEntering.Add(VirtualKey.RightWindows, true);
             }
@@ -394,22 +394,22 @@ namespace Flint3.Controls.ShortcutControl
             // Modifier keys remains pressed on dialog closing, system will receive a KeyUp message at some time in the future, therefore pass a KeyDown message to the system.
             if (internalSettings.Win)
             {
-                SendSingleKeyboardInput((short)VirtualKey.LeftWindows, (uint)NativeKeyboardHelper.KeyEventF.KeyDown);
+                SendSingleKeyboardInput((short)VirtualKey.LeftWindows, (uint)KeyboardHelper.KeyEventF.KeyDown);
                 internalSettings.Win = false;
             }
             if (internalSettings.Ctrl)
             {
-                SendSingleKeyboardInput((short)VirtualKey.Control, (uint)NativeKeyboardHelper.KeyEventF.KeyDown);
+                SendSingleKeyboardInput((short)VirtualKey.Control, (uint)KeyboardHelper.KeyEventF.KeyDown);
                 internalSettings.Ctrl = false;
             }
             if (internalSettings.Alt)
             {
-                SendSingleKeyboardInput((short)VirtualKey.Menu, (uint)NativeKeyboardHelper.KeyEventF.KeyDown);
+                SendSingleKeyboardInput((short)VirtualKey.Menu, (uint)KeyboardHelper.KeyEventF.KeyDown);
                 internalSettings.Alt = false;
             }
             if (internalSettings.Shift)
             {
-                SendSingleKeyboardInput((short)VirtualKey.Shift, (uint)NativeKeyboardHelper.KeyEventF.KeyDown);
+                SendSingleKeyboardInput((short)VirtualKey.Shift, (uint)KeyboardHelper.KeyEventF.KeyDown);
                 internalSettings.Shift = false;
             }
         }
