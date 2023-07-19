@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using interop;
 
-namespace Flint3.Helpers
+namespace Flint3.Models
 {
     public delegate void KeyEvent(int key);
 

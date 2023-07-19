@@ -44,7 +44,7 @@ void KeyboardHook::Start()
         if (hookHandle == nullptr)
         {
             //DWORD errorCode = GetLastError();
-            //show_last_error_message(L"SetWindowsHookEx", errorCode, L"PowerToys - Interop");
+            //show_last_error_message(L"SetWindowsHookEx", errorCode, L"Flint3 - Interop");
         }
     }
 }

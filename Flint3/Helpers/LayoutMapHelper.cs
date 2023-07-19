@@ -6,15 +6,13 @@ using System.Threading.Tasks;
 
 namespace Flint3.Helpers
 {
-    public class KeyHelper
+    public class LayoutMapHelper
     {
-        private static readonly interop.LayoutMapManaged LayoutMap = new interop.LayoutMapManaged();
+        private static readonly interop.LayoutMapManaged LayoutMap = new();
 
         public static string GetKeyName(uint key)
         {
             return LayoutMap.GetKeyName(key);
         }
-
-        public const uint VirtualKeyWindows = 0x104;/*Fake key code to represent VK_WIN: VK_WIN_BOTH*/ //interop.Constants.VK_WIN_BOTH;
     }
 }

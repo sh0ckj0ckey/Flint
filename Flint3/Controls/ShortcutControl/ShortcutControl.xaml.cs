@@ -1,12 +1,13 @@
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using Flint3.Helpers;
-using Flint3.ViewModels;
+using Flint3.Models;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Automation;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
-using Windows.ApplicationModel.Resources;
 using Windows.System;
+using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -16,8 +17,7 @@ namespace Flint3.Controls.ShortcutControl
     public sealed partial class ShortcutControl : UserControl, IDisposable
     {
         private readonly UIntPtr ignoreKeyEventFlag = (UIntPtr)0x5555;
-        private bool _shiftKeyDownOnEntering;
-        private bool _shiftToggled;
+        private Dictionary<VirtualKey, bool> modifierKeysOnEntering = new Dictionary<VirtualKey, bool>();
         private HotkeySettings internalSettings;
         private HotkeySettings lastValidSettings;
         private HotkeySettingsControlHook hook;
@@ -95,26 +95,46 @@ namespace Flint3.Controls.ShortcutControl
 
         private void KeyEventHandler(int key, bool matchValue, int matchValueCode)
         {
-            switch ((VirtualKey)key)
+            VirtualKey virtualKey = (VirtualKey)key;
+            switch (virtualKey)
             {
                 case VirtualKey.LeftWindows:
                 case VirtualKey.RightWindows:
+                    if (!matchValue && modifierKeysOnEntering.ContainsKey(virtualKey))
+                    {
+                        SendSingleKeyboardInput((short)virtualKey, (uint)NativeKeyboardHelper.KeyEventF.KeyUp);
+                        modifierKeysOnEntering.Remove(virtualKey);
+                    }
                     internalSettings.Win = matchValue;
                     break;
                 case VirtualKey.Control:
                 case VirtualKey.LeftControl:
                 case VirtualKey.RightControl:
+                    if (!matchValue && modifierKeysOnEntering.ContainsKey(VirtualKey.Control))
+                    {
+                        SendSingleKeyboardInput((short)VirtualKey.Control, (uint)NativeKeyboardHelper.KeyEventF.KeyUp);
+                        modifierKeysOnEntering.Remove(VirtualKey.Control);
+                    }
                     internalSettings.Ctrl = matchValue;
                     break;
                 case VirtualKey.Menu:
                 case VirtualKey.LeftMenu:
                 case VirtualKey.RightMenu:
+                    if (!matchValue && modifierKeysOnEntering.ContainsKey(VirtualKey.Menu))
+                    {
+                        SendSingleKeyboardInput((short)VirtualKey.Menu, (uint)NativeKeyboardHelper.KeyEventF.KeyUp);
+                        modifierKeysOnEntering.Remove(VirtualKey.Menu);
+                    }
                     internalSettings.Alt = matchValue;
                     break;
                 case VirtualKey.Shift:
                 case VirtualKey.LeftShift:
                 case VirtualKey.RightShift:
-                    _shiftToggled = true;
+                    if (!matchValue && modifierKeysOnEntering.ContainsKey(VirtualKey.Shift))
+                    {
+                        SendSingleKeyboardInput((short)VirtualKey.Shift, (uint)NativeKeyboardHelper.KeyEventF.KeyUp);
+                        modifierKeysOnEntering.Remove(VirtualKey.Shift);
+                    }
                     internalSettings.Shift = matchValue;
                     break;
                 case VirtualKey.Escape:
@@ -149,6 +169,8 @@ namespace Flint3.Controls.ShortcutControl
             NativeKeyboardHelper.INPUT[] inputs = new NativeKeyboardHelper.INPUT[] { inputShift };
 
             _ = NativeMethods.SendInput(1, inputs, NativeKeyboardHelper.INPUT.Size);
+
+            Debug.WriteLine($"SendSingleKeyboardInput: {keyCode}");
         }
 
         private bool FilterAccessibleKeyboardEvents(int key, UIntPtr extraInfo)
@@ -163,13 +185,13 @@ namespace Flint3.Controls.ShortcutControl
             if ((VirtualKey)key == VirtualKey.Tab)
             {
                 // Shift was not pressed while entering and Shift is not pressed while leaving the hotkey control, treat it as a normal tab key press.
-                if (!internalSettings.Shift && !_shiftKeyDownOnEntering && !internalSettings.Win && !internalSettings.Alt && !internalSettings.Ctrl)
+                if (!internalSettings.Shift && !modifierKeysOnEntering.ContainsKey(VirtualKey.Shift) && !internalSettings.Win && !internalSettings.Alt && !internalSettings.Ctrl)
                 {
                     return false;
                 }
 
                 // Shift was not pressed while entering but it was pressed while leaving the hotkey, therefore simulate a shift key press as the system does not know about shift being pressed in the hotkey.
-                else if (internalSettings.Shift && !_shiftKeyDownOnEntering && !internalSettings.Win && !internalSettings.Alt && !internalSettings.Ctrl)
+                else if (internalSettings.Shift && !modifierKeysOnEntering.ContainsKey(VirtualKey.Shift) && !internalSettings.Win && !internalSettings.Alt && !internalSettings.Ctrl)
                 {
                     // This is to reset the shift key press within the control as it was not used within the control but rather was used to leave the hotkey.
                     internalSettings.Shift = false;
@@ -181,27 +203,8 @@ namespace Flint3.Controls.ShortcutControl
 
                 // Shift was pressed on entering and remained pressed, therefore only ignore the tab key so that it can be passed to the system.
                 // As the shift key is already assumed to be pressed by the system while it entered the hotkey control, shift would still remain pressed, hence ignoring the tab input would simulate a Shift+Tab key press.
-                else if (!internalSettings.Shift && _shiftKeyDownOnEntering && !_shiftToggled && !internalSettings.Win && !internalSettings.Alt && !internalSettings.Ctrl)
+                else if (!internalSettings.Shift && modifierKeysOnEntering.ContainsKey(VirtualKey.Shift) && !internalSettings.Win && !internalSettings.Alt && !internalSettings.Ctrl)
                 {
-                    return false;
-                }
-
-                // Shift was pressed on entering but it was released and later pressed again.
-                // Ignore the tab key and the system already has the shift key pressed, therefore this would simulate Shift+Tab.
-                // However, since the last shift key was only used to move out of the control, reset the status of shift within the control.
-                else if (internalSettings.Shift && _shiftKeyDownOnEntering && _shiftToggled && !internalSettings.Win && !internalSettings.Alt && !internalSettings.Ctrl)
-                {
-                    internalSettings.Shift = false;
-
-                    return false;
-                }
-
-                // Shift was pressed on entering and was later released.
-                // The system still has shift in the key pressed status, therefore pass a Shift KeyUp message to the system, to release the shift key, therefore simulating only the Tab key press.
-                else if (!internalSettings.Shift && _shiftKeyDownOnEntering && _shiftToggled && !internalSettings.Win && !internalSettings.Alt && !internalSettings.Ctrl)
-                {
-                    SendSingleKeyboardInput((short)VirtualKey.Shift, (uint)NativeKeyboardHelper.KeyEventF.KeyUp);
-
                     return false;
                 }
             }
@@ -292,13 +295,29 @@ namespace Flint3.Controls.ShortcutControl
             }
 
             // Reset the status on entering the hotkey each time.
-            _shiftKeyDownOnEntering = false;
-            _shiftToggled = false;
+            modifierKeysOnEntering.Clear();
 
-            // To keep track of the shift key, whether it was pressed on entering.
+
+            // To keep track of the modifier keys, whether it was pressed on entering.
             if ((NativeMethods.GetAsyncKeyState((int)VirtualKey.Shift) & 0x8000) != 0)
             {
-                _shiftKeyDownOnEntering = true;
+                modifierKeysOnEntering.Add(VirtualKey.Shift, true);
+            }
+            if ((NativeMethods.GetAsyncKeyState((int)VirtualKey.Control) & 0x8000) != 0)
+            {
+                modifierKeysOnEntering.Add(VirtualKey.Control, true);
+            }
+            if ((NativeMethods.GetAsyncKeyState((int)VirtualKey.Menu) & 0x8000) != 0)
+            {
+                modifierKeysOnEntering.Add(VirtualKey.Menu, true);
+            }
+            if ((NativeMethods.GetAsyncKeyState((int)VirtualKey.LeftWindows) & 0x8000) != 0)
+            {
+                modifierKeysOnEntering.Add(VirtualKey.LeftWindows, true);
+            }
+            if ((NativeMethods.GetAsyncKeyState((int)VirtualKey.RightWindows) & 0x8000) != 0)
+            {
+                modifierKeysOnEntering.Add(VirtualKey.RightWindows, true);
             }
 
             _isActive = true;
@@ -316,7 +335,7 @@ namespace Flint3.Controls.ShortcutControl
 
         private void ShortcutDialog_Reset(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
-            _hotkeySettings = null/*MainViewModel.Instance.DefaultActivationShortcut*/;
+            _hotkeySettings = null;
 
             SetValue(HotkeySettingsProperty, _hotkeySettings);
             PreviewKeysControl.ItemsSource = HotkeySettings.GetKeysList();
@@ -357,18 +376,42 @@ namespace Flint3.Controls.ShortcutControl
             {
                 // If settings window gets focussed/activated again, we enable the keyboard hook to catch the keyboard input.
                 hook = new HotkeySettingsControlHook(Hotkey_KeyDown, Hotkey_KeyUp, Hotkey_IsActive, FilterAccessibleKeyboardEvents);
+                Debug.WriteLine($"Add Hook");
             }
             else if (args.WindowActivationState == WindowActivationState.Deactivated && hook != null && hook.GetDisposedState() == false)
             {
                 // If settings window lost focus/activation, we disable the keyboard hook to allow keyboard input on other windows.
-                hook.Dispose();
+                hook?.Dispose();
                 hook = null;
+                Debug.WriteLine($"Delete Hook");
             }
         }
 
         private void ShortcutDialog_Closing(ContentDialog sender, ContentDialogClosingEventArgs args)
         {
             _isActive = false;
+
+            // Modifier keys remains pressed on dialog closing, system will receive a KeyUp message at some time in the future, therefore pass a KeyDown message to the system.
+            if (internalSettings.Win)
+            {
+                SendSingleKeyboardInput((short)VirtualKey.LeftWindows, (uint)NativeKeyboardHelper.KeyEventF.KeyDown);
+                internalSettings.Win = false;
+            }
+            if (internalSettings.Ctrl)
+            {
+                SendSingleKeyboardInput((short)VirtualKey.Control, (uint)NativeKeyboardHelper.KeyEventF.KeyDown);
+                internalSettings.Ctrl = false;
+            }
+            if (internalSettings.Alt)
+            {
+                SendSingleKeyboardInput((short)VirtualKey.Menu, (uint)NativeKeyboardHelper.KeyEventF.KeyDown);
+                internalSettings.Alt = false;
+            }
+            if (internalSettings.Shift)
+            {
+                SendSingleKeyboardInput((short)VirtualKey.Shift, (uint)NativeKeyboardHelper.KeyEventF.KeyDown);
+                internalSettings.Shift = false;
+            }
         }
 
         private void Dispose(bool disposing)
@@ -377,11 +420,7 @@ namespace Flint3.Controls.ShortcutControl
             {
                 if (disposing)
                 {
-                    if (hook != null)
-                    {
-                        hook.Dispose();
-                    }
-
+                    hook?.Dispose();
                     hook = null;
                 }
 

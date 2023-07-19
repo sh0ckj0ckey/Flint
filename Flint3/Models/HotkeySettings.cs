@@ -4,12 +4,28 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Flint3.Helpers;
 
-namespace Flint3.Helpers
+namespace Flint3.Models
 {
     public class HotkeySettings
     {
         private const int VKTAB = 0x09;
+
+        [JsonPropertyName("win")]
+        public bool Win { get; set; }
+
+        [JsonPropertyName("ctrl")]
+        public bool Ctrl { get; set; }
+
+        [JsonPropertyName("alt")]
+        public bool Alt { get; set; }
+
+        [JsonPropertyName("shift")]
+        public bool Shift { get; set; }
+
+        [JsonPropertyName("code")]
+        public int Code { get; set; }
 
         public HotkeySettings()
         {
@@ -42,26 +58,6 @@ namespace Flint3.Helpers
             return new HotkeySettings(Win, Ctrl, Alt, Shift, Code);
         }
 
-        [JsonPropertyName("win")]
-        public bool Win { get; set; }
-
-        [JsonPropertyName("ctrl")]
-        public bool Ctrl { get; set; }
-
-        [JsonPropertyName("alt")]
-        public bool Alt { get; set; }
-
-        [JsonPropertyName("shift")]
-        public bool Shift { get; set; }
-
-        [JsonPropertyName("code")]
-        public int Code { get; set; }
-
-        // This is currently needed for FancyZones, we need to unify these two objects
-        // see src\common\settings_objects.h
-        [JsonPropertyName("key")]
-        public string Key { get; set; } = string.Empty;
-
         public override string ToString()
         {
             StringBuilder output = new StringBuilder();
@@ -88,7 +84,7 @@ namespace Flint3.Helpers
 
             if (Code > 0)
             {
-                var localKey = KeyHelper.GetKeyName((uint)Code);
+                var localKey = LayoutMapHelper.GetKeyName((uint)Code);
                 output.Append(localKey);
             }
             else if (output.Length >= 2)
@@ -139,7 +135,7 @@ namespace Flint3.Helpers
                         shortcutList.Add(Code);
                         break;
                     default:
-                        var localKey = KeyHelper.GetKeyName((uint)Code);
+                        var localKey = LayoutMapHelper.GetKeyName((uint)Code);
                         shortcutList.Add(localKey);
                         break;
                 }
@@ -166,8 +162,8 @@ namespace Flint3.Helpers
         public bool IsAccessibleShortcut()
         {
             // Shift+Tab and Tab are accessible shortcuts
-            if ((!Alt && !Ctrl && !Win && Shift && Code == VKTAB)
-                || (!Alt && !Ctrl && !Win && !Shift && Code == VKTAB))
+            if ((!Alt && !Ctrl && !Win && Shift && Code == VKTAB) ||
+                (!Alt && !Ctrl && !Win && !Shift && Code == VKTAB))
             {
                 return true;
             }

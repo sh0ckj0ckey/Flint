@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
+﻿using System.Text.Json;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Flint3.Core;
-using Flint3.Helpers;
+using Flint3.Models;
 
 namespace Flint3.ViewModels
 {
@@ -23,7 +18,7 @@ namespace Flint3.ViewModels
             get => _activationShortcut;
             set
             {
-                SetProperty(ref _activationShortcut, value ?? DefaultActivationShortcut);
+                SetProperty(ref _activationShortcut, (value == null || !value.IsValid() || value.IsEmpty()) ? DefaultActivationShortcut : value);
                 SaveActivationSettings();
             }
         }
