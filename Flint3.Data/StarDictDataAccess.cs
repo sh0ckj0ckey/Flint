@@ -88,14 +88,14 @@ namespace Flint3.Data
         /// </summary>
         /// <param name="word"></param>
         /// <returns></returns>
-        public static List<StarDictWordItem> MatchWord(string word)
+        public static List<StarDictWordItem> MatchWord(string word, int limit)
         {
             try
             {
                 List<StarDictWordItem> results = new List<StarDictWordItem>();
                 SqliteCommand selectCommand = new SqliteCommand($"select * from stardict where sw >= $word order by sw, word collate nocase limit $limit", _starDictDb);
                 selectCommand.Parameters.AddWithValue("$word", word);
-                selectCommand.Parameters.AddWithValue("$limit", 10);
+                selectCommand.Parameters.AddWithValue("$limit", limit);
                 SqliteDataReader query = selectCommand.ExecuteReader();
                 while (query.Read())
                 {

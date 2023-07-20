@@ -23,33 +23,16 @@ namespace Flint3.Views
     /// </summary>
     public sealed partial class FlintPage : Page
     {
-        private readonly Microsoft.UI.Dispatching.DispatcherQueue _dispatcherQueue;
         private MainViewModel _viewModel = null;
-        private UISettings _uiSettings;
         public FlintPage()
         {
             this.InitializeComponent();
 
-            _dispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
-
             _viewModel = MainViewModel.Instance;
 
-            // 监听系统颜色设置变更，处理主题为"跟随系统"时主题切换
-            _uiSettings = new UISettings();
-            _uiSettings.ColorValuesChanged += (s, args) =>
-            {
-                if (MainViewModel.Instance.AppSettings.AppearanceIndex == 0)
-                {
-                    _dispatcherQueue.TryEnqueue(() =>
-                    {
-                        SwitchAppTheme();
-                    });
-                }
-            };
+            MainViewModel.Instance.ActSwitchAppTheme?.Invoke();
 
-            MainViewModel.Instance.ActSwitchAppTheme = () => SwitchAppTheme();
-
-            SwitchAppTheme();
+            MainViewModel.Instance.ActFocusOnTextBox = () => { SearchTextBox?.Focus(FocusState.Keyboard); };
 
             // 加载数据库
             StarDictDataAccess.InitializeDatabase();
@@ -82,63 +65,6 @@ namespace Flint3.Views
             {
                 return (Style)App.Current.Resources["ClassicTextBoxStyle"];
             }
-        }
-
-        /// <summary>
-        /// 切换应用程序的主题
-        /// </summary>
-        private void SwitchAppTheme()
-        {
-            try
-            {
-                // 设置标题栏颜色
-                bool isLight = true;
-                if (MainViewModel.Instance.AppSettings.AppearanceIndex == 0) // 主题 0-System 1-Dark 2-Light
-                {
-                    var color = _uiSettings?.GetColorValue(UIColorType.Foreground) ?? Colors.Black;
-                    var g = color.R * 0.299 + color.G * 0.587 + color.B * 0.114;
-                    isLight = g < 100; // g越小，颜色越深
-                }
-                else
-                {
-                    isLight = MainViewModel.Instance.AppSettings.AppearanceIndex == 2;
-                }
-
-                TitleBarHelper.UpdateTitleBar(App.MainWindow, isLight ? ElementTheme.Light : ElementTheme.Dark);
-
-                // 设置应用程序颜色
-                if (App.MainWindow.Content is FrameworkElement rootElement)
-                {
-                    if (MainViewModel.Instance.AppSettings.AppearanceIndex == 1)
-                    {
-                        rootElement.RequestedTheme = ElementTheme.Dark;
-                    }
-                    else if (MainViewModel.Instance.AppSettings.AppearanceIndex == 2)
-                    {
-                        rootElement.RequestedTheme = ElementTheme.Light;
-                    }
-                    else
-                    {
-                        rootElement.RequestedTheme = ElementTheme.Default;
-                    }
-                }
-            }
-            catch { }
-        }
-
-        /// <summary>
-        /// 点击空白区域，自动聚焦
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private async void OnMainGridPointerAct(object sender, PointerRoutedEventArgs e)
-        {
-            try
-            {
-                await Task.Delay(100);
-                SearchTextBox.Focus(FocusState.Keyboard);
-            }
-            catch { }
         }
 
         /// <summary>

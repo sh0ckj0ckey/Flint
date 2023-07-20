@@ -14,7 +14,7 @@ using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 namespace Flint3.Controls.ShortcutControl
 {
-    public sealed partial class ShortcutControl : UserControl, IDisposable
+    public sealed partial class ShortcutControl : UserControl
     {
         private readonly UIntPtr ignoreKeyEventFlag = (UIntPtr)0x5555;
         private Dictionary<VirtualKey, bool> modifierKeysOnEntering = new Dictionary<VirtualKey, bool>();
@@ -91,60 +91,6 @@ namespace Flint3.Controls.ShortcutControl
             _settingShortcutDialog.SecondaryButtonClick -= ShortcutDialog_Reset;
             _settingShortcutDialog.Opened -= ShortcutDialog_Opened;
             _settingShortcutDialog.Closing -= ShortcutDialog_Closing;
-        }
-
-        private void KeyEventHandler(int key, bool matchValue, int matchValueCode)
-        {
-            VirtualKey virtualKey = (VirtualKey)key;
-            switch (virtualKey)
-            {
-                case VirtualKey.LeftWindows:
-                case VirtualKey.RightWindows:
-                    if (!matchValue && modifierKeysOnEntering.ContainsKey(virtualKey))
-                    {
-                        SendSingleKeyboardInput((short)virtualKey, (uint)KeyboardHelper.KeyEventF.KeyUp);
-                        modifierKeysOnEntering.Remove(virtualKey);
-                    }
-                    internalSettings.Win = matchValue;
-                    break;
-                case VirtualKey.Control:
-                case VirtualKey.LeftControl:
-                case VirtualKey.RightControl:
-                    if (!matchValue && modifierKeysOnEntering.ContainsKey(VirtualKey.Control))
-                    {
-                        SendSingleKeyboardInput((short)VirtualKey.Control, (uint)KeyboardHelper.KeyEventF.KeyUp);
-                        modifierKeysOnEntering.Remove(VirtualKey.Control);
-                    }
-                    internalSettings.Ctrl = matchValue;
-                    break;
-                case VirtualKey.Menu:
-                case VirtualKey.LeftMenu:
-                case VirtualKey.RightMenu:
-                    if (!matchValue && modifierKeysOnEntering.ContainsKey(VirtualKey.Menu))
-                    {
-                        SendSingleKeyboardInput((short)VirtualKey.Menu, (uint)KeyboardHelper.KeyEventF.KeyUp);
-                        modifierKeysOnEntering.Remove(VirtualKey.Menu);
-                    }
-                    internalSettings.Alt = matchValue;
-                    break;
-                case VirtualKey.Shift:
-                case VirtualKey.LeftShift:
-                case VirtualKey.RightShift:
-                    if (!matchValue && modifierKeysOnEntering.ContainsKey(VirtualKey.Shift))
-                    {
-                        SendSingleKeyboardInput((short)VirtualKey.Shift, (uint)KeyboardHelper.KeyEventF.KeyUp);
-                        modifierKeysOnEntering.Remove(VirtualKey.Shift);
-                    }
-                    internalSettings.Shift = matchValue;
-                    break;
-                case VirtualKey.Escape:
-                    internalSettings = new HotkeySettings();
-                    _settingShortcutDialog.IsPrimaryButtonEnabled = false;
-                    return;
-                default:
-                    internalSettings.Code = matchValueCode;
-                    break;
-            }
         }
 
         // Function to send a single key event to the system which would be ignored by the hotkey control.
@@ -261,6 +207,69 @@ namespace Flint3.Controls.ShortcutControl
             }
         }
 
+        private void Hotkey_KeyUp(int key)
+        {
+            KeyEventHandler(key, false, 0);
+        }
+
+        private void KeyEventHandler(int key, bool matchValue, int matchValueCode)
+        {
+            VirtualKey virtualKey = (VirtualKey)key;
+            switch (virtualKey)
+            {
+                case VirtualKey.LeftWindows:
+                case VirtualKey.RightWindows:
+                    if (!matchValue && (modifierKeysOnEntering.ContainsKey(virtualKey) || !internalSettings.Win))
+                    {
+                        SendSingleKeyboardInput((short)virtualKey, (uint)KeyboardHelper.KeyEventF.KeyUp);
+                        modifierKeysOnEntering.Remove(virtualKey);
+                        Debug.WriteLine("Simulate Win KeyUp");
+                    }
+                    internalSettings.Win = matchValue;
+                    break;
+                case VirtualKey.Control:
+                case VirtualKey.LeftControl:
+                case VirtualKey.RightControl:
+                    if (!matchValue && (modifierKeysOnEntering.ContainsKey(VirtualKey.Control) || !internalSettings.Ctrl))
+                    {
+                        SendSingleKeyboardInput((short)VirtualKey.Control, (uint)KeyboardHelper.KeyEventF.KeyUp);
+                        modifierKeysOnEntering.Remove(VirtualKey.Control);
+                        Debug.WriteLine("Simulate Control KeyUp");
+                    }
+                    internalSettings.Ctrl = matchValue;
+                    break;
+                case VirtualKey.Menu:
+                case VirtualKey.LeftMenu:
+                case VirtualKey.RightMenu:
+                    if (!matchValue && (modifierKeysOnEntering.ContainsKey(VirtualKey.Menu) || !internalSettings.Alt))
+                    {
+                        SendSingleKeyboardInput((short)VirtualKey.Menu, (uint)KeyboardHelper.KeyEventF.KeyUp);
+                        modifierKeysOnEntering.Remove(VirtualKey.Menu);
+                        Debug.WriteLine("Simulate Alt KeyUp");
+                    }
+                    internalSettings.Alt = matchValue;
+                    break;
+                case VirtualKey.Shift:
+                case VirtualKey.LeftShift:
+                case VirtualKey.RightShift:
+                    if (!matchValue && (modifierKeysOnEntering.ContainsKey(VirtualKey.Shift) || !internalSettings.Shift))
+                    {
+                        SendSingleKeyboardInput((short)VirtualKey.Shift, (uint)KeyboardHelper.KeyEventF.KeyUp);
+                        modifierKeysOnEntering.Remove(VirtualKey.Shift);
+                        Debug.WriteLine("Simulate Shift KeyUp");
+                    }
+                    internalSettings.Shift = matchValue;
+                    break;
+                case VirtualKey.Escape:
+                    internalSettings = new HotkeySettings();
+                    _settingShortcutDialog.IsPrimaryButtonEnabled = false;
+                    return;
+                default:
+                    internalSettings.Code = matchValueCode;
+                    break;
+            }
+        }
+
         private void EnableKeys()
         {
             _settingShortcutDialog.IsPrimaryButtonEnabled = true;
@@ -273,14 +282,69 @@ namespace Flint3.Controls.ShortcutControl
             _shortcutDialogContent.IsError = true;
         }
 
-        private void Hotkey_KeyUp(int key)
-        {
-            KeyEventHandler(key, false, 0);
-        }
-
         private bool Hotkey_IsActive()
         {
             return _isActive;
+        }
+
+        // 打开快捷键设置对话框
+        private async void OpenDialogButton_Click(object sender, RoutedEventArgs e)
+        {
+            _shortcutDialogContent.Keys = null;
+            _shortcutDialogContent.Keys = HotkeySettings.GetKeysList();
+
+            _settingShortcutDialog.XamlRoot = this.XamlRoot;
+            _settingShortcutDialog.RequestedTheme = this.ActualTheme;
+            await _settingShortcutDialog.ShowAsync();
+        }
+
+        // 重置快捷键并关闭快捷键设置对话框
+        private void ShortcutDialog_Reset(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        {
+            _hotkeySettings = null;
+
+            SetValue(HotkeySettingsProperty, _hotkeySettings);
+            PreviewKeysControl.ItemsSource = HotkeySettings.GetKeysList();
+
+            lastValidSettings = _hotkeySettings;
+
+            _settingShortcutDialog.Hide();
+        }
+
+        // 保存快捷键并关闭快捷键设置对话框
+        private void ShortcutDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        {
+            if (ComboIsValid(lastValidSettings))
+            {
+                HotkeySettings = lastValidSettings.Clone();
+            }
+
+            PreviewKeysControl.ItemsSource = _hotkeySettings.GetKeysList();
+            _settingShortcutDialog.Hide();
+        }
+
+        private static bool ComboIsValid(HotkeySettings settings)
+        {
+            return settings != null && (settings.IsValid() || settings.IsEmpty());
+        }
+
+        // 窗口失去焦点时禁用钩子，防止拦截用户在其他窗口的输入，再次获得焦点则重新启用钩子
+        private void ShortcutDialog_SettingsWindow_Activated(object sender, WindowActivatedEventArgs args)
+        {
+            args.Handled = true;
+            if (args.WindowActivationState != WindowActivationState.Deactivated && (hook == null || hook.GetDisposedState() == true))
+            {
+                // If settings window gets focussed/activated again, we enable the keyboard hook to catch the keyboard input.
+                hook = new HotkeySettingsControlHook(Hotkey_KeyDown, Hotkey_KeyUp, Hotkey_IsActive, FilterAccessibleKeyboardEvents);
+                Debug.WriteLine($"Add Hook");
+            }
+            else if (args.WindowActivationState == WindowActivationState.Deactivated && hook != null && hook.GetDisposedState() == false)
+            {
+                // If settings window lost focus/activation, we disable the keyboard hook to allow keyboard input on other windows.
+                hook?.Dispose();
+                hook = null;
+                Debug.WriteLine($"Delete Hook");
+            }
         }
 
         private void ShortcutDialog_Opened(ContentDialog sender, ContentDialogOpenedEventArgs args)
@@ -296,7 +360,6 @@ namespace Flint3.Controls.ShortcutControl
 
             // Reset the status on entering the hotkey each time.
             modifierKeysOnEntering.Clear();
-
 
             // To keep track of the modifier keys, whether it was pressed on entering.
             if ((KeyboardHelper.GetAsyncKeyState((int)VirtualKey.Shift) & 0x8000) != 0)
@@ -323,70 +386,6 @@ namespace Flint3.Controls.ShortcutControl
             _isActive = true;
         }
 
-        private async void OpenDialogButton_Click(object sender, RoutedEventArgs e)
-        {
-            _shortcutDialogContent.Keys = null;
-            _shortcutDialogContent.Keys = HotkeySettings.GetKeysList();
-
-            _settingShortcutDialog.XamlRoot = this.XamlRoot;
-            _settingShortcutDialog.RequestedTheme = this.ActualTheme;
-            await _settingShortcutDialog.ShowAsync();
-        }
-
-        private void ShortcutDialog_Reset(ContentDialog sender, ContentDialogButtonClickEventArgs args)
-        {
-            _hotkeySettings = null;
-
-            SetValue(HotkeySettingsProperty, _hotkeySettings);
-            PreviewKeysControl.ItemsSource = HotkeySettings.GetKeysList();
-
-            lastValidSettings = _hotkeySettings;
-
-            _settingShortcutDialog.Hide();
-        }
-
-        private void ShortcutDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
-        {
-            if (ComboIsValid(lastValidSettings))
-            {
-                HotkeySettings = lastValidSettings.Clone();
-            }
-
-            PreviewKeysControl.ItemsSource = _hotkeySettings.GetKeysList();
-            _settingShortcutDialog.Hide();
-        }
-
-        private static bool ComboIsValid(HotkeySettings settings)
-        {
-            if (settings != null && (settings.IsValid() || settings.IsEmpty()))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        // 失去焦点时禁用钩子，获得焦点则重新启用钩子
-        private void ShortcutDialog_SettingsWindow_Activated(object sender, WindowActivatedEventArgs args)
-        {
-            args.Handled = true;
-            if (args.WindowActivationState != WindowActivationState.Deactivated && (hook == null || hook.GetDisposedState() == true))
-            {
-                // If settings window gets focussed/activated again, we enable the keyboard hook to catch the keyboard input.
-                hook = new HotkeySettingsControlHook(Hotkey_KeyDown, Hotkey_KeyUp, Hotkey_IsActive, FilterAccessibleKeyboardEvents);
-                Debug.WriteLine($"Add Hook");
-            }
-            else if (args.WindowActivationState == WindowActivationState.Deactivated && hook != null && hook.GetDisposedState() == false)
-            {
-                // If settings window lost focus/activation, we disable the keyboard hook to allow keyboard input on other windows.
-                hook?.Dispose();
-                hook = null;
-                Debug.WriteLine($"Delete Hook");
-            }
-        }
-
         private void ShortcutDialog_Closing(ContentDialog sender, ContentDialogClosingEventArgs args)
         {
             _isActive = false;
@@ -396,43 +395,27 @@ namespace Flint3.Controls.ShortcutControl
             {
                 SendSingleKeyboardInput((short)VirtualKey.LeftWindows, (uint)KeyboardHelper.KeyEventF.KeyDown);
                 internalSettings.Win = false;
+                Debug.WriteLine("Simulate Win KeyDown");
             }
             if (internalSettings.Ctrl)
             {
                 SendSingleKeyboardInput((short)VirtualKey.Control, (uint)KeyboardHelper.KeyEventF.KeyDown);
                 internalSettings.Ctrl = false;
+                Debug.WriteLine("Simulate Control KeyDown");
             }
             if (internalSettings.Alt)
             {
                 SendSingleKeyboardInput((short)VirtualKey.Menu, (uint)KeyboardHelper.KeyEventF.KeyDown);
                 internalSettings.Alt = false;
+                Debug.WriteLine("Simulate Menu KeyDown");
             }
             if (internalSettings.Shift)
             {
                 SendSingleKeyboardInput((short)VirtualKey.Shift, (uint)KeyboardHelper.KeyEventF.KeyDown);
                 internalSettings.Shift = false;
+                Debug.WriteLine("Simulate Shift KeyDown");
             }
         }
 
-        private void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
-                    hook?.Dispose();
-                    hook = null;
-                }
-
-                disposedValue = true;
-            }
-        }
-
-        public void Dispose()
-        {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(disposing: true);
-            GC.SuppressFinalize(this);
-        }
     }
 }

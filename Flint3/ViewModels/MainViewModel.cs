@@ -19,18 +19,41 @@ namespace Flint3.ViewModels
 
         public SettingsService AppSettings { get; set; } = new SettingsService();
 
+        /// <summary>
+        /// 控制主窗口根据当前的主题进行切换
+        /// </summary>
         public Action ActSwitchAppTheme { get; set; } = null;
-        public Action ActClearTextBoxes { get; set; } = null;
+
+        /// <summary>
+        /// 将焦点聚焦到搜索框
+        /// </summary>
+        public Action ActFocusOnTextBox { get; set; } = null;
+
+        /// <summary>
+        /// 将主窗口隐藏到系统托盘
+        /// </summary>
         public Action ActHideWindow { get; set; } = null;
+
+        /// <summary>
+        /// 将主窗口保持置顶或取消置顶
+        /// </summary>
         public Action<bool> ActPinWindow { get; set; } = null;
 
+        /// <summary>
+        /// 搜索展示结果
+        /// </summary>
         public ObservableCollection<StarDictWordItem> SearchResultWordItems { get; private set; } = new ObservableCollection<StarDictWordItem>();
 
         public MainViewModel()
         {
-            InitializeViewModelForShortcut();
+            // 读取唤起快捷键的设置
+            ReadShortcutSettings();
         }
 
+        /// <summary>
+        /// 查找完全匹配的一个单词
+        /// </summary>
+        /// <param name="word"></param>
         public void QueryWord(string word)
         {
             try
@@ -101,7 +124,11 @@ namespace Flint3.ViewModels
             catch { }
         }
 
-        public void MatchWord(string word)
+        /// <summary>
+        /// 查找模糊匹配的多个单词
+        /// </summary>
+        /// <param name="word"></param>
+        public void MatchWord(string word, int limit = 10)
         {
             try
             {
@@ -110,7 +137,7 @@ namespace Flint3.ViewModels
 
                 word = System.Text.RegularExpressions.Regex.Replace(word, @"[^\w]*", "");
 
-                var results = StarDictDataAccess.MatchWord(word);
+                var results = StarDictDataAccess.MatchWord(word, limit);
                 if (results != null)
                 {
                     foreach (var item in results)

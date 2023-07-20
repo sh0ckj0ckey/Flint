@@ -37,17 +37,20 @@ namespace Flint3.Helpers
                 nid.szTip = sMessage;
                 nid.uFlags |= NIF.TIP;
             }
+
             if (hIcon != IntPtr.Zero)
             {
                 nid.hIcon = hIcon;
                 nid.uFlags |= NIF.ICON;
             }
+
             if ((dwInfoFlags & NIIF.USER) != 0)
             {
                 nid.hIcon = hIcon;
                 nid.hBalloonIcon = hBalloonIcon;
                 nid.uFlags |= NIF.ICON;
             }
+
             nid.dwInfoFlags = dwInfoFlags;
             if (dwInfoFlags != 0 && sInfo != null && sTitle != null)
             {
@@ -59,10 +62,14 @@ namespace Flint3.Helpers
                 nid.szInfo = null;
                 nid.szInfoTitle = null;
             }
+
             bool bRet;
             nid.uVersion = 4;
             if (nMessage == NIM.ADD)
+            {
                 Shell_NotifyIcon(NIM.SETVERSION, nid);
+            }
+
             bRet = Shell_NotifyIcon(nMessage, nid);
             return bRet;
         }

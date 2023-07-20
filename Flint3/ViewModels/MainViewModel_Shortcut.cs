@@ -1,44 +1,106 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Globalization;
 using System.Text.Json;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Flint3.Core;
 using Flint3.Models;
 using interop;
 using Microsoft.VisualBasic;
+using WinUIEx;
 
 namespace Flint3.ViewModels
 {
-    public partial class MainViewModel : ObservableObject
+    public partial class MainViewModel : ObservableObject, IDisposable
     {
-        internal HotkeyManager HotkeyManager { get; private set; }
+        private HotkeyManager _hotkeyManager = null;
+        private ushort _hotkeyHandle;
 
         /// <summary>
         /// 默认快捷键 Alt+Space
         /// </summary>
-        public HotkeySettings DefaultActivationShortcut => new HotkeySettings(false, false, true, false, 0x20);
+        private HotkeySettings _defaultActivationShortcut => new(false, false, true, false, 0x20);
 
-        public Action<HotkeySettings> ActActivationShortcutChanged { get; set; } = null;
+        // 快捷键变更回调
+        public Action<HotkeySettings/*PreviousHotkey*/, HotkeySettings/*NewHotkey*/> ActActivationShortcutChanged { get; set; } = null;
 
+        // 快捷键
         private HotkeySettings _activationShortcut;
         public HotkeySettings ActivationShortcut
         {
             get => _activationShortcut;
             set
             {
-                SetProperty(ref _activationShortcut, (value == null || !value.IsValid() || value.IsEmpty()) ? DefaultActivationShortcut : value);
-                ActActivationShortcutChanged?.Invoke(_activationShortcut);
+                HotkeySettings newValue = (value == null || !value.IsValid() || value.IsEmpty()) ? _defaultActivationShortcut : value;
+                HotkeySettings previousValue = _activationShortcut?.Clone();
+                SetProperty(ref _activationShortcut, newValue);
+                ActActivationShortcutChanged?.Invoke(previousValue, _activationShortcut);
             }
         }
 
-        private void InitializeViewModelForShortcut()
+        public void RegisterShortcut()
         {
-            ReadActivationSettings();
-            ActActivationShortcutChanged += (setting) => { SaveActivationSettings(); };
+            ActActivationShortcutChanged += (preSettings, newSettings) =>
+            {
+                if (preSettings != null && !preSettings.IsEmpty())
+                {
+                    if (_hotkeyHandle != 0)
+                    {
+                        _hotkeyManager?.UnregisterHotkey(_hotkeyHandle);
+                        _hotkeyHandle = 0;
+                    }
+                }
+
+                if (newSettings?.IsValid() == true)
+                {
+                    SetShortcut(newSettings, OnShortcutActivated);
+                }
+            };
+
+            if (ActivationShortcut?.IsValid() == true)
+            {
+                SetShortcut(ActivationShortcut, OnShortcutActivated);
+            }
+        }
+
+        private void SetShortcut(HotkeySettings hotkeySettings, HotkeyCallback action)
+        {
+            try
+            {
+                Hotkey hotkey = new()
+                {
+                    Alt = hotkeySettings.Alt,
+                    Shift = hotkeySettings.Shift,
+                    Ctrl = hotkeySettings.Ctrl,
+                    Win = hotkeySettings.Win,
+                    Key = (byte)hotkeySettings.Code,
+                };
+
+                if (_hotkeyHandle != 0)
+                {
+                    _hotkeyManager?.UnregisterHotkey(_hotkeyHandle);
+                    _hotkeyHandle = 0;
+                    Debug.WriteLine("Unregistering previous low level key handler", GetType());
+                }
+
+                _hotkeyManager ??= new HotkeyManager();
+                _hotkeyHandle = _hotkeyManager.RegisterHotkey(hotkey, action);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+
+        private void OnShortcutActivated()
+        {
+            App.MainWindow.Restore();
+            App.MainWindow.BringToFront();
         }
 
         #region 快捷键设置存取
 
-        private async void ReadActivationSettings()
+        private async void ReadShortcutSettings()
         {
             try
             {
@@ -51,10 +113,10 @@ namespace Flint3.ViewModels
                 }
             }
             catch { }
-            ActivationShortcut = DefaultActivationShortcut;
+            ActivationShortcut = _defaultActivationShortcut;
         }
 
-        private async void SaveActivationSettings()
+        private async void SaveShortcutSettings()
         {
             try
             {
@@ -65,5 +127,33 @@ namespace Flint3.ViewModels
         }
 
         #endregion
+
+        private static bool _disposed;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    SaveShortcutSettings();
+
+                    if (_hotkeyHandle != 0)
+                    {
+                        _hotkeyManager?.UnregisterHotkey(_hotkeyHandle);
+                    }
+
+                    _hotkeyManager?.Dispose();
+                    _disposed = true;
+                }
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
+
     }
 }

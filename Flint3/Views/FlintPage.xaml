@@ -22,7 +22,7 @@
         <cvt:IsExpanded2OpacityConverter x:Key="Bool2Opacity"/>
     </Page.Resources>
 
-    <Grid PointerPressed="OnMainGridPointerAct">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="42"/>
             <RowDefinition Height="Auto"/>

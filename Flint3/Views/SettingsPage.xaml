@@ -12,7 +12,7 @@
     xmlns:ui="using:CommunityToolkit.WinUI.UI" 
     xmlns:cvt="using:Flint3.Converters"
     xmlns:control="using:Flint3.Controls.ShortcutControl"
-    Background="Transparent" NavigationCacheMode="Required">
+    Background="Transparent" NavigationCacheMode="Disabled">
     <Page.Resources>
         <ui:AttachedDropShadow x:Key="CommonShadow" BlurRadius="16" IsMasked="False" Color="{ThemeResource FLINT_LOGO_SHADOW_BK}" Offset="4,4" Opacity="1" CastTo="{x:Bind FlintLogoMaskBorder}"/>
 
@@ -84,7 +84,7 @@
                         <TextBlock Text="英文释义" FontSize="14" CharacterSpacing="64"/>
                         <TextBlock Text="选择是否显示英英释义" FontSize="12" Opacity="0.6" CharacterSpacing="64"/>
                     </StackPanel>
-                    <ToggleSwitch Grid.Column="3" MinWidth="0" Background="Transparent" IsOn="{x:Bind _viewModel.AppSettings.EnableEngDefinition,Mode=TwoWay}"/>
+                    <ToggleSwitch Grid.Column="3" MinWidth="0" Background="Transparent" IsTabStop="False" IsOn="{x:Bind _viewModel.AppSettings.EnableEngDefinition,Mode=TwoWay}"/>
                 </Grid>
                 <Grid Margin="16,4,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="0,0,0,0" Background="{ThemeResource SETTING_ITEM_BK}">
                     <Grid.ColumnDefinitions>
@@ -98,7 +98,7 @@
                         <TextBlock Text="快捷键" FontSize="14" CharacterSpacing="64"/>
                         <TextBlock Text="自定义唤起窗口的快捷键" FontSize="12" Opacity="0.6" CharacterSpacing="64"/>
                     </StackPanel>
-                    <control:ShortcutControl Grid.Column="3" Margin="0,4" HotkeySettings="{x:Bind _viewModel.ActivationShortcut,Mode=TwoWay}"/>
+                    <control:ShortcutControl x:Name="ShortcutSettingControl" Grid.Column="3" Margin="0,4" IsTabStop="False" HotkeySettings="{x:Bind _viewModel.ActivationShortcut,Mode=TwoWay}"/>
                 </Grid>
                 <Grid Margin="16,4,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="0,0,0,0" Background="{ThemeResource SETTING_ITEM_BK}">
                     <Grid.ColumnDefinitions>
@@ -123,7 +123,7 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <RadioButton Grid.Column="0" Style="{StaticResource SettingsRadioButtonStyle}" HorizontalAlignment="Center" Padding="0" Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                    <RadioButton Grid.Column="0" Style="{StaticResource SettingsRadioButtonStyle}" HorizontalAlignment="Center" Padding="0" IsTabStop="False" Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                                  IsChecked="{x:Bind _viewModel.AppSettings.SearchBoxStyle,Mode=OneWay,Converter={StaticResource Eql2Bool},ConverterParameter=0}" Tag="0" Checked="OnSearchBoxStyleChecked">
                         <RadioButton.Content>
                             <Grid Height="72" Width="108" CornerRadius="8" BorderBrush="Black" BorderThickness="4" Background="{ThemeResource SystemAccentColorDark3}">
@@ -144,7 +144,7 @@
                             </ToolTip>
                         </ToolTipService.ToolTip>
                     </RadioButton>
-                    <RadioButton Grid.Column="1" Style="{StaticResource SettingsRadioButtonStyle}" HorizontalAlignment="Center" Padding="0" Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                    <RadioButton Grid.Column="1" Style="{StaticResource SettingsRadioButtonStyle}" HorizontalAlignment="Center" Padding="0" IsTabStop="False" Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                                  IsChecked="{x:Bind _viewModel.AppSettings.SearchBoxStyle,Mode=OneWay,Converter={StaticResource Eql2Bool},ConverterParameter=1}" Tag="1" Checked="OnSearchBoxStyleChecked">
                         <RadioButton.Content>
                             <Grid Height="72" Width="108" CornerRadius="8" BorderBrush="Black" BorderThickness="4" Background="{ThemeResource SystemAccentColorDark3}">
@@ -165,7 +165,7 @@
                             </ToolTip>
                         </ToolTipService.ToolTip>
                     </RadioButton>
-                    <RadioButton Grid.Column="2" Style="{StaticResource SettingsRadioButtonStyle}" HorizontalAlignment="Center" Padding="0" Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                    <RadioButton Grid.Column="2" Style="{StaticResource SettingsRadioButtonStyle}" HorizontalAlignment="Center" Padding="0" IsTabStop="False" Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                                  IsChecked="{x:Bind _viewModel.AppSettings.SearchBoxStyle,Mode=OneWay,Converter={StaticResource Eql2Bool},ConverterParameter=2}" Tag="2" Checked="OnSearchBoxStyleChecked">
                         <RadioButton.Content>
                             <Grid Height="72" Width="108" CornerRadius="8" BorderBrush="Black" BorderThickness="4" Background="{ThemeResource SystemAccentColorDark3}">
@@ -200,7 +200,7 @@
                         <TextBlock Text="Flint" FontSize="14" CharacterSpacing="64"/>
                         <TextBlock Text="{x:Bind _appVersion}" FontSize="12" Opacity="0.6" CharacterSpacing="64"/>
                     </StackPanel>
-                    <Button Grid.Column="3" Click="OnClickGoToStoreRate">
+                    <Button Grid.Column="3" Click="OnClickGoToStoreRate" IsTabStop="False">
                         <TextBlock Text="打分 &amp; 评价" VerticalAlignment="Center" FontSize="13" CharacterSpacing="40"/>
                     </Button>
                 </Grid>
@@ -216,7 +216,7 @@
                         <TextBlock Text="数据来源" FontSize="14" CharacterSpacing="64"/>
                         <TextBlock Text="离线词典数据来自ECDICT" FontSize="12" Opacity="0.6" CharacterSpacing="64"/>
                     </StackPanel>
-                    <HyperlinkButton Grid.Column="3" NavigateUri="https://github.com/skywind3000/ECDICT">
+                    <HyperlinkButton Grid.Column="3" NavigateUri="https://github.com/skywind3000/ECDICT" IsTabStop="False">
                         <TextBlock Text="ECDICT on GitHub" VerticalAlignment="Center" FontSize="13" CharacterSpacing="40"/>
                     </HyperlinkButton>
                 </Grid>
@@ -232,7 +232,7 @@
                         <TextBlock Text="反馈" FontSize="14" CharacterSpacing="64"/>
                         <TextBlock Text="如果您遇到Bug或有任何建议" FontSize="12" Opacity="0.6" CharacterSpacing="64"/>
                     </StackPanel>
-                    <Button Grid.Column="3">
+                    <Button Grid.Column="3" IsTabStop="False">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                             <Image Width="20" Height="20" Margin="0,0,0,0">
                                 <Image.Source>
@@ -260,7 +260,7 @@
                         <TextBlock Text="源代码" FontSize="14" CharacterSpacing="64"/>
                         <TextBlock Text="Flint是一款开源应用程序" FontSize="12" Opacity="0.6" CharacterSpacing="64"/>
                     </StackPanel>
-                    <Button Grid.Column="3" Click="OnClickGitHub">
+                    <Button Grid.Column="3" Click="OnClickGitHub" IsTabStop="False">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                             <Image Width="20" Height="20" Margin="0,0,0,0" Source="{ThemeResource ABOUT_GITHUB_IMG}"/>
                             <TextBlock Text="GitHub" VerticalAlignment="Center" FontSize="13" Margin="8,0,2,0" CharacterSpacing="40"/>
@@ -272,7 +272,7 @@
         </ScrollViewer>
         <Grid Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Rectangle Height="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" Fill="{ThemeResource SETTING_LINE_BK}"/>
-            <Button Margin="8,8,0,8" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Left" VerticalAlignment="Center" Click="OnClickBackButton">
+            <Button Margin="8,8,0,8" IsTabStop="False" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Left" VerticalAlignment="Center" Click="OnClickBackButton">
                 <ToolTipService.ToolTip>
                     <ToolTip>
                         <TextBlock>
