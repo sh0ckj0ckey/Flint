@@ -104,7 +104,7 @@ namespace Flint3.ViewModels
         {
             try
             {
-                string json = await StorageFilesService.ReadFileAsync("shortcutsettings.json");
+                string json = await StorageFilesService.ReadFileAsync("shortcutsettings");
                 if (!string.IsNullOrWhiteSpace(json))
                 {
                     var shortcut = JsonSerializer.Deserialize<HotkeySettings>(json);
@@ -121,7 +121,7 @@ namespace Flint3.ViewModels
             try
             {
                 string json = JsonSerializer.Serialize(ActivationShortcut);
-                await StorageFilesService.WriteFileAsync("shortcutsettings.json", json);
+                await StorageFilesService.WriteFileAsync("shortcutsettings", json);
             }
             catch { }
         }

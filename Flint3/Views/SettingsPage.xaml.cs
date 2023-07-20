@@ -99,5 +99,10 @@ namespace Flint3.Views
             }
             catch { }
         }
+
+        private void OnClickCloseApp(object sender, RoutedEventArgs e)
+        {
+            MainViewModel.Instance.ActExitWindow?.Invoke();
+        }
     }
 }

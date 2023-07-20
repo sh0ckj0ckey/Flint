@@ -40,6 +40,11 @@ namespace Flint3.ViewModels
         public Action<bool> ActPinWindow { get; set; } = null;
 
         /// <summary>
+        /// 退出应用
+        /// </summary>
+        public Action ActExitWindow { get; set; } = null;
+
+        /// <summary>
         /// 搜索展示结果
         /// </summary>
         public ObservableCollection<StarDictWordItem> SearchResultWordItems { get; private set; } = new ObservableCollection<StarDictWordItem>();

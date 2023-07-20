@@ -267,6 +267,26 @@
                         </StackPanel>
                     </Button>
                 </Grid>
+                
+                <Grid Margin="16,4,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="4,4,4,4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Rectangle Grid.ColumnSpan="4" Fill="Transparent" 
+                               Stroke="{ThemeResource SETTING_ITEM_BK}" RadiusX="4" RadiusY="4"
+                               StrokeDashCap="Round" StrokeThickness="2" StrokeDashArray="2"
+                               Margin="-16,-8,-16,-8" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                    <FontIcon Grid.Column="0" FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xF3B1;" FontSize="18" Opacity="0.6" Margin="2,0,14,0"/>
+                    <StackPanel Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Vertical">
+                        <TextBlock Text="退出应用" FontSize="13" Opacity="0.6" CharacterSpacing="64"/>
+                    </StackPanel>
+                    <Button Grid.Column="3" Click="OnClickCloseApp" IsTabStop="False" Background="Transparent" BorderBrush="Transparent" Padding="6,4,6,4">
+                        <TextBlock Text="立即退出" VerticalAlignment="Center" FontSize="13" CharacterSpacing="40" Foreground="Firebrick" Opacity="0.8"/>
+                    </Button>
+                </Grid>
                 <TextBlock Text="©2023 sh0ckj0ckey." FontSize="12" FontWeight="Light" Opacity="0.5" CharacterSpacing="40" Margin="20,8,0,8"/>
             </StackPanel>
         </ScrollViewer>

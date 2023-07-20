@@ -32,9 +32,10 @@ namespace Flint3
             this.AppWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/Logos/flint_logo.ico"));
             this.PersistenceId = "FlintMainWindow";
 
-            MainViewModel.Instance.ActSwitchAppTheme = SwitchAppTheme;
-            MainViewModel.Instance.ActHideWindow = HideInTray;
+            MainViewModel.Instance.ActSwitchAppTheme = this.SwitchAppTheme;
+            MainViewModel.Instance.ActHideWindow = this.HideInTray;
             MainViewModel.Instance.ActPinWindow = (on) => { this.IsAlwaysOnTop = on; };
+            MainViewModel.Instance.ActExitWindow = this.Close;
 
             // 监听系统主题变化
             ListenThemeColorChange();

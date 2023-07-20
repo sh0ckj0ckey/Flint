@@ -147,7 +147,7 @@
                                   Visibility="{x:Bind PinToggleButton.IsChecked,Mode=OneWay,Converter={StaticResource Bool2Vis}}"/>
                     </Grid>
                 </ToggleButton>
-                <Button Height="34" Width="42" Padding="0" Background="Transparent" BorderBrush="Transparent" Click="OnClickHide">
+                <Button Height="34" Width="42" Padding="0" Visibility="Collapsed" Background="Transparent" BorderBrush="Transparent" Click="OnClickHide">
                     <ToolTipService.ToolTip>
                         <ToolTip>
                             <TextBlock>
