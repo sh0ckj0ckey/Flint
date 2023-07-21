@@ -100,8 +100,7 @@ namespace Flint3.ViewModels
 
         private void OnShortcutActivated()
         {
-            App.MainWindow.Restore();
-            App.MainWindow.BringToFront();
+            ActShowWindow?.Invoke();
         }
 
         #region 快捷键设置存取

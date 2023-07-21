@@ -40,6 +40,11 @@ namespace Flint3.ViewModels
         public Action<bool> ActPinWindow { get; set; } = null;
 
         /// <summary>
+        /// 显示应用
+        /// </summary>
+        public Action ActShowWindow { get; set; } = null;
+
+        /// <summary>
         /// 退出应用
         /// </summary>
         public Action ActExitWindow { get; set; } = null;

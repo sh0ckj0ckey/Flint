@@ -40,6 +40,7 @@ namespace Flint3
             MainViewModel.Instance.ActHideWindow = this.HideApp;
             MainViewModel.Instance.ActPinWindow = (on) => { this.IsAlwaysOnTop = on; };
             MainViewModel.Instance.ActExitWindow = this.ExitApp;
+            MainViewModel.Instance.ActShowWindow = this.ShowApp;
 
             // 监听系统主题变化
             ListenThemeColorChange();
