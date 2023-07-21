@@ -52,6 +52,7 @@ namespace Flint3.Controls.ShortcutControl
 
             this.Unloaded += ShortcutControl_Unloaded;
 
+            Debug.WriteLine($"Add Hook");
             hook = new HotkeySettingsControlHook(Hotkey_KeyDown, Hotkey_KeyUp, Hotkey_IsActive, FilterAccessibleKeyboardEvents);
 
             if (App.MainWindow != null)
@@ -81,6 +82,7 @@ namespace Flint3.Controls.ShortcutControl
             // Dispose the HotkeySettingsControlHook object to terminate the hook threads when the textbox is unloaded
             hook?.Dispose();
             hook = null;
+            Debug.WriteLine($"Delete Hook");
 
             if (App.MainWindow != null)
             {
