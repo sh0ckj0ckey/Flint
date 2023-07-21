@@ -15,6 +15,15 @@
     <DefaultLanguage>zh-CN</DefaultLanguage>
     <ApplicationIcon>Assets\Logos\flint_logo.ico</ApplicationIcon>
     <SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
+    <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
+    <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
+    <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
+    <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
+    <GenerateTestArtifacts>True</GenerateTestArtifacts>
+    <AppxBundle>Always</AppxBundle>
+    <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
+    <AppxBundlePlatforms>x64</AppxBundlePlatforms>
+    <AppxPackageDir>C:\Users\Administrator\Desktop\</AppxPackageDir>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Assets\flint_logo_background_dark.png" />
