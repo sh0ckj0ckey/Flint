@@ -22,8 +22,9 @@
     <GenerateTestArtifacts>True</GenerateTestArtifacts>
     <AppxBundle>Always</AppxBundle>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
-    <AppxBundlePlatforms>x64</AppxBundlePlatforms>
-    <AppxPackageDir>C:\Users\Administrator\Desktop\</AppxPackageDir>
+    <AppxBundlePlatforms>arm64</AppxBundlePlatforms>
+    <AppxPackageDir>C:\Users\Administrator\Desktop\ARM64\</AppxPackageDir>
+    <GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Assets\flint_logo_background_dark.png" />

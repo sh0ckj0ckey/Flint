@@ -8,11 +8,11 @@
   IgnorableNamespaces="uap rescap">
 
   <Identity
-    Name="a714f805-ef80-458c-9e79-2362ad58a5cb"
+    Name="22189NoMewing.6191006733C16"
     Publisher="CN=E6D8FAFA-3EF4-4E47-B885-52144C67BFF5"
     Version="3.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="a714f805-ef80-458c-9e79-2362ad58a5cb" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="ea7c791b-9a41-451a-94b4-4ada7eee7f41" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>燧石</DisplayName>
