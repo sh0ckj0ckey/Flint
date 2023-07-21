@@ -84,6 +84,7 @@
     <None Remove="Assets\Manifests\Wide310x150Logo.scale-200.png" />
     <None Remove="Assets\Manifests\Wide310x150Logo.scale-400.png" />
     <None Remove="Assets\photo.png" />
+    <None Remove="Assets\teachingtip_img.jpg" />
     <None Remove="Controls\KeyVisual\KeyVisual.xaml" />
     <None Remove="Controls\ShortcutControl\ShortcutControl.xaml" />
     <None Remove="Controls\ShortcutControl\ShortcutDialogContentControl.xaml" />
@@ -99,7 +100,7 @@
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.WinUI.UI" Version="7.1.2" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.3.230502000" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.3.230602002" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.755" />
     <PackageReference Include="WinUIEx" Version="2.2.0" />
     <Manifest Include="$(ApplicationManifest)" />

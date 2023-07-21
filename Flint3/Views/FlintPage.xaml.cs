@@ -38,12 +38,22 @@ namespace Flint3.Views
             StarDictDataAccess.InitializeDatabase();
         }
 
-        private void Page_Loaded(object sender, RoutedEventArgs e)
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
             App.MainWindow.SetTitleBar(AppTitleBar);
             TitleBarHelper.UpdateTitleBar(App.MainWindow, ActualTheme);
 
             SearchTextBox.Style = GetSearchTextBoxStyle(MainViewModel.Instance.AppSettings.SearchBoxStyle);
+            
+            // 首次启动显示 TeachingTips
+            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+            if (localSettings.Values["firstRunV300Teaching"] == null)
+            {
+                localSettings.Values["firstRunV300Teaching"] = true;
+                await Task.Delay(500);
+                FirstTeachingTip.IsOpen = false;
+                FirstTeachingTip.IsOpen = true;
+            }
         }
 
         /// <summary>
@@ -150,6 +160,18 @@ namespace Flint3.Views
                 PinToggleButton.IsChecked = false;
                 MainViewModel.Instance.ActPinWindow?.Invoke(false);
             }
+        }
+
+        private void OnClickCloseFirstTeachingTip(TeachingTip sender, object args)
+        {
+            FirstTeachingTip.IsOpen = false;
+            SecondTeachingTip.IsOpen = true;
+        }
+
+        private void OnClickCloseSecondTeachingTip(TeachingTip sender, object args)
+        {
+            FirstTeachingTip.IsOpen = false;
+            SecondTeachingTip.IsOpen = false;
         }
     }
 }

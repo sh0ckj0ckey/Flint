@@ -25,6 +25,8 @@ namespace Flint3
 
         private UISettings _uiSettings;
 
+        private Microsoft.UI.Dispatching.DispatcherQueue _dispatcherQueue = null;
+
         public MainWindow()
         {
             this.InitializeComponent();
@@ -32,10 +34,12 @@ namespace Flint3
             this.AppWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/Logos/flint_logo.ico"));
             this.PersistenceId = "FlintMainWindow";
 
+            _dispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
+
             MainViewModel.Instance.ActSwitchAppTheme = this.SwitchAppTheme;
-            MainViewModel.Instance.ActHideWindow = this.HideInTray;
+            MainViewModel.Instance.ActHideWindow = this.HideApp;
             MainViewModel.Instance.ActPinWindow = (on) => { this.IsAlwaysOnTop = on; };
-            MainViewModel.Instance.ActExitWindow = this.Close;
+            MainViewModel.Instance.ActExitWindow = this.ExitApp;
 
             // 监听系统主题变化
             ListenThemeColorChange();
@@ -43,8 +47,8 @@ namespace Flint3
             // 创建常驻托盘图标
             var hwndMain = this.GetWindowHandle();
             _notifyIcon = new NotifyIcon(hwndMain, @"Assets\Logos\flint_logo.ico");
-            _notifyIcon.OnWindowHide += this.HideInTray;
-            _notifyIcon.OnWindowClose += this.Close;
+            _notifyIcon.OnWindowHide += this.HideApp;
+            _notifyIcon.OnWindowClose += this.ExitApp;
             _notifyIcon.OnWindowActivate += this.ShowApp;
             _notifyIcon.CreateNotifyIcon();
         }
@@ -84,14 +88,12 @@ namespace Flint3
         }
 
         /// <summary>
-        /// 主窗口关闭时，移除钩子，清理托盘图标
+        /// 主窗口关闭后
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="args"></param>
         private void OnMainWindowClosed(object sender, WindowEventArgs args)
         {
-            MainViewModel.Instance.Dispose();
-            _notifyIcon?.Destroy();
             Application.Current.Exit();
         }
 
@@ -105,8 +107,7 @@ namespace Flint3
             {
                 if (MainViewModel.Instance.AppSettings.AppearanceIndex == 0)
                 {
-                    var dispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
-                    dispatcherQueue.TryEnqueue(() =>
+                    _dispatcherQueue.TryEnqueue(() =>
                     {
                         SwitchAppTheme();
                     });
@@ -166,9 +167,19 @@ namespace Flint3
         }
 
         /// <summary>
+        /// 退出应用，移除钩子，清理托盘图标
+        /// </summary>
+        private void ExitApp()
+        {
+            MainViewModel.Instance.Dispose();
+            _notifyIcon?.Destroy();
+            this.Close();
+        }
+
+        /// <summary>
         /// 隐藏窗口
         /// </summary>
-        private void HideInTray()
+        private void HideApp()
         {
             // 弹出系统通知 TrayMessage(hWndMain, null, m_hIcon, m_hBalloonIcon, NIM.MODIFY, NIIF.USER | NIIF.LARGE_ICON, "按下快捷键或点击图标可以唤出窗口", "燧石 已隐藏至系统托盘", 0);
             this.Hide();
@@ -199,7 +210,7 @@ namespace Flint3
         {
             try
             {
-                this.HideInTray();
+                this.HideApp();
                 args.Handled = true;
             }
             catch { args.Handled = false; }

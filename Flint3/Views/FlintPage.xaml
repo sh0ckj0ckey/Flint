@@ -108,14 +108,14 @@
         </Grid>
         <Grid Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Rectangle Height="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" Fill="{ThemeResource SETTING_LINE_BK}" Visibility="{x:Bind _viewModel.SearchResultWordItems.Count,Mode=OneWay,Converter={StaticResource Int2Vis}}"/>
-            <Button Margin="8,8,0,8" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Left" VerticalAlignment="Center" Click="OnClickSettingsButton">
+            <Button x:Name="SettingsButton" Margin="8,8,0,8" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Left" VerticalAlignment="Center" Click="OnClickSettingsButton">
                 <ToolTipService.ToolTip>
                     <ToolTip>
                         <TextBlock>
-                        <Run Text="setting" FontWeight="Bold"/>
-                        <Run Text="/ˈset.ɪŋ/"/>
-                        <Run Text="noun" FontStyle="Italic" FontWeight="Medium"/>
-                        <Run Text="设置"/>
+                            <Run Text="setting" FontWeight="Bold"/>
+                            <Run Text="/ˈset.ɪŋ/"/>
+                            <Run Text="noun" FontStyle="Italic" FontWeight="Medium"/>
+                            <Run Text="设置"/>
                         </TextBlock>
                     </ToolTip>
                 </ToolTipService.ToolTip>
@@ -161,6 +161,22 @@
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8AD;" FontSize="16" UseLayoutRounding="False" CenterPoint="11,11,0" Rotation="90" Height="22" Width="22" Opacity="0.8"/>
                 </Button>
             </StackPanel>
+            <TeachingTip x:Name="SecondTeachingTip" Target="{x:Bind SettingsButton}" Title="快速唤醒燧石" Subtitle="按下 Alt + 空格键 可以将燧石窗口唤醒" PreferredPlacement="TopRight"
+                         CloseButtonContent="我知道了" CloseButtonClick="OnClickCloseSecondTeachingTip">
+                <TeachingTip.Content>
+                    <TextBlock Text="可以在设置中修改为更加趁手的快捷键" TextWrapping="Wrap" FontSize="13" Margin="0,2,0,0" Opacity="0.7"/>
+                </TeachingTip.Content>
+            </TeachingTip>
         </Grid>
+        <Border x:Name="FirstTeachingTipTargetBorder" HorizontalAlignment="Right" VerticalAlignment="Bottom" Background="Transparent" Width="1" Height="1" Margin="0,0,40,0"/>
+        <TeachingTip x:Name="FirstTeachingTip" Target="{x:Bind FirstTeachingTipTargetBorder}" Title="欢迎使用燧石" Subtitle="点击关闭按钮或者按下 Esc 会将燧石隐藏到系统托盘" PreferredPlacement="BottomLeft"
+                     CloseButtonContent="我知道了" CloseButtonClick="OnClickCloseFirstTeachingTip">
+            <TeachingTip.HeroContent>
+                <Image Source="/Assets/teachingtip_img.jpg" Stretch="UniformToFill" Height="128" HorizontalAlignment="Right"/>
+            </TeachingTip.HeroContent>
+            <TeachingTip.Content>
+                <TextBlock Text="想要退出燧石，请右键系统托盘图标" TextWrapping="Wrap" FontSize="13" Margin="0,2,0,0" Opacity="0.7"/>
+            </TeachingTip.Content>
+        </TeachingTip>
     </Grid>
 </Page>

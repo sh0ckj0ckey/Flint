@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Globalization;
 using System.Text.Json;
+using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Flint3.Core;
 using Flint3.Models;
@@ -31,16 +32,19 @@ namespace Flint3.ViewModels
             get => _activationShortcut;
             set
             {
-                HotkeySettings newValue = (value == null || !value.IsValid() || value.IsEmpty()) ? _defaultActivationShortcut : value;
-                HotkeySettings previousValue = _activationShortcut?.Clone();
-                SetProperty(ref _activationShortcut, newValue);
-                ActActivationShortcutChanged?.Invoke(previousValue, _activationShortcut);
+                if (_activationShortcut?.ToString() != value?.ToString())
+                {
+                    HotkeySettings newValue = (value == null || !value.IsValid() || value.IsEmpty()) ? _defaultActivationShortcut : value;
+                    HotkeySettings previousValue = _activationShortcut?.Clone();
+                    SetProperty(ref _activationShortcut, newValue);
+                    ActActivationShortcutChanged?.Invoke(previousValue, _activationShortcut);
+                }
             }
         }
 
         public void RegisterShortcut()
         {
-            ActActivationShortcutChanged += (preSettings, newSettings) =>
+            ActActivationShortcutChanged += async (preSettings, newSettings) =>
             {
                 if (preSettings != null && !preSettings.IsEmpty())
                 {
@@ -55,6 +59,8 @@ namespace Flint3.ViewModels
                 {
                     SetShortcut(newSettings, OnShortcutActivated);
                 }
+
+                await SaveShortcutSettings();
             };
 
             if (ActivationShortcut?.IsValid() == true)
@@ -116,12 +122,12 @@ namespace Flint3.ViewModels
             ActivationShortcut = _defaultActivationShortcut;
         }
 
-        private async void SaveShortcutSettings()
+        private async Task SaveShortcutSettings()
         {
             try
             {
                 string json = JsonSerializer.Serialize(ActivationShortcut);
-                await StorageFilesService.WriteFileAsync("shortcutsettings", json);
+                bool ret = await StorageFilesService.WriteFileAsync("shortcutsettings", json);
             }
             catch { }
         }
@@ -136,8 +142,6 @@ namespace Flint3.ViewModels
             {
                 if (disposing)
                 {
-                    SaveShortcutSettings();
-
                     if (_hotkeyHandle != 0)
                     {
                         _hotkeyManager?.UnregisterHotkey(_hotkeyHandle);
