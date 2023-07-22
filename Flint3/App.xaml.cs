@@ -58,7 +58,6 @@ namespace Flint3
                 MainWindow.Width = 560;
                 MainWindow.CenterOnScreen();
             }
-
             MainWindow.Activate();
         }
     }

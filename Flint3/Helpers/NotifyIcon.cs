@@ -139,9 +139,9 @@ namespace Flint3.Helpers
 
         private readonly SUBCLASSPROC SubClassDelegate;
 
-        internal Action OnWindowHide { get; set; } = null;
-        internal Action OnWindowClose { get; set; } = null;
-        internal Action OnWindowActivate { get; set; } = null;
+        internal Action OnShowWindow { get; set; } = null;
+        internal Action OnHideWindow { get; set; } = null;
+        internal Action OnExitWindow { get; set; } = null;
 
         internal NotifyIcon(nint hwndMain, string iconPath)
         {
@@ -150,7 +150,7 @@ namespace Flint3.Helpers
             SubClassDelegate = new SUBCLASSPROC(WindowSubClass);
             bool bRet = SetWindowSubclass(m_hWndMain, SubClassDelegate, 0, 0);
 
-            m_hIcon = LoadImage(IntPtr.Zero, iconPath, IMAGE_ICON, 32, 32, LR_LOADFROMFILE);
+            m_hIcon = LoadImage(IntPtr.Zero, iconPath, IMAGE_ICON, 64, 64, LR_LOADFROMFILE);
             m_hBalloonIcon = LoadImage(IntPtr.Zero, iconPath, IMAGE_ICON, 128, 128, LR_LOADFROMFILE);
         }
 
@@ -165,14 +165,14 @@ namespace Flint3.Helpers
             switch (uMsg)
             {
                 case WM_CLOSE:
-                    this.OnWindowHide?.Invoke();
+                    this.OnHideWindow?.Invoke();
                     return (int)IntPtr.Zero;
                 case WM_TRAYMOUSEMESSAGE:
                     {
                         switch (LOWORD((int)lParam))
                         {
                             case WM_LBUTTONUP:
-                                this.OnWindowActivate?.Invoke();
+                                this.OnShowWindow?.Invoke();
                                 break;
                             case WM_CONTEXTMENU:
                             case WM_RBUTTONUP:
@@ -192,11 +192,11 @@ namespace Flint3.Helpers
                                     {
                                         if (nCmd == i)
                                         {
-                                            this.OnWindowClose?.Invoke();
+                                            this.OnExitWindow?.Invoke();
                                         }
                                         else if (nCmd == 1)
                                         {
-                                            this.OnWindowActivate?.Invoke();
+                                            this.OnShowWindow?.Invoke();
                                         }
                                     }
                                 }

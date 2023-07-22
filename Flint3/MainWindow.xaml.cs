@@ -37,10 +37,10 @@ namespace Flint3
             _dispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
 
             MainViewModel.Instance.ActSwitchAppTheme = this.SwitchAppTheme;
-            MainViewModel.Instance.ActHideWindow = this.HideApp;
             MainViewModel.Instance.ActPinWindow = (on) => { this.IsAlwaysOnTop = on; };
-            MainViewModel.Instance.ActExitWindow = this.ExitApp;
             MainViewModel.Instance.ActShowWindow = this.ShowApp;
+            MainViewModel.Instance.ActHideWindow = this.HideApp;
+            MainViewModel.Instance.ActExitWindow = this.ExitApp;
 
             // 监听系统主题变化
             ListenThemeColorChange();
@@ -48,9 +48,9 @@ namespace Flint3
             // 创建常驻托盘图标
             var hwndMain = this.GetWindowHandle();
             _notifyIcon = new NotifyIcon(hwndMain, @"Assets\Logos\flint_logo.ico");
-            _notifyIcon.OnWindowHide += this.HideApp;
-            _notifyIcon.OnWindowClose += this.ExitApp;
-            _notifyIcon.OnWindowActivate += this.ShowApp;
+            _notifyIcon.OnShowWindow += this.ShowApp;
+            _notifyIcon.OnHideWindow += this.HideApp;
+            _notifyIcon.OnExitWindow += this.ExitApp;
             _notifyIcon.CreateNotifyIcon();
         }
 
