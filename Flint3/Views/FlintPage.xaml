@@ -129,6 +129,12 @@
                 </muxc:AnimatedIcon>
             </Button>
             <StackPanel Margin="0,8,8,8" Spacing="4" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                <Button x:Name="NewFeatureButton" Visibility="Collapsed" Click="OnClickShowMeNewFeature" Style="{StaticResource AccentButtonStyle}">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xF133;" FontSize="15" Margin="0,0,4,0"/>
+                        <TextBlock Text="新增功能 !" FontSize="12" CharacterSpacing="48"/>
+                    </StackPanel>
+                </Button>
                 <ToggleButton x:Name="PinToggleButton" Height="34" Width="42" IsChecked="False" Padding="0" Background="Transparent" BorderBrush="Transparent" Click="OnClickPin">
                     <ToolTipService.ToolTip>
                         <ToolTip>
@@ -161,18 +167,22 @@
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8AD;" FontSize="16" UseLayoutRounding="False" CenterPoint="11,11,0" Rotation="90" Height="22" Width="22" Opacity="0.8"/>
                 </Button>
             </StackPanel>
-            <TeachingTip x:Name="SecondTeachingTip" Target="{x:Bind SettingsButton}" Title="快速唤醒燧石" Subtitle="按下 Alt + 空格键 可以将燧石窗口唤醒" PreferredPlacement="TopRight"
+
+            <!--教学 2/2-->
+            <TeachingTip x:Name="SecondTeachingTip" Target="{x:Bind SettingsButton}" IsOpen="False" Title="快速唤醒燧石" Subtitle="按下 Alt + 空格键 可以将燧石窗口唤醒" PreferredPlacement="TopRight"
                          CloseButtonContent="我知道了" CloseButtonClick="OnClickCloseSecondTeachingTip">
                 <TeachingTip.Content>
                     <TextBlock Text="可以在设置中修改为更加趁手的快捷键" TextWrapping="Wrap" FontSize="13" Margin="0,2,0,0" Opacity="0.7"/>
                 </TeachingTip.Content>
             </TeachingTip>
         </Grid>
+        
+        <!--教学 1/2-->
         <Border x:Name="FirstTeachingTipTargetBorder" HorizontalAlignment="Right" VerticalAlignment="Bottom" Background="Transparent" Width="1" Height="1" Margin="0,0,40,0"/>
-        <TeachingTip x:Name="FirstTeachingTip" Target="{x:Bind FirstTeachingTipTargetBorder}" Title="欢迎使用燧石" Subtitle="点击关闭按钮或者按下 Esc 会将燧石隐藏到系统托盘" PreferredPlacement="BottomLeft"
+        <TeachingTip x:Name="FirstTeachingTip" Target="{x:Bind FirstTeachingTipTargetBorder}" IsOpen="False" Title="欢迎使用燧石" Subtitle="点击关闭按钮或者按下 Esc 会将燧石隐藏到系统托盘" PreferredPlacement="BottomLeft"
                      CloseButtonContent="我知道了" CloseButtonClick="OnClickCloseFirstTeachingTip">
             <TeachingTip.HeroContent>
-                <Image Source="/Assets/teachingtip_img.jpg" Stretch="UniformToFill" Height="128" HorizontalAlignment="Right"/>
+                <Image Source="/Assets/teachingtip_img.jpg" Stretch="UniformToFill" Height="115" HorizontalAlignment="Right"/>
             </TeachingTip.HeroContent>
             <TeachingTip.Content>
                 <TextBlock Text="想要退出燧石，请右键系统托盘图标" TextWrapping="Wrap" FontSize="13" Margin="0,2,0,0" Opacity="0.7"/>

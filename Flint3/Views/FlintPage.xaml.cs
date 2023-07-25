@@ -38,22 +38,24 @@ namespace Flint3.Views
             StarDictDataAccess.InitializeDatabase();
         }
 
-        private async void Page_Loaded(object sender, RoutedEventArgs e)
+        private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             App.MainWindow.SetTitleBar(AppTitleBar);
             TitleBarHelper.UpdateTitleBar(App.MainWindow, ActualTheme);
 
             SearchTextBox.Style = GetSearchTextBoxStyle(MainViewModel.Instance.AppSettings.SearchBoxStyle);
-            
-            // 首次启动显示 TeachingTips
-            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-            if (localSettings.Values["firstRunV300Teaching"] == null)
+
+            try
             {
-                localSettings.Values["firstRunV300Teaching"] = true;
-                await Task.Delay(500);
-                FirstTeachingTip.IsOpen = false;
-                FirstTeachingTip.IsOpen = true;
+                NewFeatureButton.Visibility = Visibility.Collapsed;
+                // 首次启动显示 TeachingTips
+                var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+                if (localSettings.Values["firstRunV300Teaching"] == null)
+                {
+                    NewFeatureButton.Visibility = Visibility.Visible;
+                }
             }
+            catch { }
         }
 
         /// <summary>
@@ -160,6 +162,20 @@ namespace Flint3.Views
                 PinToggleButton.IsChecked = false;
                 MainViewModel.Instance.ActPinWindow?.Invoke(false);
             }
+        }
+
+        private void OnClickShowMeNewFeature(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+                localSettings.Values["firstRunV300Teaching"] = true;
+                NewFeatureButton.Visibility = Visibility.Collapsed;
+                FirstTeachingTip.IsOpen = false;
+                SecondTeachingTip.IsOpen = false;
+                FirstTeachingTip.IsOpen = true;
+            }
+            catch { }
         }
 
         private void OnClickCloseFirstTeachingTip(TeachingTip sender, object args)
