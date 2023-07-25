@@ -131,7 +131,7 @@
             <StackPanel Margin="0,8,8,8" Spacing="4" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
                 <Button x:Name="NewFeatureButton" Visibility="Collapsed" Click="OnClickShowMeNewFeature" Style="{StaticResource AccentButtonStyle}">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xF133;" FontSize="15" Margin="0,0,4,0"/>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xF133;" FontSize="15" Margin="0,0,4,0"/>
                         <TextBlock Text="新增功能 !" FontSize="12" CharacterSpacing="48"/>
                     </StackPanel>
                 </Button>
