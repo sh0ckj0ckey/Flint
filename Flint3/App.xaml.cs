@@ -31,7 +31,7 @@ namespace Flint3
     /// </summary>
     public partial class App : Application
     {
-        public static WindowEx MainWindow { get; } = new MainWindow() { ExtendsContentIntoTitleBar = true };
+        public static WindowEx MainWindow { get; } = new MainWindow();
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code

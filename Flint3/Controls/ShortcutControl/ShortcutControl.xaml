@@ -12,7 +12,7 @@
     <Grid HorizontalAlignment="Right">
         <StackPanel Orientation="Horizontal">
             <Button x:Name="EditButton" Padding="0" Click="OpenDialogButton_Click" CornerRadius="8" MinHeight="36" MinWidth="64" IsTabStop="False">
-                <StackPanel Margin="10,0,12,0" Orientation="Horizontal" VerticalAlignment="Center">
+                <StackPanel Margin="6,0,12,0" Orientation="Horizontal" VerticalAlignment="Center">
                     <ItemsControl x:Name="PreviewKeysControl" VerticalAlignment="Center" IsEnabled="{Binding ElementName=EditButton, Path=IsEnabled}" IsTabStop="False">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>

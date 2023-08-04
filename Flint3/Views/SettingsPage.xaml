@@ -52,7 +52,7 @@
         <ScrollViewer Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="0,0,0,0">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Top">
                 <TextBlock Text="设置" Margin="20,12,0,0" FontWeight="Bold" FontSize="14" CharacterSpacing="64"/>
-                <Grid Margin="16,8,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="4,4,0,0" Background="{ThemeResource SETTING_ITEM_BK}">
+                <Grid Margin="16,8,16,0" Padding="16,12" HorizontalAlignment="Stretch" CornerRadius="4,4,0,0" Background="{ThemeResource SETTING_ITEM_BK}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
@@ -72,7 +72,7 @@
                         <ComboBoxItem Content="浅色"/>
                     </ComboBox>
                 </Grid>
-                <Grid Margin="16,4,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="0,0,0,0" Background="{ThemeResource SETTING_ITEM_BK}">
+                <Grid Margin="16,4,16,0" Padding="16,12" HorizontalAlignment="Stretch" CornerRadius="0,0,0,0" Background="{ThemeResource SETTING_ITEM_BK}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
@@ -100,7 +100,13 @@
                     </StackPanel>
                     <control:ShortcutControl x:Name="ShortcutSettingControl" Grid.Column="3" Margin="0,4" IsTabStop="False" HotkeySettings="{x:Bind _viewModel.ActivationShortcut,Mode=TwoWay}"/>
                 </Grid>
-                <Grid Margin="16,4,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="0,0,0,0" Background="{ThemeResource SETTING_ITEM_BK}">
+                <Grid Margin="16,1,16,0" Padding="16,4,16,4" HorizontalAlignment="Stretch" CornerRadius="0,0,0,0" BorderThickness="0" BorderBrush="{ThemeResource SETTING_ITEM_BK}">
+                    <Grid.Background>
+                        <SolidColorBrush Color="{ThemeResource SETTING_ITEM_BK}" Opacity="0.8"/>
+                    </Grid.Background>
+                    <muxc:CheckBox Opacity="0.8" Content="唤醒时清除上一次输入" HorizontalAlignment="Right" VerticalAlignment="Center" IsTabStop="False"/>
+                </Grid>
+                <Grid Margin="16,4,16,0" Padding="16,12" HorizontalAlignment="Stretch" CornerRadius="0,0,0,0" Background="{ThemeResource SETTING_ITEM_BK}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
@@ -114,9 +120,9 @@
                     </StackPanel>
                     <FontIcon Grid.Column="3" FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE70D;" FontSize="14" Opacity="0.5" Margin="0,0,4,0"/>
                 </Grid>
-                <Grid Margin="16,1,16,0" Padding="16,16,16,8" HorizontalAlignment="Stretch" CornerRadius="0,0,8,8" BorderThickness="0" BorderBrush="{ThemeResource SETTING_ITEM_BK}">
+                <Grid Margin="16,1,16,0" Padding="16,16,16,8" HorizontalAlignment="Stretch" CornerRadius="0,0,4,4" BorderThickness="0" BorderBrush="{ThemeResource SETTING_ITEM_BK}">
                     <Grid.Background>
-                        <SolidColorBrush Color="{ThemeResource SETTING_ITEM_BK}" Opacity="0.7"/>
+                        <SolidColorBrush Color="{ThemeResource SETTING_ITEM_BK}" Opacity="0.8"/>
                     </Grid.Background>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -188,7 +194,7 @@
                     </RadioButton>
                 </Grid>
                 <TextBlock Text="关于" Margin="20,12,0,0" FontWeight="Bold" FontSize="14" CharacterSpacing="64"/>
-                <Grid Margin="16,8,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="4,4,0,0" Background="{ThemeResource SETTING_ITEM_BK}">
+                <Grid Margin="16,8,16,0" Padding="16,12" HorizontalAlignment="Stretch" CornerRadius="4,4,0,0" Background="{ThemeResource SETTING_ITEM_BK}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
@@ -204,7 +210,7 @@
                         <TextBlock Text="打分 &amp; 评价" VerticalAlignment="Center" FontSize="13" CharacterSpacing="40"/>
                     </Button>
                 </Grid>
-                <Grid Margin="16,4,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="0,0,0,0" Background="{ThemeResource SETTING_ITEM_BK}">
+                <Grid Margin="16,4,16,0" Padding="16,12" HorizontalAlignment="Stretch" CornerRadius="0,0,0,0" Background="{ThemeResource SETTING_ITEM_BK}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
@@ -220,7 +226,7 @@
                         <TextBlock Text="ECDICT on GitHub" VerticalAlignment="Center" FontSize="13" CharacterSpacing="40"/>
                     </HyperlinkButton>
                 </Grid>
-                <Grid Margin="16,4,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="0,0,0,0" Background="{ThemeResource SETTING_ITEM_BK}">
+                <Grid Margin="16,4,16,0" Padding="16,12" HorizontalAlignment="Stretch" CornerRadius="0,0,0,0" Background="{ThemeResource SETTING_ITEM_BK}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
@@ -248,7 +254,7 @@
                         </Button.Flyout>
                     </Button>
                 </Grid>
-                <Grid Margin="16,4,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="0,0,4,4" Background="{ThemeResource SETTING_ITEM_BK}">
+                <Grid Margin="16,4,16,0" Padding="16,12" HorizontalAlignment="Stretch" CornerRadius="0,0,4,4" Background="{ThemeResource SETTING_ITEM_BK}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
@@ -268,7 +274,7 @@
                     </Button>
                 </Grid>
                 
-                <Grid Margin="16,4,16,0" Padding="16,8" HorizontalAlignment="Stretch" CornerRadius="4,4,4,4">
+                <Grid Margin="16,12,16,0" Padding="16,12" HorizontalAlignment="Stretch" CornerRadius="4,4,4,4">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
@@ -291,15 +297,22 @@
             </StackPanel>
         </ScrollViewer>
         <Grid Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <Rectangle Height="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" Fill="{ThemeResource SETTING_LINE_BK}"/>
-            <Button Margin="8,8,0,8" IsTabStop="False" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Left" VerticalAlignment="Center" Click="OnClickBackButton">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Rectangle Grid.ColumnSpan="5" Height="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" Fill="{ThemeResource SETTING_LINE_BK}"/>
+            <Button Grid.Column="0" Margin="8,8,0,8" IsTabStop="False" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center" Click="OnClickBackButton">
                 <ToolTipService.ToolTip>
                     <ToolTip>
                         <TextBlock>
-                        <Run Text="back" FontWeight="Bold"/>
-                        <Run Text="/bæk/"/>
-                        <Run Text="adverb" FontStyle="Italic" FontWeight="Medium"/>
-                        <Run Text="返回"/>
+                            <Run Text="back" FontWeight="Bold"/>
+                            <Run Text="/bæk/"/>
+                            <Run Text="adverb" FontStyle="Italic" FontWeight="Medium"/>
+                            <Run Text="返回"/>
                         </TextBlock>
                     </ToolTip>
                 </ToolTipService.ToolTip>

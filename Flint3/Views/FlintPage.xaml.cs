@@ -40,7 +40,6 @@ namespace Flint3.Views
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            App.MainWindow.SetTitleBar(AppTitleBar);
             TitleBarHelper.UpdateTitleBar(App.MainWindow, ActualTheme);
 
             SearchTextBox.Style = GetSearchTextBoxStyle(MainViewModel.Instance.AppSettings.SearchBoxStyle);
@@ -88,6 +87,16 @@ namespace Flint3.Views
         {
             //await Task.Delay(100);
             this.Frame.Navigate(typeof(SettingsPage));
+        }
+
+        /// <summary>
+        /// 前往生词本页面
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnClickGlossary(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(GlossaryPage));
         }
 
         /// <summary>

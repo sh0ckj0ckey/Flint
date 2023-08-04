@@ -10,7 +10,7 @@
                     <Color x:Key="SEARCHBOX_NORMAL_BD">#16FFFFFF</Color>
                     <Color x:Key="SEARCHBOX_HOVER_BD">#20FFFFFF</Color>
                     
-                    <Color x:Key="SETTING_ITEM_BK">#08FFFFFF</Color>
+                    <Color x:Key="SETTING_ITEM_BK">#0BFFFFFF</Color>
                     <Color x:Key="SETTING_LINE_BK">#10FFFFFF</Color>
                     <Color x:Key="SETTING_KEY_FR">#000000</Color>
                     <SolidColorBrush x:Key="SETTING_KEY_BK" Color="{ThemeResource SystemAccentColorLight2}"/>

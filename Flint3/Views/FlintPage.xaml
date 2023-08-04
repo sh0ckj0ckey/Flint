@@ -10,7 +10,6 @@
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
     xmlns:cvt="using:Flint3.Converters" 
     xmlns:mdl="using:Flint3.Data.Models" 
-    xmlns:controls="using:CommunityToolkit.WinUI.UI" 
     Background="Transparent" NavigationCacheMode="Required" Loaded="Page_Loaded">
 
     <Page.Resources>
@@ -29,12 +28,12 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Grid x:Name="AppTitleBar" Grid.Row="0" Background="Transparent">
-            <TextBlock Text="Flint" FontFamily="Times New Roman" Margin="20,0,0,0" FontWeight="SemiBold" FontSize="16" CharacterSpacing="40" VerticalAlignment="Center"/>
+        <Grid Grid.Row="0" Background="Transparent">
+            <TextBlock Text="Flint" FontFamily="Times New Roman" Margin="20,0,0,0" FontWeight="Bold" FontSize="20" CharacterSpacing="40" VerticalAlignment="Center" Opacity="0.9"/>
         </Grid>
         <Grid Grid.Row="1" Padding="16,0" Margin="0,0,0,0">
             <TextBox x:Name="SearchTextBox" TextChanged="OnSearchTextChanged" GotFocus="OnSearchBoxGotFocus">
-                <ToolTipService.ToolTip>
+                <!--<ToolTipService.ToolTip>
                     <ToolTip>
                         <TextBlock>
                             <Run Text="search" FontWeight="Bold"/>
@@ -43,7 +42,7 @@
                             <Run Text="搜索"/>
                         </TextBlock>
                     </ToolTip>
-                </ToolTipService.ToolTip>
+                </ToolTipService.ToolTip>-->
             </TextBox>
             <TextBlock Text="开始键入..." Margin="16,6,0,0" FontSize="17.5" Opacity="0.3" HorizontalAlignment="Left" CharacterSpacing="64" IsHitTestVisible="False" VerticalAlignment="Top"
                        Visibility="{x:Bind SearchTextBox.Text.Length,Mode=OneWay,Converter={StaticResource Int2Vis},ConverterParameter=-}"/>
@@ -107,8 +106,15 @@
             </ListView>
         </Grid>
         <Grid Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <Rectangle Height="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" Fill="{ThemeResource SETTING_LINE_BK}" Visibility="{x:Bind _viewModel.SearchResultWordItems.Count,Mode=OneWay,Converter={StaticResource Int2Vis}}"/>
-            <Button x:Name="SettingsButton" Margin="8,8,0,8" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Left" VerticalAlignment="Center" Click="OnClickSettingsButton">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Rectangle Grid.ColumnSpan="5" Height="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" Fill="{ThemeResource SETTING_LINE_BK}"/>
+            <Button x:Name="SettingsButton" Grid.Column="0" Margin="8,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center" Click="OnClickSettingsButton">
                 <ToolTipService.ToolTip>
                     <ToolTip>
                         <TextBlock>
@@ -128,45 +134,43 @@
                     </muxc:AnimatedIcon.FallbackIconSource>
                 </muxc:AnimatedIcon>
             </Button>
-            <StackPanel Margin="0,8,8,8" Spacing="4" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-                <Button x:Name="NewFeatureButton" Visibility="Collapsed" Click="OnClickShowMeNewFeature" Style="{StaticResource AccentButtonStyle}">
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xF133;" FontSize="15" Margin="0,0,4,0"/>
-                        <TextBlock Text="新增功能 !" FontSize="12" CharacterSpacing="48"/>
-                    </StackPanel>
-                </Button>
-                <ToggleButton x:Name="PinToggleButton" Height="34" Width="42" IsChecked="False" Padding="0" Background="Transparent" BorderBrush="Transparent" Click="OnClickPin">
-                    <ToolTipService.ToolTip>
-                        <ToolTip>
-                            <TextBlock>
-                                <Run Text="topmost" FontWeight="Bold"/>
-                                <Run Text="/ˈtɒp.məʊst/"/>
-                                <Run Text="adjective" FontStyle="Italic" FontWeight="Medium"/>
-                                <Run Text="置顶"/>
-                            </TextBlock>
-                        </ToolTip>
-                    </ToolTipService.ToolTip>
-                    <Grid>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE141;" FontSize="16" Height="22" Width="22" Opacity="0.8"
-                                  Visibility="{x:Bind PinToggleButton.IsChecked,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}"/>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE196;" FontSize="16" Height="22" Width="22" Opacity="0.8"
-                                  Visibility="{x:Bind PinToggleButton.IsChecked,Mode=OneWay,Converter={StaticResource Bool2Vis}}"/>
-                    </Grid>
-                </ToggleButton>
-                <Button Height="34" Width="42" Padding="0" Visibility="Collapsed" Background="Transparent" BorderBrush="Transparent" Click="OnClickHide">
-                    <ToolTipService.ToolTip>
-                        <ToolTip>
-                            <TextBlock>
-                                <Run Text="hide" FontWeight="Bold"/>
-                                <Run Text="/haɪd/"/>
-                                <Run Text="verb" FontStyle="Italic" FontWeight="Medium"/>
-                                <Run Text="隐藏"/>
-                            </TextBlock>
-                        </ToolTip>
-                    </ToolTipService.ToolTip>
-                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8AD;" FontSize="16" UseLayoutRounding="False" CenterPoint="11,11,0" Rotation="90" Height="22" Width="22" Opacity="0.8"/>
-                </Button>
-            </StackPanel>
+            <Button x:Name="NewFeatureButton" Grid.Column="2" Visibility="Collapsed" VerticalAlignment="Center" Click="OnClickShowMeNewFeature" Style="{StaticResource AccentButtonStyle}">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xF133;" FontSize="15" Margin="0,0,4,0"/>
+                    <TextBlock Text="新增功能 !" FontSize="12" CharacterSpacing="48"/>
+                </StackPanel>
+            </Button>
+            <Button x:Name="GlossaryButton" Grid.Column="3" Margin="8,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center" Click="OnClickGlossary">
+                <ToolTipService.ToolTip>
+                    <ToolTip>
+                        <TextBlock>
+                            <Run Text="glossary" FontWeight="Bold"/>
+                            <Run Text="/ˈglɒsәri/"/>
+                            <Run Text="noun" FontStyle="Italic" FontWeight="Medium"/>
+                            <Run Text="生词本"/>
+                        </TextBlock>
+                    </ToolTip>
+                </ToolTipService.ToolTip>
+                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE82D;" FontSize="16" Height="22" Width="22" Opacity="0.8"/>
+            </Button>
+            <ToggleButton x:Name="PinToggleButton" Grid.Column="4" Margin="4,8,8,8" IsChecked="False" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center" Click="OnClickPin">
+                <ToolTipService.ToolTip>
+                    <ToolTip>
+                        <TextBlock>
+                            <Run Text="topmost" FontWeight="Bold"/>
+                            <Run Text="/ˈtɒp.məʊst/"/>
+                            <Run Text="adjective" FontStyle="Italic" FontWeight="Medium"/>
+                            <Run Text="置顶"/>
+                        </TextBlock>
+                    </ToolTip>
+                </ToolTipService.ToolTip>
+                <Grid>
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE141;" FontSize="16" Height="22" Width="22" Opacity="0.8"
+                              Visibility="{x:Bind PinToggleButton.IsChecked,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}"/>
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE196;" FontSize="16" Height="22" Width="22" Opacity="0.8"
+                              Visibility="{x:Bind PinToggleButton.IsChecked,Mode=OneWay,Converter={StaticResource Bool2Vis}}"/>
+                </Grid>
+            </ToggleButton>
 
             <!--教学 2/2-->
             <TeachingTip x:Name="SecondTeachingTip" Target="{x:Bind SettingsButton}" IsOpen="False" Title="快速唤醒燧石" Subtitle="按下 Alt + 空格键 可以将燧石窗口唤醒" PreferredPlacement="TopRight"
@@ -176,7 +180,7 @@
                 </TeachingTip.Content>
             </TeachingTip>
         </Grid>
-        
+
         <!--教学 1/2-->
         <Border x:Name="FirstTeachingTipTargetBorder" HorizontalAlignment="Right" VerticalAlignment="Bottom" Background="Transparent" Width="1" Height="1" Margin="0,0,40,0"/>
         <TeachingTip x:Name="FirstTeachingTip" Target="{x:Bind FirstTeachingTipTargetBorder}" IsOpen="False" Title="欢迎使用燧石" Subtitle="点击关闭按钮或者按下 Esc 会将燧石隐藏到系统托盘" PreferredPlacement="BottomLeft"

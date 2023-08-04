@@ -33,6 +33,8 @@ namespace Flint3
             this.SystemBackdrop = new Microsoft.UI.Xaml.Media.MicaBackdrop();
             this.AppWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/Logos/flint_logo.ico"));
             this.PersistenceId = "FlintMainWindow";
+            this.ExtendsContentIntoTitleBar = true;
+            this.SetTitleBar(AppTitleBar);
 
             _dispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
 
@@ -69,6 +71,7 @@ namespace Flint3
             MainFrame.KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.GoBack, null, OnGoBackKeyboardAcceleratorInvoked));
             MainFrame.KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.XButton1, null, OnGoBackKeyboardAcceleratorInvoked));
             MainFrame.KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.Escape, null, OnHideKeyboardAcceleratorInvoked));
+            MainFrame.KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.Tab, null, OnSearchKeyboardAcceleratorInvoked));
 
             // 设置全局快捷键
             MainViewModel.Instance.RegisterShortcut();
@@ -212,6 +215,16 @@ namespace Flint3
             try
             {
                 this.HideApp();
+                args.Handled = true;
+            }
+            catch { args.Handled = false; }
+        }
+
+        private void OnSearchKeyboardAcceleratorInvoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
+        {
+            try
+            {
+                MainViewModel.Instance.ActFocusOnTextBox?.Invoke();
                 args.Handled = true;
             }
             catch { args.Handled = false; }

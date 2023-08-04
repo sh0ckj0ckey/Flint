@@ -12,6 +12,13 @@
     mc:Ignorable="d" Activated="OnMainWindowActivated" Closed="OnMainWindowClosed">
 
     <windowex:WindowEx.Content>
-        <Frame x:Name="MainFrame" Margin="0" Loaded="OnMainFramLoaded"/>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="42"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid x:Name="AppTitleBar" Grid.Row="0" Background="Transparent"/>
+            <Frame x:Name="MainFrame" Grid.RowSpan="2" Margin="0" Loaded="OnMainFramLoaded"/>
+        </Grid>
     </windowex:WindowEx.Content>
 </windowex:WindowEx>
