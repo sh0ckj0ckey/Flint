@@ -58,6 +58,9 @@ namespace Flint3.ViewModels
         {
             // 读取唤起快捷键的设置
             ReadShortcutSettings();
+
+            // 加载内置生词本
+            InitBuildinGlossaries();
         }
 
         /// <summary>
