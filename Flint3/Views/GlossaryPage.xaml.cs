@@ -39,5 +39,37 @@ namespace Flint3.Views
                 this.Frame.GoBack();
             }
         }
+
+        private void OnPinterEnterGlossaryButton(object sender, PointerRoutedEventArgs e)
+        {
+            try
+            {
+                if (sender is Button btn)
+                {
+                    var info = btn.FindName("GlossaryInfoButton");
+                    if (info is Microsoft.UI.Xaml.Controls.HyperlinkButton infoBtn)
+                    {
+                        infoBtn.Opacity = 1;
+                    }
+                }
+            }
+            catch { }
+        }
+
+        private void OnPinterExitGlossaryButton(object sender, PointerRoutedEventArgs e)
+        {
+            try
+            {
+                if (sender is Button btn)
+                {
+                    var info = btn.FindName("GlossaryInfoButton");
+                    if (info is Microsoft.UI.Xaml.Controls.HyperlinkButton infoBtn)
+                    {
+                        infoBtn.Opacity = 0;
+                    }
+                }
+            }
+            catch { }
+        }
     }
 }

@@ -290,7 +290,7 @@
                         <TextBlock Text="退出应用" FontSize="13" Opacity="0.6" CharacterSpacing="64"/>
                     </StackPanel>
                     <Button Grid.Column="3" Click="OnClickCloseApp" IsTabStop="False" Background="Transparent" BorderBrush="Transparent" Padding="6,4,6,4">
-                        <TextBlock Text="立即退出" VerticalAlignment="Center" FontSize="13" CharacterSpacing="40" Foreground="Firebrick" Opacity="0.8"/>
+                        <TextBlock Text="立即退出" VerticalAlignment="Center" FontSize="13" CharacterSpacing="40" Foreground="Tomato" Opacity="0.8"/>
                     </Button>
                 </Grid>
                 <TextBlock Text="©2023 sh0ckj0ckey." FontSize="12" FontWeight="Light" Opacity="0.5" CharacterSpacing="40" Margin="20,8,0,8"/>

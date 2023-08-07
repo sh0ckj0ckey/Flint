@@ -6,23 +6,8 @@ using System.Threading.Tasks;
 
 namespace Flint3.Models
 {
-    public class GlossaryBuildinModel
+    public class GlossaryBuildinModel : GlossaryModelBase
     {
-        /// <summary>
-        /// 生词本的颜色
-        /// </summary>
-        public GlossaryColorsEnum GlossaryColor { get; set; } = GlossaryColorsEnum.Transparent;
-
-        /// <summary>
-        /// 生词本名称
-        /// </summary>
-        public string GlossaryTitle { get; set; } = string.Empty;
-
-        /// <summary>
-        /// 目前用来显示生词本内单词数量
-        /// </summary>
-        public string GlossaryDescription { get; set; } = string.Empty;
-
         /// <summary>
         /// 内置生词本的图标
         /// </summary>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="Flint3.Views.GlossaryContentPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Flint3.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" Background="Transparent" NavigationCacheMode="Required">
+
+    <Grid>
+        <StackPanel Grid.Row="1" Margin="0,0,16,0" HorizontalAlignment="Right" Orientation="Horizontal" Spacing="0">
+            <ToggleButton FontFamily="{StaticResource SymbolThemeFontFamily}" Content="&#xE292;" FontSize="16" CornerRadius="4,0,0,4" Padding="6,4,6,4">
+                <ToolTipService.ToolTip>
+                    <ToolTip>
+                        <TextBlock>
+                            <Run Text="list" FontWeight="Bold"/>
+                            <Run Text="/lɪst/"/>
+                            <Run Text="noun" FontStyle="Italic" FontWeight="Medium"/>
+                            <Run Text="列表"/>
+                        </TextBlock>
+                    </ToolTip>
+                </ToolTipService.ToolTip>
+            </ToggleButton>
+            <ToggleButton FontFamily="{StaticResource SymbolThemeFontFamily}" Content="&#xF232;" FontSize="16" CornerRadius="0,4,4,0" Padding="6,4,6,4">
+                <ToolTipService.ToolTip>
+                    <ToolTip>
+                        <TextBlock>
+                            <Run Text="grid" FontWeight="Bold"/>
+                            <Run Text="/ɡrɪd/"/>
+                            <Run Text="noun" FontStyle="Italic" FontWeight="Medium"/>
+                            <Run Text="网格"/>
+                        </TextBlock>
+                    </ToolTip>
+                </ToolTipService.ToolTip>
+            </ToggleButton>
+        </StackPanel>
+    </Grid>
+</Page>
