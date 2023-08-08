@@ -25,6 +25,7 @@
     <AppxBundlePlatforms>x64</AppxBundlePlatforms>
     <AppxPackageDir>C:\Users\Administrator\Desktop\x64</AppxPackageDir>
     <GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>
+	<DefineConstants>$(DefineConstants);DISABLE_XAML_GENERATED_MAIN</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Assets\flint_logo_background_dark.png" />

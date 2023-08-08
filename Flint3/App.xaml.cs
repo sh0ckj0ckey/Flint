@@ -1,23 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Flint3.Data;
-using Flint3.ViewModels;
-using Flint3.Views;
+﻿using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
-using Microsoft.UI.Xaml.Shapes;
-using Windows.ApplicationModel;
-using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.System;
 using WinUIEx;
 
@@ -31,6 +13,8 @@ namespace Flint3
     /// </summary>
     public partial class App : Application
     {
+        private readonly Microsoft.UI.Dispatching.DispatcherQueue _dispatcherQueue;
+
         public static WindowEx MainWindow { get; } = new MainWindow();
 
         /// <summary>
@@ -40,6 +24,8 @@ namespace Flint3
         public App()
         {
             this.InitializeComponent();
+            _dispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
+
             UnhandledException += (s, e) => { e.Handled = true; };
         }
 
@@ -59,6 +45,15 @@ namespace Flint3
                 MainWindow.CenterOnScreen();
             }
             MainWindow.Activate();
+        }
+
+        public void ShowMainWindow()
+        {
+            _dispatcherQueue.TryEnqueue(() =>
+            {
+                MainWindow.Restore();
+                MainWindow.BringToFront();
+            });
         }
     }
 }

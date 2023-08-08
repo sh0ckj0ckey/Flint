@@ -289,7 +289,7 @@
                     <StackPanel Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Vertical">
                         <TextBlock Text="退出应用" FontSize="13" Opacity="0.6" CharacterSpacing="64"/>
                     </StackPanel>
-                    <Button Grid.Column="3" Click="OnClickCloseApp" IsTabStop="False" Background="Transparent" BorderBrush="Transparent" Padding="6,4,6,4">
+                    <Button Grid.Column="3" Click="OnClickCloseApp" IsTabStop="False" Background="Transparent" BorderBrush="Transparent" Padding="12,4,12,4">
                         <TextBlock Text="立即退出" VerticalAlignment="Center" FontSize="13" CharacterSpacing="40" Foreground="Tomato" Opacity="0.8"/>
                     </Button>
                 </Grid>
