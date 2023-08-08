@@ -4,10 +4,19 @@
 
 "燧石"随地查单词，任何问题或者功能需求欢迎联系我😀
 
-#### 点击即可下载
+点击下方按钮即可下载
+
 <a href="https://apps.microsoft.com/store/detail/9P8735FCS5S9?launch=true&mode=mini">
 	<img src="https://get.microsoft.com/images/zh-CN%20dark.svg"/>
 </a>
+
+#### TODO
+- ~~单例运行~~
+- 生词本功能
+- 设置中添加一个设置项，控制点击标题栏关闭按钮时是"退出应用"还是"隐藏到托盘"
+- SegmentedControl 中添加"历史记录"栏
+- 添加联网查词，暂定使用必应词典 API，从而支持中译英功能（设置中切换 联网查词/离线词典，联网模式下搜索栏 Placeholder 改为"按下回车查询"）
+- 更新一下截图
 
 #### 一睹芳容
 ![screenshot.png](README/screenshot.png)
@@ -21,5 +30,8 @@ WinUI 3 目前不像 UWP 支持直接打出 appxbundle、msixbundle 这种类型
  ```
 
 这样就可以得到一个 msixbundle 包用来上传微软商店了
+
+#### 首页顶部栏控件 SegmentedControl
+SegmentedControl 控件从这里下载的nuget包 https://pkgs.dev.azure.com/ms/DevHome/_packaging/DevHomeDependencies/nuget/v3/index.json，后续应当会上架到 nuget.org
 
 © 2023 sh0ckj0ckey.
