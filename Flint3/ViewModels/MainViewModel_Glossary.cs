@@ -23,6 +23,16 @@ namespace Flint3.ViewModels
             set => SetProperty(ref _buildinGlossaries, value);
         }
 
+        /// <summary>
+        /// 用户生词本
+        /// </summary>
+        private ObservableCollection<GlossaryItemModel> _myGlossaries = null;
+        public ObservableCollection<GlossaryItemModel> MyGlossaries
+        {
+            get => _myGlossaries;
+            set => SetProperty(ref _myGlossaries, value);
+        }
+
         private void InitBuildinGlossaries()
         {
             try
@@ -33,76 +43,97 @@ namespace Flint3.ViewModels
                     new()
                     {
                         GlossaryTitle = "牛津核心词汇",
-                        GlossaryDescription = "共 3000 个单词",
                         BuildinGlossaryInternalTag = "oxford",
                         BuildinGlossaryIcon = "\uE825",
-                        GlossaryColor = GlossaryColorsEnum.Purple
+                        IsReadOnly = true
                     },
                     new()
                     {
                         GlossaryTitle = "雅思词汇",
-                        GlossaryDescription = "共 3000 个单词",
                         BuildinGlossaryInternalTag = "ielts",
                         BuildinGlossaryIcon = "\uF7DB",
-                        GlossaryColor = GlossaryColorsEnum.Green
+                        IsReadOnly = true
                     },
                     new()
                     {
                         GlossaryTitle = "托福词汇",
-                        GlossaryDescription = "共 3000 个单词",
                         BuildinGlossaryInternalTag = "toefl",
                         BuildinGlossaryIcon = "\uF7DB",
-                        GlossaryColor = GlossaryColorsEnum.Green
+                        IsReadOnly = true
                     },
                     new()
                     {
                         GlossaryTitle = "GRE 词汇",
-                        GlossaryDescription = "共 3000 个单词",
                         BuildinGlossaryInternalTag = "gre",
                         BuildinGlossaryIcon = "\uF7DB",
-                        GlossaryColor = GlossaryColorsEnum.Green
+                        IsReadOnly = true
                     },
                     new()
                     {
                         GlossaryTitle = "考研词汇",
-                        GlossaryDescription = "共 3000 个单词",
                         BuildinGlossaryInternalTag = "ky",
                         BuildinGlossaryIcon = "\uE7BE",
-                        GlossaryColor = GlossaryColorsEnum.Red
+                        IsReadOnly = true
                     },
                     new()
                     {
                         GlossaryTitle = "CET 6 词汇",
-                        GlossaryDescription = "共 3000 个单词",
                         BuildinGlossaryInternalTag = "cet6",
                         BuildinGlossaryIcon = "\uE1D3",
-                        GlossaryColor = GlossaryColorsEnum.Blue
+                        IsReadOnly = true
                     },
                     new()
                     {
                         GlossaryTitle = "CET 4 词汇",
-                        GlossaryDescription = "共 3000 个单词",
                         BuildinGlossaryInternalTag = "cet6",
                         BuildinGlossaryIcon = "\uE1D3",
-                        GlossaryColor = GlossaryColorsEnum.Blue
+                        IsReadOnly = true
                     },
                     new()
                     {
                         GlossaryTitle = "高考词汇",
-                        GlossaryDescription = "共 3000 个单词",
                         BuildinGlossaryInternalTag = "gk",
                         BuildinGlossaryIcon = "\uE7BC",
-                        GlossaryColor = GlossaryColorsEnum.Pink
+                        IsReadOnly = true
                     },
                     new()
                     {
                         GlossaryTitle = "中考词汇",
-                        GlossaryDescription = "共 3000 个单词",
                         BuildinGlossaryInternalTag = "zk",
                         BuildinGlossaryIcon = "\uE913",
-                        GlossaryColor = GlossaryColorsEnum.Orange
+                        IsReadOnly = true
                     },
                 };
+
+                foreach (var item in BuildinGlossaries)
+                {
+                    // 查找每个生词本的单词数量，并且生成描述
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+
+        private void InitMyGlossaries()
+        {
+            try
+            {
+                MyGlossaries?.Clear();
+                MyGlossaries = new ObservableCollection<GlossaryItemModel>();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+
+        public void CreateGlossary(string name, string desc)
+        {
+            try
+            {
+                MyGlossaries.Add(new GlossaryItemModel() { GlossaryTitle = name, GlossaryDescription = desc });
             }
             catch (Exception e)
             {

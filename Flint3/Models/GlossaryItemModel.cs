@@ -12,13 +12,6 @@ namespace Flint3.Models
     {
         public GlossaryColorsEnum Color { get; private set; } = GlossaryColorsEnum.Transparent;
 
-        private double _percentage = 0.0;
-        public double Percentage
-        {
-            get => _percentage;
-            set => SetProperty(ref _percentage, value);
-        }
-
         private long _count = 0;
         public long Count
         {
@@ -29,7 +22,6 @@ namespace Flint3.Models
         public GlossaryColorPercentagePair(GlossaryColorsEnum color)
         {
             Color = color;
-            Percentage = 0;
             Count = 0;
         }
     }

@@ -35,5 +35,20 @@
                 </ToolTipService.ToolTip>
             </ToggleButton>
         </StackPanel>
+        <!--<muxc:HyperlinkButton x:Name="GlossaryInfoButton" Opacity="0" FontFamily="{ThemeResource SymbolThemeFontFamily}" Content="&#xE946;" FontSize="16" Margin="8,0,0,8" Padding="4" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                                        <muxc:HyperlinkButton.OpacityTransition>
+                                            <ScalarTransition />
+                                        </muxc:HyperlinkButton.OpacityTransition>
+                                        <ToolTipService.ToolTip>
+                                            <ToolTip>
+                                                <TextBlock>
+                                                    <Run Text="info" FontWeight="Bold"/>
+                                                    <Run Text="/ˈɪn.fəʊ/"/>
+                                                    <Run Text="noun" FontStyle="Italic" FontWeight="Medium"/>
+                                                    <Run Text="详情"/>
+                                                </TextBlock>
+                                            </ToolTip>
+                                        </ToolTipService.ToolTip>
+                                    </muxc:HyperlinkButton>-->
     </Grid>
 </Page>

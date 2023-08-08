@@ -16,16 +16,6 @@ namespace Flint3.Models
         public bool IsReadOnly { get; set; } = false;
 
         /// <summary>
-        /// 生词本的颜色
-        /// </summary>
-        private GlossaryColorsEnum _glossaryColor = GlossaryColorsEnum.Transparent;
-        public GlossaryColorsEnum GlossaryColor
-        {
-            get => _glossaryColor;
-            set => SetProperty(ref _glossaryColor, value);
-        }
-
-        /// <summary>
         /// 生词本名称
         /// </summary>
         private string _glossaryTitle = string.Empty;
@@ -36,13 +26,23 @@ namespace Flint3.Models
         }
 
         /// <summary>
-        /// 目前用来显示内置生词本内单词数量
+        /// 描述
         /// </summary>
         private string _glossaryDescription = string.Empty;
         public string GlossaryDescription
         {
             get => _glossaryDescription;
             set => SetProperty(ref _glossaryDescription, value);
+        }
+
+        /// <summary>
+        /// 单词数量
+        /// </summary>
+        private int _glossaryWordsCount = 0;
+        public int GlossaryWordsCount
+        {
+            get => _glossaryWordsCount;
+            set => SetProperty(ref _glossaryWordsCount, value);
         }
     }
 }

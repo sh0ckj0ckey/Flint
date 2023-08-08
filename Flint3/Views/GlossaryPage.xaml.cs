@@ -40,36 +40,9 @@ namespace Flint3.Views
             }
         }
 
-        private void OnPinterEnterGlossaryButton(object sender, PointerRoutedEventArgs e)
+        private void OnClickCreateGlossary(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                if (sender is Button btn)
-                {
-                    var info = btn.FindName("GlossaryInfoButton");
-                    if (info is Microsoft.UI.Xaml.Controls.HyperlinkButton infoBtn)
-                    {
-                        infoBtn.Opacity = 1;
-                    }
-                }
-            }
-            catch { }
-        }
-
-        private void OnPinterExitGlossaryButton(object sender, PointerRoutedEventArgs e)
-        {
-            try
-            {
-                if (sender is Button btn)
-                {
-                    var info = btn.FindName("GlossaryInfoButton");
-                    if (info is Microsoft.UI.Xaml.Controls.HyperlinkButton infoBtn)
-                    {
-                        infoBtn.Opacity = 0;
-                    }
-                }
-            }
-            catch { }
+            MainViewModel.Instance.CreateGlossary(AddGlossaryNameTextBox.Text, AddGlossaryDescTextBox.Text);
         }
     }
 }
