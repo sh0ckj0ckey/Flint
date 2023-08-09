@@ -50,15 +50,8 @@ namespace Flint3.Controls.ShortcutControl
             InitializeComponent();
             internalSettings = new HotkeySettings();
 
+            this.Loaded += ShortcutControl_Loaded;
             this.Unloaded += ShortcutControl_Unloaded;
-
-            Debug.WriteLine($"Add Hook");
-            hook = new HotkeySettingsControlHook(Hotkey_KeyDown, Hotkey_KeyUp, Hotkey_IsActive, FilterAccessibleKeyboardEvents);
-
-            if (App.MainWindow != null)
-            {
-                App.MainWindow.Activated += ShortcutDialog_SettingsWindow_Activated;
-            }
 
             // We create the Dialog in C# because doing it in XAML is giving WinUI/XAML Island bugs when using dark theme.
             _settingShortcutDialog = new ContentDialog
@@ -71,6 +64,18 @@ namespace Flint3.Controls.ShortcutControl
                 CloseButtonText = "取消",
                 DefaultButton = ContentDialogButton.Primary,
             };
+        }
+
+        private void ShortcutControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            hook = new HotkeySettingsControlHook(Hotkey_KeyDown, Hotkey_KeyUp, Hotkey_IsActive, FilterAccessibleKeyboardEvents);
+            Debug.WriteLine($"Add Hook");
+
+            if (App.MainWindow != null)
+            {
+                App.MainWindow.Activated += ShortcutDialog_SettingsWindow_Activated;
+            }
+
             _settingShortcutDialog.PrimaryButtonClick += ShortcutDialog_PrimaryButtonClick;
             _settingShortcutDialog.SecondaryButtonClick += ShortcutDialog_Reset;
             _settingShortcutDialog.Opened += ShortcutDialog_Opened;

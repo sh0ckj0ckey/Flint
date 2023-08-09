@@ -56,11 +56,17 @@ namespace Flint3.ViewModels
 
         public MainViewModel()
         {
+            AppSettings.OnAppearanceSettingChanged += (index) => { ActSwitchAppTheme?.Invoke(); };
+            AppSettings.OnBackdropSettingChanged += (index) => { };
+            AppSettings.OnAcrylicOpacitySettingChanged += (opacity) => { };
+
             // 读取唤起快捷键的设置
             ReadShortcutSettings();
 
             // 加载内置生词本
             InitBuildinGlossaries();
+
+            InitMyGlossaries();
         }
 
         /// <summary>

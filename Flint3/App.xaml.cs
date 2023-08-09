@@ -40,8 +40,8 @@ namespace Flint3
             if (localSettings.Values["firstRun"] == null)
             {
                 localSettings.Values["firstRun"] = true;
-                MainWindow.Height = 380;
-                MainWindow.Width = 560;
+                MainWindow.Height = 386;
+                MainWindow.Width = 580;
                 MainWindow.CenterOnScreen();
             }
             MainWindow.Activate();

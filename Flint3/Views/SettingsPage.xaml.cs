@@ -24,7 +24,7 @@ namespace Flint3.Views
             this.InitializeComponent();
 
             _viewModel = MainViewModel.Instance;
-            _appVersion = AppVersionUtil.GetAppVersion();
+            _appVersion = $"Flint {AppVersionUtil.GetAppVersion()}";
         }
 
         /// <summary>
@@ -42,21 +42,25 @@ namespace Flint3.Views
         }
 
         /// <summary>
-        /// 切换黑白模式
+        /// 访问 ECDICT on GitHub
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnAppearanceSelectiongChanged(object sender, SelectionChangedEventArgs e)
+        private async void OnClickGitHub(object sender, RoutedEventArgs e)
         {
             try
             {
-                MainViewModel.Instance.ActSwitchAppTheme?.Invoke();
+                await Windows.System.Launcher.LaunchUriAsync(new Uri("https://github.com/skywind3000/ECDICT"));
             }
             catch { }
         }
 
-        // 访问 GitHub
-        private async void OnClickGitHub(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// 访问 燧石 on GitHub
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void OnClickFlintGitHub(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -98,11 +102,6 @@ namespace Flint3.Views
                 }
             }
             catch { }
-        }
-
-        private void OnClickCloseApp(object sender, RoutedEventArgs e)
-        {
-            MainViewModel.Instance.ActExitWindow?.Invoke();
         }
     }
 }

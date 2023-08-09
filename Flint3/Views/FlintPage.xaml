@@ -140,7 +140,8 @@
                     <TextBlock Text="新增功能 !" FontSize="12" CharacterSpacing="48"/>
                 </StackPanel>
             </Button>
-            <Button x:Name="GlossaryButton" Grid.Column="3" Margin="8,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center" Click="OnClickGlossary">
+            <Button x:Name="GlossaryButton" Grid.Column="3" Margin="8,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center" Click="OnClickGlossary"
+                    Visibility="{x:Bind _viewModel.AppSettings.EnableGlossary,Mode=OneWay,Converter={StaticResource Bool2Vis}}">
                 <ToolTipService.ToolTip>
                     <ToolTip>
                         <TextBlock>
