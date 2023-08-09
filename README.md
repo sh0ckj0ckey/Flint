@@ -13,8 +13,8 @@
 #### TODO
 - ~~单例运行~~
 - 生词本功能
-- 设置中添加一个设置项，控制点击标题栏关闭按钮时是"退出应用"还是"隐藏到托盘"
-- 添加背景设置，亚克力与云母，亚克力支持透明度调整
+- ~~设置中添加一个设置项，控制点击标题栏关闭按钮时是"退出应用"还是"隐藏到托盘"~~
+- ~~添加背景设置，亚克力与云母，亚克力支持透明度调整~~（但是似乎目前 WinUI 3 的亚克力窗口背景并不支持调整透明度）
 - 添加联网查词，暂定使用必应词典 API，从而支持中译英功能（设置中切换 联网查词/离线词典，联网模式下搜索栏 Placeholder 改为"按下回车查询"）
 - 添加历史记录
 - 更新一下截图
@@ -33,6 +33,6 @@ WinUI 3 目前不像 UWP 支持直接打出 appxbundle、msixbundle 这种类型
 这样就可以得到一个 msixbundle 包用来上传微软商店了
 
 #### 首页顶部栏控件 SegmentedControl
-SegmentedControl 控件从这里下载的nuget包 https://pkgs.dev.azure.com/ms/DevHome/_packaging/DevHomeDependencies/nuget/v3/index.json，后续应当会上架到 nuget.org
+SegmentedControl 控件从这里下载的nuget包 https://pkgs.dev.azure.com/ms/DevHome/_packaging/DevHomeDependencies/nuget/v3/index.json ，后续应当会上架到 nuget.org
 
 © 2023 sh0ckj0ckey.
