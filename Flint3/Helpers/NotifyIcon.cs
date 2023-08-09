@@ -140,8 +140,8 @@ namespace Flint3.Helpers
         private readonly SUBCLASSPROC SubClassDelegate;
 
         internal Action OnShowWindow { get; set; } = null;
-        internal Action OnHideWindow { get; set; } = null;
         internal Action OnExitWindow { get; set; } = null;
+        internal Action OnClickCloseWindow { get; set; } = null;
 
         internal NotifyIcon(nint hwndMain, string iconPath)
         {
@@ -165,7 +165,7 @@ namespace Flint3.Helpers
             switch (uMsg)
             {
                 case WM_CLOSE:
-                    this.OnHideWindow?.Invoke();
+                    this.OnClickCloseWindow?.Invoke();
                     return (int)IntPtr.Zero;
                 case WM_TRAYMOUSEMESSAGE:
                     {

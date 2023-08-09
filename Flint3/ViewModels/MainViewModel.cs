@@ -25,9 +25,19 @@ namespace Flint3.ViewModels
         public Action ActSwitchAppTheme { get; set; } = null;
 
         /// <summary>
+        /// 控制主窗口根据当前的设置更改背景材质
+        /// </summary>
+        public Action ActChangeBackdrop { get; set; } = null;
+
+        /// <summary>
         /// 将焦点聚焦到搜索框
         /// </summary>
         public Action ActFocusOnTextBox { get; set; } = null;
+
+        /// <summary>
+        /// 将搜索框清空
+        /// </summary>
+        public Action ActClearTextBox { get; set; } = null;
 
         /// <summary>
         /// 将主窗口隐藏到系统托盘
@@ -57,7 +67,7 @@ namespace Flint3.ViewModels
         public MainViewModel()
         {
             AppSettings.OnAppearanceSettingChanged += (index) => { ActSwitchAppTheme?.Invoke(); };
-            AppSettings.OnBackdropSettingChanged += (index) => { };
+            AppSettings.OnBackdropSettingChanged += (index) => { ActChangeBackdrop?.Invoke(); };
             AppSettings.OnAcrylicOpacitySettingChanged += (opacity) => { };
 
             // 读取唤起快捷键的设置

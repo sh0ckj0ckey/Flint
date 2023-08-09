@@ -70,7 +70,22 @@
                         <ComboBoxItem Content="浅色"/>
                     </ComboBox>
                 </labs:SettingsCard>
-                <labs:SettingsExpander Margin="16,2,16,0" HorizontalAlignment="Stretch" IsExpanded="False">
+                <labs:SettingsCard Margin="16,2,16,0" HorizontalAlignment="Stretch">
+                    <labs:SettingsCard.HeaderIcon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE727;"/>
+                    </labs:SettingsCard.HeaderIcon>
+                    <labs:SettingsCard.Header>
+                        <TextBlock Text="背景" CharacterSpacing="64"/>
+                    </labs:SettingsCard.Header>
+                    <labs:SettingsCard.Description>
+                        <TextBlock Text="选择燧石的背景材质" CharacterSpacing="64"/>
+                    </labs:SettingsCard.Description>
+                    <ComboBox MinWidth="128" SelectedIndex="{x:Bind _viewModel.AppSettings.BackdropIndex,Mode=TwoWay}">
+                        <ComboBoxItem Content="云母"/>
+                        <ComboBoxItem Content="亚克力"/>
+                    </ComboBox>
+                </labs:SettingsCard>
+                <!--<labs:SettingsExpander Margin="16,2,16,0" HorizontalAlignment="Stretch" IsExpanded="False">
                     <labs:SettingsExpander.HeaderIcon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE727;"/>
                     </labs:SettingsExpander.HeaderIcon>
@@ -92,7 +107,7 @@
                             <muxc:Slider Value="{x:Bind _viewModel.AppSettings.AcrylicOpacity,Mode=TwoWay}" Maximum="1.0" Minimum="0.1" StepFrequency="0.1" IsEnabled="{x:Bind BackdropComboBox.SelectedIndex,Mode=OneWay,Converter={StaticResource Eql2Bool},ConverterParameter=1}"/>
                         </labs:SettingsCard>
                     </labs:SettingsExpander.Items>
-                </labs:SettingsExpander>
+                </labs:SettingsExpander>-->
                 <labs:SettingsCard Margin="16,2,16,0" HorizontalAlignment="Stretch">
                     <labs:SettingsCard.HeaderIcon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8D2;"/>
@@ -263,10 +278,10 @@
                         <TextBlock Text="燧石是一款开源应用程序" CharacterSpacing="64"/>
                     </labs:SettingsCard.Description>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="8">
-                        <Button Click="OnClickGoToStoreRate" ToolTipService.ToolTip="去应用商店打分评价">
+                        <Button Height="34" Click="OnClickGoToStoreRate" ToolTipService.ToolTip="去应用商店打分评价">
                             <TextBlock Text="❤ 给个好评" VerticalAlignment="Center" FontSize="13" CharacterSpacing="40"/>
                         </Button>
-                        <Button Click="OnClickFlintGitHub" ToolTipService.ToolTip="GitHub 存储库">
+                        <Button Height="34" Click="OnClickFlintGitHub" ToolTipService.ToolTip="GitHub 存储库">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <Image Width="20" Height="20" Margin="0,0,0,0" Source="{ThemeResource ABOUT_GITHUB_IMG}"/>
                                 <!--<TextBlock Text="GitHub 存储库" VerticalAlignment="Center" FontSize="13" Margin="8,0,2,0" CharacterSpacing="40"/>-->
@@ -284,7 +299,7 @@
                     <labs:SettingsCard.Description>
                         <TextBlock Text="离线词典数据来自 ECDICT" CharacterSpacing="64"/>
                     </labs:SettingsCard.Description>
-                    <Button Click="OnClickGitHub">
+                    <Button Height="34" Click="OnClickGitHub">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                             <Image Width="20" Height="20" Margin="0,0,0,0" Source="{ThemeResource ABOUT_GITHUB_IMG}"/>
                             <TextBlock Text="ECDICT on GitHub" VerticalAlignment="Center" FontSize="13" Margin="8,0,2,0" CharacterSpacing="40"/>
@@ -301,7 +316,7 @@
                     <labs:SettingsCard.Description>
                         <TextBlock Text="如果您遇到问题或有任何建议" CharacterSpacing="64"/>
                     </labs:SettingsCard.Description>
-                    <Button>
+                    <Button Height="34">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                             <Image Width="20" Height="20" Margin="0,0,0,0">
                                 <Image.Source>

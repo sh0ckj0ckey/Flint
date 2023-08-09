@@ -34,6 +34,8 @@ namespace Flint3.Views
 
             MainViewModel.Instance.ActFocusOnTextBox = () => { SearchTextBox?.Focus(FocusState.Keyboard); };
 
+            MainViewModel.Instance.ActClearTextBox = () => { SearchTextBox.Text = ""; };
+
             // 加载数据库
             StarDictDataAccess.InitializeDatabase();
         }
@@ -136,16 +138,6 @@ namespace Flint3.Views
                 }
             }
             catch { }
-        }
-
-        /// <summary>
-        /// 点击隐藏窗口到系统托盘
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnClickHide(object sender, RoutedEventArgs e)
-        {
-            MainViewModel.Instance.ActHideWindow?.Invoke();
         }
 
         /// <summary>

@@ -30,7 +30,7 @@ namespace Flint3
         public MainWindow()
         {
             this.InitializeComponent();
-            this.SystemBackdrop = new Microsoft.UI.Xaml.Media.MicaBackdrop();
+            this.SystemBackdrop = MainViewModel.Instance.AppSettings.BackdropIndex == 1 ? new Microsoft.UI.Xaml.Media.DesktopAcrylicBackdrop() : new Microsoft.UI.Xaml.Media.MicaBackdrop();
             this.AppWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/Logos/flint_logo.ico"));
             this.PersistenceId = "FlintMainWindow";
             this.ExtendsContentIntoTitleBar = true;
@@ -39,8 +39,22 @@ namespace Flint3
             _dispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
 
             MainViewModel.Instance.ActSwitchAppTheme = this.SwitchAppTheme;
+            MainViewModel.Instance.ActChangeBackdrop = () =>
+            {
+                this.SystemBackdrop = MainViewModel.Instance.AppSettings.BackdropIndex == 1 ?
+                                      new Microsoft.UI.Xaml.Media.DesktopAcrylicBackdrop() :
+                                      new Microsoft.UI.Xaml.Media.MicaBackdrop();
+            };
             MainViewModel.Instance.ActPinWindow = (on) => { this.IsAlwaysOnTop = on; };
-            MainViewModel.Instance.ActShowWindow = this.ShowApp;
+            MainViewModel.Instance.ActShowWindow = () =>
+            {
+                this.ShowApp();
+
+                if (MainViewModel.Instance.AppSettings.AutoClearLastInput)
+                {
+                    MainViewModel.Instance.ActClearTextBox?.Invoke();
+                }
+            };
             MainViewModel.Instance.ActHideWindow = this.HideApp;
             MainViewModel.Instance.ActExitWindow = this.ExitApp;
 
@@ -50,8 +64,26 @@ namespace Flint3
             // 创建常驻托盘图标
             var hwndMain = this.GetWindowHandle();
             _notifyIcon = new NotifyIcon(hwndMain, @"Assets\Logos\flint_logo.ico");
-            _notifyIcon.OnShowWindow += this.ShowApp;
-            _notifyIcon.OnHideWindow += this.HideApp;
+            _notifyIcon.OnShowWindow += () =>
+            {
+                this.ShowApp();
+
+                if (MainViewModel.Instance.AppSettings.AutoClearLastInput)
+                {
+                    MainViewModel.Instance.ActClearTextBox?.Invoke();
+                }
+            };
+            _notifyIcon.OnClickCloseWindow += () =>
+            {
+                if (MainViewModel.Instance.AppSettings.CloseButtonMode == 0)
+                {
+                    this.HideApp();
+                }
+                else
+                {
+                    this.ExitApp();
+                }
+            };
             _notifyIcon.OnExitWindow += this.ExitApp;
             _notifyIcon.CreateNotifyIcon();
         }
