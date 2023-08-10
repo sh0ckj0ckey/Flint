@@ -23,12 +23,13 @@ namespace Flint3.Views
     /// </summary>
     public sealed partial class FlintPage : Page
     {
-        private MainViewModel _viewModel = null;
+        public MainViewModel ViewModel { get; set; } = null;
+
         public FlintPage()
         {
             this.InitializeComponent();
 
-            _viewModel = MainViewModel.Instance;
+            ViewModel = MainViewModel.Instance;
 
             MainViewModel.Instance.ActSwitchAppTheme?.Invoke();
 
@@ -112,12 +113,12 @@ namespace Flint3.Views
             {
                 if (sender is TextBox tb && !string.IsNullOrWhiteSpace(tb?.Text))
                 {
-                    //_viewModel.QueryWord(tb.Text);
-                    _viewModel.MatchWord(tb.Text);
+                    //ViewModel.QueryWord(tb.Text);
+                    ViewModel.MatchWord(tb.Text);
                 }
                 else
                 {
-                    _viewModel.MatchWord(string.Empty);
+                    ViewModel.MatchWord(string.Empty);
                 }
             }
             catch { }

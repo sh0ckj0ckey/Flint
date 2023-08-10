@@ -19,6 +19,7 @@
 
         <cvt:Int2VisibilityConverter x:Key="Int2Vis"/>
         <cvt:Equal2BoolConverter x:Key="Eql2Bool"/>
+        <cvt:Bool2VisibilityConverter x:Key="Bool2Vis"/>
     </Page.Resources>
 
     <Grid>
@@ -128,9 +129,17 @@
                         <TextBlock Text="生词本功能" CharacterSpacing="64"/>
                     </labs:SettingsCard.Header>
                     <labs:SettingsCard.Description>
-                        <TextBlock Text="选择是否启用生词本" CharacterSpacing="64"/>
+                        <Grid>
+                            <TextBlock Text="选择是否启用生词本功能" CharacterSpacing="64" 
+                                       Visibility="{x:Bind EnableGlossaryToggleSwitch.IsOn,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}"/>
+                            <TextBlock CharacterSpacing="64" Visibility="{x:Bind EnableGlossaryToggleSwitch.IsOn,Mode=OneWay,Converter={StaticResource Bool2Vis}}">
+                                <Run Text="点击查词结果的"/>
+                                <Run Text="&#xF8AA;" FontSize="10" FontFamily="{ThemeResource SymbolThemeFontFamily}"/>
+                                <Run Text="，即可添加到生词本"/>
+                            </TextBlock>
+                        </Grid>
                     </labs:SettingsCard.Description>
-                    <ToggleSwitch MinWidth="0" Background="Transparent" IsOn="{x:Bind _viewModel.AppSettings.EnableGlossary,Mode=TwoWay}"/>
+                    <ToggleSwitch x:Name="EnableGlossaryToggleSwitch" MinWidth="0" Background="Transparent" IsOn="{x:Bind _viewModel.AppSettings.EnableGlossary,Mode=TwoWay}"/>
                 </labs:SettingsCard>
 
                 <TextBlock Text="行为" Margin="20,12,0,4" FontWeight="Bold" FontSize="14" CharacterSpacing="64"/>
