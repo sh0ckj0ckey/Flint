@@ -119,17 +119,32 @@ namespace Flint3.Data
         /// 获取当前数据库单词总数
         /// </summary>
         /// <returns></returns>
-        public static long GetCount()
+        public static int GetBuildinGlossaryWordCount(string tag)
         {
             try
             {
-                SqliteCommand selectCommand = new SqliteCommand($"select count(*) from stardict;", _starDictDb);
-                SqliteDataReader query = selectCommand.ExecuteReader();
-                while (query.Read())
+                if (tag != "oxford")
                 {
-                    StarDictWordItem item = new StarDictWordItem();
-                    var count = query.IsDBNull(0) ? -1 : query.GetInt32(0);
-                    return count;
+                    SqliteCommand selectCommand = new SqliteCommand($"select count(*) from stardict where tag LIKE $tag;", _starDictDb);
+                    selectCommand.Parameters.AddWithValue("$tag", "%" + tag + "%");
+                    SqliteDataReader query = selectCommand.ExecuteReader();
+                    while (query.Read())
+                    {
+                        StarDictWordItem item = new StarDictWordItem();
+                        var count = query.IsDBNull(0) ? -1 : query.GetInt32(0);
+                        return count;
+                    }
+                }
+                else
+                {
+                    SqliteCommand selectCommand = new SqliteCommand($"select count(*) from stardict where oxford = 1;", _starDictDb);
+                    SqliteDataReader query = selectCommand.ExecuteReader();
+                    while (query.Read())
+                    {
+                        StarDictWordItem item = new StarDictWordItem();
+                        var count = query.IsDBNull(0) ? -1 : query.GetInt32(0);
+                        return count;
+                    }
                 }
             }
             catch { }

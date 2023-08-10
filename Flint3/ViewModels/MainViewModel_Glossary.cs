@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Flint3.Data;
 using Flint3.Data.Models;
 using Flint3.Models;
 
@@ -33,10 +34,15 @@ namespace Flint3.ViewModels
             set => SetProperty(ref _myGlossaries, value);
         }
 
-        private void InitBuildinGlossaries()
+        public async void InitBuildinGlossaries()
         {
             try
             {
+                if (BuildinGlossaries != null && BuildinGlossaries?.Count > 0)
+                {
+                    return;
+                }
+
                 BuildinGlossaries?.Clear();
                 BuildinGlossaries = new ObservableCollection<GlossaryBuildinModel>
                 {
@@ -45,70 +51,79 @@ namespace Flint3.ViewModels
                         GlossaryTitle = "牛津核心词汇",
                         BuildinGlossaryInternalTag = "oxford",
                         BuildinGlossaryIcon = "\uE825",
-                        IsReadOnly = true
+                        IsReadOnly = true,
                     },
                     new()
                     {
                         GlossaryTitle = "雅思词汇",
                         BuildinGlossaryInternalTag = "ielts",
                         BuildinGlossaryIcon = "\uF7DB",
-                        IsReadOnly = true
+                        IsReadOnly = true,
                     },
                     new()
                     {
                         GlossaryTitle = "托福词汇",
                         BuildinGlossaryInternalTag = "toefl",
                         BuildinGlossaryIcon = "\uF7DB",
-                        IsReadOnly = true
+                        IsReadOnly = true,
                     },
                     new()
                     {
                         GlossaryTitle = "GRE 词汇",
                         BuildinGlossaryInternalTag = "gre",
                         BuildinGlossaryIcon = "\uF7DB",
-                        IsReadOnly = true
+                        IsReadOnly = true,
                     },
                     new()
                     {
                         GlossaryTitle = "考研词汇",
                         BuildinGlossaryInternalTag = "ky",
                         BuildinGlossaryIcon = "\uE7BE",
-                        IsReadOnly = true
+                        IsReadOnly = true,
                     },
                     new()
                     {
                         GlossaryTitle = "CET 6 词汇",
                         BuildinGlossaryInternalTag = "cet6",
                         BuildinGlossaryIcon = "\uE1D3",
-                        IsReadOnly = true
+                        IsReadOnly = true,
                     },
                     new()
                     {
                         GlossaryTitle = "CET 4 词汇",
-                        BuildinGlossaryInternalTag = "cet6",
+                        BuildinGlossaryInternalTag = "cet4",
                         BuildinGlossaryIcon = "\uE1D3",
-                        IsReadOnly = true
+                        IsReadOnly = true,
                     },
                     new()
                     {
                         GlossaryTitle = "高考词汇",
                         BuildinGlossaryInternalTag = "gk",
                         BuildinGlossaryIcon = "\uE7BC",
-                        IsReadOnly = true
+                        IsReadOnly = true,
                     },
                     new()
                     {
                         GlossaryTitle = "中考词汇",
                         BuildinGlossaryInternalTag = "zk",
                         BuildinGlossaryIcon = "\uE913",
-                        IsReadOnly = true
+                        IsReadOnly = true,
                     },
                 };
 
-                foreach (var item in BuildinGlossaries)
+                await Task.Run(() =>
                 {
-                    // 查找每个生词本的单词数量，并且生成描述
-                }
+                    foreach (var item in BuildinGlossaries)
+                    {
+                        // 查找每个生词本的单词数量，并且生成描述
+                        var count = StarDictDataAccess.GetBuildinGlossaryWordCount(item.BuildinGlossaryInternalTag);
+                        Dispatcher.TryEnqueue(() =>
+                        {
+                            item.GlossaryWordsCount = count;
+                            item.GlossaryDescription = $"共 {item.GlossaryWordsCount} 个单词";
+                        });
+                    }
+                });
             }
             catch (Exception e)
             {
@@ -116,11 +131,13 @@ namespace Flint3.ViewModels
             }
         }
 
-        private void InitMyGlossaries()
+        public void InitMyGlossaries()
         {
             try
             {
                 MyGlossaries?.Clear();
+
+                // 从数据库中读取用户生词本
                 MyGlossaries = new ObservableCollection<GlossaryItemModel>();
             }
             catch (Exception e)

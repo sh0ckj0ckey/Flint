@@ -17,6 +17,8 @@ namespace Flint3.ViewModels
         private static Lazy<MainViewModel> _lazyVM = new Lazy<MainViewModel>(() => new MainViewModel());
         public static MainViewModel Instance => _lazyVM.Value;
 
+        public Microsoft.UI.Dispatching.DispatcherQueue Dispatcher { get; set; }
+
         public SettingsService AppSettings { get; set; } = new SettingsService();
 
         /// <summary>
@@ -72,11 +74,6 @@ namespace Flint3.ViewModels
 
             // 读取唤起快捷键的设置
             ReadShortcutSettings();
-
-            // 加载内置生词本
-            InitBuildinGlossaries();
-
-            InitMyGlossaries();
         }
 
         /// <summary>

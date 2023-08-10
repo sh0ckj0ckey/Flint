@@ -31,6 +31,8 @@ namespace Flint3.Views
 
             ViewModel = MainViewModel.Instance;
 
+            MainViewModel.Instance.Dispatcher = this.DispatcherQueue;
+
             MainViewModel.Instance.ActSwitchAppTheme?.Invoke();
 
             MainViewModel.Instance.ActFocusOnTextBox = () => { SearchTextBox?.Focus(FocusState.Keyboard); };
@@ -39,6 +41,8 @@ namespace Flint3.Views
 
             // 加载数据库
             StarDictDataAccess.InitializeDatabase();
+
+            MainViewModel.Instance.InitMyGlossaries();
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
