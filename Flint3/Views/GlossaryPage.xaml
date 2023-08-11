@@ -52,8 +52,11 @@
 
         <!--User's Glossaries-->
         <Grid x:Name="MyGlossariesGrid" Grid.Row="2" Visibility="{x:Bind GlossaryTabSegmented.SelectedIndex,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=0}">
-            <ScrollViewer Padding="0,0">
-                <muxc:ItemsRepeater Margin="16,0,16,8" HorizontalAlignment="Center" ItemsSource="{x:Bind _viewModel.MyGlossaries,Mode=OneWay}">
+            <Grid Visibility="{x:Bind ViewModel.MyGlossaries.Count,Mode=OneWay,Converter={StaticResource Int2Vis},ConverterParameter=-}">
+                <Image Source="/Assets/Logos/flint_logo.png" Height="72" Width="72" Opacity="0.1"/>
+            </Grid>
+            <ScrollViewer Padding="0,0" Visibility="{x:Bind ViewModel.MyGlossaries.Count,Mode=OneWay,Converter={StaticResource Int2Vis}}">
+                <muxc:ItemsRepeater Margin="16,0,16,8" HorizontalAlignment="Center" ItemsSource="{x:Bind ViewModel.MyGlossaries,Mode=OneWay}">
                     <muxc:ItemsRepeater.Layout>
                         <muxc:UniformGridLayout Orientation="Horizontal" MinItemWidth="96" MinItemHeight="132" MinColumnSpacing="6" MinRowSpacing="6" ItemsStretch="Uniform"/>
                     </muxc:ItemsRepeater.Layout>
@@ -77,21 +80,27 @@
         <!--Build-in Glossaries-->
         <Grid x:Name="BuildinGlossariesGrid" Grid.Row="2" Visibility="{x:Bind GlossaryTabSegmented.SelectedIndex,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=1}">
             <ScrollViewer Padding="0,0">
-                <muxc:ItemsRepeater Margin="16,0,16,8" HorizontalAlignment="Center" ItemsSource="{x:Bind _viewModel.BuildinGlossaries,Mode=OneWay}">
+                <muxc:ItemsRepeater Margin="16,0,16,8" HorizontalAlignment="Center" ItemsSource="{x:Bind ViewModel.BuildinGlossaries,Mode=OneWay}">
                     <muxc:ItemsRepeater.Layout>
                         <muxc:UniformGridLayout Orientation="Horizontal" MinItemWidth="148" MinItemHeight="64" MinColumnSpacing="6" MinRowSpacing="6" ItemsStretch="Uniform"/>
                     </muxc:ItemsRepeater.Layout>
                     <DataTemplate x:DataType="models:GlossaryBuildinModel">
-                        <Button Padding="0,0" CornerRadius="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                        <Button Padding="0,0" CornerRadius="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                                Click="OnClickGoBuildinGlossary">
                             <Button.Content>
                                 <Grid BorderThickness="0,0,0,0" CornerRadius="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                     <muxc:FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="{x:Bind BuildinGlossaryIcon}" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontSize="32" Margin="4" Opacity="0.1"/>
                                     <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Center">
                                         <TextBlock Text="{x:Bind GlossaryTitle}" FontWeight="SemiBold" FontSize="14" Margin="12,0,12,0" Opacity="0.9" TextTrimming="CharacterEllipsis" CharacterSpacing="40"/>
-                                        <muxc:ProgressBar Margin="12,8,12,4" HorizontalAlignment="Stretch" IsIndeterminate="{x:Bind GlossaryDescription,Mode=OneWay,Converter={StaticResource Str2Bool},ConverterParameter=-}" ShowError="False" ShowPaused="False"
-                                                          Visibility="{x:Bind GlossaryDescription,Mode=OneWay,Converter={StaticResource Str2Vis},ConverterParameter=-}"/>
-                                        <TextBlock Text="{x:Bind GlossaryDescription,Mode=OneWay}" FontSize="12" Margin="12,0,12,0" Opacity="0.7" TextTrimming="CharacterEllipsis" CharacterSpacing="40"
-                                                   Visibility="{x:Bind GlossaryDescription,Mode=OneWay,Converter={StaticResource Str2Vis}}"/>
+                                        <!--<muxc:ProgressBar Opacity="0.7" Margin="12,9,12,4" HorizontalAlignment="Stretch" IsIndeterminate="{x:Bind GlossaryDescription,Mode=OneWay,Converter={StaticResource Str2Bool},ConverterParameter=-}" ShowError="False" ShowPaused="False"
+                                                          Visibility="{x:Bind GlossaryDescription,Mode=OneWay,Converter={StaticResource Str2Vis},ConverterParameter=-}"/>-->
+                                        <!--<TextBlock Text="{x:Bind GlossaryDescription,Mode=OneWay}" FontSize="12" Margin="12,0,12,0" Opacity="0.7" TextTrimming="CharacterEllipsis" CharacterSpacing="40"
+                                                   Visibility="{x:Bind GlossaryDescription,Mode=OneWay,Converter={StaticResource Str2Vis}}"/>-->
+                                        <TextBlock FontSize="12" Margin="12,0,12,0" Opacity="0.7" TextTrimming="CharacterEllipsis" CharacterSpacing="40">
+                                            <Run Text="共"/>
+                                            <Run Text="{x:Bind GlossaryWordsCount,Mode=OneWay}"/>
+                                            <Run Text="个单词"/>
+                                        </TextBlock>
                                     </StackPanel>
                                 </Grid>
                             </Button.Content>
@@ -154,7 +163,7 @@
                     </ToolTip>
                 </ToolTipService.ToolTip>
                 <Button.Flyout>
-                    <muxc:Flyout>
+                    <muxc:Flyout x:Name="AddGlossaryFlyout">
                         <Grid Background="Transparent">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>

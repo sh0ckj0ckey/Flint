@@ -34,6 +34,10 @@ namespace Flint3.ViewModels
             set => SetProperty(ref _myGlossaries, value);
         }
 
+
+
+        #region MyGlossaries
+
         public async void InitBuildinGlossaries()
         {
             try
@@ -52,6 +56,7 @@ namespace Flint3.ViewModels
                         BuildinGlossaryInternalTag = "oxford",
                         BuildinGlossaryIcon = "\uE825",
                         IsReadOnly = true,
+                        GlossaryWordsCount = 3461
                     },
                     new()
                     {
@@ -59,6 +64,7 @@ namespace Flint3.ViewModels
                         BuildinGlossaryInternalTag = "ielts",
                         BuildinGlossaryIcon = "\uF7DB",
                         IsReadOnly = true,
+                        GlossaryWordsCount = 5040
                     },
                     new()
                     {
@@ -66,6 +72,7 @@ namespace Flint3.ViewModels
                         BuildinGlossaryInternalTag = "toefl",
                         BuildinGlossaryIcon = "\uF7DB",
                         IsReadOnly = true,
+                        GlossaryWordsCount = 6974
                     },
                     new()
                     {
@@ -73,6 +80,7 @@ namespace Flint3.ViewModels
                         BuildinGlossaryInternalTag = "gre",
                         BuildinGlossaryIcon = "\uF7DB",
                         IsReadOnly = true,
+                        GlossaryWordsCount = 7504
                     },
                     new()
                     {
@@ -80,6 +88,7 @@ namespace Flint3.ViewModels
                         BuildinGlossaryInternalTag = "ky",
                         BuildinGlossaryIcon = "\uE7BE",
                         IsReadOnly = true,
+                        GlossaryWordsCount = 4801
                     },
                     new()
                     {
@@ -87,6 +96,7 @@ namespace Flint3.ViewModels
                         BuildinGlossaryInternalTag = "cet6",
                         BuildinGlossaryIcon = "\uE1D3",
                         IsReadOnly = true,
+                        GlossaryWordsCount = 5407
                     },
                     new()
                     {
@@ -94,6 +104,7 @@ namespace Flint3.ViewModels
                         BuildinGlossaryInternalTag = "cet4",
                         BuildinGlossaryIcon = "\uE1D3",
                         IsReadOnly = true,
+                        GlossaryWordsCount = 3849
                     },
                     new()
                     {
@@ -101,6 +112,7 @@ namespace Flint3.ViewModels
                         BuildinGlossaryInternalTag = "gk",
                         BuildinGlossaryIcon = "\uE7BC",
                         IsReadOnly = true,
+                        GlossaryWordsCount = 3677
                     },
                     new()
                     {
@@ -108,28 +120,38 @@ namespace Flint3.ViewModels
                         BuildinGlossaryInternalTag = "zk",
                         BuildinGlossaryIcon = "\uE913",
                         IsReadOnly = true,
+                        GlossaryWordsCount = 1603
                     },
                 };
 
-                await Task.Run(() =>
-                {
-                    foreach (var item in BuildinGlossaries)
-                    {
-                        // 查找每个生词本的单词数量，并且生成描述
-                        var count = StarDictDataAccess.GetBuildinGlossaryWordCount(item.BuildinGlossaryInternalTag);
-                        Dispatcher.TryEnqueue(() =>
-                        {
-                            item.GlossaryWordsCount = count;
-                            item.GlossaryDescription = $"共 {item.GlossaryWordsCount} 个单词";
-                        });
-                    }
-                });
+                //await Task.Run(() =>
+                //{
+                //    foreach (var item in BuildinGlossaries)
+                //    {
+                //        // 查找每个生词本的单词数量，并且生成描述
+                //        var count = StarDictDataAccess.GetBuildinGlossaryWordCount(item.BuildinGlossaryInternalTag);
+                //        Dispatcher.TryEnqueue(() =>
+                //        {
+                //            item.GlossaryWordsCount = count;
+                //            item.GlossaryDescription = $"共 {item.GlossaryWordsCount} 个单词";
+                //        });
+                //    }
+                //});
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
             }
         }
+
+        public void GetBuildinGlossaryWords()
+        {
+            var list = StarDictDataAccess.GetBuildinGlossaryWords("gre", -1, 200);
+        }
+
+        #endregion
+
+        #region MyGlossaries
 
         public void InitMyGlossaries()
         {
@@ -157,5 +179,7 @@ namespace Flint3.ViewModels
                 Debug.WriteLine(e.Message);
             }
         }
+
+        #endregion
     }
 }

@@ -25,12 +25,12 @@ namespace Flint3.Views
     /// </summary>
     public sealed partial class GlossaryPage : Page
     {
-        private MainViewModel _viewModel = null;
+        public MainViewModel ViewModel { get; set; } = null;
         public GlossaryPage()
         {
             this.InitializeComponent();
 
-            _viewModel = MainViewModel.Instance;
+            ViewModel = MainViewModel.Instance;
         }
 
         private void OnClickBackButton(object sender, RoutedEventArgs e)
@@ -44,6 +44,7 @@ namespace Flint3.Views
         private void OnClickCreateGlossary(object sender, RoutedEventArgs e)
         {
             MainViewModel.Instance.CreateGlossary(AddGlossaryNameTextBox.Text, AddGlossaryDescTextBox.Text);
+            AddGlossaryFlyout.Hide();
         }
 
         private void OnSelectGlossaryTab(object sender, SelectionChangedEventArgs e)
@@ -52,6 +53,11 @@ namespace Flint3.Views
             {
                 MainViewModel.Instance.InitBuildinGlossaries();
             }
+        }
+
+        private void OnClickGoBuildinGlossary(object sender, RoutedEventArgs e)
+        {
+            MainViewModel.Instance.GetBuildinGlossaryWords();
         }
     }
 }

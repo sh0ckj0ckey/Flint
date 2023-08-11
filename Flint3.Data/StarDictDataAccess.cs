@@ -64,8 +64,8 @@ namespace Flint3.Data
                 List<StarDictWordItem> results = new List<StarDictWordItem>();
                 SqliteCommand selectCommand = new SqliteCommand($"select * from stardict where word = $word", _starDictDb);
                 selectCommand.Parameters.AddWithValue("$word", word);
-                SqliteDataReader query = selectCommand.ExecuteReader();
-                while (query.Read())
+                SqliteDataReader query = selectCommand?.ExecuteReader();
+                while (query?.Read() == true)
                 {
                     StarDictWordItem item = new StarDictWordItem();
                     item.Id = query.IsDBNull(0) ? -1 : query.GetInt32(0);
@@ -96,8 +96,8 @@ namespace Flint3.Data
                 SqliteCommand selectCommand = new SqliteCommand($"select * from stardict where sw >= $word order by sw, word collate nocase limit $limit", _starDictDb);
                 selectCommand.Parameters.AddWithValue("$word", word);
                 selectCommand.Parameters.AddWithValue("$limit", limit);
-                SqliteDataReader query = selectCommand.ExecuteReader();
-                while (query.Read())
+                SqliteDataReader query = selectCommand?.ExecuteReader();
+                while (query?.Read() == true)
                 {
                     StarDictWordItem item = new StarDictWordItem();
                     item.Id = query.IsDBNull(0) ? -1 : query.GetInt32(0);
@@ -123,32 +123,66 @@ namespace Flint3.Data
         {
             try
             {
+                SqliteCommand selectCommand = null;
                 if (tag != "oxford")
                 {
-                    SqliteCommand selectCommand = new SqliteCommand($"select count(*) from stardict where tag LIKE $tag;", _starDictDb);
+                    selectCommand = new SqliteCommand($"select count(*) from stardict where tag LIKE $tag;", _starDictDb);
                     selectCommand.Parameters.AddWithValue("$tag", "%" + tag + "%");
-                    SqliteDataReader query = selectCommand.ExecuteReader();
-                    while (query.Read())
-                    {
-                        StarDictWordItem item = new StarDictWordItem();
-                        var count = query.IsDBNull(0) ? -1 : query.GetInt32(0);
-                        return count;
-                    }
                 }
                 else
                 {
-                    SqliteCommand selectCommand = new SqliteCommand($"select count(*) from stardict where oxford = 1;", _starDictDb);
-                    SqliteDataReader query = selectCommand.ExecuteReader();
-                    while (query.Read())
-                    {
-                        StarDictWordItem item = new StarDictWordItem();
-                        var count = query.IsDBNull(0) ? -1 : query.GetInt32(0);
-                        return count;
-                    }
+                    selectCommand = new SqliteCommand($"select count(*) from stardict where oxford = 1;", _starDictDb);
+                }
+
+                SqliteDataReader query = selectCommand?.ExecuteReader();
+                while (query?.Read() == true)
+                {
+                    StarDictWordItem item = new StarDictWordItem();
+                    var count = query.IsDBNull(0) ? -1 : query.GetInt32(0);
+                    return count;
                 }
             }
             catch { }
             return -1;
+        }
+
+        public static List<StarDictWordItem> GetBuildinGlossaryWords(string tag, int startId, int limit)
+        {
+            try
+            {
+                List<StarDictWordItem> results = new List<StarDictWordItem>();
+                SqliteCommand selectCommand = null;
+                if (tag != "oxford")
+                {
+                    selectCommand = new SqliteCommand($"select * from stardict where tag LIKE $tag and id > $id order by word collate nocase limit $limit", _starDictDb);
+                    selectCommand.Parameters.AddWithValue("$id", startId);
+                    selectCommand.Parameters.AddWithValue("$tag", "%" + tag + "%");
+                    selectCommand.Parameters.AddWithValue("$limit", limit);
+                }
+                else
+                {
+                    selectCommand = new SqliteCommand($"select * from stardict where oxford = 1 and id > $id order by word collate nocase limit $limit", _starDictDb);
+                    selectCommand.Parameters.AddWithValue("$id", startId);
+                    selectCommand.Parameters.AddWithValue("$limit", limit);
+                }
+
+                SqliteDataReader query = selectCommand?.ExecuteReader();
+                while (query?.Read() == true)
+                {
+                    StarDictWordItem item = new StarDictWordItem();
+                    item.Id = query.IsDBNull(0) ? -1 : query.GetInt32(0);
+                    item.Word = query.IsDBNull(1) ? string.Empty : query.GetString(1);
+                    item.StripWord = query.IsDBNull(2) ? string.Empty : query.GetString(2);
+                    item.Phonetic = query.IsDBNull(3) ? string.Empty : query.GetString(3);
+                    item.Definition = query.IsDBNull(4) ? string.Empty : query.GetString(4);
+                    item.Translation = query.IsDBNull(5) ? string.Empty : query.GetString(5);
+                    item.Exchange = query.IsDBNull(12) ? string.Empty : query.GetString(12);
+                    results.Add(item);
+                }
+                return results;
+            }
+            catch { }
+            return null;
         }
     }
 }
