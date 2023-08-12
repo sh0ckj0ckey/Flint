@@ -57,7 +57,11 @@ namespace Flint3.Views
 
         private void OnClickGoBuildinGlossary(object sender, RoutedEventArgs e)
         {
-            MainViewModel.Instance.GetBuildinGlossaryWords();
+            if (sender is Button btn && btn.DataContext is Models.GlossaryBuildinModel model)
+            {
+                MainViewModel.Instance.GoBuildinGlossary(model, 200);
+                this.Frame.Navigate(typeof(GlossaryContentPage));
+            }
         }
     }
 }

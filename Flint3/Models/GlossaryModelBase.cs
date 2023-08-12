@@ -44,5 +44,10 @@ namespace Flint3.Models
             get => _glossaryWordsCount;
             set => SetProperty(ref _glossaryWordsCount, value);
         }
+
+        /// <summary>
+        /// 生词本的图标
+        /// </summary>
+        public string GlossaryIcon { get; set; } = string.Empty;
     }
 }

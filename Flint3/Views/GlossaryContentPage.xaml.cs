@@ -12,6 +12,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using Flint3.ViewModels;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -23,9 +24,20 @@ namespace Flint3.Views
     /// </summary>
     public sealed partial class GlossaryContentPage : Page
     {
+        public MainViewModel ViewModel { get; set; } = null;
         public GlossaryContentPage()
         {
             this.InitializeComponent();
+
+            ViewModel = MainViewModel.Instance;
+        }
+
+        private void OnClickBackButton(object sender, RoutedEventArgs e)
+        {
+            if (this.Frame.CanGoBack)
+            {
+                this.Frame.GoBack();
+            }
         }
     }
 }

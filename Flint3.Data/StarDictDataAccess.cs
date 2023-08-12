@@ -146,7 +146,7 @@ namespace Flint3.Data
             return -1;
         }
 
-        public static List<StarDictWordItem> GetBuildinGlossaryWords(string tag, int startId, int limit)
+        public static List<StarDictWordItem> GetBuildinGlossaryWords(string tag, long startId, int limit)
         {
             try
             {

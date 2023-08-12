@@ -24,13 +24,13 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="42"/>
+            <RowDefinition Height="38"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" Background="Transparent">
-            <TextBlock Text="Flint" FontFamily="Times New Roman" Margin="20,0,0,0" FontWeight="Bold" FontSize="20" CharacterSpacing="40" VerticalAlignment="Center" Opacity="0.9"/>
+            <TextBlock Text="Flint" FontFamily="Times New Roman" Margin="20,0,0,4" FontWeight="Bold" FontSize="20" CharacterSpacing="40" VerticalAlignment="Bottom" Opacity="0.9"/>
         </Grid>
         <Grid Grid.Row="1" Padding="16,0" Margin="0,0,0,0">
             <TextBox x:Name="SearchTextBox" TextChanged="OnSearchTextChanged" GotFocus="OnSearchBoxGotFocus">
@@ -156,7 +156,7 @@
             <Button x:Name="NewFeatureButton" Grid.Column="2" Visibility="Collapsed" VerticalAlignment="Center" Click="OnClickShowMeNewFeature" Style="{StaticResource AccentButtonStyle}">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xF133;" FontSize="15" Margin="0,0,4,0"/>
-                    <TextBlock Text="新增功能 !" FontSize="12" CharacterSpacing="48"/>
+                    <TextBlock Text="欢迎使用 " FontSize="12" CharacterSpacing="48"/>
                 </StackPanel>
             </Button>
             <Button x:Name="GlossaryButton" Grid.Column="3" Margin="8,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center" Click="OnClickGlossary"
