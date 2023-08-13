@@ -14,6 +14,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Flint3.ViewModels;
 using CommunityToolkit.Labs.WinUI;
+using Microsoft.UI.Xaml.Media.Animation;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -25,6 +26,8 @@ namespace Flint3.Views
     /// </summary>
     public sealed partial class GlossaryPage : Page
     {
+        private SlideNavigationTransitionInfo SlideNaviTransition = new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight };
+
         public MainViewModel ViewModel { get; set; } = null;
         public GlossaryPage()
         {
@@ -57,10 +60,10 @@ namespace Flint3.Views
 
         private void OnClickGoBuildinGlossary(object sender, RoutedEventArgs e)
         {
-            if (sender is Button btn && btn.DataContext is Models.GlossaryBuildinModel model)
+            if (sender is Button btn && btn.DataContext is Models.GlossaryModelBase model)
             {
-                MainViewModel.Instance.GoBuildinGlossary(model, 200);
-                this.Frame.Navigate(typeof(GlossaryContentPage));
+                MainViewModel.Instance.SelectGlossary(model);
+                this.Frame.Navigate(typeof(GlossaryContentPage), null, SlideNaviTransition);
             }
         }
     }

@@ -171,7 +171,7 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Text="创建新的生词本" FontSize="15" CharacterSpacing="40"/>
+                            <TextBlock Text="创建新的生词本" FontSize="14" FontWeight="Bold" CharacterSpacing="40"/>
                             <muxc:TextBox x:Name="AddGlossaryNameTextBox" Grid.Row="1" MinWidth="192" MaxWidth="256" PlaceholderText="生词本的名称" Margin="0,8,0,0"/>
                             <muxc:TextBox x:Name="AddGlossaryDescTextBox" Grid.Row="2" MinWidth="192" MaxWidth="256" Background="Transparent" PlaceholderText="描述 (可选)" Margin="0,6,0,0"/>
                             <muxc:Button Grid.Row="3" Content="创建" Margin="0,12,0,0" Padding="0,4" HorizontalAlignment="Stretch" Style="{StaticResource AccentButtonStyle}"
@@ -203,8 +203,8 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Text="备份我的生词本" FontSize="15" CharacterSpacing="40"/>
-                            <TextBlock Grid.Row="1" Margin="0,4,0,0" TextWrapping="Wrap" Text="应用程序卸载后数据会被清除，因此请定期备份生词本文件" MaxWidth="200" Opacity="0.7" FontSize="12" CharacterSpacing="40"/>
+                            <TextBlock Text="备份我的生词本" FontSize="14" FontWeight="Bold" CharacterSpacing="40"/>
+                            <TextBlock Grid.Row="1" Margin="0,4,0,0" TextWrapping="Wrap" Text="应用程序卸载后数据会被清除，因此请定期备份生词本文件" MaxWidth="200" Opacity="0.7" FontSize="13" CharacterSpacing="40"/>
                             <muxc:Button Grid.Row="2" Content="导出备份文件" Margin="0,12,0,0" Padding="0,4" HorizontalAlignment="Stretch" Style="{StaticResource AccentButtonStyle}"/>
                             <muxc:Button Grid.Row="3" Content="导入备份文件" Margin="0,8,0,0" Padding="0,4" HorizontalAlignment="Stretch"/>
                         </Grid>

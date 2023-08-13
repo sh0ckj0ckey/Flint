@@ -32,7 +32,7 @@
         <Grid Grid.Row="0" Background="Transparent">
             <TextBlock Text="Flint" FontFamily="Times New Roman" Margin="20,0,0,4" FontWeight="Bold" FontSize="20" CharacterSpacing="40" VerticalAlignment="Bottom" Opacity="0.9"/>
         </Grid>
-        <Grid Grid.Row="1" Padding="16,0" Margin="0,0,0,0">
+        <Grid Grid.Row="1" Padding="16,0" Margin="0,4,0,0">
             <TextBox x:Name="SearchTextBox" TextChanged="OnSearchTextChanged" GotFocus="OnSearchBoxGotFocus">
                 <!--<ToolTipService.ToolTip>
                     <ToolTip>

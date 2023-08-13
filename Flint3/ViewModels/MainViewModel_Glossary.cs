@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,8 @@ namespace Flint3.ViewModels
 {
     public partial class MainViewModel : ObservableObject
     {
+        public Action ActScrollToGlossaryTop { get; set; } = null;
+
         /// <summary>
         /// 内置生词本列表
         /// </summary>
@@ -40,6 +43,43 @@ namespace Flint3.ViewModels
         /// </summary>
         public ObservableCollection<StarDictWordItem> GlossaryWordItems { get; private set; } = new ObservableCollection<StarDictWordItem>();
 
+        /// <summary>
+        /// 查看生词本
+        /// </summary>
+        /// <param name="selectedGlossary"></param>
+        /// <param name="count"></param>
+        public void SelectGlossary(GlossaryModelBase selectedGlossary, int count = 200)
+        {
+            if (selectedGlossary == SelectedGlossary) return;
+
+            ActScrollToGlossaryTop?.Invoke();
+
+            GlossaryWordItems.Clear();
+
+            if (selectedGlossary is GlossaryBuildinModel model)
+            {
+                SelectBuildinGlossary(model, count);
+            }
+            else if (selectedGlossary is GlossaryItemModel itemModel)
+            {
+
+            }
+        }
+
+        /// <summary>
+        /// 增量加载生词
+        /// </summary>
+        public void IncreaseGlossaryWords()
+        {
+            if (SelectedGlossary is Models.GlossaryBuildinModel)
+            {
+                IncreaseBuildinGlossaryWords();
+            }
+            else if (SelectedGlossary is GlossaryItemModel)
+            {
+
+            }
+        }
 
         #region BuildinGlossaries
 
@@ -61,7 +101,7 @@ namespace Flint3.ViewModels
                 {
                     GlossaryTitle = "牛津核心词汇",
                     BuildinGlossaryInternalTag = "oxford",
-                    GlossaryIcon = "\uE825",
+                    GlossaryIcon = "\uE128",
                     IsReadOnly = true,
                     GlossaryWordsCount = 3461
                 });
@@ -163,9 +203,8 @@ namespace Flint3.ViewModels
         /// </summary>
         /// <param name="model"></param>
         /// <param name="count"></param>
-        public void GoBuildinGlossary(Models.GlossaryBuildinModel model, int count = 200)
+        private void SelectBuildinGlossary(Models.GlossaryBuildinModel model, int count)
         {
-            GlossaryWordItems.Clear();
             SelectedGlossary = model;
             var list = StarDictDataAccess.GetBuildinGlossaryWords(model.BuildinGlossaryInternalTag, -1, count);
 
@@ -179,7 +218,7 @@ namespace Flint3.ViewModels
         /// 增量加载内置生词本的单词
         /// </summary>
         /// <param name="count"></param>
-        public void IncreaseBuildinGlossaryWords(int count = 100)
+        private void IncreaseBuildinGlossaryWords(int count = 100)
         {
             if (SelectedGlossary is GlossaryBuildinModel glossary)
             {

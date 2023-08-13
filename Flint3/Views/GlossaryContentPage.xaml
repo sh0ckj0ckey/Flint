@@ -10,6 +10,7 @@
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
     xmlns:cvt="using:Flint3.Converters" 
     xmlns:mdl="using:Flint3.Data.Models" 
+    xmlns:models="using:Flint3.Models" xmlns:media="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     mc:Ignorable="d" Background="Transparent" NavigationCacheMode="Required">
 
     <Page.Resources>
@@ -19,6 +20,7 @@
         <cvt:Bool2VisibilityConverter x:Key="Bool2Vis"/>
         <cvt:NullOrEmpty2VisibilityConverter x:Key="Null2Vis"/>
         <cvt:IsExpanded2OpacityConverter x:Key="Bool2Opacity"/>
+        <cvt:GlossaryEnum2ColorConverter x:Key="Enum2Color"/>
     </Page.Resources>
 
     <Grid>
@@ -30,26 +32,88 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0" Background="Transparent">
-            <TextBlock Text="Glossary" FontFamily="Times New Roman" Margin="20,0,0,4" FontWeight="Bold" FontSize="20" CharacterSpacing="40" VerticalAlignment="Bottom" Opacity="0.9"/>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Glossary" FontFamily="Times New Roman" Margin="20,0,0,4" FontWeight="Bold" FontSize="20" CharacterSpacing="40" VerticalAlignment="Bottom" Opacity="0.7"/>
+            <muxc:FontIcon Grid.Column="1" FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE00F;" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="14" FontWeight="Bold" Opacity="0.5" Margin="4,0,4,8"/>
+            <TextBlock Grid.Column="2" Margin="0,0,120,5" Text="{x:Bind ViewModel.SelectedGlossary.GlossaryTitle,Mode=OneWay}" FontSize="16" FontWeight="Bold" CharacterSpacing="40" Opacity="0.9" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
         </Grid>
 
-        <Grid Grid.Row="1" Padding="20,0,16,0">
+        <Grid Grid.Row="1" Padding="16,8,16,4">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <muxc:FontIcon Grid.Column="0" FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="{x:Bind ViewModel.SelectedGlossary.GlossaryIcon,Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" Opacity="0.6" Margin="0,0,3,-2"/>
-            <TextBlock Grid.Column="1" Text="{x:Bind ViewModel.SelectedGlossary.GlossaryTitle,Mode=OneWay}" Margin="4,0,8,0" FontSize="14" CharacterSpacing="64" Opacity="0.6" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <TextBox Grid.Column="2" Width="156" PlaceholderText="查找生词" Padding="12,6,4,0" CharacterSpacing="40" Height="32" BorderBrush="Transparent" BorderThickness="0"/>
-            <ToggleButton Grid.Column="3" Margin="8,0,0,0" FontFamily="{StaticResource SymbolThemeFontFamily}" Content="&#xE2AD;" FontSize="16" CornerRadius="4,0,0,4" Height="32" MinWidth="42" ToolTipService.ToolTip="按添加时间排序"/>
-            <ToggleButton Grid.Column="4" Margin="0,0,0,0" FontFamily="{StaticResource SymbolThemeFontFamily}" Content="&#xF87B;" FontSize="16" CornerRadius="0,4,4,0" Height="32" MinWidth="42" ToolTipService.ToolTip="按首字母排序"/>
+            <Button Grid.Column="0" CornerRadius="4" FontSize="13" Height="28" MinWidth="56" VerticalAlignment="Center">
+                <ToolTipService.ToolTip>
+                    <ToolTip>
+                        <TextBlock>
+                            <Run Text="filter" FontWeight="Bold"/>
+                            <Run Text="/ˈfɪl.tər/"/>
+                            <Run Text="verb" FontStyle="Italic" FontWeight="Medium"/>
+                            <Run Text="过滤"/>
+                        </TextBlock>
+                    </ToolTip>
+                </ToolTipService.ToolTip>
+                <Button.Flyout>
+                    <Flyout>
+                        <StackPanel Orientation="Vertical" Spacing="8">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <Button Height="26" Width="26" Padding="0" CornerRadius="13">
+                                    <Ellipse Height="18" Width="18" Fill="Transparent" Stroke="{ThemeResource APPLICATION_NORMAL_FR}" ToolTipService.ToolTip="全部"/>
+                                </Button>
+                                <Button Height="26" Width="26" Padding="0" CornerRadius="13">
+                                    <Ellipse Height="18" Width="18" Fill="Firebrick" ToolTipService.ToolTip="红色"/>
+                                </Button>
+                                <Button Height="26" Width="26" Padding="0" CornerRadius="13">
+                                    <Ellipse Height="18" Width="18" Fill="Tomato" ToolTipService.ToolTip="橙色"/>
+                                </Button>
+                                <Button Height="26" Width="26" Padding="0" CornerRadius="13">
+                                    <Ellipse Height="18" Width="18" Fill="Gold" ToolTipService.ToolTip="黄色"/>
+                                </Button>
+                                <Button Height="26" Width="26" Padding="0" CornerRadius="13">
+                                    <Ellipse Height="18" Width="18" Fill="ForestGreen" ToolTipService.ToolTip="绿色"/>
+                                </Button>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <Button Height="26" Width="26" Padding="0" CornerRadius="13">
+                                    <Ellipse Height="18" Width="18" Fill="DodgerBlue" ToolTipService.ToolTip="蓝色"/>
+                                </Button>
+                                <Button Height="26" Width="26" Padding="0" CornerRadius="13">
+                                    <Ellipse Height="18" Width="18" Fill="Orchid" ToolTipService.ToolTip="紫色"/>
+                                </Button>
+                                <Button Height="26" Width="26" Padding="0" CornerRadius="13">
+                                    <Ellipse Height="18" Width="18" Fill="DeepPink" ToolTipService.ToolTip="粉色"/>
+                                </Button>
+                                <Button Height="26" Width="26" Padding="0" CornerRadius="13">
+                                    <Ellipse Height="18" Width="18" Fill="Sienna" ToolTipService.ToolTip="棕色"/>
+                                </Button>
+                                <Button Height="26" Width="26" Padding="0" CornerRadius="13">
+                                    <Ellipse Height="18" Width="18" Fill="Gray" ToolTipService.ToolTip="灰色"/>
+                                </Button>
+                            </StackPanel>
+                        </StackPanel>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+            <Grid Grid.Column="2" VerticalAlignment="Center">
+                <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE094;" Opacity="0.7" FontSize="12" Margin="8,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" IsHitTestVisible="False"/>
+                <TextBox Width="156" PlaceholderText="查找生词" FontSize="12" FontWeight="Medium" Padding="24,6,4,0" CharacterSpacing="40" Height="30" MinHeight="0" BorderBrush="Transparent" BorderThickness="0"/>
+            </Grid>
         </Grid>
 
-        <ListView Grid.Row="2" ItemsSource="{x:Bind ViewModel.GlossaryWordItems,Mode=OneWay}" HorizontalContentAlignment="Stretch" Margin="0,4,0,0" Padding="0,8,2,8" HorizontalAlignment="Stretch" SelectionMode="None" IsItemClickEnabled="False">
-            <ListView.ItemTemplate>
+        <ScrollViewer Grid.Row="2" x:Name="GlossaryWordsScrollViewer" ViewChanged="GlossaryWordsScrollViewer_ViewChanged">
+            <muxc:ItemsRepeater HorizontalAlignment="Center" ItemsSource="{x:Bind ViewModel.GlossaryWordItems,Mode=OneWay}" Margin="16,2,16,4">
+                <muxc:ItemsRepeater.Layout>
+                    <muxc:StackLayout Orientation="Vertical" Spacing="0"/>
+                </muxc:ItemsRepeater.Layout>
                 <DataTemplate x:DataType="mdl:StarDictWordItem">
                     <muxc:Expander x:Name="WordExpander" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" IsExpanded="False">
                         <muxc:Expander.Header>
@@ -68,7 +132,7 @@
                                         </TextBlock>
                                     </StackPanel>
                                     <TextBlock Text="{x:Bind Translation,Converter={StaticResource LinebreakRemove}}" FontSize="13" MaxLines="2" LineHeight="20" TextWrapping="WrapWholeWords" TextTrimming="CharacterEllipsis"
-                                                   Opacity="{Binding ElementName=WordExpander,Path=IsExpanded,Mode=OneWay,Converter={StaticResource Bool2Opacity}}"/>
+                                               Opacity="{Binding ElementName=WordExpander,Path=IsExpanded,Mode=OneWay,Converter={StaticResource Bool2Opacity}}"/>
                                 </StackPanel>
                             </Grid>
                         </muxc:Expander.Header>
@@ -103,8 +167,8 @@
                         </muxc:Expander.Content>
                     </muxc:Expander>
                 </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+            </muxc:ItemsRepeater>
+        </ScrollViewer>
 
         <Grid Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Grid.ColumnDefinitions>
@@ -135,6 +199,34 @@
                         <muxc:SymbolIconSource Symbol="Back"/>
                     </muxc:AnimatedIcon.FallbackIconSource>
                 </muxc:AnimatedIcon>
+            </Button>
+            <Button Grid.Column="3" Margin="4,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center">
+                <ToolTipService.ToolTip>
+                    <ToolTip>
+                        <TextBlock>
+                            <Run Text="sort" FontWeight="Bold"/>
+                            <Run Text="/sɔːt/"/>
+                            <Run Text="verb" FontStyle="Italic" FontWeight="Medium"/>
+                            <Run Text="排序"/>
+                        </TextBlock>
+                    </ToolTip>
+                </ToolTipService.ToolTip>
+                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE174;" FontSize="16" Height="22" Width="22" Opacity="0.8"/>
+                <Button.Flyout>
+                    <Flyout Placement="Bottom">
+                        <Grid HorizontalAlignment="Left" MaxWidth="128">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="切换列表排序方式" FontSize="14" FontWeight="Bold" CharacterSpacing="40"/>
+                            <muxc:RadioButtons Grid.Row="1" MaxColumns="1">
+                                <RadioButton Content="按时间排序"/>
+                                <RadioButton Content="按首字母排序"/>
+                            </muxc:RadioButtons>
+                        </Grid>
+                    </Flyout>
+                </Button.Flyout>
             </Button>
             <Button Grid.Column="4" Margin="4,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center">
                 <ToolTipService.ToolTip>
