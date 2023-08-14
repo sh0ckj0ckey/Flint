@@ -44,15 +44,26 @@ namespace Flint3.ViewModels
         public ObservableCollection<StarDictWordItem> GlossaryWordItems { get; private set; } = new ObservableCollection<StarDictWordItem>();
 
         /// <summary>
+        /// 当前筛选的单词颜色
+        /// </summary>
+        private GlossaryColorsEnum _filterGlossaryColor = GlossaryColorsEnum.Transparent;
+        public GlossaryColorsEnum FilterGlossaryColor
+        {
+            get => _filterGlossaryColor;
+            set => SetProperty(ref _filterGlossaryColor, value);
+        }
+
+        /// <summary>
         /// 查看生词本
         /// </summary>
         /// <param name="selectedGlossary"></param>
         /// <param name="count"></param>
-        public void SelectGlossary(GlossaryModelBase selectedGlossary, int count = 200)
+        public void SelectGlossary(GlossaryModelBase selectedGlossary, int count = 100)
         {
             if (selectedGlossary == SelectedGlossary) return;
 
             ActScrollToGlossaryTop?.Invoke();
+            FilterGlossaryColor = GlossaryColorsEnum.Transparent;
 
             GlossaryWordItems.Clear();
 

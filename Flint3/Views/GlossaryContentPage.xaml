@@ -16,11 +16,13 @@
     <Page.Resources>
         <cvt:Int2VisibilityConverter x:Key="Int2Vis"/>
         <cvt:Equal2VisibilityConverter x:Key="Eql2Vis"/>
+        <cvt:Unequal2VisibilityConverter x:Key="UnEql2Vis"/>
         <cvt:LineBreaksRemover x:Key="LinebreakRemove"/>
         <cvt:Bool2VisibilityConverter x:Key="Bool2Vis"/>
         <cvt:NullOrEmpty2VisibilityConverter x:Key="Null2Vis"/>
         <cvt:IsExpanded2OpacityConverter x:Key="Bool2Opacity"/>
         <cvt:GlossaryEnum2ColorConverter x:Key="Enum2Color"/>
+        <cvt:GlossaryEnum2NameConverter x:Key="Enum2Name"/>
     </Page.Resources>
 
     <Grid>
@@ -51,7 +53,7 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" CornerRadius="4" FontSize="13" Height="28" MinWidth="56" VerticalAlignment="Center">
+            <Button Grid.Column="0" CornerRadius="4" Padding="12,0,12,0" Height="28" MinWidth="64" VerticalAlignment="Center">
                 <ToolTipService.ToolTip>
                     <ToolTip>
                         <TextBlock>
@@ -63,49 +65,87 @@
                     </ToolTip>
                 </ToolTipService.ToolTip>
                 <Button.Flyout>
-                    <Flyout>
+                    <Flyout x:Name="ColorFilterFlyout" Placement="Bottom">
                         <StackPanel Orientation="Vertical" Spacing="8">
+                            <TextBlock Text="按颜色筛选" FontSize="14" FontWeight="Bold" CharacterSpacing="40"/>
                             <StackPanel Orientation="Horizontal" Spacing="8">
-                                <Button Height="26" Width="26" Padding="0" CornerRadius="13">
-                                    <Ellipse Height="18" Width="18" Fill="Transparent" Stroke="{ThemeResource APPLICATION_NORMAL_FR}" ToolTipService.ToolTip="全部"/>
+                                <Button Height="34" Width="34" Padding="0" CornerRadius="17" Tag="0" Click="OnClickFilterColor">
+                                    <Border Height="22" Width="22" CornerRadius="17" Background="Transparent" BorderBrush="{ThemeResource APPLICATION_NORMAL_FR}" BorderThickness="2" ToolTipService.ToolTip="全部">
+                                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="{ThemeResource APPLICATION_NORMAL_FR}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                  Visibility="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=Transparent}"/>
+                                    </Border>
                                 </Button>
-                                <Button Height="26" Width="26" Padding="0" CornerRadius="13">
-                                    <Ellipse Height="18" Width="18" Fill="Firebrick" ToolTipService.ToolTip="红色"/>
+                                <Button Height="34" Width="34" Padding="0" CornerRadius="17" Tag="1" Click="OnClickFilterColor">
+                                    <Border Height="22" Width="22" CornerRadius="17" Background="Firebrick" ToolTipService.ToolTip="红色">
+                                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                  Visibility="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=Red}"/>
+                                    </Border>
                                 </Button>
-                                <Button Height="26" Width="26" Padding="0" CornerRadius="13">
-                                    <Ellipse Height="18" Width="18" Fill="Tomato" ToolTipService.ToolTip="橙色"/>
+                                <Button Height="34" Width="34" Padding="0" CornerRadius="17" Tag="2" Click="OnClickFilterColor">
+                                    <Border Height="22" Width="22" CornerRadius="17" Background="Tomato" ToolTipService.ToolTip="橙色">
+                                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                  Visibility="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=Orange}"/>
+                                    </Border>
                                 </Button>
-                                <Button Height="26" Width="26" Padding="0" CornerRadius="13">
-                                    <Ellipse Height="18" Width="18" Fill="Gold" ToolTipService.ToolTip="黄色"/>
+                                <Button Height="34" Width="34" Padding="0" CornerRadius="17" Tag="3" Click="OnClickFilterColor">
+                                    <Border Height="22" Width="22" CornerRadius="17" Background="Gold" ToolTipService.ToolTip="黄色">
+                                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                  Visibility="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=Yellow}"/>
+                                    </Border>
                                 </Button>
-                                <Button Height="26" Width="26" Padding="0" CornerRadius="13">
-                                    <Ellipse Height="18" Width="18" Fill="ForestGreen" ToolTipService.ToolTip="绿色"/>
+                                <Button Height="34" Width="34" Padding="0" CornerRadius="17" Tag="4" Click="OnClickFilterColor">
+                                    <Border Height="22" Width="22" CornerRadius="17" Background="ForestGreen" ToolTipService.ToolTip="绿色">
+                                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                  Visibility="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=Green}"/>
+                                    </Border>
                                 </Button>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Spacing="8">
-                                <Button Height="26" Width="26" Padding="0" CornerRadius="13">
-                                    <Ellipse Height="18" Width="18" Fill="DodgerBlue" ToolTipService.ToolTip="蓝色"/>
+                                <Button Height="34" Width="34" Padding="0" CornerRadius="17" Tag="5" Click="OnClickFilterColor">
+                                    <Border Height="22" Width="22" CornerRadius="17" Background="DodgerBlue" ToolTipService.ToolTip="蓝色">
+                                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                  Visibility="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=Blue}"/>
+                                    </Border>
                                 </Button>
-                                <Button Height="26" Width="26" Padding="0" CornerRadius="13">
-                                    <Ellipse Height="18" Width="18" Fill="Orchid" ToolTipService.ToolTip="紫色"/>
+                                <Button Height="34" Width="34" Padding="0" CornerRadius="17" Tag="6" Click="OnClickFilterColor">
+                                    <Border Height="22" Width="22" CornerRadius="17" Background="Orchid" ToolTipService.ToolTip="紫色">
+                                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                  Visibility="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=Purple}"/>
+                                    </Border>
                                 </Button>
-                                <Button Height="26" Width="26" Padding="0" CornerRadius="13">
-                                    <Ellipse Height="18" Width="18" Fill="DeepPink" ToolTipService.ToolTip="粉色"/>
+                                <Button Height="34" Width="34" Padding="0" CornerRadius="17" Tag="7" Click="OnClickFilterColor">
+                                    <Border Height="22" Width="22" CornerRadius="17" Background="DeepPink" ToolTipService.ToolTip="粉色">
+                                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                  Visibility="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=Pink}"/>
+                                    </Border>
                                 </Button>
-                                <Button Height="26" Width="26" Padding="0" CornerRadius="13">
-                                    <Ellipse Height="18" Width="18" Fill="Sienna" ToolTipService.ToolTip="棕色"/>
+                                <Button Height="34" Width="34" Padding="0" CornerRadius="17" Tag="8" Click="OnClickFilterColor">
+                                    <Border Height="22" Width="22" CornerRadius="17" Background="Sienna" ToolTipService.ToolTip="棕色">
+                                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                  Visibility="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=Brown}"/>
+                                    </Border>
                                 </Button>
-                                <Button Height="26" Width="26" Padding="0" CornerRadius="13">
-                                    <Ellipse Height="18" Width="18" Fill="Gray" ToolTipService.ToolTip="灰色"/>
+                                <Button Height="34" Width="34" Padding="0" CornerRadius="17" Tag="9" Click="OnClickFilterColor">
+                                    <Border Height="22" Width="22" CornerRadius="17" Background="Gray" ToolTipService.ToolTip="灰色">
+                                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                  Visibility="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=Gray}"/>
+                                    </Border>
                                 </Button>
                             </StackPanel>
                         </StackPanel>
                     </Flyout>
                 </Button.Flyout>
+                <StackPanel Orientation="Horizontal">
+                    <Border Height="10" Width="10" CornerRadius="6" Background="Transparent" BorderBrush="{ThemeResource APPLICATION_NORMAL_FR}" BorderThickness="1" VerticalAlignment="Center"
+                            Visibility="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=Transparent}"/>
+                    <Border Height="10" Width="10" CornerRadius="6" Background="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Enum2Color},ConverterParameter=Transparent}" VerticalAlignment="Center"
+                            Visibility="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource UnEql2Vis},ConverterParameter=Transparent}"/>
+                    <TextBlock Text="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Enum2Name}}" FontSize="12" FontWeight="Light" Opacity="0.9" Margin="4,0,0,0" CharacterSpacing="80" VerticalAlignment="Center"/>
+                </StackPanel>
             </Button>
             <Grid Grid.Column="2" VerticalAlignment="Center">
-                <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE094;" Opacity="0.7" FontSize="12" Margin="8,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" IsHitTestVisible="False"/>
                 <TextBox Width="156" PlaceholderText="查找生词" FontSize="12" FontWeight="Medium" Padding="24,6,4,0" CharacterSpacing="40" Height="30" MinHeight="0" BorderBrush="Transparent" BorderThickness="0"/>
+                <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE094;" Opacity="0.7" FontSize="12" Margin="8,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" IsHitTestVisible="False"/>
             </Grid>
         </Grid>
 

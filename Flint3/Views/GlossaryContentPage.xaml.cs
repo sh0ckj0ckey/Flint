@@ -72,5 +72,52 @@ namespace Flint3.Views
                 Debug.WriteLine(ex.Message);
             }
         }
+
+        private void OnClickFilterColor(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender is Button btn && btn.Tag is string tag)
+                {
+                    Models.GlossaryColorsEnum colorsEnum = Models.GlossaryColorsEnum.Transparent;
+                    switch (tag)
+                    {
+                        case "0":
+                            colorsEnum = Models.GlossaryColorsEnum.Transparent;
+                            break;
+                        case "1":
+                            colorsEnum = Models.GlossaryColorsEnum.Red;
+                            break;
+                        case "2":
+                            colorsEnum = Models.GlossaryColorsEnum.Orange;
+                            break;
+                        case "3":
+                            colorsEnum = Models.GlossaryColorsEnum.Yellow;
+                            break;
+                        case "4":
+                            colorsEnum = Models.GlossaryColorsEnum.Green;
+                            break;
+                        case "5":
+                            colorsEnum = Models.GlossaryColorsEnum.Blue;
+                            break;
+                        case "6":
+                            colorsEnum = Models.GlossaryColorsEnum.Purple;
+                            break;
+                        case "7":
+                            colorsEnum = Models.GlossaryColorsEnum.Pink;
+                            break;
+                        case "8":
+                            colorsEnum = Models.GlossaryColorsEnum.Brown;
+                            break;
+                        case "9":
+                            colorsEnum = Models.GlossaryColorsEnum.Gray;
+                            break;
+                    }
+                    MainViewModel.Instance.FilterGlossaryColor = colorsEnum;
+                    ColorFilterFlyout.Hide();
+                }
+            }
+            catch { }
+        }
     }
 }
