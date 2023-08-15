@@ -63,7 +63,7 @@ namespace Flint3.Views
                     // trigger if within 2 viewports of the end
                     if (distanceToEnd <= 20/*2.0 * scroller.ViewportHeight*/)
                     {
-                        ViewModel.IncreaseGlossaryWords();
+                        ViewModel.GetMoreGlossaryWords();
                     }
                 }
             }

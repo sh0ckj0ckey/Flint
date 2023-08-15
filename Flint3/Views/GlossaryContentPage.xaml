@@ -142,7 +142,7 @@
                 </StackPanel>
             </Button>
             <Grid Grid.Column="2" VerticalAlignment="Center">
-                <TextBox Width="156" PlaceholderText="查找生词" FontSize="12" FontWeight="Medium" Padding="24,6,4,0" CharacterSpacing="40" Height="30" MinHeight="0" BorderBrush="Transparent" BorderThickness="0"/>
+                <TextBox Width="156" PlaceholderText="查找生词" Text="{x:Bind ViewModel.FilterGlossaryWord,Mode=TwoWay}" FontSize="12" FontWeight="Medium" Padding="24,6,4,0" CharacterSpacing="40" Height="30" MinHeight="0" BorderBrush="Transparent" BorderThickness="0"/>
                 <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE094;" Opacity="0.7" FontSize="12" Margin="8,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" IsHitTestVisible="False"/>
             </Grid>
         </Grid>
@@ -293,8 +293,6 @@
                 </ToolTipService.ToolTip>
                 <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE946;" FontSize="16" Height="22" Width="22" Opacity="0.8"/>
             </Button>
-
         </Grid>
-
     </Grid>
 </Page>
