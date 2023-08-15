@@ -19,16 +19,6 @@ namespace Flint3.ViewModels
         public Action ActScrollToGlossaryTop { get; set; } = null;
 
         /// <summary>
-        /// 内置生词本列表
-        /// </summary>
-        public ObservableCollection<GlossaryBuildinModel> BuildinGlossaries { get; private set; } = new ObservableCollection<GlossaryBuildinModel>();
-
-        /// <summary>
-        /// 用户生词本列表
-        /// </summary>
-        public ObservableCollection<GlossaryItemModel> MyGlossaries { get; private set; } = new ObservableCollection<GlossaryItemModel>();
-
-        /// <summary>
         /// 当前正在查看的生词本
         /// </summary>
         private GlossaryModelBase _selectedGlossary = null;
@@ -44,21 +34,11 @@ namespace Flint3.ViewModels
         public ObservableCollection<StarDictWordItem> GlossaryWordItems { get; private set; } = new ObservableCollection<StarDictWordItem>();
 
         /// <summary>
-        /// 当前筛选的单词颜色
-        /// </summary>
-        private GlossaryColorsEnum _filterGlossaryColor = GlossaryColorsEnum.Transparent;
-        public GlossaryColorsEnum FilterGlossaryColor
-        {
-            get => _filterGlossaryColor;
-            set => SetProperty(ref _filterGlossaryColor, value);
-        }
-
-        /// <summary>
         /// 查看生词本
         /// </summary>
         /// <param name="selectedGlossary"></param>
         /// <param name="count"></param>
-        public void SelectGlossary(GlossaryModelBase selectedGlossary, int count = 100)
+        public void SelectGlossary(GlossaryModelBase selectedGlossary, int count = 50)
         {
             if (selectedGlossary == SelectedGlossary) return;
 
@@ -80,11 +60,11 @@ namespace Flint3.ViewModels
         /// <summary>
         /// 增量加载生词
         /// </summary>
-        public void IncreaseGlossaryWords()
+        public void GetMoreGlossaryWords(int count = 50)
         {
             if (SelectedGlossary is Models.GlossaryBuildinModel)
             {
-                IncreaseBuildinGlossaryWords();
+                GetMoreBuildinGlossaryWords(count);
             }
             else if (SelectedGlossary is GlossaryItemModel)
             {
@@ -92,7 +72,12 @@ namespace Flint3.ViewModels
             }
         }
 
-        #region BuildinGlossaries
+        #region 内置生词本
+
+        /// <summary>
+        /// 内置生词本列表
+        /// </summary>
+        public ObservableCollection<GlossaryBuildinModel> BuildinGlossaries { get; private set; } = new ObservableCollection<GlossaryBuildinModel>();
 
         /// <summary>
         /// 初始化内置生词本
@@ -217,24 +202,20 @@ namespace Flint3.ViewModels
         private void SelectBuildinGlossary(Models.GlossaryBuildinModel model, int count)
         {
             SelectedGlossary = model;
-            var list = StarDictDataAccess.GetBuildinGlossaryWords(model.BuildinGlossaryInternalTag, -1, count);
 
-            foreach (var item in list)
-            {
-                GlossaryWordItems.Add(MakeupWord(item));
-            }
+            GetMoreBuildinGlossaryWords(count, string.Empty);
         }
 
         /// <summary>
         /// 增量加载内置生词本的单词
         /// </summary>
         /// <param name="count"></param>
-        private void IncreaseBuildinGlossaryWords(int count = 100)
+        private void GetMoreBuildinGlossaryWords(int count, string word)
         {
             if (SelectedGlossary is GlossaryBuildinModel glossary)
             {
                 long lastId = GlossaryWordItems.Count > 0 ? GlossaryWordItems.Last().Id : -1;
-                var list = StarDictDataAccess.GetBuildinGlossaryWords(glossary.BuildinGlossaryInternalTag, lastId, count);
+                var list = StarDictDataAccess.GetBuildinGlossaryWords(glossary.BuildinGlossaryInternalTag, lastId, count, word);
 
                 foreach (var item in list)
                 {
@@ -245,7 +226,22 @@ namespace Flint3.ViewModels
 
         #endregion
 
-        #region MyGlossaries
+        #region 我的生词本
+
+        /// <summary>
+        /// 用户生词本列表
+        /// </summary>
+        public ObservableCollection<GlossaryItemModel> MyGlossaries { get; private set; } = new ObservableCollection<GlossaryItemModel>();
+
+        /// <summary>
+        /// 当前筛选的单词颜色
+        /// </summary>
+        private GlossaryColorsEnum _filterGlossaryColor = GlossaryColorsEnum.Transparent;
+        public GlossaryColorsEnum FilterGlossaryColor
+        {
+            get => _filterGlossaryColor;
+            set => SetProperty(ref _filterGlossaryColor, value);
+        }
 
         /// <summary>
         /// 加载我的生词本

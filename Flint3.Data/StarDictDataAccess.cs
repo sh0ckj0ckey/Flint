@@ -116,7 +116,7 @@ namespace Flint3.Data
         }
 
         /// <summary>
-        /// 获取当前数据库单词总数
+        /// 获取某个生词本单词数
         /// </summary>
         /// <returns></returns>
         public static int GetBuildinGlossaryWordCount(string tag)
@@ -146,7 +146,15 @@ namespace Flint3.Data
             return -1;
         }
 
-        public static List<StarDictWordItem> GetBuildinGlossaryWords(string tag, long startId, int limit)
+        /// <summary>
+        /// 获取指定个数的生词本单词
+        /// </summary>
+        /// <param name="tag">生词本标签</param>
+        /// <param name="startId">首个单词id最小值</param>
+        /// <param name="limit">最多个数</param>
+        /// <param name="wrod">当不为空时，代表这次获取还要搜索这个单词</param>
+        /// <returns></returns>
+        public static List<StarDictWordItem> GetBuildinGlossaryWords(string tag, long startId, int limit, string word)
         {
             try
             {
@@ -154,14 +162,30 @@ namespace Flint3.Data
                 SqliteCommand selectCommand = null;
                 if (tag != "oxford")
                 {
-                    selectCommand = new SqliteCommand($"select * from stardict where tag LIKE $tag and id > $id order by word collate nocase limit $limit", _starDictDb);
+                    if (string.IsNullOrWhiteSpace(word))
+                    {
+                        selectCommand = new SqliteCommand($"select * from stardict where tag LIKE $tag and id > $id order by word collate nocase limit $limit", _starDictDb);
+                    }
+                    else
+                    {
+                        selectCommand = new SqliteCommand($"select * from stardict where tag LIKE $tag and id > $id and sw >= $word order by word collate nocase limit $limit", _starDictDb);
+                        selectCommand.Parameters.AddWithValue("$word", word);
+                    }
                     selectCommand.Parameters.AddWithValue("$id", startId);
                     selectCommand.Parameters.AddWithValue("$tag", "%" + tag + "%");
                     selectCommand.Parameters.AddWithValue("$limit", limit);
                 }
                 else
                 {
-                    selectCommand = new SqliteCommand($"select * from stardict where oxford = 1 and id > $id order by word collate nocase limit $limit", _starDictDb);
+                    if (string.IsNullOrWhiteSpace(word))
+                    {
+                        selectCommand = new SqliteCommand($"select * from stardict where oxford = 1 and id > $id order by word collate nocase limit $limit", _starDictDb);
+                    }
+                    else
+                    {
+                        selectCommand = new SqliteCommand($"select * from stardict where oxford = 1 and id > $id and sw >= $word order by word collate nocase limit $limit", _starDictDb);
+                        selectCommand.Parameters.AddWithValue("$word", word);
+                    }
                     selectCommand.Parameters.AddWithValue("$id", startId);
                     selectCommand.Parameters.AddWithValue("$limit", limit);
                 }

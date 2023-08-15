@@ -49,11 +49,9 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" CornerRadius="4" Padding="12,0,12,0" Height="28" MinWidth="64" VerticalAlignment="Center">
+            <Button Grid.Column="0" CornerRadius="4" Padding="12,0,12,0" Height="28" MinWidth="64" VerticalAlignment="Center"
+                    Visibility="{x:Bind ViewModel.SelectedGlossary.IsReadOnly,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}">
                 <ToolTipService.ToolTip>
                     <ToolTip>
                         <TextBlock>
@@ -136,7 +134,7 @@
                     </Flyout>
                 </Button.Flyout>
                 <StackPanel Orientation="Horizontal">
-                    <Border Height="10" Width="10" CornerRadius="6" Background="Transparent" BorderBrush="{ThemeResource APPLICATION_NORMAL_FR}" BorderThickness="1" VerticalAlignment="Center"
+                    <Border Height="10" Width="10" CornerRadius="6" Background="Transparent" BorderBrush="{ThemeResource APPLICATION_NORMAL_FR}" BorderThickness="1" VerticalAlignment="Center" Opacity="0.7"
                             Visibility="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=Transparent}"/>
                     <Border Height="10" Width="10" CornerRadius="6" Background="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Enum2Color},ConverterParameter=Transparent}" VerticalAlignment="Center"
                             Visibility="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource UnEql2Vis},ConverterParameter=Transparent}"/>
@@ -174,6 +172,20 @@
                                     <TextBlock Text="{x:Bind Translation,Converter={StaticResource LinebreakRemove}}" FontSize="13" MaxLines="2" LineHeight="20" TextWrapping="WrapWholeWords" TextTrimming="CharacterEllipsis"
                                                Opacity="{Binding ElementName=WordExpander,Path=IsExpanded,Mode=OneWay,Converter={StaticResource Bool2Opacity}}"/>
                                 </StackPanel>
+                                <Button Grid.Column="1" Padding="0" Height="32" Width="32" Margin="8,0,-8,0" Background="Transparent" BorderBrush="Transparent" ToolTipService.ToolTip="添加到生词本"
+                                            Visibility="{Binding ViewModel.AppSettings.EnableGlossary,ElementName=FlintViewPage,Mode=OneWay,Converter={StaticResource Bool2Vis}}">
+                                    <Button.Content>
+                                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE109;" FontSize="12" Opacity="0.8"/>
+                                    </Button.Content>
+                                    <Button.Flyout>
+                                        <Flyout>
+                                            <StackPanel Orientation="Vertical" Padding="8,4">
+                                                <TextBlock Text="添加到生词本" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,8"/>
+
+                                            </StackPanel>
+                                        </Flyout>
+                                    </Button.Flyout>
+                                </Button>
                             </Grid>
                         </muxc:Expander.Header>
                         <muxc:Expander.Content>
