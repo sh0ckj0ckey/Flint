@@ -10,7 +10,8 @@
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
     xmlns:cvt="using:Flint3.Converters" 
     xmlns:mdl="using:Flint3.Data.Models" 
-    xmlns:models="using:Flint3.Models" xmlns:media="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:models="using:Flint3.Models" 
+    xmlns:media="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     mc:Ignorable="d" Background="Transparent" NavigationCacheMode="Required">
 
     <Page.Resources>
@@ -50,6 +51,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
+            <!--按照颜色过滤-->
             <Button Grid.Column="0" CornerRadius="4" Padding="12,0,12,0" Height="28" MinWidth="64" VerticalAlignment="Center"
                     Visibility="{x:Bind ViewModel.SelectedGlossary.IsReadOnly,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}">
                 <ToolTipService.ToolTip>
@@ -136,22 +138,39 @@
                 <StackPanel Orientation="Horizontal">
                     <Border Height="10" Width="10" CornerRadius="6" Background="Transparent" BorderBrush="{ThemeResource APPLICATION_NORMAL_FR}" BorderThickness="1" VerticalAlignment="Center" Opacity="0.7"
                             Visibility="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=Transparent}"/>
-                    <Border Height="10" Width="10" CornerRadius="6" Background="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Enum2Color},ConverterParameter=Transparent}" VerticalAlignment="Center"
+                    <Border Height="10" Width="10" CornerRadius="6" Background="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Enum2Color}}" VerticalAlignment="Center"
                             Visibility="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource UnEql2Vis},ConverterParameter=Transparent}"/>
                     <TextBlock Text="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Enum2Name}}" FontSize="12" FontWeight="Light" Opacity="0.9" Margin="4,0,0,0" CharacterSpacing="80" VerticalAlignment="Center"/>
                 </StackPanel>
             </Button>
+            <!--查找生词-->
             <Grid Grid.Column="2" VerticalAlignment="Center">
-                <TextBox Width="156" PlaceholderText="查找生词" Text="{x:Bind ViewModel.FilterGlossaryWord,Mode=TwoWay}" FontSize="12" FontWeight="Medium" Padding="24,6,4,0" CharacterSpacing="40" Height="30" MinHeight="0" BorderBrush="Transparent" BorderThickness="0"/>
+                <TextBox x:Name="FilterWordTextBox" Width="156" PlaceholderText="查找生词" FontSize="12" FontWeight="Medium" Padding="24,6,4,0" CharacterSpacing="40" Height="30" MinHeight="0" BorderBrush="Transparent" BorderThickness="0" TextChanged="OnFilterTextChanged"/>
                 <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE094;" Opacity="0.7" FontSize="12" Margin="8,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" IsHitTestVisible="False"/>
             </Grid>
         </Grid>
 
-        <ScrollViewer Grid.Row="2" x:Name="GlossaryWordsScrollViewer" ViewChanged="GlossaryWordsScrollViewer_ViewChanged">
-            <muxc:ItemsRepeater HorizontalAlignment="Center" ItemsSource="{x:Bind ViewModel.GlossaryWordItems,Mode=OneWay}" Margin="16,2,16,4">
-                <muxc:ItemsRepeater.Layout>
-                    <muxc:StackLayout Orientation="Vertical" Spacing="0"/>
-                </muxc:ItemsRepeater.Layout>
+        <StackPanel Grid.Row="2" Spacing="12" HorizontalAlignment="Stretch" VerticalAlignment="Center" Orientation="Vertical"
+                    Visibility="{x:Bind ViewModel.GlossaryWordItems.Count,Mode=OneWay,Converter={StaticResource Int2Vis},ConverterParameter=-}">
+            <Image Source="/Assets/Logos/flint_logo.png" Height="72" Width="72" Opacity="0.2" HorizontalAlignment="Center"/>
+            <StackPanel Orientation="Horizontal" Opacity="0.3" HorizontalAlignment="Center">
+                <TextBlock Text="没有找到" FontSize="13" CharacterSpacing="40"/>
+                <TextBlock Text="{x:Bind ViewModel.FilterGlossaryWord,Mode=OneWay}" Margin="4,0,0,0" FontSize="13" CharacterSpacing="40"
+                           Visibility="{x:Bind ViewModel.FilterGlossaryWord,Mode=OneWay,Converter={StaticResource Null2Vis}}"/>
+                <TextBlock Text="为首的" Margin="0,0,4,0" FontSize="13" CharacterSpacing="40"
+                           Visibility="{x:Bind ViewModel.FilterGlossaryWord,Mode=OneWay,Converter={StaticResource Null2Vis}}"/>
+                <TextBlock Text="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Enum2Name}}" Margin="0,0,4,0" FontSize="13" CharacterSpacing="40"
+                           Foreground="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Enum2Color}}"
+                           Visibility="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource UnEql2Vis},ConverterParameter=Transparent}"/>
+                <TextBlock Text="生词" FontSize="13" CharacterSpacing="40"/>
+            </StackPanel>
+        </StackPanel>
+        <ListView x:Name="GlossaryWordsListView" Grid.Row="2" ItemsSource="{x:Bind ViewModel.GlossaryWordItems,Mode=OneWay}" HorizontalContentAlignment="Stretch" Padding="0,8,4,8"
+                  HorizontalAlignment="Stretch" IsSwipeEnabled="False" SelectionMode="None" IsItemClickEnabled="False">
+            <ListView.ItemContainerTransitions>
+                <TransitionCollection/>
+            </ListView.ItemContainerTransitions>
+            <ListView.ItemTemplate>
                 <DataTemplate x:DataType="mdl:StarDictWordItem">
                     <muxc:Expander x:Name="WordExpander" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" IsExpanded="False">
                         <muxc:Expander.Header>
@@ -173,7 +192,7 @@
                                                Opacity="{Binding ElementName=WordExpander,Path=IsExpanded,Mode=OneWay,Converter={StaticResource Bool2Opacity}}"/>
                                 </StackPanel>
                                 <Button Grid.Column="1" Padding="0" Height="32" Width="32" Margin="8,0,-8,0" Background="Transparent" BorderBrush="Transparent" ToolTipService.ToolTip="添加到生词本"
-                                            Visibility="{Binding ViewModel.AppSettings.EnableGlossary,ElementName=FlintViewPage,Mode=OneWay,Converter={StaticResource Bool2Vis}}">
+                                        Visibility="{Binding ViewModel.AppSettings.EnableGlossary,ElementName=FlintViewPage,Mode=OneWay,Converter={StaticResource Bool2Vis}}">
                                     <Button.Content>
                                         <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE109;" FontSize="12" Opacity="0.8"/>
                                     </Button.Content>
@@ -219,8 +238,8 @@
                         </muxc:Expander.Content>
                     </muxc:Expander>
                 </DataTemplate>
-            </muxc:ItemsRepeater>
-        </ScrollViewer>
+            </ListView.ItemTemplate>
+        </ListView>
 
         <Grid Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Grid.ColumnDefinitions>
@@ -252,7 +271,8 @@
                     </muxc:AnimatedIcon.FallbackIconSource>
                 </muxc:AnimatedIcon>
             </Button>
-            <Button Grid.Column="3" Margin="4,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center">
+            <Button Grid.Column="3" Margin="4,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center"
+                    Visibility="{x:Bind ViewModel.SelectedGlossary.IsReadOnly,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}">
                 <ToolTipService.ToolTip>
                     <ToolTip>
                         <TextBlock>

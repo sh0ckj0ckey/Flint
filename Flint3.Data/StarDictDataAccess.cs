@@ -164,12 +164,12 @@ namespace Flint3.Data
                 {
                     if (string.IsNullOrWhiteSpace(word))
                     {
-                        selectCommand = new SqliteCommand($"select * from stardict where tag LIKE $tag and id > $id order by word collate nocase limit $limit", _starDictDb);
+                        selectCommand = new SqliteCommand($"select * from stardict where tag like $tag and id > $id order by word collate nocase limit $limit", _starDictDb);
                     }
                     else
                     {
-                        selectCommand = new SqliteCommand($"select * from stardict where tag LIKE $tag and id > $id and sw >= $word order by word collate nocase limit $limit", _starDictDb);
-                        selectCommand.Parameters.AddWithValue("$word", word);
+                        selectCommand = new SqliteCommand($"select * from stardict where tag like $tag and id > $id and word like $word order by word collate nocase limit $limit", _starDictDb);
+                        selectCommand.Parameters.AddWithValue("$word", word + "%");
                     }
                     selectCommand.Parameters.AddWithValue("$id", startId);
                     selectCommand.Parameters.AddWithValue("$tag", "%" + tag + "%");
@@ -183,8 +183,8 @@ namespace Flint3.Data
                     }
                     else
                     {
-                        selectCommand = new SqliteCommand($"select * from stardict where oxford = 1 and id > $id and sw >= $word order by word collate nocase limit $limit", _starDictDb);
-                        selectCommand.Parameters.AddWithValue("$word", word);
+                        selectCommand = new SqliteCommand($"select * from stardict where oxford = 1 and id > $id and word like $word order by word collate nocase limit $limit", _starDictDb);
+                        selectCommand.Parameters.AddWithValue("$word", word + "%");
                     }
                     selectCommand.Parameters.AddWithValue("$id", startId);
                     selectCommand.Parameters.AddWithValue("$limit", limit);

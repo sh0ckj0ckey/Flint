@@ -60,29 +60,46 @@ namespace Flint3.ViewModels
         /// <param name="count"></param>
         public void SelectGlossary(GlossaryModelBase selectedGlossary, int count = 50)
         {
-            if (selectedGlossary == SelectedGlossary) return;
+            Debug.WriteLine($"Select Glossary: {selectedGlossary.GlossaryTitle}");
 
             ActScrollToGlossaryTop?.Invoke();
-            FilterGlossaryColor = GlossaryColorsEnum.Transparent;
-            FilterGlossaryWord = "";
             GlossaryWordItems.Clear();
-            SelectedGlossary = selectedGlossary;
 
-            GetMoreGlossaryWords(count, "", GlossaryColorsEnum.Transparent);
+            FilterGlossaryColor = GlossaryColorsEnum.Transparent;
+            SelectedGlossary = selectedGlossary;
+        }
+
+        /// <summary>
+        /// 获取生词本第一页单词
+        /// </summary>
+        /// <param name="count"></param>
+        /// <param name="word"></param>
+        /// <param name="color"></param>
+        public void GetFirstPageGlossaryWords(int count = 50)
+        {
+
+            ActScrollToGlossaryTop?.Invoke();
+            GlossaryWordItems.Clear();
+
+            GetMoreGlossaryWords(count);
         }
 
         /// <summary>
         /// 增量加载生词
         /// </summary>
-        public void GetMoreGlossaryWords(int count, string word, GlossaryColorsEnum color)
+        public void GetMoreGlossaryWords(int count = 50)
         {
+            Debug.WriteLine($"Getting More GlossaryWords: {SelectedGlossary.GlossaryTitle}, {FilterGlossaryWord}, {FilterGlossaryColor}");
+
+            long lastId = GlossaryWordItems.Count > 0 ? GlossaryWordItems.Last().Id : -1;
+
             if (SelectedGlossary is Models.GlossaryBuildinModel)
             {
-                GetMoreBuildinGlossaryWords(count, word);
+                GetMoreBuildinGlossaryWords(lastId, count, FilterGlossaryWord.Trim());
             }
             else if (SelectedGlossary is GlossaryItemModel)
             {
-                GetMoreMyGlossaryWords(count, word, color);
+                GetMoreMyGlossaryWords(lastId, count, FilterGlossaryWord.Trim(), FilterGlossaryColor);
             }
         }
 
@@ -212,11 +229,12 @@ namespace Flint3.ViewModels
         /// 增量加载内置生词本的单词
         /// </summary>
         /// <param name="count"></param>
-        private void GetMoreBuildinGlossaryWords(int count, string word)
+        private void GetMoreBuildinGlossaryWords(long lastId, int count, string word)
         {
+            Debug.WriteLine($"Last id: {lastId}, count={GlossaryWordItems.Count}");
+
             if (SelectedGlossary is GlossaryBuildinModel glossary)
             {
-                long lastId = GlossaryWordItems.Count > 0 ? GlossaryWordItems.Last().Id : -1;
                 var list = StarDictDataAccess.GetBuildinGlossaryWords(glossary.BuildinGlossaryInternalTag, lastId, count, word);
 
                 foreach (var item in list)
@@ -277,11 +295,11 @@ namespace Flint3.ViewModels
         /// 增量加载内置生词本的单词
         /// </summary>
         /// <param name="count"></param>
-        private void GetMoreMyGlossaryWords(int count, string word, GlossaryColorsEnum color)
+        private void GetMoreMyGlossaryWords(long lastId, int count, string word, GlossaryColorsEnum color)
         {
             if (SelectedGlossary is GlossaryItemModel glossary)
             {
-                long lastId = GlossaryWordItems.Count > 0 ? GlossaryWordItems.Last().Id : -1;
+
             }
         }
 

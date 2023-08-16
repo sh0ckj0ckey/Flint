@@ -15,6 +15,7 @@ using Microsoft.UI.Xaml.Navigation;
 using Flint3.ViewModels;
 using System.Diagnostics;
 using Microsoft.UI.Xaml.Media.Animation;
+using System.Threading.Tasks;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -27,9 +28,15 @@ namespace Flint3.Views
     public sealed partial class GlossaryContentPage : Page
     {
         public MainViewModel ViewModel { get; set; } = null;
+        private ScrollViewer _glossaryWordsScrollViewer = null;
+
         public GlossaryContentPage()
         {
             this.InitializeComponent();
+
+            this.Loaded += OnLoaded;
+            GlossaryWordsListView.Loaded += OnGlossaryWordsListViewLoaded;
+            GlossaryWordsListView.Unloaded += OnGlossaryWordsListViewUnloaded;
 
             ViewModel = MainViewModel.Instance;
 
@@ -37,10 +44,60 @@ namespace Flint3.Views
             {
                 try
                 {
-                    GlossaryWordsScrollViewer?.ChangeView(0, 0, null);
+                    _glossaryWordsScrollViewer?.ChangeView(0, 0, null, true);
                 }
                 catch { }
             };
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(FilterWordTextBox.Text))
+                {
+                    ViewModel?.GetFirstPageGlossaryWords();
+                }
+                else
+                {
+                    FilterWordTextBox.Text = "";
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+        }
+
+        private void OnGlossaryWordsListViewLoaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var listView = (ListView)sender;
+                Border border = VisualTreeHelper.GetChild(listView, 0) as Border;
+                _glossaryWordsScrollViewer = VisualTreeHelper.GetChild(border, 0) as ScrollViewer;
+
+                if (_glossaryWordsScrollViewer != null)
+                {
+                    _glossaryWordsScrollViewer.ViewChanged += GlossaryWordsScrollViewer_ViewChanged;
+
+                    Debug.WriteLine($"OnGlossaryWordsListViewLoaded ViewChanged Registered");
+                }
+            }
+            catch { }
+        }
+
+        private void OnGlossaryWordsListViewUnloaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (_glossaryWordsScrollViewer != null)
+                {
+                    _glossaryWordsScrollViewer.ViewChanged -= GlossaryWordsScrollViewer_ViewChanged;
+                    Debug.WriteLine($"OnGlossaryWordsListViewUnloaded ViewChanged Unregistered");
+                }
+            }
+            catch { }
         }
 
         private void OnClickBackButton(object sender, RoutedEventArgs e)
@@ -60,8 +117,7 @@ namespace Flint3.Views
                     var scroller = (ScrollViewer)sender;
                     var distanceToEnd = scroller.ExtentHeight - (scroller.VerticalOffset + scroller.ViewportHeight);
 
-                    // trigger if within 2 viewports of the end
-                    if (distanceToEnd <= 20/*2.0 * scroller.ViewportHeight*/)
+                    if (distanceToEnd <= 20)
                     {
                         ViewModel.GetMoreGlossaryWords();
                     }
@@ -70,6 +126,19 @@ namespace Flint3.Views
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
+            }
+        }
+
+        private void OnFilterTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (sender is TextBox tb)
+            {
+                string word = tb.Text;
+                if (MainViewModel.Instance.FilterGlossaryWord != word)
+                {
+                    MainViewModel.Instance.FilterGlossaryWord = word;
+                    ViewModel?.GetFirstPageGlossaryWords();
+                }
             }
         }
 
@@ -113,8 +182,13 @@ namespace Flint3.Views
                             colorsEnum = Models.GlossaryColorsEnum.Gray;
                             break;
                     }
-                    MainViewModel.Instance.FilterGlossaryColor = colorsEnum;
-                    ColorFilterFlyout.Hide();
+
+                    if (MainViewModel.Instance.FilterGlossaryColor != colorsEnum)
+                    {
+                        ColorFilterFlyout.Hide();
+                        MainViewModel.Instance.FilterGlossaryColor = colorsEnum;
+                        ViewModel?.GetFirstPageGlossaryWords();
+                    }
                 }
             }
             catch { }

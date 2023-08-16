@@ -53,7 +53,7 @@
         <!--User's Glossaries-->
         <Grid x:Name="MyGlossariesGrid" Grid.Row="2" Visibility="{x:Bind GlossaryTabSegmented.SelectedIndex,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=0}">
             <Grid Visibility="{x:Bind ViewModel.MyGlossaries.Count,Mode=OneWay,Converter={StaticResource Int2Vis},ConverterParameter=-}">
-                <Image Source="/Assets/Logos/flint_logo.png" Height="72" Width="72" Opacity="0.1"/>
+                <Image Source="/Assets/Logos/flint_logo.png" Height="72" Width="72" Opacity="0.2"/>
             </Grid>
             <ScrollViewer Padding="0,0" Visibility="{x:Bind ViewModel.MyGlossaries.Count,Mode=OneWay,Converter={StaticResource Int2Vis}}">
                 <muxc:ItemsRepeater Margin="16,0,16,8" HorizontalAlignment="Center" ItemsSource="{x:Bind ViewModel.MyGlossaries,Mode=OneWay}">
