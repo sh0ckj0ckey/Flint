@@ -48,11 +48,13 @@
         <Grid Grid.Row="1" Padding="16,8,16,4">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <!--按照颜色过滤-->
-            <Button Grid.Column="0" CornerRadius="4" Padding="12,0,12,0" Height="28" MinWidth="64" VerticalAlignment="Center"
+            <Button Grid.Column="0" CornerRadius="4" Margin="1,0,0,0" Padding="12,0,12,0" Height="30" MinWidth="64" VerticalAlignment="Center"
                     Visibility="{x:Bind ViewModel.SelectedGlossary.IsReadOnly,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}">
                 <ToolTipService.ToolTip>
                     <ToolTip>
@@ -140,11 +142,11 @@
                             Visibility="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=Transparent}"/>
                     <Border Height="10" Width="10" CornerRadius="6" Background="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Enum2Color}}" VerticalAlignment="Center"
                             Visibility="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource UnEql2Vis},ConverterParameter=Transparent}"/>
-                    <TextBlock Text="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Enum2Name}}" FontSize="12" FontWeight="Light" Opacity="0.9" Margin="4,0,0,0" CharacterSpacing="80" VerticalAlignment="Center"/>
+                    <TextBlock Text="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Enum2Name}}" FontSize="12" Height="18" FontWeight="Light" Opacity="0.9" Margin="4,0,0,0" CharacterSpacing="80" VerticalAlignment="Center"/>
                 </StackPanel>
             </Button>
             <!--查找生词-->
-            <Grid Grid.Column="2" VerticalAlignment="Center">
+            <Grid Grid.Column="4" VerticalAlignment="Center" Margin="0,0,1,0">
                 <TextBox x:Name="FilterWordTextBox" Width="156" PlaceholderText="查找生词" FontSize="12" FontWeight="Medium" Padding="24,6,4,0" CharacterSpacing="40" Height="30" MinHeight="0" BorderBrush="Transparent" BorderThickness="0" TextChanged="OnFilterTextChanged"/>
                 <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE094;" Opacity="0.7" FontSize="12" Margin="8,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" IsHitTestVisible="False"/>
             </Grid>
@@ -157,7 +159,7 @@
                 <TextBlock Text="没有找到" FontSize="13" CharacterSpacing="40"/>
                 <TextBlock Text="{x:Bind ViewModel.FilterGlossaryWord,Mode=OneWay}" Margin="4,0,0,0" FontSize="13" CharacterSpacing="40"
                            Visibility="{x:Bind ViewModel.FilterGlossaryWord,Mode=OneWay,Converter={StaticResource Null2Vis}}"/>
-                <TextBlock Text="为首的" Margin="0,0,4,0" FontSize="13" CharacterSpacing="40"
+                <TextBlock Text="开头的" Margin="0,0,4,0" FontSize="13" CharacterSpacing="40"
                            Visibility="{x:Bind ViewModel.FilterGlossaryWord,Mode=OneWay,Converter={StaticResource Null2Vis}}"/>
                 <TextBlock Text="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Enum2Name}}" Margin="0,0,4,0" FontSize="13" CharacterSpacing="40"
                            Foreground="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Enum2Color}}"
@@ -165,7 +167,7 @@
                 <TextBlock Text="生词" FontSize="13" CharacterSpacing="40"/>
             </StackPanel>
         </StackPanel>
-        <ListView x:Name="GlossaryWordsListView" Grid.Row="2" ItemsSource="{x:Bind ViewModel.GlossaryWordItems,Mode=OneWay}" HorizontalContentAlignment="Stretch" Padding="0,8,4,8"
+        <ListView x:Name="GlossaryWordsListView" Grid.Row="2" ItemsSource="{x:Bind ViewModel.GlossaryWordItems,Mode=OneWay}" HorizontalContentAlignment="Stretch" Padding="0,0,4,8"
                   HorizontalAlignment="Stretch" IsSwipeEnabled="False" SelectionMode="None" IsItemClickEnabled="False">
             <ListView.ItemContainerTransitions>
                 <TransitionCollection/>
@@ -180,7 +182,7 @@
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <StackPanel Grid.Column="0" Orientation="Vertical" Margin="0,8,0,8" HorizontalAlignment="Stretch" VerticalAlignment="Center">
-                                    <StackPanel Orientation="Horizontal">
+                                    <StackPanel Orientation="Horizontal" Visibility="{Binding IsChecked,ElementName=HideEnglishToggleButton,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}">
                                         <TextBlock Text="{x:Bind Word}" FontSize="18" FontWeight="SemiBold" CharacterSpacing="40" VerticalAlignment="Center"/>
                                         <TextBlock Margin="8,0,0,0" FontSize="16" Opacity="0.5" FontWeight="Light" VerticalAlignment="Center" Visibility="{x:Bind Phonetic,Converter={StaticResource Null2Vis}}" IsTextSelectionEnabled="True">
                                                 <Run Text="/" FontSize="14"/>
@@ -248,9 +250,10 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="8"/>
             </Grid.ColumnDefinitions>
-            <Rectangle Grid.ColumnSpan="6" Height="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" Fill="{ThemeResource SETTING_LINE_BK}"/>
+            <Rectangle Grid.ColumnSpan="7" Height="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" Fill="{ThemeResource SETTING_LINE_BK}"/>
             <Button Grid.Column="0" Margin="8,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center" Click="OnClickBackButton">
                 <ToolTipService.ToolTip>
                     <ToolTip>
@@ -271,7 +274,40 @@
                     </muxc:AnimatedIcon.FallbackIconSource>
                 </muxc:AnimatedIcon>
             </Button>
-            <Button Grid.Column="3" Margin="4,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center"
+            <!--<ToggleButton x:Name="HideChineseToggleButton" Grid.Column="2" Margin="4,8,0,8" IsChecked="False" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center">
+                <ToolTipService.ToolTip>
+                    <ToolTip>
+                        <TextBlock>
+                            <Run Text="hide" FontWeight="Bold"/>
+                            <Run Text="/haɪd/"/>
+                            <Run Text="verb" FontStyle="Italic" FontWeight="Medium"/>
+                            <Run Text="隐藏"/>
+                        </TextBlock>
+                    </ToolTip>
+                </ToolTipService.ToolTip>
+                <Grid>
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE982;" FontSize="16" Height="22" Width="22" Opacity="0.8"/>
+                </Grid>
+            </ToggleButton>-->
+            <ToggleButton x:Name="HideEnglishToggleButton" Grid.Column="3" Margin="4,8,0,8" IsChecked="False" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center">
+                <ToolTipService.ToolTip>
+                    <ToolTip>
+                        <TextBlock>
+                            <Run Text="hide" FontWeight="Bold"/>
+                            <Run Text="/haɪd/"/>
+                            <Run Text="verb" FontStyle="Italic" FontWeight="Medium"/>
+                            <Run Text="隐藏"/>
+                        </TextBlock>
+                    </ToolTip>
+                </ToolTipService.ToolTip>
+                <Grid>
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE18B;" FontSize="16" Height="22" Width="22" Opacity="0.8"
+                              Visibility="{x:Bind HideEnglishToggleButton.IsChecked,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}"/>
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xED1A;" FontSize="16" Height="22" Width="22" Opacity="0.8"
+                              Visibility="{x:Bind HideEnglishToggleButton.IsChecked,Mode=OneWay,Converter={StaticResource Bool2Vis}}"/>
+                </Grid>
+            </ToggleButton>
+            <Button Grid.Column="4" Margin="4,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center"
                     Visibility="{x:Bind ViewModel.SelectedGlossary.IsReadOnly,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}">
                 <ToolTipService.ToolTip>
                     <ToolTip>
@@ -300,7 +336,7 @@
                     </Flyout>
                 </Button.Flyout>
             </Button>
-            <Button Grid.Column="4" Margin="4,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center">
+            <Button Grid.Column="5" Margin="4,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center">
                 <ToolTipService.ToolTip>
                     <ToolTip>
                         <TextBlock>

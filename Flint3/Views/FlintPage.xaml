@@ -159,7 +159,7 @@
                     <TextBlock Text="欢迎使用 " FontSize="12" CharacterSpacing="48"/>
                 </StackPanel>
             </Button>
-            <Button x:Name="GlossaryButton" Grid.Column="3" Margin="8,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center" Click="OnClickGlossary"
+            <Button x:Name="GlossaryButton" Grid.Column="3" Margin="4,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center" Click="OnClickGlossary"
                     Visibility="{x:Bind ViewModel.AppSettings.EnableGlossary,Mode=OneWay,Converter={StaticResource Bool2Vis}}">
                 <ToolTipService.ToolTip>
                     <ToolTip>
