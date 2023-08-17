@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="Flint3.Views.GlossaryPropertyPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Flint3.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls" 
+    xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
+    xmlns:labs="using:CommunityToolkit.Labs.WinUI"
+    mc:Ignorable="d" Background="Transparent" NavigationCacheMode="Required">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="38"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Background="Transparent">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Glossary" FontFamily="Times New Roman" Margin="20,0,0,4" FontWeight="Bold" FontSize="20" CharacterSpacing="40" VerticalAlignment="Bottom" Opacity="0.7"/>
+            <FontIcon Grid.Column="1" FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE00F;" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="14" FontWeight="Bold" Opacity="0.5" Margin="4,0,4,8"/>
+            <TextBlock Grid.Column="2" Margin="0,0,0,5" Text="{x:Bind ViewModel.SelectedGlossary.GlossaryTitle,Mode=OneWay}" FontSize="16" MaxWidth="220" FontWeight="Bold" CharacterSpacing="40" Opacity="0.7" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+            <FontIcon Grid.Column="3" FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE00F;" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="14" FontWeight="Bold" Opacity="0.5" Margin="4,0,4,8"/>
+            <TextBlock Grid.Column="4" IsTabStop="True" Margin="0,0,120,5" Text="属性" FontSize="16" FontWeight="Bold" CharacterSpacing="40" Opacity="0.9" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+        </Grid>
+
+        <ScrollViewer Grid.Row="1" HorizontalScrollMode="Disabled" ZoomMode="Disabled" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Margin="20,20,20,0">
+                <labs:SettingsCard Margin="0,2,0,0" HorizontalAlignment="Stretch" MinHeight="0" Padding="20,10">
+                    <labs:SettingsCard.Header>
+                        <TextBlock Text="名称" CharacterSpacing="64"/>
+                    </labs:SettingsCard.Header>
+                    <TextBox Text="{x:Bind ViewModel.SelectedGlossary.GlossaryTitle,Mode=TwoWay}" IsReadOnly="True" Width="256" CharacterSpacing="40"/>
+                </labs:SettingsCard>
+                <labs:SettingsCard Margin="0,2,0,0" HorizontalAlignment="Stretch" MinHeight="0" Padding="20,10">
+                    <labs:SettingsCard.Header>
+                        <TextBlock Text="描述" CharacterSpacing="64"/>
+                    </labs:SettingsCard.Header>
+                    <TextBox Text="{x:Bind ViewModel.SelectedGlossary.GlossaryDescription,Mode=TwoWay}" IsReadOnly="True" Width="256" CharacterSpacing="40" PlaceholderText="没有添加描述" TextWrapping="Wrap"/>
+                </labs:SettingsCard>
+                <labs:SettingsCard Margin="0,2,0,0" HorizontalAlignment="Stretch" MinHeight="0" Padding="20,10">
+                    <labs:SettingsCard.Header>
+                        <TextBlock Text="词汇" CharacterSpacing="64"/>
+                    </labs:SettingsCard.Header>
+                    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" CharacterSpacing="40" Opacity="0.7">
+                        <Run Text="共"/>
+                        <Run Text="{x:Bind ViewModel.SelectedGlossary.GlossaryWordsCount,Mode=OneWay}"/>
+                        <Run Text="个单词"/>
+                    </TextBlock>
+                </labs:SettingsCard>
+                <labs:SettingsCard Margin="0,2,0,0" HorizontalAlignment="Stretch" MinHeight="0" Padding="20,20">
+                    <StackPanel Orientation="Vertical" Spacing="24">
+                        <ProgressBar Maximum="1603" Value="800" Width="256" Foreground="{ThemeResource APPLICATION_NORMAL_FR}"/>
+                        <ProgressBar Maximum="1603" Value="800" Width="256" Foreground="Tomato"/>
+                        <ProgressBar Maximum="1603" Value="800" Width="256" Foreground="DodgerBlue"/>
+                        <ProgressBar Maximum="1603" Value="800" Width="256" Foreground="Sienna"/>
+                    </StackPanel>
+                </labs:SettingsCard>
+            </StackPanel>
+        </ScrollViewer>
+
+        <Grid Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="8"/>
+            </Grid.ColumnDefinitions>
+            <Rectangle Grid.ColumnSpan="7" Height="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" Fill="{ThemeResource SETTING_LINE_BK}"/>
+            <Button Grid.Column="0" Margin="8,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center" Click="OnClickBackButton">
+                <ToolTipService.ToolTip>
+                    <ToolTip>
+                        <TextBlock>
+                            <Run Text="back" FontWeight="Bold"/>
+                            <Run Text="/bæk/"/>
+                            <Run Text="adverb" FontStyle="Italic" FontWeight="Medium"/>
+                            <Run Text="返回"/>
+                        </TextBlock>
+                    </ToolTip>
+                </ToolTipService.ToolTip>
+                <muxc:AnimatedIcon Height="22" Width="22" Opacity="0.8">
+                    <muxc:AnimatedIcon.Source>
+                        <animatedvisuals:AnimatedBackVisualSource/>
+                    </muxc:AnimatedIcon.Source>
+                    <muxc:AnimatedIcon.FallbackIconSource>
+                        <muxc:SymbolIconSource Symbol="Back"/>
+                    </muxc:AnimatedIcon.FallbackIconSource>
+                </muxc:AnimatedIcon>
+            </Button>
+            <Button Grid.Column="2" Margin="4,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center">
+                <ToolTipService.ToolTip>
+                    <ToolTip>
+                        <TextBlock>
+                            <Run Text="edit" FontWeight="Bold"/>
+                            <Run Text="/ˈed.ɪt/"/>
+                            <Run Text="verb" FontStyle="Italic" FontWeight="Medium"/>
+                            <Run Text="编辑"/>
+                        </TextBlock>
+                    </ToolTip>
+                </ToolTipService.ToolTip>
+                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE104;" FontSize="16" Height="22" Width="22" Opacity="0.8"/>
+            </Button>
+            <Button Grid.Column="3" Margin="4,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center">
+                <ToolTipService.ToolTip>
+                    <ToolTip>
+                        <TextBlock>
+                            <Run Text="save" FontWeight="Bold"/>
+                            <Run Text="/seɪv/"/>
+                            <Run Text="verb" FontStyle="Italic" FontWeight="Medium"/>
+                            <Run Text="保存"/>
+                        </TextBlock>
+                    </ToolTip>
+                </ToolTipService.ToolTip>
+                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE105;" FontSize="16" Height="22" Width="22" Opacity="0.8"/>
+            </Button>
+            <Button Grid.Column="4" Margin="4,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center">
+                <ToolTipService.ToolTip>
+                    <ToolTip>
+                        <TextBlock>
+                            <Run Text="cancel" FontWeight="Bold"/>
+                            <Run Text="/ˈkæn.səl/"/>
+                            <Run Text="verb" FontStyle="Italic" FontWeight="Medium"/>
+                            <Run Text="取消"/>
+                        </TextBlock>
+                    </ToolTip>
+                </ToolTipService.ToolTip>
+                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE106;" FontSize="16" Height="22" Width="22" Opacity="0.8"/>
+            </Button>
+        </Grid>
+    </Grid>
+</Page>

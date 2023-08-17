@@ -15,7 +15,6 @@ using Microsoft.UI.Xaml.Navigation;
 using Flint3.ViewModels;
 using System.Diagnostics;
 using Microsoft.UI.Xaml.Media.Animation;
-using System.Threading.Tasks;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -29,6 +28,8 @@ namespace Flint3.Views
     {
         public MainViewModel ViewModel { get; set; } = null;
         private ScrollViewer _glossaryWordsScrollViewer = null;
+
+        private SlideNavigationTransitionInfo SlideNaviTransition = new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight };
 
         public GlossaryContentPage()
         {
@@ -192,6 +193,11 @@ namespace Flint3.Views
                 }
             }
             catch { }
+        }
+
+        private void OnClickGlossaryProperty(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(GlossaryPropertyPage), null, SlideNaviTransition);
         }
     }
 }

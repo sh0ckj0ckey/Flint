@@ -41,7 +41,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <TextBlock Text="Glossary" FontFamily="Times New Roman" Margin="20,0,0,4" FontWeight="Bold" FontSize="20" CharacterSpacing="40" VerticalAlignment="Bottom" Opacity="0.7"/>
-            <muxc:FontIcon Grid.Column="1" FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE00F;" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="14" FontWeight="Bold" Opacity="0.5" Margin="4,0,4,8"/>
+            <FontIcon Grid.Column="1" FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE00F;" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="14" FontWeight="Bold" Opacity="0.5" Margin="4,0,4,8"/>
             <TextBlock Grid.Column="2" Margin="0,0,120,5" Text="{x:Bind ViewModel.SelectedGlossary.GlossaryTitle,Mode=OneWay}" FontSize="16" FontWeight="Bold" CharacterSpacing="40" Opacity="0.9" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
         </Grid>
 
@@ -336,14 +336,15 @@
                     </Flyout>
                 </Button.Flyout>
             </Button>
-            <Button Grid.Column="5" Margin="4,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center">
+            <Button Grid.Column="5" Margin="4,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center"
+                    Click="OnClickGlossaryProperty">
                 <ToolTipService.ToolTip>
                     <ToolTip>
                         <TextBlock>
-                            <Run Text="info" FontWeight="Bold"/>
-                            <Run Text="/ˈɪn.fəʊ/"/>
+                            <Run Text="property" FontWeight="Bold"/>
+                            <Run Text="/ˈprɒp.ə.ti/"/>
                             <Run Text="noun" FontStyle="Italic" FontWeight="Medium"/>
-                            <Run Text="详情"/>
+                            <Run Text="属性"/>
                         </TextBlock>
                     </ToolTip>
                 </ToolTipService.ToolTip>
