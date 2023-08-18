@@ -183,7 +183,7 @@
                                 </Grid.ColumnDefinitions>
                                 <StackPanel Grid.Column="0" Orientation="Vertical" Margin="0,8,0,8" HorizontalAlignment="Stretch" VerticalAlignment="Center">
                                     <StackPanel Orientation="Horizontal" Visibility="{Binding IsChecked,ElementName=HideEnglishToggleButton,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}">
-                                        <TextBlock Text="{x:Bind Word}" FontSize="18" FontWeight="SemiBold" CharacterSpacing="40" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{x:Bind Word}" FontSize="18" FontWeight="SemiBold" CharacterSpacing="40" VerticalAlignment="Center" IsTextSelectionEnabled="True"/>
                                         <TextBlock Margin="8,0,0,0" FontSize="16" Opacity="0.5" FontWeight="Light" VerticalAlignment="Center" Visibility="{x:Bind Phonetic,Converter={StaticResource Null2Vis}}" IsTextSelectionEnabled="True">
                                                 <Run Text="/" FontSize="14"/>
                                                 <Run Text="{x:Bind Phonetic}"/>

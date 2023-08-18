@@ -77,7 +77,6 @@ namespace Flint3.ViewModels
         /// <param name="color"></param>
         public void GetFirstPageGlossaryWords(int count = 50)
         {
-
             ActScrollToGlossaryTop?.Invoke();
             GlossaryWordItems.Clear();
 

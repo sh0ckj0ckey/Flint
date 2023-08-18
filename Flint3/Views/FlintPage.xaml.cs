@@ -43,6 +43,8 @@ namespace Flint3.Views
             StarDictDataAccess.InitializeDatabase();
 
             MainViewModel.Instance.InitMyGlossaries();
+
+            PopupShadow.Receivers.Add(AddToGlossaryPopupShadowReceiver);
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -194,6 +196,16 @@ namespace Flint3.Views
         {
             FirstTeachingTip.IsOpen = false;
             SecondTeachingTip.IsOpen = false;
+        }
+
+        private void OnClickAddWordToGlossary(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn)
+            {
+                AddWordToGlossaryPopup.PlacementTarget = btn;
+                AddWordToGlossaryPopup.DesiredPlacement = Microsoft.UI.Xaml.Controls.Primitives.PopupPlacementMode.Left;
+                AddWordToGlossaryPopup.IsOpen = true;
+            }
         }
     }
 }

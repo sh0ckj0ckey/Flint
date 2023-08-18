@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="Flint3.Controls.AddToGlossaryControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Flint3.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Width="256" CornerRadius="8">
+        <Grid.Background>
+            <AcrylicBrush AlwaysUseFallback="False" TintColor="Transparent" TintLuminosityOpacity="0" TintOpacity="0" FallbackColor="{ThemeResource SolidBackgroundFillColorBase}"/>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Text="添加到生词本" FontSize="14" FontWeight="SemiBold" Margin="18,12,0,8" CharacterSpacing="40"/>
+        <ComboBox Grid.Row="1" PlaceholderText="选择生词本" MinWidth="128" MaxWidth="228" ItemsSource="{x:Bind ViewModel.MyGlossaries,Mode=OneWay}" Margin="14,0,0,0"/>
+        <TextBox Grid.Row="2" Margin="14,10,14,0" HorizontalAlignment="Stretch" CharacterSpacing="40" TextWrapping="Wrap" Height="48" PlaceholderText="备注"/>
+        <TextBlock Grid.Row="3" Text="颜色标签" Margin="18,10,0,0" FontSize="12" Opacity="0.5" VerticalAlignment="Center" CharacterSpacing="40"/>
+        <ScrollViewer Grid.Row="4" Margin="0,0,0,12" HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" VerticalScrollMode="Disabled" ZoomMode="Disabled">
+            <StackPanel Orientation="Horizontal" Spacing="6" Margin="14,6,14,0">
+                <Button Height="26" Width="26" Padding="0" CornerRadius="16" Tag="0" Click="OnClickFilterColor">
+                    <Border Height="16" Width="16" CornerRadius="16" Background="Transparent" BorderBrush="{ThemeResource APPLICATION_NORMAL_FR}" BorderThickness="2" ToolTipService.ToolTip="无">
+                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="10" Foreground="{ThemeResource APPLICATION_NORMAL_FR}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                  />
+                    </Border>
+                </Button>
+                <Button Height="26" Width="26" Padding="0" CornerRadius="16" Tag="1" Click="OnClickFilterColor">
+                    <Border Height="16" Width="16" CornerRadius="16" Background="Firebrick" ToolTipService.ToolTip="红色">
+                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="10" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"
+                              />
+                    </Border>
+                </Button>
+                <Button Height="26" Width="26" Padding="0" CornerRadius="16" Tag="2" Click="OnClickFilterColor">
+                    <Border Height="16" Width="16" CornerRadius="16" Background="Tomato" ToolTipService.ToolTip="橙色">
+                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="10" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"
+                              />
+                    </Border>
+                </Button>
+                <Button Height="26" Width="26" Padding="0" CornerRadius="16" Tag="3" Click="OnClickFilterColor">
+                    <Border Height="16" Width="16" CornerRadius="16" Background="Gold" ToolTipService.ToolTip="黄色">
+                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="10" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"
+                              />
+                    </Border>
+                </Button>
+                <Button Height="26" Width="26" Padding="0" CornerRadius="16" Tag="4" Click="OnClickFilterColor">
+                    <Border Height="16" Width="16" CornerRadius="16" Background="ForestGreen" ToolTipService.ToolTip="绿色">
+                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="10" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"
+                              />
+                    </Border>
+                </Button>
+                <Button Height="26" Width="26" Padding="0" CornerRadius="16" Tag="5" Click="OnClickFilterColor">
+                    <Border Height="16" Width="16" CornerRadius="16" Background="DodgerBlue" ToolTipService.ToolTip="蓝色">
+                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="10" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"
+                              />
+                    </Border>
+                </Button>
+                <Button Height="26" Width="26" Padding="0" CornerRadius="16" Tag="6" Click="OnClickFilterColor">
+                    <Border Height="16" Width="16" CornerRadius="16" Background="Orchid" ToolTipService.ToolTip="紫色">
+                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="10" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"
+                              />
+                    </Border>
+                </Button>
+                <Button Height="26" Width="26" Padding="0" CornerRadius="16" Tag="7" Click="OnClickFilterColor">
+                    <Border Height="16" Width="16" CornerRadius="16" Background="DeepPink" ToolTipService.ToolTip="粉色">
+                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="10" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"
+                              />
+                    </Border>
+                </Button>
+                <Button Height="26" Width="26" Padding="0" CornerRadius="16" Tag="8" Click="OnClickFilterColor">
+                    <Border Height="16" Width="16" CornerRadius="16" Background="Sienna" ToolTipService.ToolTip="棕色">
+                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="10" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"
+                              />
+                    </Border>
+                </Button>
+                <Button Height="26" Width="26" Padding="0" CornerRadius="16" Tag="9" Click="OnClickFilterColor">
+                    <Border Height="16" Width="16" CornerRadius="16" Background="Gray" ToolTipService.ToolTip="灰色">
+                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="10" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"
+                              />
+                    </Border>
+                </Button>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

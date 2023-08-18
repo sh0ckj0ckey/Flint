@@ -87,6 +87,7 @@
     <None Remove="Assets\Manifests\Wide310x150Logo.scale-400.png" />
     <None Remove="Assets\photo.png" />
     <None Remove="Assets\teachingtip_img.jpg" />
+    <None Remove="Controls\AddToGlossaryControl.xaml" />
     <None Remove="Controls\KeyVisual\KeyVisual.xaml" />
     <None Remove="Controls\ShortcutControl\ShortcutControl.xaml" />
     <None Remove="Controls\ShortcutControl\ShortcutDialogContentControl.xaml" />
@@ -125,6 +126,11 @@
     <ProjectReference Include="..\Flint3.Core\Flint3.Core.csproj" />
     <ProjectReference Include="..\Flint3.Data\Flint3.Data.csproj" />
     <ProjectReference Include="..\Flint3.Interop\Flint3.Interop.vcxproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\AddToGlossaryControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Views\GlossaryPropertyPage.xaml">
