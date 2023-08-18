@@ -303,5 +303,29 @@ namespace Flint3.ViewModels
         }
 
         #endregion
+
+        #region 添加到生词本
+
+        /// <summary>
+        /// 正在添加的单词
+        /// </summary>
+        private StarDictWordItem _addingWordItem = null;
+        public StarDictWordItem AddingWordItem
+        {
+            get => _addingWordItem;
+            set => SetProperty(ref _addingWordItem, value);
+        }
+
+        /// <summary>
+        /// 当前添加的单词颜色
+        /// </summary>
+        private GlossaryColorsEnum _addingWordColor = GlossaryColorsEnum.Transparent;
+        public GlossaryColorsEnum AddingWordColor
+        {
+            get => _addingWordColor;
+            set => SetProperty(ref _addingWordColor, value);
+        }
+
+        #endregion
     }
 }

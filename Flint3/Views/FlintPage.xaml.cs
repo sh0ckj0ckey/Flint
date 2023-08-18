@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Flint3.Controls.KeyVisual;
 using Flint3.Data;
+using Flint3.Data.Models;
 using Flint3.Helpers;
 using Flint3.ViewModels;
 using Microsoft.UI;
@@ -43,8 +44,6 @@ namespace Flint3.Views
             StarDictDataAccess.InitializeDatabase();
 
             MainViewModel.Instance.InitMyGlossaries();
-
-            PopupShadow.Receivers.Add(AddToGlossaryPopupShadowReceiver);
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -200,10 +199,10 @@ namespace Flint3.Views
 
         private void OnClickAddWordToGlossary(object sender, RoutedEventArgs e)
         {
-            if (sender is Button btn)
+            if (sender is Button btn && btn.DataContext is StarDictWordItem item)
             {
-                AddWordToGlossaryPopup.PlacementTarget = btn;
-                AddWordToGlossaryPopup.DesiredPlacement = Microsoft.UI.Xaml.Controls.Primitives.PopupPlacementMode.Left;
+                MainViewModel.Instance.AddingWordItem = item;
+                AddWordControl.ResetLayout();
                 AddWordToGlossaryPopup.IsOpen = true;
             }
         }

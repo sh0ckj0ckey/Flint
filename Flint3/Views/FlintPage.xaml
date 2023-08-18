@@ -21,8 +21,6 @@
         <cvt:Bool2VisibilityConverter x:Key="Bool2Vis"/>
         <cvt:NullOrEmpty2VisibilityConverter x:Key="Null2Vis"/>
         <cvt:IsExpanded2OpacityConverter x:Key="Bool2Opacity"/>
-
-        <ThemeShadow x:Name="PopupShadow"/>
     </Page.Resources>
 
     <Grid>
@@ -55,7 +53,7 @@
             <Image Source="/Assets/Logos/flint_logo.png" Height="72" Width="72" Opacity="0.2"/>
         </Grid>
         <Grid Grid.Row="2">
-            <Grid x:Name="AddToGlossaryPopupShadowReceiver" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent"/>
+            <Grid x:Name="PopupTargetGrid" Background="Transparent" IsHitTestVisible="False" Height="1" Width="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,-160"/>
             <ListView ItemsSource="{x:Bind ViewModel.SearchResultWordItems,Mode=OneWay}" HorizontalContentAlignment="Stretch" Margin="0,4,0,0" Padding="0,8,2,8" HorizontalAlignment="Stretch" SelectionMode="None" IsItemClickEnabled="False" IsSwipeEnabled="False">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="mdl:StarDictWordItem">
@@ -120,13 +118,14 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Popup x:Name="AddWordToGlossaryPopup" Shadow="{StaticResource PopupShadow}" HorizontalOffset="0" VerticalOffset="0" IsOpen="False" IsLightDismissEnabled="True" Translation="0,0,32">
+            <Popup x:Name="AddWordToGlossaryPopup" HorizontalOffset="0" VerticalOffset="0" IsOpen="False" LightDismissOverlayMode="On" IsLightDismissEnabled="True"
+                   PlacementTarget="{x:Bind PopupTargetGrid}" DesiredPlacement="Top">
                 <Popup.ChildTransitions>
                     <TransitionCollection>
                         <PopupThemeTransition/>
                     </TransitionCollection>
                 </Popup.ChildTransitions>
-                <controls:AddToGlossaryControl/>
+                <controls:AddToGlossaryControl x:Name="AddWordControl"/>
             </Popup>
         </Grid>
         <Grid Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">

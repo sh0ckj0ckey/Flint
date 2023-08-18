@@ -17,7 +17,12 @@ namespace Flint3.Converters
 
                 if (parameter != null && value != null && parameter.ToString() == "-")
                 {
-                    return int.Parse(value?.ToString() ?? "0") <= 0;
+                    return int.Parse(value.ToString()) <= 0;
+                }
+
+                if (parameter != null && value != null && parameter.ToString() == "0")
+                {
+                    return int.Parse(value.ToString()) >= 0;
                 }
 
                 if (parameter != null && value != null)

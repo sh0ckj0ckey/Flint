@@ -19,10 +19,18 @@ namespace Flint3.Models
             set => SetProperty(ref _count, value);
         }
 
+        private double _percentage = 0;
+        public double Percentage
+        {
+            get => _percentage;
+            set => SetProperty(ref _percentage, value);
+        }
+
         public GlossaryColorPercentagePair(GlossaryColorsEnum color)
         {
             Color = color;
             Count = 0;
+            Percentage = 0;
         }
     }
 

@@ -172,11 +172,11 @@
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
                             <TextBlock Text="创建新的生词本" FontSize="14" FontWeight="Bold" CharacterSpacing="40"/>
-                            <muxc:TextBox x:Name="AddGlossaryNameTextBox" Grid.Row="1" MinWidth="192" MaxWidth="256" PlaceholderText="生词本的名称" Margin="0,8,0,0"/>
-                            <muxc:TextBox x:Name="AddGlossaryDescTextBox" Grid.Row="2" MinWidth="192" MaxWidth="256" MinHeight="48" MaxHeight="64" PlaceholderText="描述 (可选)" Margin="0,6,0,0" TextWrapping="Wrap"/>
-                            <muxc:Button Grid.Row="3" Content="创建" Margin="0,12,0,0" Padding="0,4" HorizontalAlignment="Stretch" Style="{StaticResource AccentButtonStyle}"
-                                         IsEnabled="{x:Bind AddGlossaryNameTextBox.Text,Mode=OneWay,Converter={StaticResource Str2Bool}}"
-                                         Click="OnClickCreateGlossary"/>
+                            <TextBox x:Name="AddGlossaryNameTextBox" Grid.Row="1" MinWidth="192" MaxWidth="256" PlaceholderText="生词本的名称" Margin="0,8,0,0"/>
+                            <TextBox x:Name="AddGlossaryDescTextBox" Grid.Row="2" MinWidth="192" MaxWidth="256" MinHeight="48" MaxHeight="64" PlaceholderText="描述 (可选)" Margin="0,6,0,0" TextWrapping="Wrap"/>
+                            <Button Grid.Row="3" Content="创建" Margin="0,12,0,0" Padding="0,4" HorizontalAlignment="Stretch" Style="{StaticResource AccentButtonStyle}"
+                                    IsEnabled="{x:Bind AddGlossaryNameTextBox.Text,Mode=OneWay,Converter={StaticResource Str2Bool}}"
+                                    Click="OnClickCreateGlossary"/>
                         </Grid>
                     </muxc:Flyout>
                 </Button.Flyout>
