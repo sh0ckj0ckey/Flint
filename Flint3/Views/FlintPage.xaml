@@ -118,7 +118,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Popup x:Name="AddWordToGlossaryPopup" HorizontalOffset="0" VerticalOffset="0" IsOpen="False" LightDismissOverlayMode="On" IsLightDismissEnabled="True"
+            <Popup x:Name="AddWordToGlossaryPopup" HorizontalOffset="0" VerticalOffset="0" IsOpen="False" LightDismissOverlayMode="Off" IsLightDismissEnabled="True"
                    PlacementTarget="{x:Bind PopupTargetGrid}" DesiredPlacement="Top">
                 <Popup.ChildTransitions>
                     <TransitionCollection>

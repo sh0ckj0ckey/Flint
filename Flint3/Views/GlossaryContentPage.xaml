@@ -155,16 +155,16 @@
         <StackPanel Grid.Row="2" Spacing="12" HorizontalAlignment="Stretch" VerticalAlignment="Center" Orientation="Vertical"
                     Visibility="{x:Bind ViewModel.GlossaryWordItems.Count,Mode=OneWay,Converter={StaticResource Int2Vis},ConverterParameter=-}">
             <Image Source="/Assets/Logos/flint_logo.png" Height="72" Width="72" Opacity="0.2" HorizontalAlignment="Center"/>
-            <StackPanel Orientation="Horizontal" Opacity="0.3" HorizontalAlignment="Center">
-                <TextBlock Text="没有找到" FontSize="13" CharacterSpacing="40"/>
-                <TextBlock Text="{x:Bind ViewModel.FilterGlossaryWord,Mode=OneWay}" Margin="4,0,0,0" FontSize="13" CharacterSpacing="40"
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Text="没有找到" FontSize="13" CharacterSpacing="40" Opacity="0.3"/>
+                <TextBlock Text="{x:Bind ViewModel.FilterGlossaryWord,Mode=OneWay}" Margin="4,0,0,0" FontSize="13" CharacterSpacing="40" Opacity="0.5"
                            Visibility="{x:Bind ViewModel.FilterGlossaryWord,Mode=OneWay,Converter={StaticResource Null2Vis}}"/>
-                <TextBlock Text="开头的" Margin="0,0,4,0" FontSize="13" CharacterSpacing="40"
+                <TextBlock Text="开头的" Margin="0,0,4,0" FontSize="13" CharacterSpacing="40" Opacity="0.5"
                            Visibility="{x:Bind ViewModel.FilterGlossaryWord,Mode=OneWay,Converter={StaticResource Null2Vis}}"/>
-                <TextBlock Text="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Enum2Name}}" Margin="0,0,4,0" FontSize="13" CharacterSpacing="40"
+                <TextBlock Text="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Enum2Name}}" Margin="0,0,4,0" FontSize="13" CharacterSpacing="40" Opacity="0.5"
                            Foreground="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Enum2Color}}"
                            Visibility="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource UnEql2Vis},ConverterParameter=Transparent}"/>
-                <TextBlock Text="生词" FontSize="13" CharacterSpacing="40"/>
+                <TextBlock Text="生词" FontSize="13" CharacterSpacing="40" Opacity="0.3"/>
             </StackPanel>
         </StackPanel>
         <ListView x:Name="GlossaryWordsListView" Grid.Row="2" ItemsSource="{x:Bind ViewModel.GlossaryWordItems,Mode=OneWay}" HorizontalContentAlignment="Stretch" Padding="0,0,4,8"

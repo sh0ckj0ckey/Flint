@@ -30,6 +30,13 @@ namespace Flint3.Views
         {
             this.InitializeComponent();
             ViewModel = MainViewModel.Instance;
+
+            this.Loaded += OnLoaded;
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            MainViewModel.Instance.EditingGlossaryProperty = false;
         }
 
         private void OnClickBackButton(object sender, RoutedEventArgs e)
@@ -39,5 +46,20 @@ namespace Flint3.Views
                 this.Frame.GoBack();
             }
         }
+        private void OnClickEditButton(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void OnClickSaveButton(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void OnClickCancelButton(object sender, RoutedEventArgs e)
+        {
+
+        }
+
     }
 }

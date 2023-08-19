@@ -9,7 +9,15 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls" 
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
+    xmlns:cvt="using:Flint3.Converters"
     mc:Ignorable="d" Background="Transparent" NavigationCacheMode="Required">
+    <Page.Resources>
+        <cvt:Int2VisibilityConverter x:Key="Int2Vis"/>
+        <cvt:Equal2BoolConverter x:Key="Eql2Bool"/>
+        <cvt:Bool2VisibilityConverter x:Key="Bool2Vis"/>
+        <cvt:BoolReverseConverter x:Key="BoolReverse"/>
+    </Page.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="38"/>
@@ -38,15 +46,15 @@
                     <labs:SettingsCard.Header>
                         <TextBlock Text="名称" CharacterSpacing="64"/>
                     </labs:SettingsCard.Header>
-                    <TextBox Text="{x:Bind ViewModel.SelectedGlossary.GlossaryTitle,Mode=TwoWay}" IsReadOnly="True" Width="256" CharacterSpacing="40"/>
+                    <TextBox Text="{x:Bind ViewModel.SelectedGlossary.GlossaryTitle,Mode=TwoWay}" IsReadOnly="{x:Bind ViewModel.EditingGlossaryProperty,Mode=OneWay,Converter={StaticResource BoolReverse}}" Width="256" CharacterSpacing="40"/>
                 </labs:SettingsCard>
                 <labs:SettingsCard Margin="0,2,0,0" HorizontalAlignment="Stretch" MinHeight="0" Padding="20,10">
                     <labs:SettingsCard.Header>
                         <TextBlock Text="描述" CharacterSpacing="64"/>
                     </labs:SettingsCard.Header>
-                    <TextBox Text="{x:Bind ViewModel.SelectedGlossary.GlossaryDescription,Mode=TwoWay}" IsReadOnly="True" Width="256" CharacterSpacing="40" PlaceholderText="没有添加描述" TextWrapping="Wrap"/>
+                    <TextBox Text="{x:Bind ViewModel.SelectedGlossary.GlossaryDescription,Mode=TwoWay}" IsReadOnly="{x:Bind ViewModel.EditingGlossaryProperty,Mode=OneWay,Converter={StaticResource BoolReverse}}" Width="256" CharacterSpacing="40" PlaceholderText="没有添加描述" TextWrapping="Wrap"/>
                 </labs:SettingsCard>
-                <labs:SettingsCard Margin="0,2,0,0" HorizontalAlignment="Stretch" MinHeight="0" Padding="20,10">
+                <labs:SettingsCard Margin="0,2,0,0" HorizontalAlignment="Stretch" MinHeight="0" Padding="20,16">
                     <labs:SettingsCard.Header>
                         <TextBlock Text="词汇" CharacterSpacing="64"/>
                     </labs:SettingsCard.Header>
@@ -56,7 +64,8 @@
                         <Run Text="个单词"/>
                     </TextBlock>
                 </labs:SettingsCard>
-                <labs:SettingsCard Margin="0,2,0,0" HorizontalAlignment="Stretch" MinHeight="0" Padding="20,20">
+                <labs:SettingsCard Margin="0,2,0,0" HorizontalAlignment="Stretch" MinHeight="0" Padding="20,20"
+                                   Visibility="{x:Bind ViewModel.SelectedGlossary.IsReadOnly,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}">
                     <StackPanel Orientation="Vertical" Spacing="24">
                         <ProgressBar Maximum="1603" Value="800" Width="256" Foreground="{ThemeResource APPLICATION_NORMAL_FR}"/>
                         <ProgressBar Maximum="1603" Value="800" Width="256" Foreground="Tomato"/>
@@ -98,45 +107,54 @@
                     </muxc:AnimatedIcon.FallbackIconSource>
                 </muxc:AnimatedIcon>
             </Button>
-            <Button Grid.Column="2" Margin="4,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center">
-                <ToolTipService.ToolTip>
-                    <ToolTip>
-                        <TextBlock>
-                            <Run Text="edit" FontWeight="Bold"/>
-                            <Run Text="/ˈed.ɪt/"/>
-                            <Run Text="verb" FontStyle="Italic" FontWeight="Medium"/>
-                            <Run Text="编辑"/>
-                        </TextBlock>
-                    </ToolTip>
-                </ToolTipService.ToolTip>
-                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE104;" FontSize="16" Height="22" Width="22" Opacity="0.8"/>
-            </Button>
-            <Button Grid.Column="3" Margin="4,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center">
-                <ToolTipService.ToolTip>
-                    <ToolTip>
-                        <TextBlock>
-                            <Run Text="save" FontWeight="Bold"/>
-                            <Run Text="/seɪv/"/>
-                            <Run Text="verb" FontStyle="Italic" FontWeight="Medium"/>
-                            <Run Text="保存"/>
-                        </TextBlock>
-                    </ToolTip>
-                </ToolTipService.ToolTip>
-                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE105;" FontSize="16" Height="22" Width="22" Opacity="0.8"/>
-            </Button>
-            <Button Grid.Column="4" Margin="4,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center">
-                <ToolTipService.ToolTip>
-                    <ToolTip>
-                        <TextBlock>
-                            <Run Text="cancel" FontWeight="Bold"/>
-                            <Run Text="/ˈkæn.səl/"/>
-                            <Run Text="verb" FontStyle="Italic" FontWeight="Medium"/>
-                            <Run Text="取消"/>
-                        </TextBlock>
-                    </ToolTip>
-                </ToolTipService.ToolTip>
-                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE106;" FontSize="16" Height="22" Width="22" Opacity="0.8"/>
-            </Button>
+            <Grid Grid.Column="2" Visibility="{x:Bind ViewModel.SelectedGlossary.IsReadOnly,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}">
+                <Button Margin="4,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center" Click="OnClickEditButton"
+                        Visibility="{x:Bind ViewModel.EditingGlossaryProperty,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}">
+                    <ToolTipService.ToolTip>
+                        <ToolTip>
+                            <TextBlock>
+                                <Run Text="edit" FontWeight="Bold"/>
+                                <Run Text="/ˈed.ɪt/"/>
+                                <Run Text="verb" FontStyle="Italic" FontWeight="Medium"/>
+                                <Run Text="编辑"/>
+                            </TextBlock>
+                        </ToolTip>
+                    </ToolTipService.ToolTip>
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE104;" FontSize="16" Height="22" Width="22" Opacity="0.8"/>
+                </Button>
+            </Grid>
+            <Grid Grid.Column="3" Visibility="{x:Bind ViewModel.SelectedGlossary.IsReadOnly,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}">
+                <Button Margin="4,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center" Click="OnClickSaveButton"
+                        Visibility="{x:Bind ViewModel.EditingGlossaryProperty,Mode=OneWay,Converter={StaticResource Bool2Vis}}">
+                    <ToolTipService.ToolTip>
+                        <ToolTip>
+                            <TextBlock>
+                                <Run Text="save" FontWeight="Bold"/>
+                                <Run Text="/seɪv/"/>
+                                <Run Text="verb" FontStyle="Italic" FontWeight="Medium"/>
+                                <Run Text="保存"/>
+                            </TextBlock>
+                        </ToolTip>
+                    </ToolTipService.ToolTip>
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE105;" FontSize="16" Height="22" Width="22" Opacity="0.8"/>
+                </Button>
+            </Grid>
+            <Grid Grid.Column="4" Visibility="{x:Bind ViewModel.SelectedGlossary.IsReadOnly,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}">
+                <Button Margin="4,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center" Click="OnClickCancelButton"
+                        Visibility="{x:Bind ViewModel.EditingGlossaryProperty,Mode=OneWay,Converter={StaticResource Bool2Vis}}">
+                    <ToolTipService.ToolTip>
+                        <ToolTip>
+                            <TextBlock>
+                                <Run Text="cancel" FontWeight="Bold"/>
+                                <Run Text="/ˈkæn.səl/"/>
+                                <Run Text="verb" FontStyle="Italic" FontWeight="Medium"/>
+                                <Run Text="取消"/>
+                            </TextBlock>
+                        </ToolTip>
+                    </ToolTipService.ToolTip>
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE106;" FontSize="16" Height="22" Width="22" Opacity="0.8"/>
+                </Button>
+            </Grid>
         </Grid>
     </Grid>
 </Page>

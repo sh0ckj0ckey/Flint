@@ -54,6 +54,16 @@ namespace Flint3.ViewModels
         public ObservableCollection<StarDictWordItem> GlossaryWordItems { get; private set; } = new ObservableCollection<StarDictWordItem>();
 
         /// <summary>
+        /// 当前是否正在编辑生词本属性
+        /// </summary>
+        private bool _editingGlossaryProperty = false;
+        public bool EditingGlossaryProperty
+        {
+            get => _editingGlossaryProperty;
+            set => SetProperty(ref _editingGlossaryProperty, value);
+        }
+
+        /// <summary>
         /// 查看生词本
         /// </summary>
         /// <param name="selectedGlossary"></param>
@@ -129,6 +139,7 @@ namespace Flint3.ViewModels
                     BuildinGlossaryInternalTag = "oxford",
                     GlossaryIcon = "\uE128",
                     IsReadOnly = true,
+                    GlossaryDescription = "这是一个扩展生词本，词汇仅供参考，请勿仅依赖这些词汇进行复习。",
                     GlossaryWordsCount = 3461
                 });
 
@@ -138,6 +149,7 @@ namespace Flint3.ViewModels
                     BuildinGlossaryInternalTag = "ielts",
                     GlossaryIcon = "\uF7DB",
                     IsReadOnly = true,
+                    GlossaryDescription = "这是一个扩展生词本，词汇仅供参考，请勿仅依赖这些词汇进行复习。",
                     GlossaryWordsCount = 5040
                 });
 
@@ -147,6 +159,7 @@ namespace Flint3.ViewModels
                     BuildinGlossaryInternalTag = "toefl",
                     GlossaryIcon = "\uF7DB",
                     IsReadOnly = true,
+                    GlossaryDescription = "这是一个扩展生词本，词汇仅供参考，请勿仅依赖这些词汇进行复习。",
                     GlossaryWordsCount = 6974
                 });
 
@@ -156,6 +169,7 @@ namespace Flint3.ViewModels
                     BuildinGlossaryInternalTag = "gre",
                     GlossaryIcon = "\uF7DB",
                     IsReadOnly = true,
+                    GlossaryDescription = "这是一个扩展生词本，词汇仅供参考，请勿仅依赖这些词汇进行复习。",
                     GlossaryWordsCount = 7504
                 });
 
@@ -165,6 +179,7 @@ namespace Flint3.ViewModels
                     BuildinGlossaryInternalTag = "ky",
                     GlossaryIcon = "\uE7BE",
                     IsReadOnly = true,
+                    GlossaryDescription = "这是一个扩展生词本，词汇仅供参考，请勿仅依赖这些词汇进行复习。",
                     GlossaryWordsCount = 4801
                 });
 
@@ -174,6 +189,7 @@ namespace Flint3.ViewModels
                     BuildinGlossaryInternalTag = "cet6",
                     GlossaryIcon = "\uE1D3",
                     IsReadOnly = true,
+                    GlossaryDescription = "这是一个扩展生词本，词汇仅供参考，请勿仅依赖这些词汇进行复习。",
                     GlossaryWordsCount = 5407
                 });
 
@@ -183,6 +199,7 @@ namespace Flint3.ViewModels
                     BuildinGlossaryInternalTag = "cet4",
                     GlossaryIcon = "\uE1D3",
                     IsReadOnly = true,
+                    GlossaryDescription = "这是一个扩展生词本，词汇仅供参考，请勿仅依赖这些词汇进行复习。",
                     GlossaryWordsCount = 3849
                 });
 
@@ -192,6 +209,7 @@ namespace Flint3.ViewModels
                     BuildinGlossaryInternalTag = "gk",
                     GlossaryIcon = "\uE7BC",
                     IsReadOnly = true,
+                    GlossaryDescription = "这是一个扩展生词本，词汇仅供参考，请勿仅依赖这些词汇进行复习。",
                     GlossaryWordsCount = 3677
                 });
 
@@ -201,6 +219,7 @@ namespace Flint3.ViewModels
                     BuildinGlossaryInternalTag = "zk",
                     GlossaryIcon = "\uE913",
                     IsReadOnly = true,
+                    GlossaryDescription = "这是一个扩展生词本，词汇仅供参考，请勿仅依赖这些词汇进行复习。",
                     GlossaryWordsCount = 1603
                 });
 
