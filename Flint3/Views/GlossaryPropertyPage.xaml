@@ -155,6 +155,38 @@
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE106;" FontSize="16" Height="22" Width="22" Opacity="0.8"/>
                 </Button>
             </Grid>
+            <Grid Grid.Column="5" Visibility="{x:Bind ViewModel.SelectedGlossary.IsReadOnly,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}">
+                <Button Margin="4,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center">
+                    <ToolTipService.ToolTip>
+                        <ToolTip>
+                            <TextBlock>
+                                <Run Text="delete" FontWeight="Bold"/>
+                                <Run Text="/dɪˈliːt/"/>
+                                <Run Text="verb" FontStyle="Italic" FontWeight="Medium"/>
+                                <Run Text="删除"/>
+                            </TextBlock>
+                        </ToolTip>
+                    </ToolTipService.ToolTip>
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE107;" FontSize="16" Height="22" Width="22" Opacity="0.8"/>
+                    <Button.Flyout>
+                        <Flyout Placement="Top">
+                            <Grid Background="Transparent">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="删除生词本" FontSize="14" FontWeight="Bold" CharacterSpacing="40"/>
+                                <TextBlock Grid.Row="1" Margin="0,4,0,0" TextWrapping="Wrap" Text="确认要删除这个生词本吗，删除后无法恢复。" MaxWidth="200" Opacity="0.7" FontSize="13" CharacterSpacing="40"/>
+                                <Grid Grid.Row="2" Margin="0,12,0,0">
+                                    <Border Background="Firebrick" CornerRadius="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                                    <Button Content="确认删除" FontSize="13" Background="Transparent" CornerRadius="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="OnClickDeleteButton"/>
+                                </Grid>
+                            </Grid>
+                        </Flyout>
+                    </Button.Flyout>
+                </Button>
+            </Grid>
         </Grid>
     </Grid>
 </Page>

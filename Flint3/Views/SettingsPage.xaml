@@ -29,10 +29,13 @@
         </Grid.RowDefinitions>
         <ScrollViewer Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="0,0,0,0" Margin="0,32,0,0">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Top">
-                <Grid Grid.Row="0" Margin="16,0,16,0" CornerRadius="8" Height="96" HorizontalAlignment="Stretch">
+                <Grid Grid.Row="0" Margin="16,0,16,0" BorderThickness="1" CornerRadius="4" Height="96" HorizontalAlignment="Stretch">
                     <Grid.Background>
                         <ImageBrush Stretch="UniformToFill" ImageSource="{ThemeResource FLINT_LOGO_BK_IMG}"/>
                     </Grid.Background>
+                    <Grid.BorderBrush>
+                        <SolidColorBrush Color="{ThemeResource APPLICATION_NORMAL_FR}" Opacity="0.1"/>
+                    </Grid.BorderBrush>
                     <Border x:Name="FlintLogoMaskBorder" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Opacity="0.7" Background="{ThemeResource FLINT_LOGO_MASK_BK}"/>
                     <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Image Height="42" ui:Effects.Shadow="{StaticResource CommonShadow}" IsTabStop="True">
@@ -52,7 +55,7 @@
                         </StackPanel>
                     </StackPanel>
                 </Grid>
-                
+
                 <TextBlock Text="外观与功能" Margin="20,12,0,4" FontWeight="Bold" FontSize="14" CharacterSpacing="64"/>
                 <labs:SettingsCard Margin="16,2,16,0" HorizontalAlignment="Stretch">
                     <labs:SettingsCard.HeaderIcon>
@@ -120,14 +123,14 @@
                     </labs:SettingsCard.Description>
                     <ToggleSwitch MinWidth="0" Background="Transparent" IsOn="{x:Bind _viewModel.AppSettings.EnableEngDefinition,Mode=TwoWay}"/>
                 </labs:SettingsCard>
-                <labs:SettingsCard Margin="16,2,16,0" HorizontalAlignment="Stretch">
-                    <labs:SettingsCard.HeaderIcon>
+                <labs:SettingsExpander Margin="16,2,16,0" HorizontalAlignment="Stretch" IsExpanded="False">
+                    <labs:SettingsExpander.HeaderIcon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE82D;"/>
-                    </labs:SettingsCard.HeaderIcon>
-                    <labs:SettingsCard.Header>
+                    </labs:SettingsExpander.HeaderIcon>
+                    <labs:SettingsExpander.Header>
                         <TextBlock Text="生词本功能" CharacterSpacing="64"/>
-                    </labs:SettingsCard.Header>
-                    <labs:SettingsCard.Description>
+                    </labs:SettingsExpander.Header>
+                    <labs:SettingsExpander.Description>
                         <Grid>
                             <TextBlock Text="选择是否启用生词本功能" CharacterSpacing="64" 
                                        Visibility="{x:Bind EnableGlossaryToggleSwitch.IsOn,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}"/>
@@ -137,9 +140,22 @@
                                 <Run Text="，即可添加到生词本"/>
                             </TextBlock>
                         </Grid>
-                    </labs:SettingsCard.Description>
+                    </labs:SettingsExpander.Description>
                     <ToggleSwitch x:Name="EnableGlossaryToggleSwitch" MinWidth="0" Background="Transparent" IsOn="{x:Bind _viewModel.AppSettings.EnableGlossary,Mode=TwoWay}"/>
-                </labs:SettingsCard>
+                    <labs:SettingsExpander.Items>
+                        <labs:SettingsCard HorizontalAlignment="Stretch" IsEnabled="{x:Bind EnableGlossaryToggleSwitch.IsOn,Mode=OneWay}">
+                            <labs:SettingsCard.Description>
+                                <TextBlock Text="生词本数据存储目录" CharacterSpacing="64"/>
+                            </labs:SettingsCard.Description>
+                            <Button Height="32" MinWidth="72">
+                                <Grid>
+                                    <TextBlock Text="{x:Bind _viewModel.AppSettings.GlossaryDatabaseFilePath,Mode=OneWay}" MaxLines="1" MaxWidth="256" TextTrimming="CharacterEllipsis"/>
+                                </Grid>
+                            </Button>
+                        </labs:SettingsCard>
+                    </labs:SettingsExpander.Items>
+                </labs:SettingsExpander>
+
 
                 <TextBlock Text="行为" Margin="20,12,0,4" FontWeight="Bold" FontSize="14" CharacterSpacing="64"/>
                 <labs:SettingsCard Margin="16,2,16,0" HorizontalAlignment="Stretch">

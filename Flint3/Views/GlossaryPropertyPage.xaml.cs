@@ -61,5 +61,9 @@ namespace Flint3.Views
 
         }
 
+        private void OnClickDeleteButton(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
