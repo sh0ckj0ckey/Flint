@@ -20,6 +20,7 @@
         <cvt:Int2VisibilityConverter x:Key="Int2Vis"/>
         <cvt:Equal2BoolConverter x:Key="Eql2Bool"/>
         <cvt:Bool2VisibilityConverter x:Key="Bool2Vis"/>
+        <cvt:NullOrEmpty2VisibilityConverter x:Key="Str2Vis"/>
     </Page.Resources>
 
     <Grid>
@@ -147,9 +148,11 @@
                             <labs:SettingsCard.Description>
                                 <TextBlock Text="生词本数据存储目录" CharacterSpacing="64"/>
                             </labs:SettingsCard.Description>
-                            <Button Height="32" MinWidth="72">
+                            <Button Height="32" MinWidth="72" Click="OnClickChoosePath">
                                 <Grid>
-                                    <TextBlock Text="{x:Bind _viewModel.AppSettings.GlossaryDatabaseFilePath,Mode=OneWay}" MaxLines="1" MaxWidth="256" TextTrimming="CharacterEllipsis"/>
+                                    <TextBlock Text="点击选择目录" CharacterSpacing="40" Visibility="{x:Bind _viewModel.AppSettings.GlossaryDatabaseFilePath,Mode=OneWay,Converter={StaticResource Str2Vis},ConverterParameter=-}"/>
+                                    <TextBlock Text="{x:Bind _viewModel.AppSettings.GlossaryDatabaseFilePath,Mode=OneWay}" MaxLines="1" MaxWidth="256" TextTrimming="CharacterEllipsis" ToolTipService.ToolTip="{x:Bind _viewModel.AppSettings.GlossaryDatabaseFilePath,Mode=OneWay}"
+                                               Visibility="{x:Bind _viewModel.AppSettings.GlossaryDatabaseFilePath,Mode=OneWay,Converter={StaticResource Str2Vis}}"/>
                                 </Grid>
                             </Button>
                         </labs:SettingsCard>

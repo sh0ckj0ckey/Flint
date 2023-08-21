@@ -11,6 +11,10 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using Flint3.Data;
 using Flint3.Data.Models;
 using Flint3.Models;
+using Windows.Storage.AccessCache;
+using Windows.Storage.Pickers;
+using Windows.Storage;
+using WinUIEx;
 
 namespace Flint3.ViewModels
 {
@@ -346,5 +350,33 @@ namespace Flint3.ViewModels
         }
 
         #endregion
+
+        public async void ChooseGlossaryPath()
+        {
+            try
+            {
+                // Create a folder picker
+                FolderPicker openPicker = new Windows.Storage.Pickers.FolderPicker();
+
+                // Initialize the folder picker with the window handle (HWND).
+                WinRT.Interop.InitializeWithWindow.Initialize(openPicker, App.MainWindow.GetWindowHandle());
+
+                // Set options for your folder picker
+                openPicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+                openPicker.FileTypeFilter.Add("*");
+
+                // Open the picker for the user to pick a folder
+                StorageFolder folder = await openPicker.PickSingleFolderAsync();
+                if (folder != null)
+                {
+                    StorageApplicationPermissions.FutureAccessList.AddOrReplace("flint_glossary_db_path", folder);
+                    MainViewModel.Instance.AppSettings.GlossaryDatabaseFilePath = folder.Path;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+            }
+        }
     }
 }

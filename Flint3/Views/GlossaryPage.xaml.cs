@@ -15,6 +15,11 @@ using Microsoft.UI.Xaml.Navigation;
 using Flint3.ViewModels;
 using CommunityToolkit.Labs.WinUI;
 using Microsoft.UI.Xaml.Media.Animation;
+using Windows.Storage.AccessCache;
+using Windows.Storage.Pickers;
+using Windows.Storage;
+using WinUIEx;
+using System.Diagnostics;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -65,6 +70,11 @@ namespace Flint3.Views
                 MainViewModel.Instance.SelectGlossary(model);
                 this.Frame.Navigate(typeof(GlossaryContentPage), null, SlideNaviTransition);
             }
+        }
+
+        private void OnClickChoosePath(object sender, RoutedEventArgs e)
+        {
+            MainViewModel.Instance.ChooseGlossaryPath();
         }
     }
 }

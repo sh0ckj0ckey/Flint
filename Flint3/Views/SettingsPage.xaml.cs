@@ -103,5 +103,10 @@ namespace Flint3.Views
             }
             catch { }
         }
+
+        private void OnClickChoosePath(object sender, RoutedEventArgs e)
+        {
+            MainViewModel.Instance.ChooseGlossaryPath();
+        }
     }
 }

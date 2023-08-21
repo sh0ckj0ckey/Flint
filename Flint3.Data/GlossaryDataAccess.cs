@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -33,6 +34,7 @@ namespace Flint3.Data
             string glossaryTableCommand =
                 "CREATE TABLE IF NOT EXISTS glossary (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE," +
+                    "wordid INTEGER(64) NOT NULL," +
                     "glossaryid INTEGER(64) NOT NULL," +
                     "word VARCHAR(64) COLLATE NOCASE NOT NULL UNIQUE," +
                     "phonetic VARCHAR(64)," +
@@ -182,13 +184,14 @@ namespace Flint3.Data
         /// </summary>
         /// <param name="title"></param>
         /// <param name="desc"></param>
-        public static void AddGlossaryWord(int glossaryId, string word, string phonetic, string definition, string translation, string exchange, string description, int color)
+        public static void AddGlossaryWord(int wordid, int glossaryId, string word, string phonetic, string definition, string translation, string exchange, string description, int color)
         {
             try
             {
                 SqliteCommand insertCommand = new SqliteCommand(
-                    $"INSERT INTO glossary(glossaryid,word,phonetic,definition,translation,exchange,description,color) VALUES($glossaryid,$word,$phonetic,$definition,$translation,$exchange,$description,$color);",
+                    $"INSERT INTO glossary(wordid,glossaryid,word,phonetic,definition,translation,exchange,description,color) VALUES($wordid,$glossaryid,$word,$phonetic,$definition,$translation,$exchange,$description,$color);",
                     _glossaryDb);
+                insertCommand.Parameters.AddWithValue("$wordid", wordid);
                 insertCommand.Parameters.AddWithValue("$glossaryid", glossaryId);
                 insertCommand.Parameters.AddWithValue("$word", word);
                 insertCommand.Parameters.AddWithValue("$phonetic", phonetic);
@@ -212,13 +215,8 @@ namespace Flint3.Data
             try
             {
                 SqliteCommand updateCommand = new SqliteCommand(
-                    $"UPDATE glossaryCategory SET word=$word,phonetic=$phonetic,definition=$definition,translation=$translation,exchange=$exchange,description=$description,color=$color WHERE id=$id;",
+                    $"UPDATE glossary SET description=$description,color=$color WHERE id=$id;",
                     _glossaryDb);
-                updateCommand.Parameters.AddWithValue("$word", word);
-                updateCommand.Parameters.AddWithValue("$phonetic", phonetic);
-                updateCommand.Parameters.AddWithValue("$definition", definition);
-                updateCommand.Parameters.AddWithValue("$translation", translation);
-                updateCommand.Parameters.AddWithValue("$exchange", exchange);
                 updateCommand.Parameters.AddWithValue("$description", description);
                 updateCommand.Parameters.AddWithValue("$color", color);
                 updateCommand.Parameters.AddWithValue("$id", id);
@@ -242,6 +240,26 @@ namespace Flint3.Data
                 SqliteDataReader wordsQuery = deleteWordsCommand?.ExecuteReader();
             }
             catch { }
+        }
+
+        /// <summary>
+        /// 查询指定stardictId的单词在指定id的生词本中是否已经存在
+        /// </summary>
+        /// <param name="wordid"></param>
+        /// <param name="glossaryid"></param>
+        /// <returns></returns>
+        public static bool IfExistGlossaryWord(int wordid, int glossaryid)
+        {
+            try
+            {
+                SqliteCommand selectWordsCommand = new SqliteCommand($"SELECT 1 FROM glossary WHERE wordid=$wordid AND glossaryid=$glossaryid;", _glossaryDb);
+                selectWordsCommand.Parameters.AddWithValue("$wordid", wordid);
+                SqliteDataReader wordsQuery = selectWordsCommand?.ExecuteReader();
+
+                return wordsQuery?.Read() == true;
+            }
+            catch { }
+            return false;
         }
 
         #endregion
