@@ -10,6 +10,7 @@ using WinUIEx;
 using Flint3.Views;
 using Flint3.Helpers;
 using Flint3.ViewModels;
+using Flint3.Data;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -207,6 +208,7 @@ namespace Flint3
         /// </summary>
         private void ExitApp()
         {
+            GlossaryDataAccess.CloseDatabase();
             MainViewModel.Instance.Dispose();
             _notifyIcon?.Destroy();
             this.Close();

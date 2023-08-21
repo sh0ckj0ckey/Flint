@@ -42,6 +42,12 @@ namespace Flint3.ViewModels
             }
         }
 
+        private void InitViewModel4ShortcutKeys()
+        {
+            // 读取唤起快捷键的设置
+            ReadShortcutSettings();
+        }
+
         public void RegisterShortcut()
         {
             ActActivationShortcutChanged += async (preSettings, newSettings) =>
@@ -133,8 +139,9 @@ namespace Flint3.ViewModels
 
         #endregion
 
-        private static bool _disposed;
+        #region Dispose
 
+        private static bool _disposed;
         protected virtual void Dispose(bool disposing)
         {
             if (!_disposed)
@@ -157,6 +164,8 @@ namespace Flint3.ViewModels
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
+
+        #endregion
 
     }
 }

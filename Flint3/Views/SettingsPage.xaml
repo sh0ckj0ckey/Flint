@@ -30,6 +30,8 @@
         </Grid.RowDefinitions>
         <ScrollViewer Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="0,0,0,0" Margin="0,32,0,0">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+               
+                <!--标题Logo-->
                 <Grid Grid.Row="0" Margin="16,0,16,0" BorderThickness="1" CornerRadius="4" Height="96" HorizontalAlignment="Stretch">
                     <Grid.Background>
                         <ImageBrush Stretch="UniformToFill" ImageSource="{ThemeResource FLINT_LOGO_BK_IMG}"/>
@@ -46,18 +48,20 @@
                         </Image>
                         <StackPanel Orientation="Vertical" Spacing="-4">
                             <TextBlock CharacterSpacing="56" HorizontalAlignment="Left" VerticalAlignment="Center" ui:Effects.Shadow="{StaticResource CommonShadow}">
-                        <Run Text="Flint" FontFamily="Times New Roman" FontWeight="SemiBold" FontSize="24"/>
+                                <Run Text="Flint" FontFamily="Times New Roman" FontWeight="SemiBold" FontSize="24"/>
                             </TextBlock>
                             <TextBlock CharacterSpacing="20" HorizontalAlignment="Left" VerticalAlignment="Center" ui:Effects.Shadow="{StaticResource CommonShadow}">
-                        <Run Text="/flɪnt/" FontWeight="Normal" FontSize="15"/>
-                        <Run Text="noun" FontWeight="SemiBold" FontSize="15" FontStyle="Italic"/>
-                        <Run Text="燧石" FontWeight="SemiBold" FontSize="14"/>
+                                <Run Text="/flɪnt/" FontWeight="Normal" FontSize="15"/>
+                                <Run Text="noun" FontWeight="SemiBold" FontSize="15" FontStyle="Italic"/>
+                                <Run Text="燧石" FontWeight="SemiBold" FontSize="14"/>
                             </TextBlock>
                         </StackPanel>
                     </StackPanel>
                 </Grid>
 
                 <TextBlock Text="外观与功能" Margin="20,12,0,4" FontWeight="Bold" FontSize="14" CharacterSpacing="64"/>
+
+                <!--主题设置-->
                 <labs:SettingsCard Margin="16,2,16,0" HorizontalAlignment="Stretch">
                     <labs:SettingsCard.HeaderIcon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE790;"/>
@@ -74,6 +78,8 @@
                         <ComboBoxItem Content="浅色"/>
                     </ComboBox>
                 </labs:SettingsCard>
+
+                <!--背景材质设置-->
                 <labs:SettingsCard Margin="16,2,16,0" HorizontalAlignment="Stretch">
                     <labs:SettingsCard.HeaderIcon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE727;"/>
@@ -112,6 +118,8 @@
                         </labs:SettingsCard>
                     </labs:SettingsExpander.Items>
                 </labs:SettingsExpander>-->
+
+                <!--英英释义-->
                 <labs:SettingsCard Margin="16,2,16,0" HorizontalAlignment="Stretch">
                     <labs:SettingsCard.HeaderIcon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8D2;"/>
@@ -124,6 +132,8 @@
                     </labs:SettingsCard.Description>
                     <ToggleSwitch MinWidth="0" Background="Transparent" IsOn="{x:Bind _viewModel.AppSettings.EnableEngDefinition,Mode=TwoWay}"/>
                 </labs:SettingsCard>
+
+                <!--生词本-->
                 <labs:SettingsExpander Margin="16,2,16,0" HorizontalAlignment="Stretch" IsExpanded="False">
                     <labs:SettingsExpander.HeaderIcon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE82D;"/>
@@ -145,22 +155,19 @@
                     <ToggleSwitch x:Name="EnableGlossaryToggleSwitch" MinWidth="0" Background="Transparent" IsOn="{x:Bind _viewModel.AppSettings.EnableGlossary,Mode=TwoWay}"/>
                     <labs:SettingsExpander.Items>
                         <labs:SettingsCard HorizontalAlignment="Stretch" IsEnabled="{x:Bind EnableGlossaryToggleSwitch.IsOn,Mode=OneWay}">
-                            <labs:SettingsCard.Description>
-                                <TextBlock Text="生词本数据存储目录" CharacterSpacing="64"/>
-                            </labs:SettingsCard.Description>
-                            <Button Height="32" MinWidth="72" Click="OnClickChoosePath">
-                                <Grid>
-                                    <TextBlock Text="点击选择目录" CharacterSpacing="40" Visibility="{x:Bind _viewModel.AppSettings.GlossaryDatabaseFilePath,Mode=OneWay,Converter={StaticResource Str2Vis},ConverterParameter=-}"/>
-                                    <TextBlock Text="{x:Bind _viewModel.AppSettings.GlossaryDatabaseFilePath,Mode=OneWay}" MaxLines="1" MaxWidth="256" TextTrimming="CharacterEllipsis" ToolTipService.ToolTip="{x:Bind _viewModel.AppSettings.GlossaryDatabaseFilePath,Mode=OneWay}"
-                                               Visibility="{x:Bind _viewModel.AppSettings.GlossaryDatabaseFilePath,Mode=OneWay,Converter={StaticResource Str2Vis}}"/>
-                                </Grid>
+                            <Button Height="32" MinWidth="72" Click="OnClickDbPath">
+                                <StackPanel Orientation="Horizontal" Spacing="4">
+                                    <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE838;" FontSize="12"/>
+                                    <TextBlock Text="生词本数据存储目录" CharacterSpacing="64"/>
+                                </StackPanel>
                             </Button>
                         </labs:SettingsCard>
                     </labs:SettingsExpander.Items>
                 </labs:SettingsExpander>
 
-
                 <TextBlock Text="行为" Margin="20,12,0,4" FontWeight="Bold" FontSize="14" CharacterSpacing="64"/>
+
+                <!--快捷键设置-->
                 <labs:SettingsCard Margin="16,2,16,0" HorizontalAlignment="Stretch">
                     <labs:SettingsCard.HeaderIcon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEDA7;"/>
@@ -173,6 +180,8 @@
                     </labs:SettingsCard.Description>
                     <control:ShortcutControl x:Name="ShortcutSettingControl" Margin="0,-4" HotkeySettings="{x:Bind _viewModel.ActivationShortcut,Mode=TwoWay}"/>
                 </labs:SettingsCard>
+
+                <!--唤醒自动清除设置-->
                 <labs:SettingsCard Margin="16,2,16,0" HorizontalAlignment="Stretch">
                     <labs:SettingsCard.HeaderIcon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE13E;"/>
@@ -185,6 +194,8 @@
                     </labs:SettingsCard.Description>
                     <ToggleSwitch MinWidth="0" Background="Transparent" IsOn="{x:Bind _viewModel.AppSettings.AutoClearLastInput,Mode=TwoWay}"/>
                 </labs:SettingsCard>
+
+                <!--关闭按钮设置-->
                 <labs:SettingsCard Margin="16,2,16,0" HorizontalAlignment="Stretch">
                     <labs:SettingsCard.HeaderIcon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEA39;"/>
@@ -207,6 +218,8 @@
                 </labs:SettingsCard>
 
                 <TextBlock Text="搜索" Margin="20,12,0,4" FontWeight="Bold" FontSize="14" CharacterSpacing="64"/>
+
+                <!--搜索框样式设置-->
                 <labs:SettingsExpander Margin="16,2,16,0" HorizontalAlignment="Stretch" IsExpanded="False">
                     <labs:SettingsExpander.HeaderIcon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE773;"/>
@@ -294,6 +307,8 @@
                 </labs:SettingsExpander>
 
                 <TextBlock Text="关于" Margin="20,12,0,4" FontWeight="Bold" FontSize="14" CharacterSpacing="64"/>
+
+                <!--关于版本号-->
                 <labs:SettingsCard Margin="16,2,16,0" HorizontalAlignment="Stretch">
                     <labs:SettingsCard.HeaderIcon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE946;"/>
@@ -316,6 +331,8 @@
                         </Button>
                     </StackPanel>
                 </labs:SettingsCard>
+
+                <!--ECDICT介绍-->
                 <labs:SettingsCard Margin="16,2,16,0" HorizontalAlignment="Stretch">
                     <labs:SettingsCard.HeaderIcon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE1D3;"/>
@@ -333,6 +350,8 @@
                         </StackPanel>
                     </Button>
                 </labs:SettingsCard>
+
+                <!--反馈-->
                 <labs:SettingsCard Margin="16,2,16,0" HorizontalAlignment="Stretch">
                     <labs:SettingsCard.HeaderIcon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xED15;"/>
@@ -363,6 +382,8 @@
                 <TextBlock Text="©2023 sh0ckj0ckey." FontSize="12" FontFamily="Consolas" FontWeight="Light" Opacity="0.5" CharacterSpacing="40" Margin="20,8,0,8"/>
             </StackPanel>
         </ScrollViewer>
+
+        <!--工具栏-->
         <Grid Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -372,6 +393,8 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Rectangle Grid.ColumnSpan="5" Height="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" Fill="{ThemeResource SETTING_LINE_BK}"/>
+
+            <!--返回按钮-->
             <Button Grid.Column="0" Margin="8,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center" Click="OnClickBackButton">
                 <ToolTipService.ToolTip>
                     <ToolTip>

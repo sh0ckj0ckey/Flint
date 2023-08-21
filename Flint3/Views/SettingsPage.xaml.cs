@@ -4,6 +4,7 @@ using Flint3.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Windows.ApplicationModel;
+using Windows.Storage;
 using Windows.System;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -28,6 +29,19 @@ namespace Flint3.Views
         }
 
         /// <summary>
+        /// 返回
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnClickBackButton(object sender, RoutedEventArgs e)
+        {
+            if (this.Frame.CanGoBack)
+            {
+                this.Frame.GoBack();
+            }
+        }
+
+        /// <summary>
         /// 打分评价
         /// </summary>
         /// <param name="sender"></param>
@@ -37,6 +51,54 @@ namespace Flint3.Views
             try
             {
                 await Launcher.LaunchUriAsync(new Uri($"ms-windows-store:REVIEW?PFN={Package.Current.Id.FamilyName}"));
+            }
+            catch { }
+        }
+
+        /// <summary>
+        /// 打开生词本文件目录
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void OnClickDbPath(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string folderPath = UserDataPaths.GetDefault().Documents;
+                StorageFolder folder = await StorageFolder.GetFolderFromPathAsync(folderPath);
+                var dbFolder = await folder.CreateFolderAsync("Flint", CreationCollisionOption.OpenIfExists);
+                await Launcher.LaunchFolderAsync(dbFolder);
+            }
+            catch { }
+        }
+
+        /// <summary>
+        /// 选择搜索框样式
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnSearchBoxStyleChecked(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender is RadioButton rb)
+                {
+                    string tag = rb?.Tag?.ToString();
+                    switch (tag)
+                    {
+                        case "0":
+                            _viewModel.AppSettings.SearchBoxStyle = 0;
+                            break;
+                        case "1":
+                            _viewModel.AppSettings.SearchBoxStyle = 1;
+                            break;
+                        case "2":
+                            _viewModel.AppSettings.SearchBoxStyle = 2;
+                            break;
+                        default:
+                            break;
+                    }
+                }
             }
             catch { }
         }
@@ -69,44 +131,5 @@ namespace Flint3.Views
             catch { }
         }
 
-        private void OnClickBackButton(object sender, RoutedEventArgs e)
-        {
-            //await Task.Delay(150);
-            if (this.Frame.CanGoBack)
-            {
-                this.Frame.GoBack();
-            }
-        }
-
-        private void OnSearchBoxStyleChecked(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (sender is RadioButton rb)
-                {
-                    string tag = rb?.Tag?.ToString();
-                    switch (tag)
-                    {
-                        case "0":
-                            _viewModel.AppSettings.SearchBoxStyle = 0;
-                            break;
-                        case "1":
-                            _viewModel.AppSettings.SearchBoxStyle = 1;
-                            break;
-                        case "2":
-                            _viewModel.AppSettings.SearchBoxStyle = 2;
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
-            catch { }
-        }
-
-        private void OnClickChoosePath(object sender, RoutedEventArgs e)
-        {
-            MainViewModel.Instance.ChooseGlossaryPath();
-        }
     }
 }

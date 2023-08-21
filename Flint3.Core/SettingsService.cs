@@ -19,8 +19,6 @@ namespace Flint3.Core
         private const string SETTING_NAME_CLOSEBUTTONMODE = "CloseButtonMode";
         private const string SETTING_NAME_SEARCHBOXSTYLE = "SearchBoxStyle";
 
-        private const string SETTING_NAME_DATABASE_PATH = "DataBasePath";
-
         private ApplicationDataContainer _localSettings = ApplicationData.Current.LocalSettings;
 
         public Action<int> OnAppearanceSettingChanged { get; set; } = null;
@@ -334,35 +332,5 @@ namespace Flint3.Core
             }
         }
 
-        // 生词本数据库文件路径
-        private string _glossaryDatabaseFilePath = null;
-        public string GlossaryDatabaseFilePath
-        {
-            get
-            {
-                try
-                {
-                    if (_glossaryDatabaseFilePath is null)
-                    {
-                        if (_localSettings.Values[SETTING_NAME_DATABASE_PATH] == null)
-                        {
-                            _glossaryDatabaseFilePath = string.Empty;
-                        }
-                        else
-                        {
-                            _glossaryDatabaseFilePath = _localSettings.Values[SETTING_NAME_DATABASE_PATH]?.ToString();
-                        }
-                    }
-                }
-                catch { }
-                _glossaryDatabaseFilePath ??= string.Empty;
-                return _glossaryDatabaseFilePath;
-            }
-            set
-            {
-                SetProperty(ref _glossaryDatabaseFilePath, value);
-                ApplicationData.Current.LocalSettings.Values[SETTING_NAME_DATABASE_PATH] = _glossaryDatabaseFilePath;
-            }
-        }
     }
 }

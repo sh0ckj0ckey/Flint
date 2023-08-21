@@ -15,6 +15,7 @@ using Windows.Storage.AccessCache;
 using Windows.Storage.Pickers;
 using Windows.Storage;
 using WinUIEx;
+using System.Xml.Linq;
 
 namespace Flint3.ViewModels
 {
@@ -65,6 +66,11 @@ namespace Flint3.ViewModels
         {
             get => _editingGlossaryProperty;
             set => SetProperty(ref _editingGlossaryProperty, value);
+        }
+
+        private void InitViewModel4Glossary()
+        {
+            
         }
 
         /// <summary>
@@ -278,17 +284,26 @@ namespace Flint3.ViewModels
         /// <summary>
         /// 加载我的生词本
         /// </summary>
-        public void InitMyGlossaries()
+        public void LoadMyGlossaries()
         {
             try
             {
-                if (MyGlossaries?.Count > 0)
-                {
-                    return;
-                }
-
                 MyGlossaries?.Clear();
 
+                string folderPath = UserDataPaths.GetDefault().Desktop;
+                StorageFolder folder = StorageFolder.GetFolderFromPathAsync(folderPath).GetAwaiter().GetResult();
+                var path = folder.CreateFolderAsync("Flint", CreationCollisionOption.OpenIfExists).GetAwaiter().GetResult();
+                GlossaryDataAccess.CloseDatabase();
+                GlossaryDataAccess.LoadDatabase(folder);
+
+                GlossaryDataAccess.GetAllGlossaries().ForEach(item =>
+                    MyGlossaries.Add(new GlossaryItemModel()
+                    {
+                        Id = item.Id,
+                        GlossaryTitle = item.Title,
+                        GlossaryDescription = item.Description,
+                        GlossaryIcon = "\uEE56"
+                    }));
             }
             catch (Exception e)
             {
@@ -305,7 +320,52 @@ namespace Flint3.ViewModels
         {
             try
             {
-                MyGlossaries.Add(new GlossaryItemModel() { GlossaryTitle = name, GlossaryDescription = desc, GlossaryIcon = "\uEE56" });
+                GlossaryDataAccess.AddOneGlossary(name, desc);
+
+                LoadMyGlossaries();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+
+        /// <summary>
+        /// 编辑生词本
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="desc"></param>
+        public void UpdateGlossary(int id, string name, string desc)
+        {
+            try
+            {
+                GlossaryDataAccess.UpdateOneGlossary(id, name, desc);
+
+                LoadMyGlossaries();
+
+                if (SelectedGlossary.Id == id)
+                {
+                    SelectedGlossary.GlossaryTitle = name;
+                    SelectedGlossary.GlossaryDescription = desc;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+
+        /// <summary>
+        /// 删除生词本
+        /// </summary>
+        /// <param name="id"></param>
+        public void DeleteGlossary(int id)
+        {
+            try
+            {
+                GlossaryDataAccess.DeleteOneGlossary(id);
+
+                LoadMyGlossaries();
             }
             catch (Exception e)
             {
@@ -330,6 +390,11 @@ namespace Flint3.ViewModels
         #region 添加到生词本
 
         /// <summary>
+        /// 可以添加当前单词的生词本列表
+        /// </summary>
+        public ObservableCollection<GlossaryItemModel> AddingGlossaries { get; private set; } = new ObservableCollection<GlossaryItemModel>();
+
+        /// <summary>
         /// 正在添加的单词
         /// </summary>
         private StarDictWordItem _addingWordItem = null;
@@ -349,34 +414,45 @@ namespace Flint3.ViewModels
             set => SetProperty(ref _addingWordColor, value);
         }
 
+        /// <summary>
+        /// 是否正在检索当前添加单词在各个生词本中是否存在
+        /// </summary>
+        private bool _searchingWordItemExist = false;
+        public bool SearchingWordItemExist
+        {
+            get => _searchingWordItemExist;
+            set => SetProperty(ref _searchingWordItemExist, value);
+        }
+
+        /// <summary>
+        /// 获取可以添加当前单词的生词本列表
+        /// </summary>
+        public async void GetAddGlossariesList()
+        {
+            SearchingWordItemExist = true;
+            AddingGlossaries.Clear();
+            ObservableCollection<GlossaryItemModel> tempList = new ObservableCollection<GlossaryItemModel>();
+
+            await Task.Run(() =>
+            {
+                foreach (var item in MyGlossaries)
+                {
+                    if (!GlossaryDataAccess.IfExistGlossaryWord(AddingWordItem.Id, item.Id))
+                    {
+                        tempList.Add(item);
+                    }
+                }
+            });
+
+            foreach (var item in tempList)
+            {
+                AddingGlossaries.Add(item);
+            }
+
+            SearchingWordItemExist = true;
+        }
+
         #endregion
 
-        public async void ChooseGlossaryPath()
-        {
-            try
-            {
-                // Create a folder picker
-                FolderPicker openPicker = new Windows.Storage.Pickers.FolderPicker();
-
-                // Initialize the folder picker with the window handle (HWND).
-                WinRT.Interop.InitializeWithWindow.Initialize(openPicker, App.MainWindow.GetWindowHandle());
-
-                // Set options for your folder picker
-                openPicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
-                openPicker.FileTypeFilter.Add("*");
-
-                // Open the picker for the user to pick a folder
-                StorageFolder folder = await openPicker.PickSingleFolderAsync();
-                if (folder != null)
-                {
-                    StorageApplicationPermissions.FutureAccessList.AddOrReplace("flint_glossary_db_path", folder);
-                    MainViewModel.Instance.AppSettings.GlossaryDatabaseFilePath = folder.Path;
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.ToString());
-            }
-        }
     }
 }

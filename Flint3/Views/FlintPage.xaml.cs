@@ -40,10 +40,11 @@ namespace Flint3.Views
 
             MainViewModel.Instance.ActClearTextBox = () => { SearchTextBox.Text = ""; };
 
-            // 加载数据库
+            // 加载单词数据库
             StarDictDataAccess.InitializeDatabase();
 
-            MainViewModel.Instance.InitMyGlossaries();
+            // 加载生词本数据库
+            MainViewModel.Instance.LoadMyGlossaries();
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -93,7 +94,6 @@ namespace Flint3.Views
         /// <param name="e"></param>
         private void OnClickSettingsButton(object sender, RoutedEventArgs e)
         {
-            //await Task.Delay(100);
             this.Frame.Navigate(typeof(SettingsPage));
         }
 

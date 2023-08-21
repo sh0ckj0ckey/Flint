@@ -5,6 +5,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Flint3.Data.Models;
 using Microsoft.Data.Sqlite;
+using Windows.Storage;
 
 namespace Flint3.Data
 {
@@ -12,14 +13,11 @@ namespace Flint3.Data
     {
         private static SqliteConnection _glossaryDb = null;
 
-        public static void InitializeDatabase(string filePath)
+        public static void LoadDatabase(StorageFolder folder/*string filePath*/)
         {
-            if (!File.Exists(filePath))
-            {
-                File.WriteAllBytes(filePath, new byte[0]);
-            }
+            var file = folder.CreateFileAsync("glossary.db", CreationCollisionOption.OpenIfExists).GetAwaiter().GetResult();
 
-            string dbpath = Path.Combine(filePath);
+            string dbpath = file.Path;
             _glossaryDb = new SqliteConnection($"Filename={dbpath}");
             _glossaryDb.Open();
 
@@ -45,6 +43,13 @@ namespace Flint3.Data
                     "color INTEGER);";
             SqliteCommand createGlossaryTable = new SqliteCommand(glossaryTableCommand, _glossaryDb);
             createGlossaryTable.ExecuteReader();
+        }
+
+        public static void CloseDatabase()
+        {
+            _glossaryDb?.Close();
+            _glossaryDb?.Dispose();
+            _glossaryDb = null;
         }
 
         #region 生词本
@@ -184,7 +189,7 @@ namespace Flint3.Data
         /// </summary>
         /// <param name="title"></param>
         /// <param name="desc"></param>
-        public static void AddGlossaryWord(int wordid, int glossaryId, string word, string phonetic, string definition, string translation, string exchange, string description, int color)
+        public static void AddGlossaryWord(long wordid, int glossaryId, string word, string phonetic, string definition, string translation, string exchange, string description, int color)
         {
             try
             {
@@ -248,7 +253,7 @@ namespace Flint3.Data
         /// <param name="wordid"></param>
         /// <param name="glossaryid"></param>
         /// <returns></returns>
-        public static bool IfExistGlossaryWord(int wordid, int glossaryid)
+        public static bool IfExistGlossaryWord(long wordid, int glossaryid)
         {
             try
             {

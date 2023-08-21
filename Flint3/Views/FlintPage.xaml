@@ -30,9 +30,13 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+
+        <!--标题-->
         <Grid Grid.Row="0" Background="Transparent">
             <TextBlock Text="Flint" FontFamily="Times New Roman" Margin="20,0,0,4" FontWeight="Bold" FontSize="20" CharacterSpacing="40" VerticalAlignment="Bottom" Opacity="0.9"/>
         </Grid>
+
+        <!--搜索框-->
         <Grid Grid.Row="1" Padding="16,0" Margin="0,4,0,0">
             <TextBox x:Name="SearchTextBox" TextChanged="OnSearchTextChanged" GotFocus="OnSearchBoxGotFocus">
                 <!--<ToolTipService.ToolTip>
@@ -49,9 +53,13 @@
             <TextBlock Text="开始键入..." Margin="16,6,0,0" FontSize="17.5" Opacity="0.3" HorizontalAlignment="Left" CharacterSpacing="64" IsHitTestVisible="False" VerticalAlignment="Top"
                        Visibility="{x:Bind SearchTextBox.Text.Length,Mode=OneWay,Converter={StaticResource Int2Vis},ConverterParameter=-}"/>
         </Grid>
+
+        <!--占位图片-->
         <Grid Grid.Row="2" Visibility="{x:Bind ViewModel.SearchResultWordItems.Count,Mode=OneWay,Converter={StaticResource Int2Vis},ConverterParameter=-}">
             <Image Source="/Assets/Logos/flint_logo.png" Height="72" Width="72" Opacity="0.2"/>
         </Grid>
+
+        <!--搜索结果列表-->
         <Grid Grid.Row="2">
             <Grid x:Name="PopupTargetGrid" Background="Transparent" IsHitTestVisible="False" Height="1" Width="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,-160"/>
             <ListView ItemsSource="{x:Bind ViewModel.SearchResultWordItems,Mode=OneWay}" HorizontalContentAlignment="Stretch" Margin="0,4,0,0" Padding="0,8,2,8" HorizontalAlignment="Stretch" SelectionMode="None" IsItemClickEnabled="False" IsSwipeEnabled="False">
@@ -128,6 +136,8 @@
                 <controls:AddToGlossaryControl x:Name="AddWordControl"/>
             </Popup>
         </Grid>
+
+        <!--工具栏-->
         <Grid Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -137,6 +147,8 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Rectangle Grid.ColumnSpan="5" Height="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" Fill="{ThemeResource SETTING_LINE_BK}"/>
+
+            <!--设置按钮-->
             <Button x:Name="SettingsButton" Grid.Column="0" Margin="8,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center" Click="OnClickSettingsButton">
                 <ToolTipService.ToolTip>
                     <ToolTip>
@@ -157,12 +169,16 @@
                     </muxc:AnimatedIcon.FallbackIconSource>
                 </muxc:AnimatedIcon>
             </Button>
+
+            <!--新手教程按钮-->
             <Button x:Name="NewFeatureButton" Grid.Column="2" Visibility="Collapsed" VerticalAlignment="Center" Click="OnClickShowMeNewFeature" Style="{StaticResource AccentButtonStyle}">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xF133;" FontSize="15" Margin="0,0,4,0"/>
                     <TextBlock Text="欢迎使用 " FontSize="12" CharacterSpacing="48"/>
                 </StackPanel>
             </Button>
+
+            <!--生词本按钮-->
             <Button x:Name="GlossaryButton" Grid.Column="3" Margin="4,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center" Click="OnClickGlossary"
                     Visibility="{x:Bind ViewModel.AppSettings.EnableGlossary,Mode=OneWay,Converter={StaticResource Bool2Vis}}">
                 <ToolTipService.ToolTip>
@@ -177,6 +193,8 @@
                 </ToolTipService.ToolTip>
                 <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE82D;" FontSize="16" Height="22" Width="22" Opacity="0.8"/>
             </Button>
+
+            <!--置顶按钮-->
             <ToggleButton x:Name="PinToggleButton" Grid.Column="4" Margin="4,8,8,8" IsChecked="False" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center" Click="OnClickPin">
                 <ToolTipService.ToolTip>
                     <ToolTip>
@@ -196,17 +214,10 @@
                 </Grid>
             </ToggleButton>
 
-            <!--教学 2/2-->
-            <TeachingTip x:Name="SecondTeachingTip" Target="{x:Bind SettingsButton}" IsOpen="False" Title="快速唤醒燧石" Subtitle="按下 Alt + 空格键 可以将燧石窗口唤醒" PreferredPlacement="TopRight"
-                         CloseButtonContent="我知道了" CloseButtonClick="OnClickCloseSecondTeachingTip">
-                <TeachingTip.Content>
-                    <TextBlock Text="可以在设置中修改为更加趁手的快捷键" TextWrapping="Wrap" FontSize="13" Margin="0,2,0,0" Opacity="0.7"/>
-                </TeachingTip.Content>
-            </TeachingTip>
         </Grid>
 
-        <!--教学 1/2-->
-        <Border x:Name="FirstTeachingTipTargetBorder" HorizontalAlignment="Right" VerticalAlignment="Bottom" Background="Transparent" Width="1" Height="1" Margin="0,0,40,0"/>
+        <!--教程 1/2-->
+        <Border x:Name="FirstTeachingTipTargetBorder" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Background="Transparent" Width="1" Height="1" Margin="0,0,40,0"/>
         <TeachingTip x:Name="FirstTeachingTip" Target="{x:Bind FirstTeachingTipTargetBorder}" IsOpen="False" Title="欢迎使用燧石" Subtitle="点击关闭按钮或者按下 Esc 会将燧石隐藏到系统托盘" PreferredPlacement="BottomLeft"
                      CloseButtonContent="我知道了" CloseButtonClick="OnClickCloseFirstTeachingTip">
             <TeachingTip.HeroContent>
@@ -214,6 +225,15 @@
             </TeachingTip.HeroContent>
             <TeachingTip.Content>
                 <TextBlock Text="想要退出燧石，请右键系统托盘图标" TextWrapping="Wrap" FontSize="13" Margin="0,2,0,0" Opacity="0.7"/>
+            </TeachingTip.Content>
+        </TeachingTip>
+
+        <!--教程 2/2-->
+        <Border x:Name="SecondTeachingTipTargetBorder" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Top" Background="Transparent" Width="1" Height="1" Margin="40,0,0,0"/>
+        <TeachingTip x:Name="SecondTeachingTip" Target="{x:Bind SecondTeachingTipTargetBorder}" IsOpen="False" Title="快速唤醒燧石" Subtitle="按下 Alt + 空格键 可以将燧石窗口唤醒" PreferredPlacement="TopRight"
+                     CloseButtonContent="我知道了" CloseButtonClick="OnClickCloseSecondTeachingTip">
+            <TeachingTip.Content>
+                <TextBlock Text="可以在设置中修改为更加趁手的快捷键" TextWrapping="Wrap" FontSize="13" Margin="0,2,0,0" Opacity="0.7"/>
             </TeachingTip.Content>
         </TeachingTip>
     </Grid>

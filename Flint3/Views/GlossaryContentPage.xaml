@@ -33,7 +33,8 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-
+        
+        <!--标题-->
         <Grid Grid.Row="0" Background="Transparent">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -45,6 +46,7 @@
             <TextBlock Grid.Column="2" Margin="0,0,120,5" Text="{x:Bind ViewModel.SelectedGlossary.GlossaryTitle,Mode=OneWay}" FontSize="16" FontWeight="Bold" CharacterSpacing="40" Opacity="0.9" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
         </Grid>
 
+        <!--过滤生词-->
         <Grid Grid.Row="1" Padding="16,8,16,4">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -152,6 +154,7 @@
             </Grid>
         </Grid>
 
+        <!--空白占位-->
         <StackPanel Grid.Row="2" Spacing="12" HorizontalAlignment="Stretch" VerticalAlignment="Center" Orientation="Vertical"
                     Visibility="{x:Bind ViewModel.GlossaryWordItems.Count,Mode=OneWay,Converter={StaticResource Int2Vis},ConverterParameter=-}">
             <Image Source="/Assets/Logos/flint_logo.png" Height="72" Width="72" Opacity="0.2" HorizontalAlignment="Center"/>
@@ -167,6 +170,8 @@
                 <TextBlock Text="生词" FontSize="13" CharacterSpacing="40" Opacity="0.3"/>
             </StackPanel>
         </StackPanel>
+
+        <!--生词列表-->
         <ListView x:Name="GlossaryWordsListView" Grid.Row="2" ItemsSource="{x:Bind ViewModel.GlossaryWordItems,Mode=OneWay}" HorizontalContentAlignment="Stretch" Padding="0,0,4,8"
                   HorizontalAlignment="Stretch" IsSwipeEnabled="False" SelectionMode="None" IsItemClickEnabled="False">
             <ListView.ItemContainerTransitions>
@@ -193,7 +198,7 @@
                                     <TextBlock Text="{x:Bind Translation,Converter={StaticResource LinebreakRemove}}" FontSize="13" MaxLines="2" LineHeight="20" TextWrapping="WrapWholeWords" TextTrimming="CharacterEllipsis"
                                                Opacity="{Binding ElementName=WordExpander,Path=IsExpanded,Mode=OneWay,Converter={StaticResource Bool2Opacity}}"/>
                                 </StackPanel>
-                                <Button Grid.Column="1" Padding="0" Height="32" Width="32" Margin="8,0,-8,0" Background="Transparent" BorderBrush="Transparent" ToolTipService.ToolTip="添加到生词本"
+                                <!--<Button Grid.Column="1" Padding="0" Height="32" Width="32" Margin="8,0,-8,0" Background="Transparent" BorderBrush="Transparent" ToolTipService.ToolTip="添加到生词本"
                                         Visibility="{Binding ViewModel.AppSettings.EnableGlossary,ElementName=FlintViewPage,Mode=OneWay,Converter={StaticResource Bool2Vis}}">
                                     <Button.Content>
                                         <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE109;" FontSize="12" Opacity="0.8"/>
@@ -206,7 +211,7 @@
                                             </StackPanel>
                                         </Flyout>
                                     </Button.Flyout>
-                                </Button>
+                                </Button>-->
                             </Grid>
                         </muxc:Expander.Header>
                         <muxc:Expander.Content>
@@ -243,6 +248,7 @@
             </ListView.ItemTemplate>
         </ListView>
 
+        <!--工具栏-->
         <Grid Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -254,6 +260,8 @@
                 <ColumnDefinition Width="8"/>
             </Grid.ColumnDefinitions>
             <Rectangle Grid.ColumnSpan="7" Height="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" Fill="{ThemeResource SETTING_LINE_BK}"/>
+
+            <!--返回-->
             <Button Grid.Column="0" Margin="8,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center" Click="OnClickBackButton">
                 <ToolTipService.ToolTip>
                     <ToolTip>
@@ -274,21 +282,8 @@
                     </muxc:AnimatedIcon.FallbackIconSource>
                 </muxc:AnimatedIcon>
             </Button>
-            <!--<ToggleButton x:Name="HideChineseToggleButton" Grid.Column="2" Margin="4,8,0,8" IsChecked="False" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center">
-                <ToolTipService.ToolTip>
-                    <ToolTip>
-                        <TextBlock>
-                            <Run Text="hide" FontWeight="Bold"/>
-                            <Run Text="/haɪd/"/>
-                            <Run Text="verb" FontStyle="Italic" FontWeight="Medium"/>
-                            <Run Text="隐藏"/>
-                        </TextBlock>
-                    </ToolTip>
-                </ToolTipService.ToolTip>
-                <Grid>
-                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE982;" FontSize="16" Height="22" Width="22" Opacity="0.8"/>
-                </Grid>
-            </ToggleButton>-->
+
+            <!--隐藏英文单词-->
             <ToggleButton x:Name="HideEnglishToggleButton" Grid.Column="3" Margin="4,8,0,8" IsChecked="False" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center">
                 <ToolTipService.ToolTip>
                     <ToolTip>
@@ -307,6 +302,8 @@
                               Visibility="{x:Bind HideEnglishToggleButton.IsChecked,Mode=OneWay,Converter={StaticResource Bool2Vis}}"/>
                 </Grid>
             </ToggleButton>
+
+            <!--切换排序方式-->
             <Button Grid.Column="4" Margin="4,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center"
                     Visibility="{x:Bind ViewModel.SelectedGlossary.IsReadOnly,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}">
                 <ToolTipService.ToolTip>
@@ -336,6 +333,8 @@
                     </Flyout>
                 </Button.Flyout>
             </Button>
+
+            <!--查看生词本属性-->
             <Button Grid.Column="5" Margin="4,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center"
                     Click="OnClickGlossaryProperty">
                 <ToolTipService.ToolTip>

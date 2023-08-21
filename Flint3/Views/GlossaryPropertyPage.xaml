@@ -25,6 +25,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
+        <!--标题-->
         <Grid Grid.Row="0" Background="Transparent">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -40,6 +41,7 @@
             <TextBlock Grid.Column="4" IsTabStop="True" Margin="0,0,120,5" Text="属性" FontSize="16" FontWeight="Bold" CharacterSpacing="40" Opacity="0.9" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
         </Grid>
 
+        <!--属性详情-->
         <ScrollViewer Grid.Row="1" HorizontalScrollMode="Disabled" ZoomMode="Disabled" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Margin="20,20,20,0">
                 <labs:SettingsCard Margin="0,2,0,0" HorizontalAlignment="Stretch" MinHeight="0" Padding="20,10">
@@ -76,6 +78,7 @@
             </StackPanel>
         </ScrollViewer>
 
+        <!--工具栏-->
         <Grid Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -87,6 +90,8 @@
                 <ColumnDefinition Width="8"/>
             </Grid.ColumnDefinitions>
             <Rectangle Grid.ColumnSpan="7" Height="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" Fill="{ThemeResource SETTING_LINE_BK}"/>
+
+            <!--返回-->
             <Button Grid.Column="0" Margin="8,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center" Click="OnClickBackButton">
                 <ToolTipService.ToolTip>
                     <ToolTip>
@@ -107,6 +112,8 @@
                     </muxc:AnimatedIcon.FallbackIconSource>
                 </muxc:AnimatedIcon>
             </Button>
+
+            <!--编辑生词本-->
             <Grid Grid.Column="2" Visibility="{x:Bind ViewModel.SelectedGlossary.IsReadOnly,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}">
                 <Button Margin="4,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center" Click="OnClickEditButton"
                         Visibility="{x:Bind ViewModel.EditingGlossaryProperty,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}">
@@ -123,6 +130,8 @@
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE104;" FontSize="16" Height="22" Width="22" Opacity="0.8"/>
                 </Button>
             </Grid>
+
+            <!--保存编辑-->
             <Grid Grid.Column="3" Visibility="{x:Bind ViewModel.SelectedGlossary.IsReadOnly,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}">
                 <Button Margin="4,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center" Click="OnClickSaveButton"
                         Visibility="{x:Bind ViewModel.EditingGlossaryProperty,Mode=OneWay,Converter={StaticResource Bool2Vis}}">
@@ -139,6 +148,8 @@
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE105;" FontSize="16" Height="22" Width="22" Opacity="0.8"/>
                 </Button>
             </Grid>
+
+            <!--取消编辑-->
             <Grid Grid.Column="4" Visibility="{x:Bind ViewModel.SelectedGlossary.IsReadOnly,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}">
                 <Button Margin="4,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center" Click="OnClickCancelButton"
                         Visibility="{x:Bind ViewModel.EditingGlossaryProperty,Mode=OneWay,Converter={StaticResource Bool2Vis}}">
@@ -155,6 +166,8 @@
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE106;" FontSize="16" Height="22" Width="22" Opacity="0.8"/>
                 </Button>
             </Grid>
+
+            <!--删除生词本-->
             <Grid Grid.Column="5" Visibility="{x:Bind ViewModel.SelectedGlossary.IsReadOnly,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}">
                 <Button Margin="4,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center">
                     <ToolTipService.ToolTip>

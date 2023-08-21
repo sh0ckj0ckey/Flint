@@ -10,6 +10,8 @@ namespace Flint3.Models
 {
     public class GlossaryModelBase : ObservableObject
     {
+        public int Id { get; set; } = -1;
+
         /// <summary>
         /// 是否只读，扩展生词本为只读的
         /// </summary>

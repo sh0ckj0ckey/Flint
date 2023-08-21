@@ -139,7 +139,7 @@
             </ScrollViewer>
         </Grid>
 
-        <!--App Command Bar-->
+        <!--工具栏-->
         <Grid Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -150,6 +150,8 @@
                 <ColumnDefinition Width="8"/>
             </Grid.ColumnDefinitions>
             <Rectangle Grid.ColumnSpan="6" Height="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" Fill="{ThemeResource SETTING_LINE_BK}"/>
+
+            <!--返回-->
             <Button Grid.Column="0" Margin="8,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center" Click="OnClickBackButton">
                 <ToolTipService.ToolTip>
                     <ToolTip>
@@ -170,6 +172,8 @@
                     </muxc:AnimatedIcon.FallbackIconSource>
                 </muxc:AnimatedIcon>
             </Button>
+
+            <!--警告-->
             <Button Grid.Column="2" Margin="4,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center" ToolTipService.ToolTip="注意：扩展生词本仅供参考，请勿仅依赖这些词汇进行复习"
                     Visibility="{x:Bind GlossaryTabSegmented.SelectedIndex,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=1}">
                 <Button.Flyout>
@@ -179,40 +183,40 @@
                 </Button.Flyout>
                 <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE814;" FontSize="16" Height="22" Width="22" Opacity="0.8"/>
             </Button>
-            <Grid Grid.Column="3" Visibility="{x:Bind ViewModel.AppSettings.GlossaryDatabaseFilePath,Mode=OneWay,Converter={StaticResource Str2Vis}}">
-                <Button Margin="4,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center"
-                        Visibility="{x:Bind GlossaryTabSegmented.SelectedIndex,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=0}">
-                    <ToolTipService.ToolTip>
-                        <ToolTip>
-                            <TextBlock>
-                                <Run Text="add" FontWeight="Bold"/>
-                                <Run Text="/æd/"/>
-                                <Run Text="verb" FontStyle="Italic" FontWeight="Medium"/>
-                                <Run Text="添加"/>
-                            </TextBlock>
-                        </ToolTip>
-                    </ToolTipService.ToolTip>
-                    <Button.Flyout>
-                        <muxc:Flyout x:Name="AddGlossaryFlyout">
-                            <Grid Background="Transparent">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <TextBlock Text="创建新的生词本" FontSize="14" FontWeight="Bold" CharacterSpacing="40"/>
-                                <TextBox x:Name="AddGlossaryNameTextBox" Grid.Row="1" MinWidth="192" MaxWidth="256" PlaceholderText="生词本的名称" Margin="0,8,0,0"/>
-                                <TextBox x:Name="AddGlossaryDescTextBox" Grid.Row="2" MinWidth="192" MaxWidth="256" MinHeight="48" MaxHeight="64" PlaceholderText="描述 (可选)" Margin="0,6,0,0" TextWrapping="Wrap"/>
-                                <Button Grid.Row="3" Content="创建" Margin="0,12,0,0" Padding="0,4" HorizontalAlignment="Stretch" Style="{StaticResource AccentButtonStyle}"
-                                        IsEnabled="{x:Bind AddGlossaryNameTextBox.Text,Mode=OneWay,Converter={StaticResource Str2Bool}}"
-                                        Click="OnClickCreateGlossary"/>
-                            </Grid>
-                        </muxc:Flyout>
-                    </Button.Flyout>
-                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE82E;" FontSize="16" Height="22" Width="22" Opacity="0.8"/>
-                </Button>
-            </Grid>
+
+            <!--添加生词本-->
+            <Button Grid.Column="3" Margin="4,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center"
+                    Visibility="{x:Bind GlossaryTabSegmented.SelectedIndex,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=0}">
+                <ToolTipService.ToolTip>
+                    <ToolTip>
+                        <TextBlock>
+                            <Run Text="add" FontWeight="Bold"/>
+                            <Run Text="/æd/"/>
+                            <Run Text="verb" FontStyle="Italic" FontWeight="Medium"/>
+                            <Run Text="添加"/>
+                        </TextBlock>
+                    </ToolTip>
+                </ToolTipService.ToolTip>
+                <Button.Flyout>
+                    <muxc:Flyout x:Name="AddGlossaryFlyout">
+                        <Grid Background="Transparent">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="创建新的生词本" FontSize="14" FontWeight="Bold" CharacterSpacing="40"/>
+                            <TextBox x:Name="AddGlossaryNameTextBox" Grid.Row="1" MinWidth="192" MaxWidth="256" PlaceholderText="生词本的名称" Margin="0,8,0,0"/>
+                            <TextBox x:Name="AddGlossaryDescTextBox" Grid.Row="2" MinWidth="192" MaxWidth="256" MinHeight="48" MaxHeight="64" PlaceholderText="描述 (可选)" Margin="0,6,0,0" TextWrapping="Wrap"/>
+                            <Button Grid.Row="3" Content="创建" Margin="0,12,0,0" Padding="0,4" HorizontalAlignment="Stretch" Style="{StaticResource AccentButtonStyle}"
+                                    IsEnabled="{x:Bind AddGlossaryNameTextBox.Text,Mode=OneWay,Converter={StaticResource Str2Bool}}"
+                                    Click="OnClickCreateGlossary"/>
+                        </Grid>
+                    </muxc:Flyout>
+                </Button.Flyout>
+                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE82E;" FontSize="16" Height="22" Width="22" Opacity="0.8"/>
+            </Button>
         </Grid>
     </Grid>
 </Page>

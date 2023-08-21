@@ -68,35 +68,16 @@ namespace Flint3.ViewModels
 
         public MainViewModel()
         {
+            InitViewModel4Flint();
+            InitViewModel4Glossary();
+            InitViewModel4ShortcutKeys();
+        }
+
+        private void InitViewModel4Flint()
+        {
             AppSettings.OnAppearanceSettingChanged += (index) => { ActSwitchAppTheme?.Invoke(); };
             AppSettings.OnBackdropSettingChanged += (index) => { ActChangeBackdrop?.Invoke(); };
             AppSettings.OnAcrylicOpacitySettingChanged += (opacity) => { };
-
-            // 读取唤起快捷键的设置
-            ReadShortcutSettings();
-        }
-
-        /// <summary>
-        /// 查找完全匹配的一个单词
-        /// </summary>
-        /// <param name="word"></param>
-        public void QueryWord(string word)
-        {
-            try
-            {
-                SearchResultWordItems.Clear();
-                if (string.IsNullOrWhiteSpace(word)) return;
-
-                var results = StarDictDataAccess.QueryWord(word);
-                if (results != null)
-                {
-                    foreach (var item in results)
-                    {
-                        SearchResultWordItems.Add(MakeupWord(item));
-                    }
-                }
-            }
-            catch { }
         }
 
         /// <summary>
