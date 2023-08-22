@@ -115,36 +115,7 @@ namespace Flint3.Data
             return null;
         }
 
-        /// <summary>
-        /// 获取某个生词本单词数
-        /// </summary>
-        /// <returns></returns>
-        public static int GetBuildinGlossaryWordCount(string tag)
-        {
-            try
-            {
-                SqliteCommand selectCommand = null;
-                if (tag != "oxford")
-                {
-                    selectCommand = new SqliteCommand($"select count(*) from stardict where tag LIKE $tag;", _starDictDb);
-                    selectCommand.Parameters.AddWithValue("$tag", "%" + tag + "%");
-                }
-                else
-                {
-                    selectCommand = new SqliteCommand($"select count(*) from stardict where oxford = 1;", _starDictDb);
-                }
-
-                SqliteDataReader query = selectCommand?.ExecuteReader();
-                while (query?.Read() == true)
-                {
-                    StarDictWordItem item = new StarDictWordItem();
-                    var count = query.IsDBNull(0) ? -1 : query.GetInt32(0);
-                    return count;
-                }
-            }
-            catch { }
-            return -1;
-        }
+        #region 扩展生词本
 
         /// <summary>
         /// 获取指定个数的生词本单词
@@ -154,7 +125,7 @@ namespace Flint3.Data
         /// <param name="limit">最多个数</param>
         /// <param name="wrod">当不为空时，代表这次获取还要搜索这个单词</param>
         /// <returns></returns>
-        public static List<StarDictWordItem> GetBuildinGlossaryWords(string tag, long startId, int limit, string word)
+        public static List<StarDictWordItem> GetExtraGlossaryWords(string tag, long startId, int limit, string word)
         {
             try
             {
@@ -208,5 +179,39 @@ namespace Flint3.Data
             catch { }
             return null;
         }
+
+        /// <summary>
+        /// 获取某个生词本单词数
+        /// </summary>
+        /// <returns></returns>
+        public static int GetExtraGlossaryWordCount(string tag)
+        {
+            try
+            {
+                SqliteCommand selectCommand = null;
+                if (tag != "oxford")
+                {
+                    selectCommand = new SqliteCommand($"select count(*) from stardict where tag LIKE $tag;", _starDictDb);
+                    selectCommand.Parameters.AddWithValue("$tag", "%" + tag + "%");
+                }
+                else
+                {
+                    selectCommand = new SqliteCommand($"select count(*) from stardict where oxford = 1;", _starDictDb);
+                }
+
+                SqliteDataReader query = selectCommand?.ExecuteReader();
+                while (query?.Read() == true)
+                {
+                    StarDictWordItem item = new StarDictWordItem();
+                    var count = query.IsDBNull(0) ? -1 : query.GetInt32(0);
+                    return count;
+                }
+            }
+            catch { }
+            return -1;
+        }
+
+        #endregion
+
     }
 }

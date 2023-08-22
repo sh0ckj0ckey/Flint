@@ -34,7 +34,7 @@ namespace Flint3.Models
         }
     }
 
-    public class GlossaryItemModel : GlossaryModelBase
+    public class GlossaryMyModel : GlossaryModelBase
     {
         /// <summary>
         /// 生词本的单词颜色比例

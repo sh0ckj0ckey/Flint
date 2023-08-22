@@ -209,6 +209,7 @@ namespace Flint3
         private void ExitApp()
         {
             GlossaryDataAccess.CloseDatabase();
+            StarDictDataAccess.CloseDatabase();
             MainViewModel.Instance.Dispose();
             _notifyIcon?.Destroy();
             this.Close();

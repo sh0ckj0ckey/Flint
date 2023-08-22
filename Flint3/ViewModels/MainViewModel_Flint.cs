@@ -98,7 +98,15 @@ namespace Flint3.ViewModels
                 {
                     foreach (StarDictWordItem item in results)
                     {
-                        SearchResultWordItems.Add(MakeupWord(item));
+                        var wordItem = MakeupWord(item);
+                        if (wordItem?.Word == word)
+                        {
+                            SearchResultWordItems.Insert(0, wordItem);
+                        }
+                        else
+                        {
+                            SearchResultWordItems.Add(wordItem);
+                        }
                     }
                 }
             }

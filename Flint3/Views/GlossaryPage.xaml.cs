@@ -55,26 +55,13 @@ namespace Flint3.Views
             AddGlossaryFlyout.Hide();
         }
 
-        private void OnSelectGlossaryTab(object sender, SelectionChangedEventArgs e)
-        {
-            if (sender is Segmented tab && tab.SelectedIndex == 1)
-            {
-                MainViewModel.Instance.InitBuildinGlossaries();
-            }
-        }
-
-        private void OnClickGoBuildinGlossary(object sender, RoutedEventArgs e)
+        private void OnClickGoExGlossary(object sender, RoutedEventArgs e)
         {
             if (sender is Button btn && btn.DataContext is Models.GlossaryModelBase model)
             {
                 MainViewModel.Instance.SelectGlossary(model);
                 this.Frame.Navigate(typeof(GlossaryContentPage), null, SlideNaviTransition);
             }
-        }
-
-        private void OnClickChoosePath(object sender, RoutedEventArgs e)
-        {
-            MainViewModel.Instance.ChooseGlossaryPath();
         }
     }
 }

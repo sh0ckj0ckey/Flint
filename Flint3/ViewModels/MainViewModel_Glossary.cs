@@ -24,7 +24,7 @@ namespace Flint3.ViewModels
         public Action ActScrollToGlossaryTop { get; set; } = null;
 
         /// <summary>
-        /// 当前正在查看的生词本
+        /// 当前生词本
         /// </summary>
         private GlossaryModelBase _selectedGlossary = null;
         public GlossaryModelBase SelectedGlossary
@@ -32,6 +32,11 @@ namespace Flint3.ViewModels
             get => _selectedGlossary;
             set => SetProperty(ref _selectedGlossary, value);
         }
+
+        /// <summary>
+        /// 当前选择的生词本单词列表
+        /// </summary>
+        public ObservableCollection<StarDictWordItem> GlossaryWordItems { get; private set; } = new ObservableCollection<StarDictWordItem>();
 
         /// <summary>
         /// 正在搜索的生词
@@ -52,11 +57,6 @@ namespace Flint3.ViewModels
             get => _filterGlossaryColor;
             set => SetProperty(ref _filterGlossaryColor, value);
         }
-
-        /// <summary>
-        /// 当前选择的生词本单词列表
-        /// </summary>
-        public ObservableCollection<StarDictWordItem> GlossaryWordItems { get; private set; } = new ObservableCollection<StarDictWordItem>();
 
         /// <summary>
         /// 当前是否正在编辑生词本属性
@@ -112,174 +112,22 @@ namespace Flint3.ViewModels
 
             long lastId = GlossaryWordItems.Count > 0 ? GlossaryWordItems.Last().Id : -1;
 
-            if (SelectedGlossary is Models.GlossaryBuildinModel)
+            if (SelectedGlossary is Models.GlossaryExModel)
             {
-                GetMoreBuildinGlossaryWords(lastId, count, FilterGlossaryWord.Trim());
+                GetMoreExGlossaryWords(lastId, count, FilterGlossaryWord.Trim());
             }
-            else if (SelectedGlossary is GlossaryItemModel)
+            else if (SelectedGlossary is GlossaryMyModel)
             {
                 GetMoreMyGlossaryWords(lastId, count, FilterGlossaryWord.Trim(), FilterGlossaryColor);
             }
         }
-
-        #region 内置生词本
-
-        /// <summary>
-        /// 内置生词本列表
-        /// </summary>
-        public ObservableCollection<GlossaryBuildinModel> BuildinGlossaries { get; private set; } = new ObservableCollection<GlossaryBuildinModel>();
-
-        /// <summary>
-        /// 初始化内置生词本
-        /// </summary>
-        public void InitBuildinGlossaries()
-        {
-            try
-            {
-                if (BuildinGlossaries?.Count > 0)
-                {
-                    return;
-                }
-
-                BuildinGlossaries?.Clear();
-
-                BuildinGlossaries.Add(new()
-                {
-                    GlossaryTitle = "牛津核心词汇",
-                    BuildinGlossaryInternalTag = "oxford",
-                    GlossaryIcon = "\uE128",
-                    IsReadOnly = true,
-                    GlossaryDescription = "这是一个扩展生词本，词汇仅供参考，请勿仅依赖这些词汇进行复习。",
-                    GlossaryWordsCount = 3461
-                });
-
-                BuildinGlossaries.Add(new()
-                {
-                    GlossaryTitle = "雅思词汇",
-                    BuildinGlossaryInternalTag = "ielts",
-                    GlossaryIcon = "\uF7DB",
-                    IsReadOnly = true,
-                    GlossaryDescription = "这是一个扩展生词本，词汇仅供参考，请勿仅依赖这些词汇进行复习。",
-                    GlossaryWordsCount = 5040
-                });
-
-                BuildinGlossaries.Add(new()
-                {
-                    GlossaryTitle = "托福词汇",
-                    BuildinGlossaryInternalTag = "toefl",
-                    GlossaryIcon = "\uF7DB",
-                    IsReadOnly = true,
-                    GlossaryDescription = "这是一个扩展生词本，词汇仅供参考，请勿仅依赖这些词汇进行复习。",
-                    GlossaryWordsCount = 6974
-                });
-
-                BuildinGlossaries.Add(new()
-                {
-                    GlossaryTitle = "GRE 词汇",
-                    BuildinGlossaryInternalTag = "gre",
-                    GlossaryIcon = "\uF7DB",
-                    IsReadOnly = true,
-                    GlossaryDescription = "这是一个扩展生词本，词汇仅供参考，请勿仅依赖这些词汇进行复习。",
-                    GlossaryWordsCount = 7504
-                });
-
-                BuildinGlossaries.Add(new()
-                {
-                    GlossaryTitle = "考研词汇",
-                    BuildinGlossaryInternalTag = "ky",
-                    GlossaryIcon = "\uE7BE",
-                    IsReadOnly = true,
-                    GlossaryDescription = "这是一个扩展生词本，词汇仅供参考，请勿仅依赖这些词汇进行复习。",
-                    GlossaryWordsCount = 4801
-                });
-
-                BuildinGlossaries.Add(new()
-                {
-                    GlossaryTitle = "CET 6 词汇",
-                    BuildinGlossaryInternalTag = "cet6",
-                    GlossaryIcon = "\uE1D3",
-                    IsReadOnly = true,
-                    GlossaryDescription = "这是一个扩展生词本，词汇仅供参考，请勿仅依赖这些词汇进行复习。",
-                    GlossaryWordsCount = 5407
-                });
-
-                BuildinGlossaries.Add(new()
-                {
-                    GlossaryTitle = "CET 4 词汇",
-                    BuildinGlossaryInternalTag = "cet4",
-                    GlossaryIcon = "\uE1D3",
-                    IsReadOnly = true,
-                    GlossaryDescription = "这是一个扩展生词本，词汇仅供参考，请勿仅依赖这些词汇进行复习。",
-                    GlossaryWordsCount = 3849
-                });
-
-                BuildinGlossaries.Add(new()
-                {
-                    GlossaryTitle = "高考词汇",
-                    BuildinGlossaryInternalTag = "gk",
-                    GlossaryIcon = "\uE7BC",
-                    IsReadOnly = true,
-                    GlossaryDescription = "这是一个扩展生词本，词汇仅供参考，请勿仅依赖这些词汇进行复习。",
-                    GlossaryWordsCount = 3677
-                });
-
-                BuildinGlossaries.Add(new()
-                {
-                    GlossaryTitle = "中考词汇",
-                    BuildinGlossaryInternalTag = "zk",
-                    GlossaryIcon = "\uE913",
-                    IsReadOnly = true,
-                    GlossaryDescription = "这是一个扩展生词本，词汇仅供参考，请勿仅依赖这些词汇进行复习。",
-                    GlossaryWordsCount = 1603
-                });
-
-                //await Task.Run(() =>
-                //{
-                //    foreach (var item in BuildinGlossaries)
-                //    {
-                //        // 查找每个生词本的单词数量，并且生成描述
-                //        var count = StarDictDataAccess.GetBuildinGlossaryWordCount(item.BuildinGlossaryInternalTag);
-                //        Dispatcher.TryEnqueue(() =>
-                //        {
-                //            item.GlossaryWordsCount = count;
-                //            item.GlossaryDescription = $"共 {item.GlossaryWordsCount} 个单词";
-                //        });
-                //    }
-                //});
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-        }
-
-        /// <summary>
-        /// 增量加载内置生词本的单词
-        /// </summary>
-        /// <param name="count"></param>
-        private void GetMoreBuildinGlossaryWords(long lastId, int count, string word)
-        {
-            Debug.WriteLine($"Last id: {lastId}, count={GlossaryWordItems.Count}");
-
-            if (SelectedGlossary is GlossaryBuildinModel glossary)
-            {
-                var list = StarDictDataAccess.GetBuildinGlossaryWords(glossary.BuildinGlossaryInternalTag, lastId, count, word);
-
-                foreach (var item in list)
-                {
-                    GlossaryWordItems.Add(MakeupWord(item));
-                }
-            }
-        }
-
-        #endregion
 
         #region 我的生词本
 
         /// <summary>
         /// 用户生词本列表
         /// </summary>
-        public ObservableCollection<GlossaryItemModel> MyGlossaries { get; private set; } = new ObservableCollection<GlossaryItemModel>();
+        public ObservableCollection<GlossaryMyModel> MyGlossaries { get; private set; } = new ObservableCollection<GlossaryMyModel>();
 
         /// <summary>
         /// 加载我的生词本
@@ -297,7 +145,7 @@ namespace Flint3.ViewModels
                 GlossaryDataAccess.LoadDatabase(folder);
 
                 GlossaryDataAccess.GetAllGlossaries().ForEach(item =>
-                    MyGlossaries.Add(new GlossaryItemModel()
+                    MyGlossaries.Add(new GlossaryMyModel()
                     {
                         Id = item.Id,
                         GlossaryTitle = item.Title,
@@ -308,6 +156,20 @@ namespace Flint3.ViewModels
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
+            }
+        }
+
+        /// <summary>
+        /// 增量加载内置生词本的单词
+        /// </summary>
+        /// <param name="count"></param>
+        private void GetMoreMyGlossaryWords(long lastId, int count, string word, GlossaryColorsEnum color)
+        {
+            Debug.WriteLine($"Last id: {lastId}, count={GlossaryWordItems.Count}");
+
+            if (SelectedGlossary is GlossaryMyModel glossary)
+            {
+
             }
         }
 
@@ -373,15 +235,150 @@ namespace Flint3.ViewModels
             }
         }
 
+        #endregion
+
+        #region 内置生词本
+
+        /// <summary>
+        /// 内置生词本列表
+        /// </summary>
+        public ObservableCollection<GlossaryExModel> ExGlossaries { get; private set; } = new ObservableCollection<GlossaryExModel>();
+
+        /// <summary>
+        /// 初始化内置生词本
+        /// </summary>
+        public void LoadExGlossaries()
+        {
+            try
+            {
+                ExGlossaries?.Clear();
+
+                ExGlossaries.Add(new()
+                {
+                    GlossaryTitle = "牛津核心词汇",
+                    ExtraGlossaryInternalTag = "oxford",
+                    GlossaryIcon = "\uE128",
+                    IsReadOnly = true,
+                    GlossaryDescription = "这是一个扩展生词本，词汇仅供参考，请勿仅依赖这些词汇进行复习。",
+                    GlossaryWordsCount = 3461
+                });
+
+                ExGlossaries.Add(new()
+                {
+                    GlossaryTitle = "雅思词汇",
+                    ExtraGlossaryInternalTag = "ielts",
+                    GlossaryIcon = "\uF7DB",
+                    IsReadOnly = true,
+                    GlossaryDescription = "这是一个扩展生词本，词汇仅供参考，请勿仅依赖这些词汇进行复习。",
+                    GlossaryWordsCount = 5040
+                });
+
+                ExGlossaries.Add(new()
+                {
+                    GlossaryTitle = "托福词汇",
+                    ExtraGlossaryInternalTag = "toefl",
+                    GlossaryIcon = "\uF7DB",
+                    IsReadOnly = true,
+                    GlossaryDescription = "这是一个扩展生词本，词汇仅供参考，请勿仅依赖这些词汇进行复习。",
+                    GlossaryWordsCount = 6974
+                });
+
+                ExGlossaries.Add(new()
+                {
+                    GlossaryTitle = "GRE 词汇",
+                    ExtraGlossaryInternalTag = "gre",
+                    GlossaryIcon = "\uF7DB",
+                    IsReadOnly = true,
+                    GlossaryDescription = "这是一个扩展生词本，词汇仅供参考，请勿仅依赖这些词汇进行复习。",
+                    GlossaryWordsCount = 7504
+                });
+
+                ExGlossaries.Add(new()
+                {
+                    GlossaryTitle = "考研词汇",
+                    ExtraGlossaryInternalTag = "ky",
+                    GlossaryIcon = "\uE7BE",
+                    IsReadOnly = true,
+                    GlossaryDescription = "这是一个扩展生词本，词汇仅供参考，请勿仅依赖这些词汇进行复习。",
+                    GlossaryWordsCount = 4801
+                });
+
+                ExGlossaries.Add(new()
+                {
+                    GlossaryTitle = "CET 6 词汇",
+                    ExtraGlossaryInternalTag = "cet6",
+                    GlossaryIcon = "\uE1D3",
+                    IsReadOnly = true,
+                    GlossaryDescription = "这是一个扩展生词本，词汇仅供参考，请勿仅依赖这些词汇进行复习。",
+                    GlossaryWordsCount = 5407
+                });
+
+                ExGlossaries.Add(new()
+                {
+                    GlossaryTitle = "CET 4 词汇",
+                    ExtraGlossaryInternalTag = "cet4",
+                    GlossaryIcon = "\uE1D3",
+                    IsReadOnly = true,
+                    GlossaryDescription = "这是一个扩展生词本，词汇仅供参考，请勿仅依赖这些词汇进行复习。",
+                    GlossaryWordsCount = 3849
+                });
+
+                ExGlossaries.Add(new()
+                {
+                    GlossaryTitle = "高考词汇",
+                    ExtraGlossaryInternalTag = "gk",
+                    GlossaryIcon = "\uE7BC",
+                    IsReadOnly = true,
+                    GlossaryDescription = "这是一个扩展生词本，词汇仅供参考，请勿仅依赖这些词汇进行复习。",
+                    GlossaryWordsCount = 3677
+                });
+
+                ExGlossaries.Add(new()
+                {
+                    GlossaryTitle = "中考词汇",
+                    ExtraGlossaryInternalTag = "zk",
+                    GlossaryIcon = "\uE913",
+                    IsReadOnly = true,
+                    GlossaryDescription = "这是一个扩展生词本，词汇仅供参考，请勿仅依赖这些词汇进行复习。",
+                    GlossaryWordsCount = 1603
+                });
+
+                //await Task.Run(() =>
+                //{
+                //    foreach (var item in ExGlossaries)
+                //    {
+                //        // 查找每个生词本的单词数量，并且生成描述
+                //        var count = StarDictDataAccess.GetExGlossaryWordCount(item.ExtraGlossaryInternalTag);
+                //        Dispatcher.TryEnqueue(() =>
+                //        {
+                //            item.GlossaryWordsCount = count;
+                //            item.GlossaryDescription = $"共 {item.GlossaryWordsCount} 个单词";
+                //        });
+                //    }
+                //});
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+
         /// <summary>
         /// 增量加载内置生词本的单词
         /// </summary>
         /// <param name="count"></param>
-        private void GetMoreMyGlossaryWords(long lastId, int count, string word, GlossaryColorsEnum color)
+        private void GetMoreExGlossaryWords(long lastId, int count, string word)
         {
-            if (SelectedGlossary is GlossaryItemModel glossary)
-            {
+            Debug.WriteLine($"Last id: {lastId}, count={GlossaryWordItems.Count}");
 
+            if (SelectedGlossary is GlossaryExModel glossary)
+            {
+                var list = StarDictDataAccess.GetExtraGlossaryWords(glossary.ExtraGlossaryInternalTag, lastId, count, word);
+
+                foreach (var item in list)
+                {
+                    GlossaryWordItems.Add(MakeupWord(item));
+                }
             }
         }
 
@@ -392,7 +389,7 @@ namespace Flint3.ViewModels
         /// <summary>
         /// 可以添加当前单词的生词本列表
         /// </summary>
-        public ObservableCollection<GlossaryItemModel> AddingGlossaries { get; private set; } = new ObservableCollection<GlossaryItemModel>();
+        public ObservableCollection<GlossaryMyModel> AddingGlossaries { get; private set; } = new ObservableCollection<GlossaryMyModel>();
 
         /// <summary>
         /// 正在添加的单词
@@ -430,8 +427,9 @@ namespace Flint3.ViewModels
         public async void GetAddGlossariesList()
         {
             SearchingWordItemExist = true;
+
             AddingGlossaries.Clear();
-            ObservableCollection<GlossaryItemModel> tempList = new ObservableCollection<GlossaryItemModel>();
+            ObservableCollection<GlossaryMyModel> tempList = new ObservableCollection<GlossaryMyModel>();
 
             await Task.Run(() =>
             {
@@ -449,7 +447,7 @@ namespace Flint3.ViewModels
                 AddingGlossaries.Add(item);
             }
 
-            SearchingWordItemExist = true;
+            SearchingWordItemExist = false;
         }
 
         #endregion

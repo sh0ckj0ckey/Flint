@@ -61,6 +61,7 @@ namespace Flint3.Views
                 }
                 else
                 {
+                    // 只需清空TextBox，会触发TextChanged事件，自动调用ViewModel.GetFirstPageGlossaryWords()
                     FilterWordTextBox.Text = "";
                 }
             }
