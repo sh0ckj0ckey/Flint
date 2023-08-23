@@ -33,13 +33,15 @@ namespace Flint3.Controls
             PopupShadow.Receivers.Add(AddToGlossaryPopupShadowReceiver);
         }
 
-        public void ResetLayout()
+        public void UpdateControl()
         {
             try
             {
                 GlossaryComboBox.SelectedIndex = -1;
                 WordDescTextBox.Text = "";
                 WordColorScrollViewer?.ChangeView(0, null, null, true);
+
+                ViewModel.GetAddGlossariesList();
             }
             catch { }
         }
@@ -85,7 +87,7 @@ namespace Flint3.Controls
                             break;
                     }
 
-                    MainViewModel.Instance.AddingWordColor = colorsEnum;
+                    ViewModel.AddingWordColor = colorsEnum;
                 }
             }
             catch { }

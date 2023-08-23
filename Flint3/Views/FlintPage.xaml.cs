@@ -41,10 +41,11 @@ namespace Flint3.Views
             MainViewModel.Instance.ActClearTextBox = () => { SearchTextBox.Text = ""; };
 
             // 加载单词数据库
-            StarDictDataAccess.InitializeDatabase();
+            MainViewModel.Instance.LoadStarDict();
 
             // 加载生词本数据库
             MainViewModel.Instance.LoadMyGlossaries();
+            MainViewModel.Instance.LoadExGlossaries();
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -53,17 +54,8 @@ namespace Flint3.Views
 
             SearchTextBox.Style = GetSearchTextBoxStyle(MainViewModel.Instance.AppSettings.SearchBoxStyle);
 
-            try
-            {
-                NewFeatureButton.Visibility = Visibility.Collapsed;
-                // 首次启动显示 TeachingTips
-                var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-                if (localSettings.Values["firstRunV300Teaching"] == null)
-                {
-                    NewFeatureButton.Visibility = Visibility.Visible;
-                }
-            }
-            catch { }
+            // 首次启动显示 TeachingTips
+            TryShowNewFeatureButton();
         }
 
         /// <summary>
@@ -118,7 +110,6 @@ namespace Flint3.Views
             {
                 if (sender is TextBox tb && !string.IsNullOrWhiteSpace(tb?.Text))
                 {
-                    //ViewModel.QueryWord(tb.Text);
                     ViewModel.MatchWord(tb.Text);
                 }
                 else
@@ -171,6 +162,38 @@ namespace Flint3.Views
             }
         }
 
+        /// <summary>
+        /// 添加单词到生词本
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnClickAddWordToGlossary(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.DataContext is StarDictWordItem item)
+            {
+                MainViewModel.Instance.AddingWordItem = item;
+                AddWordControl.UpdateControl();
+                AddWordToGlossaryPopup.IsOpen = true;
+            }
+        }
+
+        #region 功能介绍
+
+        private void TryShowNewFeatureButton()
+        {
+            try
+            {
+                NewFeatureButton.Visibility = Visibility.Collapsed;
+
+                var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+                if (localSettings.Values["firstRunV300Teaching"] == null)
+                {
+                    NewFeatureButton.Visibility = Visibility.Visible;
+                }
+            }
+            catch { }
+        }
+
         private void OnClickShowMeNewFeature(object sender, RoutedEventArgs e)
         {
             try
@@ -197,14 +220,7 @@ namespace Flint3.Views
             SecondTeachingTip.IsOpen = false;
         }
 
-        private void OnClickAddWordToGlossary(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button btn && btn.DataContext is StarDictWordItem item)
-            {
-                MainViewModel.Instance.AddingWordItem = item;
-                AddWordControl.ResetLayout();
-                AddWordToGlossaryPopup.IsOpen = true;
-            }
-        }
+        #endregion
+
     }
 }

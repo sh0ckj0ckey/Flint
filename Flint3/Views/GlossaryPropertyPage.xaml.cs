@@ -32,11 +32,19 @@ namespace Flint3.Views
             ViewModel = MainViewModel.Instance;
 
             this.Loaded += OnLoaded;
+            this.Unloaded += OnUnloaded;
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             MainViewModel.Instance.EditingGlossaryProperty = false;
+        }
+
+        private void OnUnloaded(object sender, RoutedEventArgs e)
+        {
+            MainViewModel.Instance.EditingGlossaryProperty = false;
+            EditGlossaryTitleTextBox.Text = ViewModel.SelectedGlossary.GlossaryTitle;
+            EditGlossaryDescTextBox.Text = ViewModel.SelectedGlossary.GlossaryDescription;
         }
 
         private void OnClickBackButton(object sender, RoutedEventArgs e)
@@ -48,22 +56,39 @@ namespace Flint3.Views
         }
         private void OnClickEditButton(object sender, RoutedEventArgs e)
         {
-
+            MainViewModel.Instance.EditingGlossaryProperty = true;
+            EditGlossaryTitleTextBox.Focus(FocusState.Pointer);
         }
 
         private void OnClickSaveButton(object sender, RoutedEventArgs e)
         {
+            MainViewModel.Instance.EditingGlossaryProperty = false;
+            ViewModel.SelectedGlossary.GlossaryTitle = EditGlossaryTitleTextBox.Text;
+            ViewModel.SelectedGlossary.GlossaryDescription = EditGlossaryDescTextBox.Text;
 
+            ViewModel.UpdateMyGlossary(ViewModel.SelectedGlossary.Id, ViewModel.SelectedGlossary.GlossaryTitle, ViewModel.SelectedGlossary.GlossaryDescription);
         }
 
         private void OnClickCancelButton(object sender, RoutedEventArgs e)
         {
-
+            MainViewModel.Instance.EditingGlossaryProperty = false;
+            EditGlossaryTitleTextBox.Text = ViewModel.SelectedGlossary.GlossaryTitle;
+            EditGlossaryDescTextBox.Text = ViewModel.SelectedGlossary.GlossaryDescription;
         }
 
         private void OnClickDeleteButton(object sender, RoutedEventArgs e)
         {
+            ViewModel.DeleteMyGlossary(ViewModel.SelectedGlossary.Id);
 
+            if (this.Frame.CanGoBack)
+            {
+                this.Frame.GoBack();
+            }
+
+            if (this.Frame.CanGoBack)
+            {
+                this.Frame.GoBack();
+            }
         }
     }
 }

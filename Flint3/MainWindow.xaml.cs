@@ -94,7 +94,7 @@ namespace Flint3
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnMainFramLoaded(object sender, RoutedEventArgs e)
+        private void OnMainFrameLoaded(object sender, RoutedEventArgs e)
         {
             // 初始导航页面
             MainFrame.Navigate(typeof(FlintPage));

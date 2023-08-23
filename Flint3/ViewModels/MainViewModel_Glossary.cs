@@ -70,7 +70,7 @@ namespace Flint3.ViewModels
 
         private void InitViewModel4Glossary()
         {
-            
+
         }
 
         /// <summary>
@@ -90,17 +90,15 @@ namespace Flint3.ViewModels
         }
 
         /// <summary>
-        /// 获取生词本第一页单词
+        /// 清空生词本单词列表
         /// </summary>
         /// <param name="count"></param>
         /// <param name="word"></param>
         /// <param name="color"></param>
-        public void GetFirstPageGlossaryWords(int count = 50)
+        public void ClearGlossaryWords()
         {
             ActScrollToGlossaryTop?.Invoke();
             GlossaryWordItems.Clear();
-
-            GetMoreGlossaryWords(count);
         }
 
         /// <summary>
@@ -121,121 +119,6 @@ namespace Flint3.ViewModels
                 GetMoreMyGlossaryWords(lastId, count, FilterGlossaryWord.Trim(), FilterGlossaryColor);
             }
         }
-
-        #region 我的生词本
-
-        /// <summary>
-        /// 用户生词本列表
-        /// </summary>
-        public ObservableCollection<GlossaryMyModel> MyGlossaries { get; private set; } = new ObservableCollection<GlossaryMyModel>();
-
-        /// <summary>
-        /// 加载我的生词本
-        /// </summary>
-        public void LoadMyGlossaries()
-        {
-            try
-            {
-                MyGlossaries?.Clear();
-
-                string folderPath = UserDataPaths.GetDefault().Desktop;
-                StorageFolder folder = StorageFolder.GetFolderFromPathAsync(folderPath).GetAwaiter().GetResult();
-                var path = folder.CreateFolderAsync("Flint", CreationCollisionOption.OpenIfExists).GetAwaiter().GetResult();
-                GlossaryDataAccess.CloseDatabase();
-                GlossaryDataAccess.LoadDatabase(folder);
-
-                GlossaryDataAccess.GetAllGlossaries().ForEach(item =>
-                    MyGlossaries.Add(new GlossaryMyModel()
-                    {
-                        Id = item.Id,
-                        GlossaryTitle = item.Title,
-                        GlossaryDescription = item.Description,
-                        GlossaryIcon = "\uEE56"
-                    }));
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-        }
-
-        /// <summary>
-        /// 增量加载内置生词本的单词
-        /// </summary>
-        /// <param name="count"></param>
-        private void GetMoreMyGlossaryWords(long lastId, int count, string word, GlossaryColorsEnum color)
-        {
-            Debug.WriteLine($"Last id: {lastId}, count={GlossaryWordItems.Count}");
-
-            if (SelectedGlossary is GlossaryMyModel glossary)
-            {
-
-            }
-        }
-
-        /// <summary>
-        /// 创建新的生词本
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="desc"></param>
-        public void CreateGlossary(string name, string desc)
-        {
-            try
-            {
-                GlossaryDataAccess.AddOneGlossary(name, desc);
-
-                LoadMyGlossaries();
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-        }
-
-        /// <summary>
-        /// 编辑生词本
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="desc"></param>
-        public void UpdateGlossary(int id, string name, string desc)
-        {
-            try
-            {
-                GlossaryDataAccess.UpdateOneGlossary(id, name, desc);
-
-                LoadMyGlossaries();
-
-                if (SelectedGlossary.Id == id)
-                {
-                    SelectedGlossary.GlossaryTitle = name;
-                    SelectedGlossary.GlossaryDescription = desc;
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-        }
-
-        /// <summary>
-        /// 删除生词本
-        /// </summary>
-        /// <param name="id"></param>
-        public void DeleteGlossary(int id)
-        {
-            try
-            {
-                GlossaryDataAccess.DeleteOneGlossary(id);
-
-                LoadMyGlossaries();
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-        }
-
-        #endregion
 
         #region 内置生词本
 
@@ -384,7 +267,122 @@ namespace Flint3.ViewModels
 
         #endregion
 
-        #region 添加到生词本
+        #region 我的生词本
+
+        /// <summary>
+        /// 用户生词本列表
+        /// </summary>
+        public ObservableCollection<GlossaryMyModel> MyGlossaries { get; private set; } = new ObservableCollection<GlossaryMyModel>();
+
+        /// <summary>
+        /// 加载我的生词本
+        /// </summary>
+        public void LoadMyGlossaries()
+        {
+            try
+            {
+                MyGlossaries?.Clear(); 
+
+                string folderPath = UserDataPaths.GetDefault().Documents;
+                StorageFolder folder = StorageFolder.GetFolderFromPathAsync(folderPath).GetAwaiter().GetResult();
+                var dbFolder = folder.CreateFolderAsync("Flint", CreationCollisionOption.OpenIfExists).GetAwaiter().GetResult();
+                GlossaryDataAccess.CloseDatabase();
+                GlossaryDataAccess.LoadDatabase(dbFolder);
+
+                GlossaryDataAccess.GetAllGlossaries().ForEach(item =>
+                    MyGlossaries.Add(new GlossaryMyModel()
+                    {
+                        Id = item.Id,
+                        GlossaryTitle = item.Title,
+                        GlossaryDescription = item.Description,
+                        GlossaryIcon = "\uEE56"
+                    }));
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+
+        /// <summary>
+        /// 增量加载内置生词本的单词
+        /// </summary>
+        /// <param name="count"></param>
+        private void GetMoreMyGlossaryWords(long lastId, int count, string word, GlossaryColorsEnum color)
+        {
+            Debug.WriteLine($"Last id: {lastId}, count={GlossaryWordItems.Count}");
+
+            if (SelectedGlossary is GlossaryMyModel glossary)
+            {
+
+            }
+        }
+
+        /// <summary>
+        /// 创建新的生词本
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="desc"></param>
+        public void CreateMyGlossary(string name, string desc)
+        {
+            try
+            {
+                GlossaryDataAccess.AddOneGlossary(name, desc);
+
+                LoadMyGlossaries();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+
+        /// <summary>
+        /// 编辑生词本
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="desc"></param>
+        public void UpdateMyGlossary(int id, string name, string desc)
+        {
+            try
+            {
+                GlossaryDataAccess.UpdateOneGlossary(id, name, desc);
+
+                LoadMyGlossaries();
+
+                if (SelectedGlossary.Id == id)
+                {
+                    SelectedGlossary.GlossaryTitle = name;
+                    SelectedGlossary.GlossaryDescription = desc;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+
+        /// <summary>
+        /// 删除生词本
+        /// </summary>
+        /// <param name="id"></param>
+        public void DeleteMyGlossary(int id)
+        {
+            try
+            {
+                GlossaryDataAccess.DeleteOneGlossary(id);
+
+                LoadMyGlossaries();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+
+        #endregion
+
+        #region 添加到我的生词本
 
         /// <summary>
         /// 可以添加当前单词的生词本列表

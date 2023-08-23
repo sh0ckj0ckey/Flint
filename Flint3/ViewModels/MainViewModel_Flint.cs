@@ -81,6 +81,14 @@ namespace Flint3.ViewModels
         }
 
         /// <summary>
+        /// 加载单词数据库
+        /// </summary>
+        public void LoadStarDict()
+        {
+            StarDictDataAccess.InitializeDatabase();
+        }
+
+        /// <summary>
         /// 查找模糊匹配的多个单词
         /// </summary>
         /// <param name="word"></param>

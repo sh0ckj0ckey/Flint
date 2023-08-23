@@ -15,7 +15,7 @@ namespace Flint3.Data
 
         public static void LoadDatabase(StorageFolder folder/*string filePath*/)
         {
-            var file = folder.CreateFileAsync("glossary.db", CreationCollisionOption.OpenIfExists).GetAwaiter().GetResult();
+            var file = folder.CreateFileAsync("flint_glossary.db", CreationCollisionOption.OpenIfExists).GetAwaiter().GetResult();
 
             string dbpath = file.Path;
             _glossaryDb = new SqliteConnection($"Filename={dbpath}");

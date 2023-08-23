@@ -57,11 +57,11 @@ namespace Flint3.Views
             {
                 if (string.IsNullOrEmpty(FilterWordTextBox.Text))
                 {
-                    ViewModel?.GetFirstPageGlossaryWords();
+                    ViewModel?.ClearGlossaryWords();
+                    ViewModel?.GetMoreGlossaryWords();
                 }
                 else
                 {
-                    // 只需清空TextBox，会触发TextChanged事件，自动调用ViewModel.GetFirstPageGlossaryWords()
                     FilterWordTextBox.Text = "";
                 }
             }
@@ -139,7 +139,9 @@ namespace Flint3.Views
                 if (MainViewModel.Instance.FilterGlossaryWord != word)
                 {
                     MainViewModel.Instance.FilterGlossaryWord = word;
-                    ViewModel?.GetFirstPageGlossaryWords();
+
+                    ViewModel?.ClearGlossaryWords();
+                    ViewModel?.GetMoreGlossaryWords();
                 }
             }
         }
@@ -189,7 +191,9 @@ namespace Flint3.Views
                     {
                         ColorFilterFlyout.Hide();
                         MainViewModel.Instance.FilterGlossaryColor = colorsEnum;
-                        ViewModel?.GetFirstPageGlossaryWords();
+
+                        ViewModel?.ClearGlossaryWords();
+                        ViewModel?.GetMoreGlossaryWords();
                     }
                 }
             }

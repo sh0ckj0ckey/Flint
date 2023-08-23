@@ -18,7 +18,7 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Grid x:Name="AppTitleBar" Grid.Row="0" Background="Transparent"/>
-            <Frame x:Name="MainFrame" Grid.RowSpan="2" Margin="0" Loaded="OnMainFramLoaded"/>
+            <Frame x:Name="MainFrame" Grid.RowSpan="2" Margin="0" Loaded="OnMainFrameLoaded"/>
         </Grid>
     </windowex:WindowEx.Content>
 </windowex:WindowEx>

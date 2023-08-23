@@ -51,8 +51,19 @@ namespace Flint3.Views
 
         private void OnClickCreateGlossary(object sender, RoutedEventArgs e)
         {
-            MainViewModel.Instance.CreateGlossary(AddGlossaryNameTextBox.Text, AddGlossaryDescTextBox.Text);
+            MainViewModel.Instance.CreateMyGlossary(AddGlossaryNameTextBox.Text, AddGlossaryDescTextBox.Text);
             AddGlossaryFlyout.Hide();
+            AddGlossaryNameTextBox.Text = "";
+            AddGlossaryDescTextBox.Text = "";
+        }
+
+        private void OnClickGoMyGlossary(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.DataContext is Models.GlossaryModelBase model)
+            {
+                MainViewModel.Instance.SelectGlossary(model);
+                this.Frame.Navigate(typeof(GlossaryContentPage), null, SlideNaviTransition);
+            }
         }
 
         private void OnClickGoExGlossary(object sender, RoutedEventArgs e)

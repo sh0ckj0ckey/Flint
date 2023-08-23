@@ -48,13 +48,13 @@
                     <labs:SettingsCard.Header>
                         <TextBlock Text="名称" CharacterSpacing="64"/>
                     </labs:SettingsCard.Header>
-                    <TextBox Text="{x:Bind ViewModel.SelectedGlossary.GlossaryTitle,Mode=TwoWay}" IsReadOnly="{x:Bind ViewModel.EditingGlossaryProperty,Mode=OneWay,Converter={StaticResource BoolReverse}}" Width="256" CharacterSpacing="40"/>
+                    <TextBox x:Name="EditGlossaryTitleTextBox" Text="{x:Bind ViewModel.SelectedGlossary.GlossaryTitle,Mode=OneWay}" IsReadOnly="{x:Bind ViewModel.EditingGlossaryProperty,Mode=OneWay,Converter={StaticResource BoolReverse}}" Width="256" CharacterSpacing="40"/>
                 </labs:SettingsCard>
                 <labs:SettingsCard Margin="0,2,0,0" HorizontalAlignment="Stretch" MinHeight="0" Padding="20,10">
                     <labs:SettingsCard.Header>
                         <TextBlock Text="描述" CharacterSpacing="64"/>
                     </labs:SettingsCard.Header>
-                    <TextBox Text="{x:Bind ViewModel.SelectedGlossary.GlossaryDescription,Mode=TwoWay}" IsReadOnly="{x:Bind ViewModel.EditingGlossaryProperty,Mode=OneWay,Converter={StaticResource BoolReverse}}" Width="256" CharacterSpacing="40" PlaceholderText="没有添加描述" TextWrapping="Wrap"/>
+                    <TextBox x:Name="EditGlossaryDescTextBox" Text="{x:Bind ViewModel.SelectedGlossary.GlossaryDescription,Mode=OneWay}" IsReadOnly="{x:Bind ViewModel.EditingGlossaryProperty,Mode=OneWay,Converter={StaticResource BoolReverse}}" Width="256" CharacterSpacing="40" PlaceholderText="没有添加描述" TextWrapping="Wrap"/>
                 </labs:SettingsCard>
                 <labs:SettingsCard Margin="0,2,0,0" HorizontalAlignment="Stretch" MinHeight="0" Padding="20,16">
                     <labs:SettingsCard.Header>

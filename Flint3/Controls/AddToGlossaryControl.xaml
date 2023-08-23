@@ -45,7 +45,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <ComboBox x:Name="GlossaryComboBox" PlaceholderText="选择生词本" HorizontalAlignment="Stretch" ItemsSource="{x:Bind ViewModel.MyGlossaries,Mode=OneWay}" SelectedValuePath="GlossaryTitle" VerticalAlignment="Center"
+                <ComboBox x:Name="GlossaryComboBox" PlaceholderText="选择生词本" HorizontalAlignment="Stretch" ItemsSource="{x:Bind ViewModel.AddingGlossaries,Mode=OneWay}" SelectedValuePath="GlossaryTitle" VerticalAlignment="Center"
                           IsEnabled="{x:Bind ViewModel.SearchingWordItemExist,Mode=OneWay,Converter={StaticResource BoolReverse}}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate x:DataType="models:GlossaryMyModel">
