@@ -259,6 +259,7 @@ namespace Flint3.Data
             {
                 SqliteCommand selectWordsCommand = new SqliteCommand($"SELECT 1 FROM glossary WHERE wordid=$wordid AND glossaryid=$glossaryid;", _glossaryDb);
                 selectWordsCommand.Parameters.AddWithValue("$wordid", wordid);
+                selectWordsCommand.Parameters.AddWithValue("$glossaryid", glossaryid);
                 SqliteDataReader wordsQuery = selectWordsCommand?.ExecuteReader();
 
                 return wordsQuery?.Read() == true;

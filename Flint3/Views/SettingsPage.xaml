@@ -155,10 +155,13 @@
                     <ToggleSwitch x:Name="EnableGlossaryToggleSwitch" MinWidth="0" Background="Transparent" IsOn="{x:Bind _viewModel.AppSettings.EnableGlossary,Mode=TwoWay}"/>
                     <labs:SettingsExpander.Items>
                         <labs:SettingsCard HorizontalAlignment="Stretch" IsEnabled="{x:Bind EnableGlossaryToggleSwitch.IsOn,Mode=OneWay}">
+                            <labs:SettingsCard.Description>
+                                <TextBlock Text="生词本数据文件存放在 &quot;文档\Flint&quot; 中" CharacterSpacing="64"/>
+                            </labs:SettingsCard.Description>
                             <Button Height="32" MinWidth="72" Click="OnClickDbPath">
                                 <StackPanel Orientation="Horizontal" Spacing="4">
                                     <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE838;" FontSize="12"/>
-                                    <TextBlock Text="生词本数据存储目录" CharacterSpacing="64"/>
+                                    <TextBlock Text="前往查看" CharacterSpacing="64"/>
                                 </StackPanel>
                             </Button>
                         </labs:SettingsCard>

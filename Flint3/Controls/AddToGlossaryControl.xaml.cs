@@ -14,6 +14,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Flint3.ViewModels;
 using Flint3.Data.Models;
+using Flint3.Models;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -41,7 +42,7 @@ namespace Flint3.Controls
                 WordDescTextBox.Text = "";
                 WordColorScrollViewer?.ChangeView(0, null, null, true);
 
-                ViewModel.GetAddGlossariesList();
+                MainViewModel.Instance.GetAddGlossariesList();
             }
             catch { }
         }
@@ -87,7 +88,7 @@ namespace Flint3.Controls
                             break;
                     }
 
-                    ViewModel.AddingWordColor = colorsEnum;
+                    MainViewModel.Instance.AddingWordColor = colorsEnum;
                 }
             }
             catch { }
@@ -95,15 +96,25 @@ namespace Flint3.Controls
 
         private void OnClickAddWord(object sender, RoutedEventArgs e)
         {
-            GlossaryWordItem addingWord = new GlossaryWordItem();
-            addingWord.Id = ViewModel.AddingWordItem.Id;
-            addingWord.Word = ViewModel.AddingWordItem.Word;
-            addingWord.Phonetic = ViewModel.AddingWordItem.Phonetic;
-            addingWord.Definition = ViewModel.AddingWordItem.Definition;
-            addingWord.Translation = ViewModel.AddingWordItem.Translation;
-            addingWord.Exchange = ViewModel.AddingWordItem.Exchange;
-            addingWord.Description = WordDescTextBox.Text;
-            addingWord.Color = (int)ViewModel.AddingWordColor;
+            if (GlossaryComboBox.SelectedItem is GlossaryMyModel glossary && glossary is not null)
+            {
+                string description = WordDescTextBox.Text;
+                int color = (int)MainViewModel.Instance.AddingWordColor;
+
+                var adding = MainViewModel.Instance.AddingWordItem;
+                MainViewModel.Instance.AddWordToMyGlossary(
+                    adding.Id,
+                    glossary.Id,
+                    adding.Word,
+                    adding.Phonetic,
+                    adding.Definition,
+                    adding.Translation,
+                    adding.Exchange,
+                    description,
+                    color);
+
+                MainViewModel.Instance.ActHideAddingPopup?.Invoke();
+            }
         }
     }
 }

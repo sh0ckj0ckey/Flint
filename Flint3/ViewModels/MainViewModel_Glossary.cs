@@ -21,7 +21,15 @@ namespace Flint3.ViewModels
 {
     public partial class MainViewModel : ObservableObject
     {
+        /// <summary>
+        /// 生词本生词列表滚动到顶部
+        /// </summary>
         public Action ActScrollToGlossaryTop { get; set; } = null;
+
+        /// <summary>
+        /// 关闭添加到生词本的Popup
+        /// </summary>
+        public Action ActHideAddingPopup { get; set; } = null;
 
         /// <summary>
         /// 当前生词本
@@ -281,7 +289,7 @@ namespace Flint3.ViewModels
         {
             try
             {
-                MyGlossaries?.Clear(); 
+                MyGlossaries?.Clear();
 
                 string folderPath = UserDataPaths.GetDefault().Documents;
                 StorageFolder folder = StorageFolder.GetFolderFromPathAsync(folderPath).GetAwaiter().GetResult();
@@ -314,7 +322,12 @@ namespace Flint3.ViewModels
 
             if (SelectedGlossary is GlossaryMyModel glossary)
             {
+                var list = GlossaryDataAccess.GetGlossaryWords(glossary.Id, lastId, count, word);
 
+                foreach (var item in list)
+                {
+                    GlossaryWordItems.Add(MakeupWord(item));
+                }
             }
         }
 
@@ -373,6 +386,30 @@ namespace Flint3.ViewModels
                 GlossaryDataAccess.DeleteOneGlossary(id);
 
                 LoadMyGlossaries();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+
+        /// <summary>
+        /// 将一个词添加到我的生词本
+        /// </summary>
+        /// <param name="wordid"></param>
+        /// <param name="glossaryId"></param>
+        /// <param name="word"></param>
+        /// <param name="phonetic"></param>
+        /// <param name="definition"></param>
+        /// <param name="translation"></param>
+        /// <param name="exchange"></param>
+        /// <param name="description"></param>
+        /// <param name="color"></param>
+        public void AddWordToMyGlossary(long wordid, int glossaryId, string word, string phonetic, string definition, string translation, string exchange, string description, int color)
+        {
+            try
+            {
+                GlossaryDataAccess.AddGlossaryWord(wordid, glossaryId, word, phonetic, definition, translation, exchange, description, color);
             }
             catch (Exception e)
             {

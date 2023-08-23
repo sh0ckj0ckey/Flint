@@ -37,7 +37,7 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <FontIcon Grid.Column="0" FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xEE56;" FontSize="14" Margin="0,-1,8,1" Opacity="0.7"/>
+                <FontIcon Grid.Column="0" FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xEE56;" FontSize="14" Margin="0,-1,8,1" Opacity="0.5"/>
                 <TextBlock Grid.Column="1" Text="{x:Bind ViewModel.AddingWordItem.Word,Mode=OneWay}" FontFamily="Segoe Print" FontSize="16" FontWeight="Medium" Opacity="0.9" CharacterSpacing="64" TextTrimming="CharacterEllipsis"/>
             </Grid>
             <Grid Grid.Row="1" Margin="20,0,20,8">

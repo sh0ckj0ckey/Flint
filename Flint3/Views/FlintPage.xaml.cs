@@ -40,6 +40,8 @@ namespace Flint3.Views
 
             MainViewModel.Instance.ActClearTextBox = () => { SearchTextBox.Text = ""; };
 
+            MainViewModel.Instance.ActHideAddingPopup = () => { if (AddWordToGlossaryPopup != null) { AddWordToGlossaryPopup.IsOpen = false; } };
+
             // 加载单词数据库
             MainViewModel.Instance.LoadStarDict();
 
