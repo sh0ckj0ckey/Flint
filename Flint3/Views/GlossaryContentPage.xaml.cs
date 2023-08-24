@@ -110,6 +110,11 @@ namespace Flint3.Views
             }
         }
 
+        /// <summary>
+        /// 滚动到底部时增量加载
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void GlossaryWordsScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
             try
@@ -131,6 +136,11 @@ namespace Flint3.Views
             }
         }
 
+        /// <summary>
+        /// 搜索词汇
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnFilterTextChanged(object sender, TextChangedEventArgs e)
         {
             if (sender is TextBox tb)
@@ -146,6 +156,11 @@ namespace Flint3.Views
             }
         }
 
+        /// <summary>
+        /// 根据颜色筛选词汇
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnClickFilterColor(object sender, RoutedEventArgs e)
         {
             try
@@ -200,9 +215,30 @@ namespace Flint3.Views
             catch { }
         }
 
+        /// <summary>
+        /// 查看生词本属性
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnClickGlossaryProperty(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(GlossaryPropertyPage), null, SlideNaviTransition);
         }
+
+        /// <summary>
+        /// 切换排序方式
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        //private void OnSelectOrderMode(object sender, SelectionChangedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        ViewModel?.ClearGlossaryWords();
+        //        ViewModel?.GetMoreGlossaryWords();
+        //        OrderByModeFlyout?.Hide();
+        //    }
+        //    catch { }
+        //}
     }
 }

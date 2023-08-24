@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Flint3.Data.Models
 {
-    public class StarDictWordItem
+    public class StarDictWordItem : ObservableObject
     {
         public long Id { get; set; } = 0;
 
@@ -44,6 +45,26 @@ namespace Flint3.Data.Models
         /// 变换处理之后生成的集合
         /// </summary>
         public List<WordExchangeItem> Exchanges { get; set; } = null;
+
+        /// <summary>
+        /// 生词本备注
+        /// </summary>
+        private string _description;
+        public string Description
+        {
+            get => _description;
+            set => SetProperty(ref _description, value);
+        }
+
+        /// <summary>
+        /// 生词本颜色
+        /// </summary>
+        private int _color = 0;
+        public int Color
+        {
+            get => _color;
+            set => SetProperty(ref _color, value);
+        }
     }
 
     public class WordExchangeItem

@@ -143,39 +143,58 @@ namespace Flint3.Data
         /// 获取某个生词本的指定数量的生词
         /// </summary>
         /// <returns></returns>
-        public static List<GlossaryWordItem> GetGlossaryWords(int glossaryId, long startId, int limit, string word)
+        public static List<StarDictWordItem> GetGlossaryWords(int glossaryId, long startId, int limit, string word, int color/*, bool orderByWord*/)
         {
             try
             {
-                List<GlossaryWordItem> results = new List<GlossaryWordItem>();
+                List<StarDictWordItem> results = new List<StarDictWordItem>();
                 SqliteCommand selectCommand = null;
 
-                if (string.IsNullOrWhiteSpace(word))
+                string sql = $"SELECT * FROM glossary WHERE glossaryid=$glossaryid AND id<$id"; // 这里是小于号，因为是倒序
+
+                if (!string.IsNullOrWhiteSpace(word))
                 {
-                    selectCommand = new SqliteCommand($"SELECT * FROM glossary WHERE glossaryid=$glossaryid AND id>$id order by word collate nocase limit $limit", _glossaryDb);
+                    sql += $" AND word LIKE $word";
                 }
-                else
+
+                if (color > 0)
                 {
-                    selectCommand = new SqliteCommand($"SELECT * FROM glossary WHERE glossaryid=$glossaryid AND id>$id and word like $word order by word collate nocase limit $limit", _glossaryDb);
-                    selectCommand.Parameters.AddWithValue("$word", word + "%");
+                    sql += $" AND color=$color";
                 }
+
+                // 目前是增量加载，如果支持根据首字母排序的话，就没办法添加 id>$id 的条件了，所以先不做这个功能了
+                //sql += orderByWord ? $" ORDER BY word,id COLLATE NOCASE LIMIT $limit" : $" ORDER BY id DESC LIMIT $limit";
+                sql += $" ORDER BY id DESC LIMIT $limit";
+
+                selectCommand = new SqliteCommand(sql, _glossaryDb);
 
                 selectCommand.Parameters.AddWithValue("$glossaryid", glossaryId);
                 selectCommand.Parameters.AddWithValue("$id", startId);
                 selectCommand.Parameters.AddWithValue("$limit", limit);
+
+                if (!string.IsNullOrWhiteSpace(word))
+                {
+                    selectCommand.Parameters.AddWithValue("$word", word + "%");
+                }
+
+                if (color > 0)
+                {
+                    selectCommand.Parameters.AddWithValue("$color", color);
+                }
+
                 SqliteDataReader query = selectCommand?.ExecuteReader();
 
                 while (query?.Read() == true)
                 {
-                    GlossaryWordItem item = new GlossaryWordItem();
+                    StarDictWordItem item = new StarDictWordItem();
                     item.Id = query.IsDBNull(0) ? -1 : query.GetInt32(0);
-                    item.Word = query.IsDBNull(1) ? string.Empty : query.GetString(2);
-                    item.Phonetic = query.IsDBNull(3) ? string.Empty : query.GetString(3);
-                    item.Definition = query.IsDBNull(4) ? string.Empty : query.GetString(4);
-                    item.Translation = query.IsDBNull(5) ? string.Empty : query.GetString(5);
-                    item.Exchange = query.IsDBNull(12) ? string.Empty : query.GetString(6);
-                    item.Description = query.IsDBNull(12) ? string.Empty : query.GetString(7);
-                    item.Color = query.IsDBNull(12) ? -1 : query.GetInt32(8);
+                    item.Word = query.IsDBNull(3) ? string.Empty : query.GetString(3);
+                    item.Phonetic = query.IsDBNull(4) ? string.Empty : query.GetString(4);
+                    item.Definition = query.IsDBNull(5) ? string.Empty : query.GetString(5);
+                    item.Translation = query.IsDBNull(6) ? string.Empty : query.GetString(6);
+                    item.Exchange = query.IsDBNull(7) ? string.Empty : query.GetString(7);
+                    item.Description = query.IsDBNull(8) ? string.Empty : query.GetString(8);
+                    item.Color = query.IsDBNull(9) ? -1 : query.GetInt32(9);
                     results.Add(item);
                 }
                 return results;

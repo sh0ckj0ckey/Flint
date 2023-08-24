@@ -67,6 +67,16 @@ namespace Flint3.ViewModels
         }
 
         /// <summary>
+        /// 0-按照单词首字母排序，1-单词添加时间排序
+        /// </summary>
+        //private int _glossaryWordsOrderMode = 0;
+        //public int GlossaryWordsOrderMode
+        //{
+        //    get => _glossaryWordsOrderMode;
+        //    set => SetProperty(ref _glossaryWordsOrderMode, value);
+        //}
+
+        /// <summary>
         /// 当前是否正在编辑生词本属性
         /// </summary>
         private bool _editingGlossaryProperty = false;
@@ -114,17 +124,24 @@ namespace Flint3.ViewModels
         /// </summary>
         public void GetMoreGlossaryWords(int count = 50)
         {
-            Debug.WriteLine($"Getting More GlossaryWords: {SelectedGlossary.GlossaryTitle}, {FilterGlossaryWord}, {FilterGlossaryColor}");
-
-            long lastId = GlossaryWordItems.Count > 0 ? GlossaryWordItems.Last().Id : -1;
-
-            if (SelectedGlossary is Models.GlossaryExModel)
+            try
             {
-                GetMoreExGlossaryWords(lastId, count, FilterGlossaryWord.Trim());
+                Debug.WriteLine($"Getting More GlossaryWords: {SelectedGlossary.GlossaryTitle}, {FilterGlossaryWord}, {FilterGlossaryColor}");
+
+                if (SelectedGlossary is Models.GlossaryExModel)
+                {
+                    long lastId = GlossaryWordItems.Count > 0 ? GlossaryWordItems.Last().Id : -1;
+                    GetMoreExGlossaryWords(lastId, count, FilterGlossaryWord.Trim());
+                }
+                else if (SelectedGlossary is GlossaryMyModel)
+                {
+                    long lastId = GlossaryWordItems.Count > 0 ? GlossaryWordItems.Last().Id : long.MaxValue;
+                    GetMoreMyGlossaryWords(lastId, count, FilterGlossaryWord.Trim(), FilterGlossaryColor/*, GlossaryWordsOrderMode == 0*/);
+                }
             }
-            else if (SelectedGlossary is GlossaryMyModel)
+            catch (Exception e)
             {
-                GetMoreMyGlossaryWords(lastId, count, FilterGlossaryWord.Trim(), FilterGlossaryColor);
+                Debug.WriteLine($"GetMoreGlossaryWords Error: {e.Message}");
             }
         }
 
@@ -316,13 +333,13 @@ namespace Flint3.ViewModels
         /// 增量加载内置生词本的单词
         /// </summary>
         /// <param name="count"></param>
-        private void GetMoreMyGlossaryWords(long lastId, int count, string word, GlossaryColorsEnum color)
+        private void GetMoreMyGlossaryWords(long lastId, int count, string word, GlossaryColorsEnum color/*, bool orderByWord*/)
         {
-            Debug.WriteLine($"Last id: {lastId}, count={GlossaryWordItems.Count}");
+            Debug.WriteLine($"Last id: {lastId}, count={GlossaryWordItems.Count}, word={word}, color={color}");
 
             if (SelectedGlossary is GlossaryMyModel glossary)
             {
-                var list = GlossaryDataAccess.GetGlossaryWords(glossary.Id, lastId, count, word);
+                var list = GlossaryDataAccess.GetGlossaryWords(glossary.Id, lastId, count, word, (int)color/*, orderByWord*/);
 
                 foreach (var item in list)
                 {

@@ -24,6 +24,7 @@
         <cvt:IsExpanded2OpacityConverter x:Key="Bool2Opacity"/>
         <cvt:GlossaryEnum2ColorConverter x:Key="Enum2Color"/>
         <cvt:GlossaryEnum2NameConverter x:Key="Enum2Name"/>
+        <cvt:BoolReverseConverter x:Key="BoolReverse"/>
     </Page.Resources>
 
     <Grid>
@@ -33,7 +34,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        
+
         <!--标题-->
         <Grid Grid.Row="0" Background="Transparent">
             <Grid.ColumnDefinitions>
@@ -47,7 +48,7 @@
         </Grid>
 
         <!--过滤生词-->
-        <Grid Grid.Row="1" Padding="16,8,16,4">
+        <Grid Grid.Row="1" Padding="16,8,16,6">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
@@ -147,6 +148,7 @@
                     <TextBlock Text="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Enum2Name}}" FontSize="12" Height="18" FontWeight="Light" Opacity="0.9" Margin="4,0,0,0" CharacterSpacing="80" VerticalAlignment="Center"/>
                 </StackPanel>
             </Button>
+
             <!--查找生词-->
             <Grid Grid.Column="4" VerticalAlignment="Center" Margin="0,0,1,0">
                 <TextBox x:Name="FilterWordTextBox" Width="156" PlaceholderText="查找生词" FontSize="12" FontWeight="Medium" Padding="24,6,4,0" CharacterSpacing="40" Height="30" MinHeight="0" BorderBrush="Transparent" BorderThickness="0" TextChanged="OnFilterTextChanged"/>
@@ -160,11 +162,11 @@
             <Image Source="/Assets/Logos/flint_logo.png" Height="72" Width="72" Opacity="0.2" HorizontalAlignment="Center"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <TextBlock Text="没有找到" FontSize="13" CharacterSpacing="40" Opacity="0.3"/>
-                <TextBlock Text="{x:Bind ViewModel.FilterGlossaryWord,Mode=OneWay}" Margin="4,0,0,0" FontSize="13" CharacterSpacing="40" Opacity="0.5"
+                <TextBlock Text="{x:Bind ViewModel.FilterGlossaryWord,Mode=OneWay}" Margin="2,0,0,0" FontSize="13" CharacterSpacing="40" Opacity="0.4"
                            Visibility="{x:Bind ViewModel.FilterGlossaryWord,Mode=OneWay,Converter={StaticResource Null2Vis}}"/>
-                <TextBlock Text="开头的" Margin="0,0,4,0" FontSize="13" CharacterSpacing="40" Opacity="0.5"
+                <TextBlock Text="开头的" Margin="2,0,0,0" FontSize="13" CharacterSpacing="40" Opacity="0.3"
                            Visibility="{x:Bind ViewModel.FilterGlossaryWord,Mode=OneWay,Converter={StaticResource Null2Vis}}"/>
-                <TextBlock Text="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Enum2Name}}" Margin="0,0,4,0" FontSize="13" CharacterSpacing="40" Opacity="0.5"
+                <TextBlock Text="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Enum2Name}}" Margin="0,0,0,0" FontSize="13" CharacterSpacing="40" Opacity="0.5"
                            Foreground="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Enum2Color}}"
                            Visibility="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource UnEql2Vis},ConverterParameter=Transparent}"/>
                 <TextBlock Text="生词" FontSize="13" CharacterSpacing="40" Opacity="0.3"/>
@@ -190,32 +192,40 @@
                                     <StackPanel Orientation="Horizontal" Visibility="{Binding IsChecked,ElementName=HideEnglishToggleButton,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}">
                                         <TextBlock Text="{x:Bind Word}" FontSize="18" FontWeight="SemiBold" CharacterSpacing="40" VerticalAlignment="Center" IsTextSelectionEnabled="True"/>
                                         <TextBlock Margin="8,0,0,0" FontSize="16" Opacity="0.5" FontWeight="Light" VerticalAlignment="Center" Visibility="{x:Bind Phonetic,Converter={StaticResource Null2Vis}}" IsTextSelectionEnabled="True">
-                                                <Run Text="/" FontSize="14"/>
-                                                <Run Text="{x:Bind Phonetic}"/>
-                                                <Run Text="/" FontSize="14"/>
+                                            <Run Text="/" FontSize="14"/>
+                                            <Run Text="{x:Bind Phonetic}"/>
+                                            <Run Text="/" FontSize="14"/>
                                         </TextBlock>
                                     </StackPanel>
-                                    <TextBlock Text="{x:Bind Translation,Converter={StaticResource LinebreakRemove}}" FontSize="13" MaxLines="2" LineHeight="20" TextWrapping="WrapWholeWords" TextTrimming="CharacterEllipsis"
+                                    <TextBlock Text="{x:Bind Translation,Converter={StaticResource LinebreakRemove}}" FontSize="13" MaxLines="2" LineHeight="20" CharacterSpacing="40" TextWrapping="WrapWholeWords" TextTrimming="CharacterEllipsis"
                                                Opacity="{Binding ElementName=WordExpander,Path=IsExpanded,Mode=OneWay,Converter={StaticResource Bool2Opacity}}"/>
+                                    <Grid Margin="0,4,0,0" HorizontalAlignment="Stretch"
+                                          Visibility="{x:Bind Description,Mode=OneWay,Converter={StaticResource Null2Vis}}"
+                                          Opacity="{Binding ElementName=WordExpander,Path=IsExpanded,Mode=OneWay,Converter={StaticResource Bool2Opacity}}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="&#xEDC6;" FontFamily="{ThemeResource SymbolThemeFontFamily}" FontSize="12" Opacity="0.7" Margin="0,2,0,-2"/>
+                                        <TextBlock Grid.Column="1" Text="{x:Bind Description,Mode=OneWay}" FontSize="13" CharacterSpacing="40" Margin="6,-2,0,2" TextTrimming="CharacterEllipsis" Opacity="0.7"/>
+                                    </Grid>
                                 </StackPanel>
-                                <!--<Button Grid.Column="1" Padding="0" Height="32" Width="32" Margin="8,0,-8,0" Background="Transparent" BorderBrush="Transparent" ToolTipService.ToolTip="添加到生词本"
-                                        Visibility="{Binding ViewModel.AppSettings.EnableGlossary,ElementName=FlintViewPage,Mode=OneWay,Converter={StaticResource Bool2Vis}}">
-                                    <Button.Content>
-                                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE109;" FontSize="12" Opacity="0.8"/>
-                                    </Button.Content>
-                                    <Button.Flyout>
-                                        <Flyout>
-                                            <StackPanel Orientation="Vertical" Padding="8,4">
-                                                <TextBlock Text="添加到生词本" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,8"/>
-
-                                            </StackPanel>
-                                        </Flyout>
-                                    </Button.Flyout>
-                                </Button>-->
+                                <Border Grid.Column="1" Height="12" Width="12" CornerRadius="6" Background="{x:Bind Color,Mode=OneWay,Converter={StaticResource Enum2Color}}" Margin="12,0,0,0"/>
                             </Grid>
                         </muxc:Expander.Header>
                         <muxc:Expander.Content>
                             <StackPanel Orientation="Vertical">
+                                <Grid HorizontalAlignment="Stretch" Background="{ThemeResource SETTING_ITEM_BK}" Padding="12,8" Margin="0,0,0,12" CornerRadius="4"
+                                      Visibility="{x:Bind Description,Mode=OneWay,Converter={StaticResource Null2Vis}}">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Text="备注" Opacity="0.5" FontWeight="Bold" Margin="0,0,0,4" CharacterSpacing="40"
+                                               Visibility="{x:Bind Description,Mode=OneWay,Converter={StaticResource Null2Vis}}"/>
+                                    <TextBlock Grid.Row="1" Text="{x:Bind Description,Mode=OneWay}" FontSize="13" LineHeight="20" TextWrapping="WrapWholeWords" CharacterSpacing="40"
+                                               Visibility="{x:Bind Description,Mode=OneWay,Converter={StaticResource Null2Vis}}" Opacity="0.7"/>
+                                </Grid>
                                 <Grid HorizontalAlignment="Stretch">
                                     <TextBlock Text="{x:Bind Translation}" Opacity="0.7" TextWrapping="WrapWholeWords" LineHeight="24" IsTextSelectionEnabled="True" CharacterSpacing="64"/>
                                 </Grid>
@@ -304,7 +314,7 @@
             </ToggleButton>
 
             <!--切换排序方式-->
-            <Button Grid.Column="4" Margin="4,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center"
+            <!--<Button Grid.Column="4" Margin="4,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center"
                     Visibility="{x:Bind ViewModel.SelectedGlossary.IsReadOnly,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}">
                 <ToolTipService.ToolTip>
                     <ToolTip>
@@ -318,21 +328,21 @@
                 </ToolTipService.ToolTip>
                 <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE174;" FontSize="16" Height="22" Width="22" Opacity="0.8"/>
                 <Button.Flyout>
-                    <Flyout Placement="Bottom">
+                    <Flyout x:Name="OrderByModeFlyout" Placement="Bottom">
                         <Grid HorizontalAlignment="Left" MaxWidth="128">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
                             <TextBlock Text="切换列表排序方式" FontSize="14" FontWeight="Bold" CharacterSpacing="40"/>
-                            <muxc:RadioButtons Grid.Row="1" MaxColumns="1">
-                                <RadioButton Content="按时间排序"/>
+                            <muxc:RadioButtons Grid.Row="1" MaxColumns="1" SelectionChanged="OnSelectOrderMode" SelectedIndex="{x:Bind ViewModel.GlossaryWordsOrderMode,Mode=TwoWay}">
                                 <RadioButton Content="按首字母排序"/>
+                                <RadioButton Content="按时间排序"/>
                             </muxc:RadioButtons>
                         </Grid>
                     </Flyout>
                 </Button.Flyout>
-            </Button>
+            </Button>-->
 
             <!--查看生词本属性-->
             <Button Grid.Column="5" Margin="4,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center"

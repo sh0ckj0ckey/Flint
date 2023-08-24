@@ -40,7 +40,9 @@ namespace Flint3.Controls
             {
                 GlossaryComboBox.SelectedIndex = -1;
                 WordDescTextBox.Text = "";
-                WordColorScrollViewer?.ChangeView(0, null, null, true);
+                WordColorScrollViewer?.ScrollToHorizontalOffset(0);
+                WordColorScrollViewer?.ScrollToVerticalOffset(0);
+                MainViewModel.Instance.AddingWordColor = GlossaryColorsEnum.Transparent;
 
                 MainViewModel.Instance.GetAddGlossariesList();
             }

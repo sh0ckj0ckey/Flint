@@ -78,17 +78,23 @@ namespace Flint3.Views
 
         private void OnClickDeleteButton(object sender, RoutedEventArgs e)
         {
-            ViewModel.DeleteMyGlossary(ViewModel.SelectedGlossary.Id);
-
-            if (this.Frame.CanGoBack)
+            try
             {
-                this.Frame.GoBack();
-            }
+                DeleteGlossaryFlyout.Hide();
 
-            if (this.Frame.CanGoBack)
-            {
-                this.Frame.GoBack();
+                ViewModel.DeleteMyGlossary(ViewModel.SelectedGlossary.Id);
+
+                if (this.Frame.CanGoBack)
+                {
+                    this.Frame.GoBack();
+                }
+
+                if (this.Frame.CanGoBack)
+                {
+                    this.Frame.GoBack();
+                }
             }
+            catch { }
         }
     }
 }

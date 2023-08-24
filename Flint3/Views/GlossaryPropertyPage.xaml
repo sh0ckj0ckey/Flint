@@ -182,7 +182,7 @@
                     </ToolTipService.ToolTip>
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE107;" FontSize="16" Height="22" Width="22" Opacity="0.8"/>
                     <Button.Flyout>
-                        <Flyout Placement="Top">
+                        <Flyout x:Name="DeleteGlossaryFlyout" Placement="Top">
                             <Grid Background="Transparent">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
