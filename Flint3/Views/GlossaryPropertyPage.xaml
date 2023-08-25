@@ -9,13 +9,16 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls" 
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
-    xmlns:cvt="using:Flint3.Converters"
+    xmlns:cvt="using:Flint3.Converters" 
+    xmlns:mdl="using:Flint3.Models"
     mc:Ignorable="d" Background="Transparent" NavigationCacheMode="Required">
     <Page.Resources>
         <cvt:Int2VisibilityConverter x:Key="Int2Vis"/>
         <cvt:Equal2BoolConverter x:Key="Eql2Bool"/>
         <cvt:Bool2VisibilityConverter x:Key="Bool2Vis"/>
         <cvt:BoolReverseConverter x:Key="BoolReverse"/>
+        <cvt:GlossaryEnum2ColorConverter x:Key="Enum2Color"/>
+        <cvt:GlossaryEnum2NameConverter x:Key="Enum2Name"/>
     </Page.Resources>
 
     <Grid>
@@ -68,12 +71,22 @@
                 </labs:SettingsCard>
                 <labs:SettingsCard Margin="0,2,0,0" HorizontalAlignment="Stretch" MinHeight="0" Padding="20,20"
                                    Visibility="{x:Bind ViewModel.SelectedGlossary.IsReadOnly,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}">
-                    <StackPanel Orientation="Vertical" Spacing="24">
-                        <ProgressBar Maximum="1603" Value="800" Width="256" Foreground="{ThemeResource APPLICATION_NORMAL_FR}"/>
-                        <ProgressBar Maximum="1603" Value="800" Width="256" Foreground="Tomato"/>
-                        <ProgressBar Maximum="1603" Value="800" Width="256" Foreground="DodgerBlue"/>
-                        <ProgressBar Maximum="1603" Value="800" Width="256" Foreground="Sienna"/>
-                    </StackPanel>
+                    <muxc:ItemsRepeater x:Name="GlossaryColorPercentItemsRepeater" VerticalAlignment="Center">
+                        <muxc:ItemsRepeater.Layout>
+                            <muxc:StackLayout Spacing="8" Orientation="Vertical"/>
+                        </muxc:ItemsRepeater.Layout>
+                        <DataTemplate x:DataType="mdl:GlossaryColorPercentagePair">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="{x:Bind Color,Mode=OneWay,Converter={StaticResource Enum2Name}}" HorizontalAlignment="Left" VerticalAlignment="Center" Opacity="0.5" FontSize="13" Margin="2,0,4,0" CharacterSpacing="64"/>
+                                <TextBlock Text="{x:Bind Count,Mode=OneWay}" HorizontalAlignment="Right" VerticalAlignment="Center" Opacity="0.7" FontSize="13" FontWeight="Medium" Margin="0,0,4,0" CharacterSpacing="32"/>
+                                <ProgressBar Grid.Row="1" Maximum="{x:Bind TotalCount,Mode=OneWay}" Value="{x:Bind Count,Mode=OneWay}" Width="256" Foreground="{x:Bind Color,Mode=OneWay,Converter={StaticResource Enum2Color}}" Margin="0,4,0,8"/>
+                            </Grid>
+                        </DataTemplate>
+                    </muxc:ItemsRepeater>
                 </labs:SettingsCard>
             </StackPanel>
         </ScrollViewer>

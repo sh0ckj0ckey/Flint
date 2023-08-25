@@ -482,6 +482,25 @@ namespace Flint3.ViewModels
             }
         }
 
+        /// <summary>
+        /// 获取指定ID的生词本内生词数量
+        /// </summary>
+        /// <param name="glossaryId"></param>
+        /// <param name="color"></param>
+        /// <returns></returns>
+        public int GetWordsCountOfMyGlossary(int glossaryId, GlossaryColorsEnum color)
+        {
+            try
+            {
+                return GlossaryDataAccess.GetGlossaryWordsCount(glossaryId, color);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            return 0;
+        }
+
         #endregion
 
         #region 添加到我的生词本
