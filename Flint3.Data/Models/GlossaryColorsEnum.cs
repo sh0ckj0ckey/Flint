@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Flint3.Models
+namespace Flint3.Data.Models
 {
     public enum GlossaryColorsEnum
     {

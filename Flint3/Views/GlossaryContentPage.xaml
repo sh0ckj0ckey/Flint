@@ -56,6 +56,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
+
             <!--按照颜色过滤-->
             <Button Grid.Column="0" CornerRadius="4" Margin="1,0,0,0" Padding="12,0,12,0" Height="30" MinWidth="64" VerticalAlignment="Center"
                     Visibility="{x:Bind ViewModel.SelectedGlossary.IsReadOnly,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}">
@@ -146,6 +147,15 @@
                     <Border Height="10" Width="10" CornerRadius="6" Background="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Enum2Color}}" VerticalAlignment="Center"
                             Visibility="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource UnEql2Vis},ConverterParameter=Transparent}"/>
                     <TextBlock Text="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Enum2Name}}" FontSize="12" Height="18" FontWeight="Light" Opacity="0.9" Margin="4,0,0,0" CharacterSpacing="80" VerticalAlignment="Center"/>
+                    
+                    <AnimatedIcon Height="14" Width="14" Margin="4,0,0,0" Opacity="0.7">
+                        <AnimatedIcon.Source>
+                            <animatedvisuals:AnimatedChevronDownSmallVisualSource/>
+                        </AnimatedIcon.Source>
+                        <AnimatedIcon.FallbackIconSource>
+                            <FontIconSource Glyph="&#xE011;" FontFamily="{ThemeResource SymbolThemeFontFamily}"/>
+                        </AnimatedIcon.FallbackIconSource>
+                    </AnimatedIcon>
                 </StackPanel>
             </Button>
 
@@ -181,79 +191,41 @@
             </ListView.ItemContainerTransitions>
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="mdl:StarDictWordItem">
-                    <muxc:Expander x:Name="WordExpander" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" IsExpanded="False">
-                        <muxc:Expander.Header>
-                            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <StackPanel Grid.Column="0" Orientation="Vertical" Margin="0,8,0,8" HorizontalAlignment="Stretch" VerticalAlignment="Center">
-                                    <StackPanel Orientation="Horizontal" Visibility="{Binding IsChecked,ElementName=HideEnglishToggleButton,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}">
-                                        <TextBlock Text="{x:Bind Word}" FontSize="18" FontWeight="SemiBold" CharacterSpacing="40" VerticalAlignment="Center" IsTextSelectionEnabled="True"/>
-                                        <TextBlock Margin="8,0,0,0" FontSize="16" Opacity="0.5" FontWeight="Light" VerticalAlignment="Center" Visibility="{x:Bind Phonetic,Converter={StaticResource Null2Vis}}" IsTextSelectionEnabled="True">
-                                            <Run Text="/" FontSize="14"/>
-                                            <Run Text="{x:Bind Phonetic}"/>
-                                            <Run Text="/" FontSize="14"/>
-                                        </TextBlock>
-                                    </StackPanel>
-                                    <TextBlock Text="{x:Bind Translation,Converter={StaticResource LinebreakRemove}}" FontSize="13" MaxLines="2" LineHeight="20" CharacterSpacing="40" TextWrapping="WrapWholeWords" TextTrimming="CharacterEllipsis"
-                                               Opacity="{Binding ElementName=WordExpander,Path=IsExpanded,Mode=OneWay,Converter={StaticResource Bool2Opacity}}"/>
-                                    <Grid Margin="0,4,0,0" HorizontalAlignment="Stretch"
-                                          Visibility="{x:Bind Description,Mode=OneWay,Converter={StaticResource Null2Vis}}"
-                                          Opacity="{Binding ElementName=WordExpander,Path=IsExpanded,Mode=OneWay,Converter={StaticResource Bool2Opacity}}">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Column="0" Text="&#xEDC6;" FontFamily="{ThemeResource SymbolThemeFontFamily}" FontSize="12" Opacity="0.7" Margin="0,2,0,-2"/>
-                                        <TextBlock Grid.Column="1" Text="{x:Bind Description,Mode=OneWay}" FontSize="13" CharacterSpacing="40" Margin="6,-2,0,2" TextTrimming="CharacterEllipsis" Opacity="0.7"/>
-                                    </Grid>
-                                </StackPanel>
-                                <Border Grid.Column="1" Height="12" Width="12" CornerRadius="6" Background="{x:Bind Color,Mode=OneWay,Converter={StaticResource Enum2Color}}" Margin="12,0,0,0"/>
-                            </Grid>
-                        </muxc:Expander.Header>
-                        <muxc:Expander.Content>
-                            <StackPanel Orientation="Vertical">
-                                <Grid HorizontalAlignment="Stretch" Background="{ThemeResource SETTING_ITEM_BK}" Padding="12,8" Margin="0,0,0,12" CornerRadius="4"
-                                      Visibility="{x:Bind Description,Mode=OneWay,Converter={StaticResource Null2Vis}}">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-                                    <TextBlock Text="备注" Opacity="0.5" FontWeight="Bold" Margin="0,0,0,4" CharacterSpacing="40"
-                                               Visibility="{x:Bind Description,Mode=OneWay,Converter={StaticResource Null2Vis}}"/>
-                                    <TextBlock Grid.Row="1" Text="{x:Bind Description,Mode=OneWay}" FontSize="13" LineHeight="20" TextWrapping="WrapWholeWords" CharacterSpacing="40"
-                                               Visibility="{x:Bind Description,Mode=OneWay,Converter={StaticResource Null2Vis}}" Opacity="0.7"/>
+                    <Button DataContext="{x:Bind }" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="0" Margin="0,2" Click="OnClickGlossaryWord">
+                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Padding="20,4,10,4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Orientation="Vertical" Margin="0,8,0,8" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                                <Grid HorizontalAlignment="Stretch" Visibility="{Binding IsChecked,ElementName=HideEnglishToggleButton,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="{x:Bind Word}" FontSize="18" FontWeight="SemiBold" CharacterSpacing="40" VerticalAlignment="Center" IsTextSelectionEnabled="True"/>
+                                    <TextBlock Grid.Column="1" Margin="8,0,0,0" FontSize="16" Opacity="0.5" FontWeight="Light" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                               Visibility="{x:Bind Phonetic,Converter={StaticResource Null2Vis}}" IsTextSelectionEnabled="True" TextTrimming="CharacterEllipsis">
+                                        <Run Text="/" FontSize="14"/>
+                                        <Run Text="{x:Bind Phonetic}"/>
+                                        <Run Text="/" FontSize="14"/>
+                                    </TextBlock>
                                 </Grid>
-                                <Grid HorizontalAlignment="Stretch">
-                                    <TextBlock Text="{x:Bind Translation}" Opacity="0.7" TextWrapping="WrapWholeWords" LineHeight="24" IsTextSelectionEnabled="True" CharacterSpacing="64"/>
-                                </Grid>
-                                <Grid HorizontalAlignment="Stretch" Margin="0,8,0,0" Visibility="{x:Bind Definition,Converter={StaticResource Null2Vis}}">
-                                    <TextBlock Text="{x:Bind Definition}" Opacity="0.7" TextWrapping="WrapWholeWords" LineHeight="24" IsTextSelectionEnabled="True" CharacterSpacing="32"/>
-                                </Grid>
-                                <Grid HorizontalAlignment="Stretch" CornerRadius="4" Padding="0,12,0,0" Visibility="{x:Bind Exchanges,Converter={StaticResource Null2Vis}}">
-                                    <muxc:ItemsRepeater ItemsSource="{x:Bind Exchanges}">
-                                        <muxc:ItemsRepeater.Layout>
-                                            <muxc:StackLayout Spacing="8" Orientation="Vertical"/>
-                                        </muxc:ItemsRepeater.Layout>
-                                        <DataTemplate x:DataType="mdl:WordExchangeItem">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Border Grid.Column="0" Background="{ThemeResource SETTING_ITEM_BK}" Padding="6,2,6,4" CornerRadius="8">
-                                                    <TextBlock Text="{x:Bind Type}" FontWeight="Light" FontSize="12.5" Opacity="0.6" CharacterSpacing="40"/>
-                                                </Border>
-                                                <TextBlock Grid.Column="1" Text="{x:Bind Word}" FontSize="14" Margin="6,0,0,0" Opacity="0.8" CharacterSpacing="40" IsTextSelectionEnabled="True"/>
-                                            </Grid>
-                                        </DataTemplate>
-                                    </muxc:ItemsRepeater>
+                                <TextBlock Text="{x:Bind Translation,Converter={StaticResource LinebreakRemove}}" Margin="0,2,0,0" Opacity="0.8" FontSize="13" MaxLines="2" LineHeight="20" CharacterSpacing="40" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"/>
+                                <Grid Margin="0,2,0,0" HorizontalAlignment="Stretch" Opacity="0.6" Visibility="{x:Bind Description,Mode=OneWay,Converter={StaticResource Null2Vis}}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="&#xEDC6;" FontFamily="{ThemeResource SymbolThemeFontFamily}" FontSize="12" Margin="0,2,0,-2"/>
+                                    <TextBlock Grid.Column="1" Text="{x:Bind Description,Mode=OneWay}" FontSize="13" CharacterSpacing="40" Margin="6,-2,0,2" TextTrimming="CharacterEllipsis"/>
                                 </Grid>
                             </StackPanel>
-                        </muxc:Expander.Content>
-                    </muxc:Expander>
+                            <Border Grid.Column="1" Height="12" Width="12" CornerRadius="6" Background="{x:Bind Color,Mode=OneWay,Converter={StaticResource Enum2Color}}" Margin="12,0,24,0" VerticalAlignment="Center"/>
+                            <FontIcon Grid.Column="2" Glyph="&#xE00F;" FontFamily="{ThemeResource SymbolThemeFontFamily}" FontSize="16" Opacity="0.7" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                        </Grid>
+                    </Button>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

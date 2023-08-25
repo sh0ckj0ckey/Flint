@@ -14,42 +14,55 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Flint3.ViewModels;
 using Flint3.Data.Models;
-using Flint3.Models;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
-namespace Flint3.Controls
+namespace Flint3.Views
 {
-    public sealed partial class AddToGlossaryControl : UserControl
+    /// <summary>
+    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// </summary>
+    public sealed partial class GlossaryWordPage : Page
     {
         public MainViewModel ViewModel { get; set; } = null;
 
-        public AddToGlossaryControl()
+        public GlossaryWordPage()
         {
             this.InitializeComponent();
-
             ViewModel = MainViewModel.Instance;
-
-            PopupShadow.Receivers.Add(AddToGlossaryPopupShadowReceiver);
         }
 
-        public void UpdateControl()
+        private void OnClickBackButton(object sender, RoutedEventArgs e)
+        {
+            if (this.Frame.CanGoBack)
+            {
+                this.Frame.GoBack();
+            }
+        }
+
+        private void OnClickDeleteButton(object sender, RoutedEventArgs e)
         {
             try
             {
-                GlossaryComboBox.SelectedIndex = -1;
-                WordDescTextBox.Text = "";
-                WordColorScrollViewer?.ScrollToHorizontalOffset(0);
-                WordColorScrollViewer?.ScrollToVerticalOffset(0);
-                MainViewModel.Instance.AddingWordColor = GlossaryColorsEnum.Transparent;
+                DeleteGlossaryWordFlyout.Hide();
 
-                MainViewModel.Instance.GetAddGlossariesList();
+                ViewModel.DeleteWordFromMyGlossary(ViewModel.SelectedGlossaryWord.Id);
+
+                if (this.Frame.CanGoBack)
+                {
+                    this.Frame.GoBack();
+                }
             }
             catch { }
         }
 
-        private void OnClickAddingWordColor(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// 修改单词的颜色
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnClickSetWordColor(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -90,32 +103,36 @@ namespace Flint3.Controls
                             break;
                     }
 
-                    MainViewModel.Instance.AddingWordColor = colorsEnum;
+                    if (MainViewModel.Instance.SelectedGlossaryWord.Color != colorsEnum)
+                    {
+                        ColorSetFlyout.Hide();
+                        MainViewModel.Instance.SelectedGlossaryWord.Color = colorsEnum;
+
+                        MainViewModel.Instance.UpdateWordFromMyGlossary(
+                            MainViewModel.Instance.SelectedGlossaryWord.Id,
+                            MainViewModel.Instance.SelectedGlossaryWord.Description,
+                            MainViewModel.Instance.SelectedGlossaryWord.Color);
+                    }
                 }
             }
             catch { }
         }
 
-        private void OnClickAddWord(object sender, RoutedEventArgs e)
+        private void OnClickSaveEditDesc(object sender, RoutedEventArgs e)
         {
-            if (GlossaryComboBox.SelectedItem is GlossaryMyModel glossary && glossary is not null)
-            {
-                string description = WordDescTextBox.Text;
+            MainViewModel.Instance.SelectedGlossaryWord.Description = EditWordDescTextBox.Text;
+            EditWordDescFlyout?.Hide();
 
-                var adding = MainViewModel.Instance.AddingWordItem;
-                MainViewModel.Instance.AddWordToMyGlossary(
-                    adding.Id,
-                    glossary.Id,
-                    adding.Word,
-                    adding.Phonetic,
-                    adding.Definition,
-                    adding.Translation,
-                    adding.Exchange,
-                    description,
-                    MainViewModel.Instance.AddingWordColor);
+            MainViewModel.Instance.UpdateWordFromMyGlossary(
+                            MainViewModel.Instance.SelectedGlossaryWord.Id,
+                            MainViewModel.Instance.SelectedGlossaryWord.Description,
+                            MainViewModel.Instance.SelectedGlossaryWord.Color);
+        }
 
-                MainViewModel.Instance.ActHideAddingPopup?.Invoke();
-            }
+        private void OnClickCancelEditDesc(object sender, RoutedEventArgs e)
+        {
+            EditWordDescTextBox.Text = MainViewModel.Instance.SelectedGlossaryWord.Description;
+            EditWordDescFlyout?.Hide();
         }
     }
 }

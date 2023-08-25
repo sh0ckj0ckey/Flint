@@ -32,9 +32,9 @@ namespace Flint3.Data
             string glossaryTableCommand =
                 "CREATE TABLE IF NOT EXISTS glossary (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE," +
-                    "wordid INTEGER(64) NOT NULL," +
-                    "glossaryid INTEGER(64) NOT NULL," +
-                    "word VARCHAR(64) COLLATE NOCASE NOT NULL UNIQUE," +
+                    "wordid INTEGER," +
+                    "glossaryid INTEGER NOT NULL," +
+                    "word VARCHAR(64) COLLATE NOCASE NOT NULL," +
                     "phonetic VARCHAR(64)," +
                     "definition TEXT," +
                     "translation TEXT," +
@@ -143,7 +143,7 @@ namespace Flint3.Data
         /// 获取某个生词本的指定数量的生词
         /// </summary>
         /// <returns></returns>
-        public static List<StarDictWordItem> GetGlossaryWords(int glossaryId, long startId, int limit, string word, int color/*, bool orderByWord*/)
+        public static List<StarDictWordItem> GetGlossaryWords(int glossaryId, long startId, int limit, string word, GlossaryColorsEnum color/*, bool orderByWord*/)
         {
             try
             {
@@ -157,7 +157,7 @@ namespace Flint3.Data
                     sql += $" AND word LIKE $word";
                 }
 
-                if (color > 0)
+                if (color != GlossaryColorsEnum.Transparent)
                 {
                     sql += $" AND color=$color";
                 }
@@ -179,7 +179,7 @@ namespace Flint3.Data
 
                 if (color > 0)
                 {
-                    selectCommand.Parameters.AddWithValue("$color", color);
+                    selectCommand.Parameters.AddWithValue("$color", (int)color);
                 }
 
                 SqliteDataReader query = selectCommand?.ExecuteReader();
@@ -194,7 +194,8 @@ namespace Flint3.Data
                     item.Translation = query.IsDBNull(6) ? string.Empty : query.GetString(6);
                     item.Exchange = query.IsDBNull(7) ? string.Empty : query.GetString(7);
                     item.Description = query.IsDBNull(8) ? string.Empty : query.GetString(8);
-                    item.Color = query.IsDBNull(9) ? -1 : query.GetInt32(9);
+                    var colorValue = query.IsDBNull(9) ? -1 : query.GetInt32(9);
+                    item.Color = (colorValue > 0 && colorValue < 10) ? (GlossaryColorsEnum)colorValue : GlossaryColorsEnum.Transparent;
                     results.Add(item);
                 }
                 return results;
@@ -208,7 +209,7 @@ namespace Flint3.Data
         /// </summary>
         /// <param name="title"></param>
         /// <param name="desc"></param>
-        public static void AddGlossaryWord(long wordid, int glossaryId, string word, string phonetic, string definition, string translation, string exchange, string description, int color)
+        public static void AddGlossaryWord(long wordid, int glossaryId, string word, string phonetic, string definition, string translation, string exchange, string description, GlossaryColorsEnum color)
         {
             try
             {
@@ -223,7 +224,7 @@ namespace Flint3.Data
                 insertCommand.Parameters.AddWithValue("$translation", translation);
                 insertCommand.Parameters.AddWithValue("$exchange", exchange);
                 insertCommand.Parameters.AddWithValue("$description", description);
-                insertCommand.Parameters.AddWithValue("$color", color);
+                insertCommand.Parameters.AddWithValue("$color", (int)color);
                 SqliteDataReader query = insertCommand?.ExecuteReader();
             }
             catch { }
@@ -234,7 +235,7 @@ namespace Flint3.Data
         /// </summary>
         /// <param name="title"></param>
         /// <param name="desc"></param>
-        public static void UpdateGlossaryWord(int id, string word, string phonetic, string definition, string translation, string exchange, string description, int color)
+        public static void UpdateGlossaryWord(long id, string description, GlossaryColorsEnum color)
         {
             try
             {
@@ -242,7 +243,7 @@ namespace Flint3.Data
                     $"UPDATE glossary SET description=$description,color=$color WHERE id=$id;",
                     _glossaryDb);
                 updateCommand.Parameters.AddWithValue("$description", description);
-                updateCommand.Parameters.AddWithValue("$color", color);
+                updateCommand.Parameters.AddWithValue("$color", (int)color);
                 updateCommand.Parameters.AddWithValue("$id", id);
                 SqliteDataReader query = updateCommand?.ExecuteReader();
             }
@@ -255,7 +256,7 @@ namespace Flint3.Data
         /// <param name="id"></param>
         /// <param name="title"></param>
         /// <param name="desc"></param>
-        public static void DeleteGlossaryWord(int id)
+        public static void DeleteGlossaryWord(long id)
         {
             try
             {

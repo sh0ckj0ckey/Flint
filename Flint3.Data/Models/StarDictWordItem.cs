@@ -59,8 +59,8 @@ namespace Flint3.Data.Models
         /// <summary>
         /// 生词本颜色
         /// </summary>
-        private int _color = 0;
-        public int Color
+        private GlossaryColorsEnum _color = GlossaryColorsEnum.Transparent;
+        public GlossaryColorsEnum Color
         {
             get => _color;
             set => SetProperty(ref _color, value);

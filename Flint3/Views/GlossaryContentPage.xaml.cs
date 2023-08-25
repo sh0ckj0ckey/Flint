@@ -15,6 +15,7 @@ using Microsoft.UI.Xaml.Navigation;
 using Flint3.ViewModels;
 using System.Diagnostics;
 using Microsoft.UI.Xaml.Media.Animation;
+using Flint3.Data.Models;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -167,38 +168,38 @@ namespace Flint3.Views
             {
                 if (sender is Button btn && btn.Tag is string tag)
                 {
-                    Models.GlossaryColorsEnum colorsEnum = Models.GlossaryColorsEnum.Transparent;
+                    GlossaryColorsEnum colorsEnum = GlossaryColorsEnum.Transparent;
                     switch (tag)
                     {
                         case "0":
-                            colorsEnum = Models.GlossaryColorsEnum.Transparent;
+                            colorsEnum = GlossaryColorsEnum.Transparent;
                             break;
                         case "1":
-                            colorsEnum = Models.GlossaryColorsEnum.Red;
+                            colorsEnum = GlossaryColorsEnum.Red;
                             break;
                         case "2":
-                            colorsEnum = Models.GlossaryColorsEnum.Orange;
+                            colorsEnum = GlossaryColorsEnum.Orange;
                             break;
                         case "3":
-                            colorsEnum = Models.GlossaryColorsEnum.Yellow;
+                            colorsEnum = GlossaryColorsEnum.Yellow;
                             break;
                         case "4":
-                            colorsEnum = Models.GlossaryColorsEnum.Green;
+                            colorsEnum = GlossaryColorsEnum.Green;
                             break;
                         case "5":
-                            colorsEnum = Models.GlossaryColorsEnum.Blue;
+                            colorsEnum = GlossaryColorsEnum.Blue;
                             break;
                         case "6":
-                            colorsEnum = Models.GlossaryColorsEnum.Purple;
+                            colorsEnum = GlossaryColorsEnum.Purple;
                             break;
                         case "7":
-                            colorsEnum = Models.GlossaryColorsEnum.Pink;
+                            colorsEnum = GlossaryColorsEnum.Pink;
                             break;
                         case "8":
-                            colorsEnum = Models.GlossaryColorsEnum.Brown;
+                            colorsEnum = GlossaryColorsEnum.Brown;
                             break;
                         case "9":
-                            colorsEnum = Models.GlossaryColorsEnum.Gray;
+                            colorsEnum = GlossaryColorsEnum.Gray;
                             break;
                     }
 
@@ -223,6 +224,20 @@ namespace Flint3.Views
         private void OnClickGlossaryProperty(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(GlossaryPropertyPage), null, SlideNaviTransition);
+        }
+
+        /// <summary>
+        /// µã»÷µ¥´Ê
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnClickGlossaryWord(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.DataContext is StarDictWordItem item)
+            {
+                MainViewModel.Instance.SelectedGlossaryWord = item;
+                this.Frame.Navigate(typeof(GlossaryWordPage), null, SlideNaviTransition);
+            }
         }
 
         /// <summary>

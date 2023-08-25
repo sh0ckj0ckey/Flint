@@ -133,42 +133,76 @@ namespace Flint3.ViewModels
                 string exchange = item.Exchange;
                 string[] exchanges = exchange.Split('/');
                 item.Exchanges = new List<WordExchangeItem>();
+                string word = string.Empty;
                 foreach (var exc in exchanges)
                 {
                     if (exc.Contains("p:"))
                     {
-                        item.Exchanges.Add(new WordExchangeItem(exc.Replace("p:", ""), "过去式"));
+                        word = exc.Replace("p:", "");
+                        if (!string.IsNullOrWhiteSpace(word))
+                        {
+                            item.Exchanges.Add(new WordExchangeItem(word, "过去式"));
+                        }
                     }
                     else if (exc.Contains("d:"))
                     {
-                        item.Exchanges.Add(new WordExchangeItem(exc.Replace("d:", ""), "过去分词"));
+                        word = exc.Replace("d:", "");
+                        if (!string.IsNullOrWhiteSpace(word))
+                        {
+                            item.Exchanges.Add(new WordExchangeItem(word, "过去分词"));
+                        }
                     }
                     else if (exc.Contains("i:"))
                     {
-                        item.Exchanges.Add(new WordExchangeItem(exc.Replace("i:", ""), "现在分词"));
+                        word = exc.Replace("i:", "");
+                        if (!string.IsNullOrWhiteSpace(word))
+                        {
+                            item.Exchanges.Add(new WordExchangeItem(word, "现在分词"));
+                        }
                     }
                     else if (exc.Contains("3:"))
                     {
-                        item.Exchanges.Add(new WordExchangeItem(exc.Replace("3:", ""), "第三人称单数"));
+                        word = exc.Replace("3:", "");
+                        if (!string.IsNullOrWhiteSpace(word))
+                        {
+                            item.Exchanges.Add(new WordExchangeItem(word, "第三人称单数"));
+                        }
                     }
                     else if (exc.Contains("r:"))
                     {
-                        item.Exchanges.Add(new WordExchangeItem(exc.Replace("r:", ""), "比较级"));
+                        word = exc.Replace("r:", "");
+                        if (!string.IsNullOrWhiteSpace(word))
+                        {
+                            item.Exchanges.Add(new WordExchangeItem(word, "比较级"));
+                        }
                     }
                     else if (exc.Contains("t:"))
                     {
-                        item.Exchanges.Add(new WordExchangeItem(exc.Replace("t:", ""), "最高级"));
+                        word = exc.Replace("t:", "");
+                        if (!string.IsNullOrWhiteSpace(word))
+                        {
+                            item.Exchanges.Add(new WordExchangeItem(word, "最高级"));
+                        }
                     }
                     else if (exc.Contains("s:"))
                     {
-                        item.Exchanges.Add(new WordExchangeItem(exc.Replace("s:", ""), "复数"));
+                        word = exc.Replace("s:", "");
+                        if (!string.IsNullOrWhiteSpace(word))
+                        {
+                            item.Exchanges.Add(new WordExchangeItem(word, "复数"));
+                        }
                     }
                     else if (exc.Contains("0:"))
                     {
-                        item.Exchanges.Add(new WordExchangeItem(exc.Replace("0:", ""), "原型"));
+                        word = exc.Replace("0:", "");
+                        if (!string.IsNullOrWhiteSpace(word))
+                        {
+                            item.Exchanges.Add(new WordExchangeItem(word, "原型"));
+                        }
                     }
                     //else if (exc.Contains("1:"))
                     //{
+                    //    word = 
                     //    item.Exchanges.Add(new WordExchangeItem(exc.Replace("1:", ""), ""));
                     //}
                 }

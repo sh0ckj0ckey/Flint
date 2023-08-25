@@ -54,6 +54,7 @@ namespace Flint3.Views
                 this.Frame.GoBack();
             }
         }
+
         private void OnClickEditButton(object sender, RoutedEventArgs e)
         {
             MainViewModel.Instance.EditingGlossaryProperty = true;

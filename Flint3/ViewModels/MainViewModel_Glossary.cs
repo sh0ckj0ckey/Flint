@@ -32,7 +32,7 @@ namespace Flint3.ViewModels
         public Action ActHideAddingPopup { get; set; } = null;
 
         /// <summary>
-        /// 当前生词本
+        /// 当前查看的生词本
         /// </summary>
         private GlossaryModelBase _selectedGlossary = null;
         public GlossaryModelBase SelectedGlossary
@@ -42,9 +42,21 @@ namespace Flint3.ViewModels
         }
 
         /// <summary>
-        /// 当前选择的生词本单词列表
+        /// 当前查看的生词
+        /// </summary>
+        private StarDictWordItem _selectedGlossaryWord = null;
+        public StarDictWordItem SelectedGlossaryWord
+        {
+            get => _selectedGlossaryWord;
+            set => SetProperty(ref _selectedGlossaryWord, value);
+        }
+
+        /// <summary>
+        /// 当前查看的生词本单词列表
         /// </summary>
         public ObservableCollection<StarDictWordItem> GlossaryWordItems { get; private set; } = new ObservableCollection<StarDictWordItem>();
+
+        #region 筛选生词列表
 
         /// <summary>
         /// 正在搜索的生词
@@ -76,15 +88,7 @@ namespace Flint3.ViewModels
         //    set => SetProperty(ref _glossaryWordsOrderMode, value);
         //}
 
-        /// <summary>
-        /// 当前是否正在编辑生词本属性
-        /// </summary>
-        private bool _editingGlossaryProperty = false;
-        public bool EditingGlossaryProperty
-        {
-            get => _editingGlossaryProperty;
-            set => SetProperty(ref _editingGlossaryProperty, value);
-        }
+        #endregion
 
         private void InitViewModel4Glossary()
         {
@@ -108,7 +112,7 @@ namespace Flint3.ViewModels
         }
 
         /// <summary>
-        /// 清空生词本单词列表
+        /// 清空正在显示的生词本单词列表
         /// </summary>
         /// <param name="count"></param>
         /// <param name="word"></param>
@@ -295,6 +299,16 @@ namespace Flint3.ViewModels
         #region 我的生词本
 
         /// <summary>
+        /// 当前是否正在编辑生词本属性
+        /// </summary>
+        private bool _editingGlossaryProperty = false;
+        public bool EditingGlossaryProperty
+        {
+            get => _editingGlossaryProperty;
+            set => SetProperty(ref _editingGlossaryProperty, value);
+        }
+
+        /// <summary>
         /// 用户生词本列表
         /// </summary>
         public ObservableCollection<GlossaryMyModel> MyGlossaries { get; private set; } = new ObservableCollection<GlossaryMyModel>();
@@ -339,7 +353,7 @@ namespace Flint3.ViewModels
 
             if (SelectedGlossary is GlossaryMyModel glossary)
             {
-                var list = GlossaryDataAccess.GetGlossaryWords(glossary.Id, lastId, count, word, (int)color/*, orderByWord*/);
+                var list = GlossaryDataAccess.GetGlossaryWords(glossary.Id, lastId, count, word, color/*, orderByWord*/);
 
                 foreach (var item in list)
                 {
@@ -422,11 +436,45 @@ namespace Flint3.ViewModels
         /// <param name="exchange"></param>
         /// <param name="description"></param>
         /// <param name="color"></param>
-        public void AddWordToMyGlossary(long wordid, int glossaryId, string word, string phonetic, string definition, string translation, string exchange, string description, int color)
+        public void AddWordToMyGlossary(long wordid, int glossaryId, string word, string phonetic, string definition, string translation, string exchange, string description, GlossaryColorsEnum color)
         {
             try
             {
                 GlossaryDataAccess.AddGlossaryWord(wordid, glossaryId, word, phonetic, definition, translation, exchange, description, color);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+
+        /// <summary>
+        /// 修改指定id的生词
+        /// </summary>
+        /// <param name="wordid"></param>
+        /// <param name="desc"></param>
+        /// <param name="color"></param>
+        public void UpdateWordFromMyGlossary(long id, string desc, GlossaryColorsEnum color)
+        {
+            try
+            {
+                GlossaryDataAccess.UpdateGlossaryWord(id, desc, color);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+
+        /// <summary>
+        /// 删除指定id的生词
+        /// </summary>
+        /// <param name="id"></param>
+        public void DeleteWordFromMyGlossary(long id)
+        {
+            try
+            {
+                GlossaryDataAccess.DeleteGlossaryWord(id);
             }
             catch (Exception e)
             {

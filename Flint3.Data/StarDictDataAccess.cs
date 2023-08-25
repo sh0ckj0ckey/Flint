@@ -100,7 +100,7 @@ namespace Flint3.Data
                 while (query?.Read() == true)
                 {
                     StarDictWordItem item = new StarDictWordItem();
-                    item.Id = query.IsDBNull(0) ? -1 : query.GetInt32(0);
+                    item.Id = query.IsDBNull(0) ? -1 : query.GetInt64(0);
                     item.Word = query.IsDBNull(1) ? string.Empty : query.GetString(1);
                     item.StripWord = query.IsDBNull(2) ? string.Empty : query.GetString(2);
                     item.Phonetic = query.IsDBNull(3) ? string.Empty : query.GetString(3);
@@ -165,7 +165,7 @@ namespace Flint3.Data
                 while (query?.Read() == true)
                 {
                     StarDictWordItem item = new StarDictWordItem();
-                    item.Id = query.IsDBNull(0) ? -1 : query.GetInt32(0);
+                    item.Id = query.IsDBNull(0) ? -1 : query.GetInt64(0);
                     item.Word = query.IsDBNull(1) ? string.Empty : query.GetString(1);
                     item.StripWord = query.IsDBNull(2) ? string.Empty : query.GetString(2);
                     item.Phonetic = query.IsDBNull(3) ? string.Empty : query.GetString(3);

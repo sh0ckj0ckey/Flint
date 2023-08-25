@@ -7,6 +7,7 @@ using Flint3.Models;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI;
+using Flint3.Data.Models;
 
 namespace Flint3.Converters
 {
