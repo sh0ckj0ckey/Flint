@@ -135,6 +135,41 @@ namespace Flint3.Data
             catch { }
         }
 
+        /// <summary>
+        /// 获取指定ID的生词本内生词个数
+        /// </summary>
+        /// <param name="glossaryId"></param>
+        /// <param name="color"></param>
+        /// <returns></returns>
+        public static int GetGlossaryWordsCount(int glossaryId, GlossaryColorsEnum color)
+        {
+            try
+            {
+                SqliteCommand selectCommand = null;
+                if (color != GlossaryColorsEnum.Transparent)
+                {
+                    selectCommand = new SqliteCommand($"select count(*) from glossary where glossaryid=$glossaryid AND color=$color", _glossaryDb);
+                    selectCommand.Parameters.AddWithValue("$glossaryid", glossaryId);
+                    selectCommand.Parameters.AddWithValue("$color", (int)color);
+                }
+                else
+                {
+                    selectCommand = new SqliteCommand($"select count(*) from glossary where glossaryid=$glossaryid", _glossaryDb);
+                    selectCommand.Parameters.AddWithValue("$glossaryid", glossaryId);
+                }
+
+                SqliteDataReader query = selectCommand?.ExecuteReader();
+                while (query?.Read() == true)
+                {
+                    StarDictWordItem item = new StarDictWordItem();
+                    var count = query.IsDBNull(0) ? -1 : query.GetInt32(0);
+                    return count;
+                }
+            }
+            catch { }
+            return -1;
+        }
+
         #endregion
 
         #region 生词

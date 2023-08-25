@@ -38,6 +38,8 @@ namespace Flint3.Views
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             MainViewModel.Instance.EditingGlossaryProperty = false;
+
+            GetGlossaryWordsCount();
         }
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
