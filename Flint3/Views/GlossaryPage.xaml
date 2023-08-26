@@ -64,6 +64,7 @@
                         <TextBlock Text="创建第一个生词本吧！" FontSize="12" CharacterSpacing="64" Opacity="0.8"/>
                     </StackPanel>
                 </StackPanel>
+                <TextBlock Text="生词本处于测试阶段，如遇问题，烦请反馈" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="12" CharacterSpacing="64" Opacity="0.2" Margin="0,0,0,12"/>
             </Grid>
             <ScrollViewer Padding="0,0" Visibility="{x:Bind ViewModel.MyGlossaries.Count,Mode=OneWay,Converter={StaticResource Int2Vis}}">
                 <muxc:ItemsRepeater Margin="16,0,16,8" HorizontalAlignment="Center" ItemsSource="{x:Bind ViewModel.MyGlossaries,Mode=OneWay}">

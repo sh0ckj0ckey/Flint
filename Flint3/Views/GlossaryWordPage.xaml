@@ -46,7 +46,7 @@
         <!--单词详情-->
         <ScrollViewer Grid.Row="1" HorizontalScrollMode="Disabled" ZoomMode="Disabled" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,12,0,0">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Margin="20,0,20,10">
-               
+
                 <!--单词和颜色-->
                 <Grid HorizontalAlignment="Stretch" Background="{ThemeResource SETTING_ITEM_BK}" CornerRadius="4" Padding="16,8" Margin="0,0,0,4">
                     <Grid>
@@ -58,7 +58,7 @@
 
                         <!--生词及音标-->
                         <TextBlock Grid.Column="0" Text="{x:Bind ViewModel.SelectedGlossaryWord.Word,Mode=OneWay}" FontSize="18" FontWeight="SemiBold" CharacterSpacing="40" VerticalAlignment="Center" IsTextSelectionEnabled="True"/>
-                        <TextBlock Grid.Column="1" Margin="16,0,0,0" FontSize="16" Opacity="0.5" FontWeight="Light" VerticalAlignment="Center" Visibility="{x:Bind ViewModel.SelectedGlossaryWord.Phonetic,Converter={StaticResource Null2Vis},Mode=OneWay}" IsTextSelectionEnabled="True" TextTrimming="CharacterEllipsis">
+                        <TextBlock Grid.Column="1" Margin="16,0,0,0" FontSize="16" Opacity="0.5" FontWeight="Light" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="{x:Bind ViewModel.SelectedGlossaryWord.Phonetic,Converter={StaticResource Null2Vis},Mode=OneWay}" IsTextSelectionEnabled="True" TextTrimming="CharacterEllipsis">
                             <Run Text="/" FontSize="14"/>
                             <Run Text="{x:Bind ViewModel.SelectedGlossaryWord.Phonetic,Mode=OneWay}"/>
                             <Run Text="/" FontSize="14"/>
@@ -216,36 +216,31 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xEDC6;" Margin="4,8,24,8" VerticalAlignment="Center"/>
-                    <StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Center">
-                        <TextBlock Text="{x:Bind ViewModel.SelectedGlossaryWord.Description,Mode=OneWay}" Opacity="0.7" TextWrapping="Wrap" CharacterSpacing="64" VerticalAlignment="Center"
-                                   Visibility="{x:Bind ViewModel.SelectedGlossaryWord.Description,Converter={StaticResource Null2Vis},Mode=OneWay}"/>
-                        <TextBlock Text="没有添加备注" Opacity="0.5" TextWrapping="Wrap" CharacterSpacing="64" VerticalAlignment="Center"
-                                   Visibility="{x:Bind ViewModel.SelectedGlossaryWord.Description,Converter={StaticResource Null2Vis},ConverterParameter=-,Mode=OneWay}"/>
-                    </StackPanel>
-                    <Button Grid.Column="2" Padding="8,4,8,4" HorizontalAlignment="Left" Margin="8,0,0,0" Style="{ThemeResource AccentButtonStyle}">
-                        <StackPanel Orientation="Horizontal">
-                            <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE104;" FontSize="14"/>
-                            <TextBlock Text="编辑" FontSize="14" CharacterSpacing="40" Margin="8,0,0,0"/>
-                        </StackPanel>
+                    <Button Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"
+                            Background="Transparent" ToolTipService.ToolTip="点击以编辑">
+                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                            <TextBlock Text="{x:Bind ViewModel.SelectedGlossaryWord.Description,Mode=OneWay}" Opacity="0.7" TextWrapping="Wrap" CharacterSpacing="64" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                       Visibility="{x:Bind ViewModel.SelectedGlossaryWord.Description,Converter={StaticResource Null2Vis},Mode=OneWay}"/>
+                            <TextBlock Text="没有添加备注" Opacity="0.5" TextWrapping="Wrap" CharacterSpacing="64" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                       Visibility="{x:Bind ViewModel.SelectedGlossaryWord.Description,Converter={StaticResource Null2Vis},ConverterParameter=-,Mode=OneWay}"/>
+                        </Grid>
                         <Button.Flyout>
                             <Flyout x:Name="EditWordDescFlyout" Placement="Left">
                                 <StackPanel Orientation="Vertical">
                                     <TextBlock Text="编辑备注" FontSize="14" FontWeight="Bold" CharacterSpacing="40" Margin="0,0,0,8"/>
-                                    <TextBox x:Name="EditWordDescTextBox" Text="{x:Bind ViewModel.SelectedGlossaryWord.Description,Mode=OneWay}" TextWrapping="Wrap" Height="64" Width="196"/>
+                                    <TextBox x:Name="EditWordDescTextBox" Text="{x:Bind ViewModel.SelectedGlossaryWord.Description,Mode=OneWay}" TextWrapping="Wrap" Height="72" Width="224"/>
                                     <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
-                                        <Button Content="保存" Width="92" Padding="8,4,8,4" HorizontalAlignment="Stretch" Margin="0,8,0,0" Style="{ThemeResource AccentButtonStyle}" Click="OnClickSaveEditDesc"/>
-                                        <Button Content="取消" Width="92" Padding="8,4,8,4" HorizontalAlignment="Stretch" Margin="0,8,0,0" Click="OnClickCancelEditDesc"/>
+                                        <Button Content="保存" Width="106" Padding="8,4,8,4" HorizontalAlignment="Stretch" Margin="0,8,0,0" Style="{ThemeResource AccentButtonStyle}" Click="OnClickSaveEditDesc"/>
+                                        <Button Content="取消" Width="106" Padding="8,4,8,4" HorizontalAlignment="Stretch" Margin="0,8,0,0" Click="OnClickCancelEditDesc"/>
                                     </StackPanel>
                                 </StackPanel>
                             </Flyout>
                         </Button.Flyout>
                     </Button>
-
                 </Grid>
-            
+
             </StackPanel>
         </ScrollViewer>
 
