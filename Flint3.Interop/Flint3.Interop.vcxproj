@@ -114,7 +114,7 @@
       <DisableAnalyzeExternal>true</DisableAnalyzeExternal>
       <AdditionalOptions>/Zc:twoPhase- </AdditionalOptions>
       <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
-      <DisableSpecificWarnings>4679;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4679;%(DisableSpecificWarnings);5271</DisableSpecificWarnings>
       <Optimization>Disabled</Optimization>
     </ClCompile>
     <Link>
@@ -169,7 +169,7 @@
       <BuildStlModules>false</BuildStlModules>
       <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
       <DisableAnalyzeExternal>true</DisableAnalyzeExternal>
-      <DisableSpecificWarnings>4679;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4679;%(DisableSpecificWarnings);5271</DisableSpecificWarnings>
       <AdditionalOptions>/Zc:twoPhase- </AdditionalOptions>
     </ClCompile>
     <Link>

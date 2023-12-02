@@ -35,9 +35,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AssemblyInfo.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="HotkeyManager.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -50,10 +47,16 @@
     <ClCompile Include="interop.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Generated Files\AssemblyInfo.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="app.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>
