@@ -12,7 +12,7 @@
     xmlns:ui="using:CommunityToolkit.WinUI.UI" 
     xmlns:cvt="using:Flint3.Converters"
     xmlns:control="using:Flint3.Controls.ShortcutControl"
-    xmlns:labs="using:CommunityToolkit.Labs.WinUI"
+    xmlns:labs="using:CommunityToolkit.WinUI.Controls"
     Background="Transparent" NavigationCacheMode="Required">
     <Page.Resources>
         <ui:AttachedDropShadow x:Key="CommonShadow" BlurRadius="16" IsMasked="False" Color="{ThemeResource FLINT_LOGO_SHADOW_BK}" Offset="4,4" Opacity="1" CastTo="{x:Bind FlintLogoMaskBorder}"/>
@@ -156,7 +156,7 @@
                     <labs:SettingsExpander.Items>
                         <labs:SettingsCard HorizontalAlignment="Stretch" IsEnabled="{x:Bind EnableGlossaryToggleSwitch.IsOn,Mode=OneWay}">
                             <labs:SettingsCard.Description>
-                                <TextBlock Text="生词本数据文件存放在 &quot;文档\Flint&quot; 中" CharacterSpacing="64"/>
+                                <TextBlock Text="生词本数据文件存放在 &quot;文档&quot; 中" CharacterSpacing="64"/>
                             </labs:SettingsCard.Description>
                             <Button Height="32" MinWidth="72" Click="OnClickDbPath">
                                 <StackPanel Orientation="Horizontal" Spacing="4">

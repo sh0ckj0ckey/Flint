@@ -64,10 +64,10 @@ namespace Flint3.Views
         {
             try
             {
-                string folderPath = UserDataPaths.GetDefault().Documents;
-                StorageFolder folder = await StorageFolder.GetFolderFromPathAsync(folderPath);
-                var dbFolder = await folder.CreateFolderAsync("Flint", CreationCollisionOption.OpenIfExists);
-                await Launcher.LaunchFolderAsync(dbFolder);
+                StorageFolder documentsFolder = await StorageFolder.GetFolderFromPathAsync(UserDataPaths.GetDefault().Documents);
+                var noMewingFolder = await documentsFolder.CreateFolderAsync("NoMewing", CreationCollisionOption.OpenIfExists);
+                var flintFolder = await noMewingFolder.CreateFolderAsync("Flint", CreationCollisionOption.OpenIfExists);
+                await Launcher.LaunchFolderAsync(flintFolder);
             }
             catch { }
         }

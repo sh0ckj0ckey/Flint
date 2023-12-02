@@ -16,6 +16,7 @@ using Windows.Storage.Pickers;
 using Windows.Storage;
 using WinUIEx;
 using System.Xml.Linq;
+using System.IO;
 
 namespace Flint3.ViewModels
 {
@@ -322,11 +323,22 @@ namespace Flint3.ViewModels
             {
                 MyGlossaries?.Clear();
 
-                string folderPath = UserDataPaths.GetDefault().Documents;
-                StorageFolder folder = StorageFolder.GetFolderFromPathAsync(folderPath).GetAwaiter().GetResult();
-                var dbFolder = folder.CreateFolderAsync("Flint", CreationCollisionOption.OpenIfExists).GetAwaiter().GetResult();
+                StorageFolder documentsFolder = StorageFolder.GetFolderFromPathAsync(UserDataPaths.GetDefault().Documents).GetAwaiter().GetResult();
+
+                var oldFlintFolder = documentsFolder.TryGetItemAsync("Flint").GetAwaiter().GetResult();
+
+                var noMewingFolder = documentsFolder.CreateFolderAsync("NoMewing", CreationCollisionOption.OpenIfExists).GetAwaiter().GetResult();
+
+                // 把Flint文件夹迁移到NoMewing下面
+                if (oldFlintFolder != null && !Directory.Exists(Path.Combine(noMewingFolder.Path, "Flint")))
+                {
+                    Directory.Move(oldFlintFolder.Path, Path.Combine(noMewingFolder.Path, "Flint"));
+                }
+
+                var flintFolder = noMewingFolder.CreateFolderAsync("Flint", CreationCollisionOption.OpenIfExists).GetAwaiter().GetResult();
+
                 GlossaryDataAccess.CloseDatabase();
-                GlossaryDataAccess.LoadDatabase(dbFolder);
+                GlossaryDataAccess.LoadDatabase(flintFolder);
 
                 GlossaryDataAccess.GetAllGlossaries().ForEach(item =>
                     MyGlossaries.Add(new GlossaryMyModel()
