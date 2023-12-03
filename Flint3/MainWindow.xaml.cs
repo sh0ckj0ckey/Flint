@@ -172,7 +172,26 @@ namespace Flint3
                     isLight = MainViewModel.Instance.AppSettings.AppearanceIndex == 2;
                 }
 
-                TitleBarHelper.UpdateTitleBar(App.MainWindow, isLight ? ElementTheme.Light : ElementTheme.Dark);
+                // 修改标题栏按钮颜色
+                //TitleBarHelper.UpdateTitleBar(App.MainWindow, isLight ? ElementTheme.Light : ElementTheme.Dark);
+                var titleBar = App.MainWindow.AppWindow.TitleBar;
+                // Set active window colors
+                // Note: No effect when app is running on Windows 10 since color customization is not supported.
+                titleBar.ForegroundColor = isLight ? Colors.Black : Colors.White;
+                titleBar.BackgroundColor = Colors.Transparent;
+                titleBar.ButtonForegroundColor = isLight ? Colors.Black : Colors.White;
+                titleBar.ButtonBackgroundColor = Colors.Transparent;
+                titleBar.ButtonHoverForegroundColor = isLight ? Colors.Black : Colors.White;
+                titleBar.ButtonHoverBackgroundColor = isLight ? Windows.UI.Color.FromArgb(10, 0, 0, 0) : Windows.UI.Color.FromArgb(16, 255, 255, 255);
+                titleBar.ButtonPressedForegroundColor = isLight ? Colors.Black : Colors.White;
+                titleBar.ButtonPressedBackgroundColor = isLight ? Windows.UI.Color.FromArgb(08, 0, 0, 0) : Windows.UI.Color.FromArgb(10, 255, 255, 255);
+
+                // Set inactive window colors
+                // Note: No effect when app is running on Windows 10 since color customization is not supported.
+                titleBar.InactiveForegroundColor = Colors.Gray;
+                titleBar.InactiveBackgroundColor = Colors.Transparent;
+                titleBar.ButtonInactiveForegroundColor = Colors.Gray;
+                titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
 
                 // 设置应用程序颜色
                 if (App.MainWindow.Content is FrameworkElement rootElement)
