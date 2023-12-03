@@ -1,4 +1,5 @@
-﻿using Microsoft.UI.Dispatching;
+﻿using System.Diagnostics;
+using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Windows.System;
 using WinUIEx;
@@ -17,6 +18,8 @@ namespace Flint3
 
         public static WindowEx MainWindow { get; } = new MainWindow();
 
+        public static WindowEx LiteWindow { get; } = new FlintLiteWindow();
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -26,7 +29,11 @@ namespace Flint3
             this.InitializeComponent();
             _dispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
 
-            UnhandledException += (s, e) => { e.Handled = true; };
+            UnhandledException += (s, e) =>
+            {
+                e.Handled = true;
+                Debug.WriteLine(e.Message);
+            };
         }
 
         /// <summary>
@@ -44,7 +51,10 @@ namespace Flint3
                 MainWindow.Width = 580;
                 MainWindow.CenterOnScreen();
             }
+
             MainWindow.Activate();
+
+            LiteWindow.Hide();
         }
 
         public void ShowMainWindow()

@@ -13,6 +13,7 @@ using Windows.System;
 using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
+using WinUIEx;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -52,7 +53,7 @@ namespace Flint3.Views
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            TitleBarHelper.UpdateTitleBar(App.MainWindow, ActualTheme);
+            //TitleBarHelper.UpdateTitleBar(App.MainWindow, ActualTheme);
 
             SearchTextBox.Style = GetSearchTextBoxStyle(MainViewModel.Instance.AppSettings.SearchBoxStyle);
 
