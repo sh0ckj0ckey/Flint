@@ -11,6 +11,8 @@
 #### 一睹芳容
 ![screenshot.png](README/screenshot.png)
 
+---
+
 #### 关于 WinUI 3 打包
 WinUI 3 目前不像 UWP 支持直接打出 appxbundle、msixbundle 这种类型的包，需要自己手动打出 x64 和 ARM64 的 msix 包，然后这样操作：
 将这两个 msix 文件放到例如 C 盘根目录的 Source 文件夹内(不能有其他文件)，然后管理员运行终端如下命令：
@@ -21,10 +23,11 @@ WinUI 3 目前不像 UWP 支持直接打出 appxbundle、msixbundle 这种类型
 
 这样就可以得到一个 msixbundle 包用来上传微软商店了
 
-#### 首页顶部栏控件 SegmentedControl
-SegmentedControl 控件从这里下载的nuget包 https://pkgs.dev.azure.com/ms/DevHome/_packaging/DevHomeDependencies/nuget/v3/index.json ，后续应当会上架到 nuget.org
+---
 
 #### 数据库文件
 Flint3 项目和 Flint 共用 stardict.db 文件，但是 LFS 空间不够，所以只放在了 Flint/Data 中，需要手动复制到 Flint3/Data 中，然后记得将文件属性设置为"内容"，这样就可以作为内置的文件来访问了
+
+---
 
 © 2023 sh0ckj0ckey.
