@@ -19,9 +19,21 @@ WinUI 3 目前不像 UWP 支持直接打出 appxbundle、msixbundle 这种类型
 
 ```
  "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22000.0\x86\MakeAppx.exe" bundle /d "C:\Source" /p C:\out.msixbundle
- ```
+```
 
 这样就可以得到一个 msixbundle 包用来上传微软商店了
+
+---
+
+#### 自包含依赖项
+在 `.csproj` 文件添加如下
+
+```
+<WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+<SelfContained>true</SelfContained>
+```
+
+这样打的包才会附带运行时，否则在一些电脑上运行时会弹出弹窗，称需要安装或更新 .Net 才可以运行此软件 (Microsoft.NETCore.App)
 
 ---
 
