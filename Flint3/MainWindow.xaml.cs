@@ -87,6 +87,12 @@ namespace Flint3
             };
             _notifyIcon.OnExitWindow += this.ExitApp;
             _notifyIcon.CreateNotifyIcon();
+
+            //if (MainViewModel.Instance.AppSettings.MainWindowHeight > 366 &&
+            //    MainViewModel.Instance.AppSettings.MainWindowWidth > 560)
+            //{
+            //    this.SetWindowSize(MainViewModel.Instance.AppSettings.MainWindowWidth, MainViewModel.Instance.AppSettings.MainWindowHeight);
+            //}
         }
 
         /// <summary>
@@ -132,6 +138,29 @@ namespace Flint3
         private void OnMainWindowClosed(object sender, WindowEventArgs args)
         {
             Application.Current.Exit();
+        }
+
+        /// <summary>
+        /// 主窗口尺寸变化时，保存下来
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        private void OnMainWindowSizeChanged(object sender, WindowSizeChangedEventArgs args)
+        {
+            //try
+            //{
+            //    if (this.WindowState == WindowState.Normal)
+            //    {
+            //        MainViewModel.Instance.AppSettings.MainWindowHeight = args.Size.Height;
+            //        MainViewModel.Instance.AppSettings.MainWindowWidth = args.Size.Width;
+
+            //        Debug.WriteLine($"Saving Size {args.Size.Height},{args.Size.Width}");
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Debug.WriteLine(ex.ToString());
+            //}
         }
 
         /// <summary>

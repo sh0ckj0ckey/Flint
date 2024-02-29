@@ -19,6 +19,9 @@ namespace Flint3.Core
         private const string SETTING_NAME_CLOSEBUTTONMODE = "CloseButtonMode";
         private const string SETTING_NAME_SEARCHBOXSTYLE = "SearchBoxStyle";
 
+        private const string SETTING_NAME_MAINSIZE_HEIGHT = "MainWindowHeight";
+        private const string SETTING_NAME_MAINSIZE_WIDTH = "MainWindowWidth";
+
         private ApplicationDataContainer _localSettings = ApplicationData.Current.LocalSettings;
 
         public Action<int> OnAppearanceSettingChanged { get; set; } = null;
@@ -332,5 +335,64 @@ namespace Flint3.Core
             }
         }
 
+        // 主窗口高度
+        private double _mainWindowHeight = -1;
+        public double MainWindowHeight
+        {
+            get
+            {
+                try
+                {
+                    if (_mainWindowHeight < 0)
+                    {
+                        if (_localSettings.Values[SETTING_NAME_MAINSIZE_HEIGHT] != null)
+                        {
+                            string heightStr = _localSettings.Values[SETTING_NAME_MAINSIZE_HEIGHT]?.ToString();
+                            if (double.TryParse(heightStr, out double height))
+                            {
+                                _mainWindowHeight = height;
+                            }
+                        }
+                    }
+                }
+                catch { }
+                return _mainWindowHeight;
+            }
+            set
+            {
+                SetProperty(ref _mainWindowHeight, value);
+                ApplicationData.Current.LocalSettings.Values[SETTING_NAME_MAINSIZE_HEIGHT] = _mainWindowHeight;
+            }
+        }
+
+        // 主窗口宽度
+        private double _mainWindowWidth = -1;
+        public double MainWindowWidth
+        {
+            get
+            {
+                try
+                {
+                    if (_mainWindowWidth < 0)
+                    {
+                        if (_localSettings.Values[SETTING_NAME_MAINSIZE_WIDTH] != null)
+                        {
+                            string heightStr = _localSettings.Values[SETTING_NAME_MAINSIZE_WIDTH]?.ToString();
+                            if (double.TryParse(heightStr, out double height))
+                            {
+                                _mainWindowWidth = height;
+                            }
+                        }
+                    }
+                }
+                catch { }
+                return _mainWindowWidth;
+            }
+            set
+            {
+                SetProperty(ref _mainWindowWidth, value);
+                ApplicationData.Current.LocalSettings.Values[SETTING_NAME_MAINSIZE_WIDTH] = _mainWindowWidth;
+            }
+        }
     }
 }

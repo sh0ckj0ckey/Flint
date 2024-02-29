@@ -42,18 +42,16 @@ namespace Flint3
         /// <param name="args">Details about the launch request and process.</param>
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
-            // 首次启动设置默认窗口尺寸
-            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-            if (localSettings.Values["firstRun"] == null)
-            {
-                localSettings.Values["firstRun"] = true;
-                MainWindow.Height = 386;
-                MainWindow.Width = 580;
-                MainWindow.CenterOnScreen();
-            }
+            //// 首次启动设置默认窗口尺寸
+            //var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+            //if (localSettings.Values["firstRun"] == null)
+            //{
+            //    localSettings.Values["firstRun"] = true;
+            //    MainWindow.SetWindowSize(580, 386);
+            //    MainWindow.CenterOnScreen();
+            //}
 
             MainWindow.Activate();
-
             LiteWindow.Hide();
         }
 
@@ -62,6 +60,7 @@ namespace Flint3
             _dispatcherQueue.TryEnqueue(() =>
             {
                 MainWindow.Restore();
+                MainWindow.CenterOnScreen();
                 MainWindow.BringToFront();
             });
         }
