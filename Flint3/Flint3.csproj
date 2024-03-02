@@ -10,7 +10,7 @@
     <PublishProfile>win10-$(Platform).pubxml</PublishProfile>
     <UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
-    <PackageCertificateThumbprint>04D8CC40A318924D78CF923787628717EAA8188E</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>5A0BF8439709A49B4461A62D501B413C3C6D9293</PackageCertificateThumbprint>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
     <DefaultLanguage>zh-CN</DefaultLanguage>
     <ApplicationIcon>Assets\Logos\flint_logo.ico</ApplicationIcon>
@@ -23,7 +23,7 @@
     <AppxBundle>Always</AppxBundle>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
     <AppxBundlePlatforms>x64</AppxBundlePlatforms>
-    <AppxPackageDir>C:\Users\Administrator\Desktop\</AppxPackageDir>
+    <AppxPackageDir>C:\Users\Shock Jockey\Desktop\</AppxPackageDir>
     <GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>
 	<DefineConstants>$(DefineConstants);DISABLE_XAML_GENERATED_MAIN</DefineConstants>
 	<WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
@@ -35,6 +35,10 @@
     <None Remove="Assets\icon_github_dark.png" />
     <None Remove="Assets\icon_github_light.png" />
     <None Remove="Assets\icon_mail.png" />
+    <None Remove="Assets\icon_qq.png" />
+    <None Remove="Assets\icon_wechat.png" />
+    <None Remove="Assets\img_feedback_qq.jpg" />
+    <None Remove="Assets\img_feedback_wechat.jpg" />
     <None Remove="Assets\Logos\flint_logo.ico" />
     <None Remove="Assets\Logos\flint_logo.png" />
     <None Remove="Assets\Manifests\LargeTile.scale-100.png" />

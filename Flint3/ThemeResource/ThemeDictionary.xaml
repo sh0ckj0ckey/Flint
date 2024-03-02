@@ -20,7 +20,7 @@
                     <BitmapImage x:Key="FLINT_LOGO_IMG" UriSource="ms-appx:///Assets/Logos/flint_logo.png"/>
                     <BitmapImage x:Key="FLINT_LOGO_BK_IMG" UriSource="ms-appx:///Assets/flint_logo_background_dark.png"/>
 
-                    <BitmapImage x:Key="ABOUT_GITHUB_IMG" UriSource="ms-appx:///Assets/icon_github_dark.png" DecodePixelHeight="20" DecodePixelType="Logical"/>
+                    <BitmapImage x:Key="ABOUT_GITHUB_IMG" UriSource="ms-appx:///Assets/icon_github_dark.png" DecodePixelHeight="40" DecodePixelType="Logical"/>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -42,7 +42,7 @@
                     <BitmapImage x:Key="FLINT_LOGO_IMG" UriSource="ms-appx:///Assets/Logos/flint_logo.png"/>
                     <BitmapImage x:Key="FLINT_LOGO_BK_IMG" UriSource="ms-appx:///Assets/flint_logo_background_light.png"/>
 
-                    <BitmapImage x:Key="ABOUT_GITHUB_IMG" UriSource="ms-appx:///Assets/icon_github_light.png" DecodePixelHeight="20" DecodePixelType="Logical"/>
+                    <BitmapImage x:Key="ABOUT_GITHUB_IMG" UriSource="ms-appx:///Assets/icon_github_light.png" DecodePixelHeight="40" DecodePixelType="Logical"/>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
