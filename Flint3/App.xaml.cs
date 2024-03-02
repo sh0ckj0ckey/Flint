@@ -72,6 +72,7 @@ namespace Flint3
                 MainWindow.Restore();
                 MainWindow.CenterOnScreen();
                 MainWindow.BringToFront();
+                MainWindow.Activate();
             });
         }
     }
