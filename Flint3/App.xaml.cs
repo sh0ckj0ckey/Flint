@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
+using Microsoft.Windows.AppLifecycle;
 using Windows.System;
 using WinUIEx;
 
@@ -18,7 +19,7 @@ namespace Flint3
 
         public static WindowEx MainWindow { get; } = new MainWindow();
 
-        public static WindowEx LiteWindow { get; } = new FlintLiteWindow();
+        // public static WindowEx LiteWindow { get; } = new FlintLiteWindow();
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -51,8 +52,17 @@ namespace Flint3
             //    MainWindow.CenterOnScreen();
             //}
 
-            MainWindow.Activate();
-            LiteWindow.Hide();
+            AppActivationArguments activatedArgs = AppInstance.GetCurrent().GetActivatedEventArgs();
+            if (activatedArgs?.Kind == ExtendedActivationKind.StartupTask)
+            {
+                MainWindow.Hide();
+            }
+            else
+            {
+                MainWindow.Activate();
+            }
+
+            // LiteWindow.Hide();
         }
 
         public void ShowMainWindow()

@@ -88,6 +88,9 @@ namespace Flint3
             _notifyIcon.OnExitWindow += this.ExitApp;
             _notifyIcon.CreateNotifyIcon();
 
+            // 设置全局快捷键
+            MainViewModel.Instance.RegisterShortcut();
+
             //if (MainViewModel.Instance.AppSettings.MainWindowHeight > 366 &&
             //    MainViewModel.Instance.AppSettings.MainWindowWidth > 560)
             //{
@@ -111,9 +114,6 @@ namespace Flint3
             MainFrame.KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.XButton1, null, OnGoBackKeyboardAcceleratorInvoked));
             MainFrame.KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.Escape, null, OnHideKeyboardAcceleratorInvoked));
             MainFrame.KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.Tab, null, OnSearchKeyboardAcceleratorInvoked));
-
-            // 设置全局快捷键
-            MainViewModel.Instance.RegisterShortcut();
         }
 
         /// <summary>

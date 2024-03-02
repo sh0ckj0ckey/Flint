@@ -13,7 +13,7 @@
     xmlns:cvt="using:Flint3.Converters"
     xmlns:control="using:Flint3.Controls.ShortcutControl"
     xmlns:labs="using:CommunityToolkit.WinUI.Controls"
-    Background="Transparent" NavigationCacheMode="Required">
+    Background="Transparent" NavigationCacheMode="Required" Loaded="OnLoaded">
     <Page.Resources>
         <ui:AttachedDropShadow x:Key="CommonShadow" BlurRadius="16" IsMasked="False" Color="{ThemeResource FLINT_LOGO_SHADOW_BK}" Offset="4,4" Opacity="1" CastTo="{x:Bind FlintLogoMaskBorder}"/>
 
@@ -179,9 +179,9 @@
                         <TextBlock Text="开机自启动" CharacterSpacing="64"/>
                     </labs:SettingsCard.Header>
                     <labs:SettingsCard.Description>
-                        <TextBlock Text="登录到 Windows 时自动启动燧石" CharacterSpacing="64"/>
+                        <TextBlock x:Name="StartupDescTextBlock" Text="登录到 Windows 时自动启动燧石" CharacterSpacing="64"/>
                     </labs:SettingsCard.Description>
-                    <ToggleSwitch MinWidth="0" Background="Transparent"/>
+                    <ToggleSwitch x:Name="StartupSettingToggleSwitch" MinWidth="0" Background="Transparent" Toggled="OnStartupToggled"/>
                 </labs:SettingsCard>
                 
                 <!--快捷键设置-->
@@ -396,7 +396,7 @@
                     </Button>
                 </labs:SettingsCard>
 
-                <TextBlock Text="©2023 sh0ckj0ckey." FontSize="12" FontFamily="Consolas" FontWeight="Light" Opacity="0.5" CharacterSpacing="40" Margin="20,8,0,8"/>
+                <TextBlock Text="©2024 NoMewing." FontSize="12" FontFamily="Consolas" FontWeight="Light" Opacity="0.5" CharacterSpacing="40" Margin="20,8,0,8"/>
             </StackPanel>
         </ScrollViewer>
 

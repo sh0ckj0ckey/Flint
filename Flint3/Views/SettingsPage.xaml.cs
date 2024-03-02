@@ -1,4 +1,6 @@
 using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using Flint3.Core.Utils;
 using Flint3.ViewModels;
 using Microsoft.UI.Xaml;
@@ -18,7 +20,10 @@ namespace Flint3.Views
     public sealed partial class SettingsPage : Page
     {
         private MainViewModel _viewModel = null;
+
         private string _appVersion = string.Empty;
+
+        private bool _startupEnabled = false;
 
         public SettingsPage()
         {
@@ -26,6 +31,61 @@ namespace Flint3.Views
 
             _viewModel = MainViewModel.Instance;
             _appVersion = $"Flint {AppVersionUtil.GetAppVersion()}";
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            UpdateStartupState();
+        }
+
+        /// <summary>
+        /// 获取当前开机自启动状态，更新按钮
+        /// </summary>
+        private async void UpdateStartupState()
+        {
+            try
+            {
+                var task = await StartupTask.GetAsync("FlintByNoMewing");
+                switch (task.State)
+                {
+                    case StartupTaskState.Disabled:
+                        _startupEnabled = false;
+                        StartupSettingToggleSwitch.IsEnabled = true;
+                        StartupSettingToggleSwitch.IsOn = false;
+                        StartupDescTextBlock.Text = "登录到 Windows 时自动启动燧石";
+                        break;
+                    case StartupTaskState.Enabled:
+                        _startupEnabled = true;
+                        StartupSettingToggleSwitch.IsEnabled = true;
+                        StartupSettingToggleSwitch.IsOn = true;
+                        StartupDescTextBlock.Text = "登录到 Windows 时自动启动燧石";
+                        break;
+                    case StartupTaskState.DisabledByUser:
+                        _startupEnabled = false;
+                        StartupSettingToggleSwitch.IsEnabled = false;
+                        StartupSettingToggleSwitch.IsOn = false;
+                        StartupDescTextBlock.Text = "无法修改，已被系统设置禁用";
+                        break;
+                    case StartupTaskState.DisabledByPolicy:
+                        _startupEnabled = false;
+                        StartupSettingToggleSwitch.IsEnabled = false;
+                        StartupSettingToggleSwitch.IsOn = false;
+                        StartupDescTextBlock.Text = "无法修改，已被策略禁用";
+                        break;
+                    case StartupTaskState.EnabledByPolicy:
+                        _startupEnabled = true;
+                        StartupSettingToggleSwitch.IsEnabled = false;
+                        StartupSettingToggleSwitch.IsOn = true;
+                        StartupDescTextBlock.Text = "无法修改，已被策略启用";
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
         }
 
         /// <summary>
@@ -52,7 +112,10 @@ namespace Flint3.Views
             {
                 await Launcher.LaunchUriAsync(new Uri($"ms-windows-store:REVIEW?PFN={Package.Current.Id.FamilyName}"));
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
         }
 
         /// <summary>
@@ -69,7 +132,50 @@ namespace Flint3.Views
                 var flintFolder = await noMewingFolder.CreateFolderAsync("Flint", CreationCollisionOption.OpenIfExists);
                 await Launcher.LaunchFolderAsync(flintFolder);
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// 设置开机自启
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void OnStartupToggled(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var task = await StartupTask.GetAsync("FlintByNoMewing");
+                switch (task.State)
+                {
+                    case StartupTaskState.Disabled:
+                        {
+                            _startupEnabled = false;
+                            if (StartupSettingToggleSwitch.IsOn != false)
+                            {
+                                await task.RequestEnableAsync();
+                            }
+                        }
+                        break;
+                    case StartupTaskState.Enabled:
+                        {
+                            _startupEnabled = true;
+                            if (StartupSettingToggleSwitch.IsOn != true)
+                            {
+                                task.Disable();
+                            }
+                        }
+                        break;
+                }
+
+                UpdateStartupState();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
         }
 
         /// <summary>
@@ -100,7 +206,10 @@ namespace Flint3.Views
                     }
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
         }
 
         /// <summary>
@@ -114,7 +223,10 @@ namespace Flint3.Views
             {
                 await Windows.System.Launcher.LaunchUriAsync(new Uri("https://github.com/skywind3000/ECDICT"));
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
         }
 
         /// <summary>
@@ -128,8 +240,10 @@ namespace Flint3.Views
             {
                 await Windows.System.Launcher.LaunchUriAsync(new Uri("https://github.com/sh0ckj0ckey/Flint"));
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
         }
-
     }
 }
