@@ -137,7 +137,8 @@ namespace Flint3
         /// <param name="args"></param>
         private void OnMainWindowClosed(object sender, WindowEventArgs args)
         {
-            Application.Current.Exit();
+            //Application.Current.Exit();
+            Environment.Exit(0);
         }
 
         /// <summary>

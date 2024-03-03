@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Threading.Tasks;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.Windows.AppLifecycle;
@@ -65,8 +66,13 @@ namespace Flint3
             // LiteWindow.Hide();
         }
 
-        public void ShowMainWindow()
+        public async Task ShowMainWindowFromRedirectAsync()
         {
+            while (MainWindow == null)
+            {
+                await Task.Delay(100);
+            }
+
             _dispatcherQueue.TryEnqueue(() =>
             {
                 MainWindow.Restore();
