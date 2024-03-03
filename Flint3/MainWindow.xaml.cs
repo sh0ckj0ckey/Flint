@@ -250,6 +250,7 @@ namespace Flint3
         {
             this.Restore();
             this.BringToFront();
+            this.Activate();
         }
 
         /// <summary>
