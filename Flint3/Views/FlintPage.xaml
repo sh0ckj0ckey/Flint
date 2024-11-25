@@ -235,7 +235,7 @@
 
         <!--教程 2/2-->
         <Border x:Name="SecondTeachingTipTargetBorder" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Top" Background="Transparent" Width="1" Height="1" Margin="40,0,0,0"/>
-        <TeachingTip x:Name="SecondTeachingTip" Target="{x:Bind SecondTeachingTipTargetBorder}" IsOpen="False" Title="快速唤醒燧石" Subtitle="按下 Alt + 空格键 可以将燧石窗口唤醒" PreferredPlacement="TopRight"
+        <TeachingTip x:Name="SecondTeachingTip" Target="{x:Bind SecondTeachingTipTargetBorder}" IsOpen="False" Title="快速唤醒燧石" Subtitle="按下 Alt + 空格键 可以将燧石窗口唤醒" PreferredPlacement="Top"
                      CloseButtonContent="我知道了" CloseButtonClick="OnClickCloseSecondTeachingTip">
             <TeachingTip.Content>
                 <TextBlock Text="可以在设置中修改为更加趁手的快捷键" TextWrapping="Wrap" FontSize="13" Margin="0,2,0,0" Opacity="0.7"/>

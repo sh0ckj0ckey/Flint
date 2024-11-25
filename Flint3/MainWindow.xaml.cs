@@ -57,6 +57,7 @@ namespace Flint3
                 if (MainViewModel.Instance.AppSettings.AutoClearLastInput)
                 {
                     MainViewModel.Instance.ActClearTextBox?.Invoke();
+                    this.CenterOnScreen();
                 }
             };
             MainViewModel.Instance.ActHideWindow = this.HideApp;
@@ -75,6 +76,7 @@ namespace Flint3
                 if (MainViewModel.Instance.AppSettings.AutoClearLastInput)
                 {
                     MainViewModel.Instance.ActClearTextBox?.Invoke();
+                    this.CenterOnScreen();
                 }
             };
             _notifyIcon.OnClickCloseWindow += () =>

@@ -9,7 +9,7 @@
 
 	<Identity Name="22189NoMewing.6191006733C16"
 			  Publisher="CN=E6D8FAFA-3EF4-4E47-B885-52144C67BFF5"
-			  Version="3.2.0.0" />
+			  Version="3.2.1.0" />
 
 	<mp:PhoneIdentity PhoneProductId="ea7c791b-9a41-451a-94b4-4ada7eee7f41" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
@@ -33,7 +33,7 @@
 					 Executable="$targetnametoken$.exe"
 					 EntryPoint="$targetentrypoint$">
 			<uap:VisualElements DisplayName="燧石"
-								Description="面向 Windows 11 的离线英汉词典，&quot;燧石&quot;随地查单词~"
+								Description="&quot;燧石&quot;随地查单词，离线英汉词典。"
 								BackgroundColor="transparent" Square150x150Logo="Assets\Manifests\Square150x150Logo.png" Square44x44Logo="Assets\Manifests\Square44x44Logo.png">
 				<uap:DefaultTile  ShortName="燧石" Square71x71Logo="Assets\Manifests\SmallTile.png" Wide310x150Logo="Assets\Manifests\Wide310x150Logo.png" Square310x310Logo="Assets\Manifests\LargeTile.png">
 					<uap:ShowNameOnTiles>

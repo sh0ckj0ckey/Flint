@@ -207,7 +207,7 @@
                         <TextBlock Text="自动清除" CharacterSpacing="64"/>
                     </labs:SettingsCard.Header>
                     <labs:SettingsCard.Description>
-                        <TextBlock Text="唤醒后清除上一次输入" CharacterSpacing="64"/>
+                        <TextBlock Text="唤醒后清除上一次输入并居中窗口" CharacterSpacing="64"/>
                     </labs:SettingsCard.Description>
                     <ToggleSwitch MinWidth="0" Background="Transparent" IsOn="{x:Bind _viewModel.AppSettings.AutoClearLastInput,Mode=TwoWay}"/>
                 </labs:SettingsCard>
