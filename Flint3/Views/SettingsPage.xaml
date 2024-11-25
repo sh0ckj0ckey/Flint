@@ -59,7 +59,7 @@
                     </StackPanel>
                 </Grid>
 
-                <TextBlock Text="外观与功能" Margin="20,12,0,4" FontWeight="Bold" FontSize="14" CharacterSpacing="64"/>
+                <TextBlock Text="外观与功能" Margin="20,12,0,8" FontWeight="Bold" FontSize="14" CharacterSpacing="64"/>
 
                 <!--主题设置-->
                 <labs:SettingsCard Margin="16,2,16,0" HorizontalAlignment="Stretch">
@@ -168,7 +168,7 @@
                     </labs:SettingsExpander.Items>
                 </labs:SettingsExpander>
 
-                <TextBlock Text="行为" Margin="20,12,0,4" FontWeight="Bold" FontSize="14" CharacterSpacing="64"/>
+                <TextBlock Text="行为" Margin="20,12,0,8" FontWeight="Bold" FontSize="14" CharacterSpacing="64"/>
 
                 <!--开机自启设置-->
                 <labs:SettingsCard Margin="16,2,16,0" HorizontalAlignment="Stretch">
@@ -234,7 +234,7 @@
                     </ComboBox>
                 </labs:SettingsCard>
 
-                <TextBlock Text="搜索" Margin="20,12,0,4" FontWeight="Bold" FontSize="14" CharacterSpacing="64"/>
+                <TextBlock Text="搜索" Margin="20,12,0,8" FontWeight="Bold" FontSize="14" CharacterSpacing="64"/>
 
                 <!--搜索框样式设置-->
                 <labs:SettingsExpander Margin="16,2,16,0" HorizontalAlignment="Stretch" IsExpanded="False">
@@ -323,7 +323,7 @@
                     </labs:SettingsExpander.Items>
                 </labs:SettingsExpander>
 
-                <TextBlock Text="关于" Margin="20,12,0,4" FontWeight="Bold" FontSize="14" CharacterSpacing="64"/>
+                <TextBlock Text="关于" Margin="20,12,0,8" FontWeight="Bold" FontSize="14" CharacterSpacing="64"/>
 
                 <!--关于版本号-->
                 <labs:SettingsCard Margin="16,2,16,0" HorizontalAlignment="Stretch">
