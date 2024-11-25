@@ -245,5 +245,35 @@ namespace Flint3.Views
                 Debug.WriteLine(ex.Message);
             }
         }
+
+        /// <summary>
+        /// 滚动页面时，显露顶部分割线
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
+        {
+            if (sender is ScrollViewer scrollViewer)
+            {
+                var verticalOffset = scrollViewer.VerticalOffset;
+                var maxOffset = Math.Min(160, scrollViewer.ScrollableHeight);
+
+                if (maxOffset <= 0) return;
+
+                // 透明度按滚动比例变化，从全透明到不透明
+                double newOpacity = verticalOffset / maxOffset;
+                if (newOpacity > 1)
+                {
+                    newOpacity = 1;
+                }
+                if (newOpacity < 0)
+                {
+                    newOpacity = 0;
+                }
+
+                SettingsPageHeaderSeperatorLineBorder.Opacity = newOpacity;
+                // LogoGrid.Opacity = 1 - newOpacity;
+            }
+        }
     }
 }
