@@ -54,7 +54,7 @@ namespace Flint3.Core
                     }
                 }
             }
-            catch { }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
             return text;
         }
 
@@ -90,10 +90,10 @@ namespace Flint3.Core
                     {
                         await System.Threading.Tasks.Task.Delay(TimeSpan.FromSeconds(1));
                     }
-                    catch { }
+                    catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
                 }
             }
-            catch { }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
             return false;
         }
     }

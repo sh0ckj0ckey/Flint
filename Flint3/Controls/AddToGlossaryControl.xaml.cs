@@ -46,7 +46,7 @@ namespace Flint3.Controls
 
                 MainViewModel.Instance.GetAddGlossariesList();
             }
-            catch { }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         }
 
         private void OnClickAddingWordColor(object sender, RoutedEventArgs e)
@@ -93,7 +93,7 @@ namespace Flint3.Controls
                     MainViewModel.Instance.AddingWordColor = colorsEnum;
                 }
             }
-            catch { }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         }
 
         private void OnClickAddWord(object sender, RoutedEventArgs e)

@@ -15,7 +15,7 @@ namespace Flint3.Converters
                     return value.ToString() == parameter.ToString() ? Visibility.Collapsed : Visibility.Visible;
                 }
             }
-            catch { }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
             return Visibility.Collapsed;
         }
 

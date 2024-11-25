@@ -15,7 +15,7 @@ namespace Flint3.Converters
                     return value.ToString().ToLower() == parameter.ToString().ToLower() ? Visibility.Visible : Visibility.Collapsed;
                 }
             }
-            catch { }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
             return Visibility.Collapsed;
         }
 

@@ -85,7 +85,7 @@ namespace Flint3.Converters
                         break;
                 }
             }
-            catch { }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
             return new SolidColorBrush(Colors.Transparent);
         }
 

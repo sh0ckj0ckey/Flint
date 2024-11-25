@@ -118,7 +118,7 @@ namespace Flint3.ViewModels
                     }
                 }
             }
-            catch { }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         }
 
         private StarDictWordItem MakeupWord(StarDictWordItem item)

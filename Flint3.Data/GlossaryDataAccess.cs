@@ -75,7 +75,7 @@ namespace Flint3.Data
                 }
                 return results;
             }
-            catch { }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
             return null;
         }
 
@@ -93,7 +93,7 @@ namespace Flint3.Data
                 insertCommand.Parameters.AddWithValue("$desc", desc);
                 SqliteDataReader query = insertCommand?.ExecuteReader();
             }
-            catch { }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace Flint3.Data
                 updateCommand.Parameters.AddWithValue("$glossaryid", id);
                 SqliteDataReader query = updateCommand?.ExecuteReader();
             }
-            catch { }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         }
 
         /// <summary>
@@ -132,7 +132,7 @@ namespace Flint3.Data
                 deleteWordsCommand.Parameters.AddWithValue("$glossaryid", id);
                 SqliteDataReader wordsQuery = deleteWordsCommand?.ExecuteReader();
             }
-            catch { }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         }
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace Flint3.Data
                     return count;
                 }
             }
-            catch { }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
             return -1;
         }
 
@@ -235,7 +235,7 @@ namespace Flint3.Data
                 }
                 return results;
             }
-            catch { }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
             return null;
         }
 
@@ -262,7 +262,7 @@ namespace Flint3.Data
                 insertCommand.Parameters.AddWithValue("$color", (int)color);
                 SqliteDataReader query = insertCommand?.ExecuteReader();
             }
-            catch { }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         }
 
         /// <summary>
@@ -282,7 +282,7 @@ namespace Flint3.Data
                 updateCommand.Parameters.AddWithValue("$id", id);
                 SqliteDataReader query = updateCommand?.ExecuteReader();
             }
-            catch { }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         }
 
         /// <summary>
@@ -299,7 +299,7 @@ namespace Flint3.Data
                 deleteWordsCommand.Parameters.AddWithValue("$id", id);
                 SqliteDataReader wordsQuery = deleteWordsCommand?.ExecuteReader();
             }
-            catch { }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         }
 
         /// <summary>
@@ -319,7 +319,7 @@ namespace Flint3.Data
 
                 return wordsQuery?.Read() == true;
             }
-            catch { }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
             return false;
         }
 

@@ -15,7 +15,7 @@ namespace Flint3.Converters
                     return value.ToString().ToLower() == parameter.ToString().ToLower();
                 }
             }
-            catch { }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
             return false;
         }
 

@@ -48,7 +48,7 @@ namespace Flint3.Views
                 {
                     _glossaryWordsScrollViewer?.ChangeView(0, 0, null, true);
                 }
-                catch { }
+                catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
             };
         }
 
@@ -87,7 +87,7 @@ namespace Flint3.Views
                     Debug.WriteLine($"OnGlossaryWordsListViewLoaded ViewChanged Registered");
                 }
             }
-            catch { }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         }
 
         private void OnGlossaryWordsListViewUnloaded(object sender, RoutedEventArgs e)
@@ -100,7 +100,7 @@ namespace Flint3.Views
                     Debug.WriteLine($"OnGlossaryWordsListViewUnloaded ViewChanged Unregistered");
                 }
             }
-            catch { }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         }
 
         private void OnClickBackButton(object sender, RoutedEventArgs e)
@@ -213,7 +213,7 @@ namespace Flint3.Views
                     }
                 }
             }
-            catch { }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         }
 
         /// <summary>
@@ -253,7 +253,7 @@ namespace Flint3.Views
         //        ViewModel?.GetMoreGlossaryWords();
         //        OrderByModeFlyout?.Hide();
         //    }
-        //    catch { }
+        //    catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         //}
     }
 }

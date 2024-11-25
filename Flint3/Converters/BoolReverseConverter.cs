@@ -15,7 +15,7 @@ namespace Flint3.Converters
                     return bool.Parse(value?.ToString() ?? "True") ? false : true;
                 }
             }
-            catch { }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
             return false;
         }
 

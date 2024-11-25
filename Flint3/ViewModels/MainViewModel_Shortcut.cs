@@ -123,7 +123,7 @@ namespace Flint3.ViewModels
                     return;
                 }
             }
-            catch { }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
             ActivationShortcut = _defaultActivationShortcut;
         }
 
@@ -134,7 +134,7 @@ namespace Flint3.ViewModels
                 string json = JsonSerializer.Serialize(ActivationShortcut);
                 bool ret = await StorageFilesService.WriteFileAsync("shortcutsettings", json);
             }
-            catch { }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         }
 
         #endregion

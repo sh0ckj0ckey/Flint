@@ -120,7 +120,7 @@ namespace Flint3.Views
                     ViewModel.MatchWord(string.Empty);
                 }
             }
-            catch { }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace Flint3.Views
                     tb.SelectAll();
                 }
             }
-            catch { }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         }
 
         /// <summary>
@@ -194,7 +194,7 @@ namespace Flint3.Views
                     NewFeatureButton.Visibility = Visibility.Visible;
                 }
             }
-            catch { }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         }
 
         private void OnClickShowMeNewFeature(object sender, RoutedEventArgs e)
@@ -208,7 +208,7 @@ namespace Flint3.Views
                 SecondTeachingTip.IsOpen = false;
                 FirstTeachingTip.IsOpen = true;
             }
-            catch { }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         }
 
         private void OnClickCloseFirstTeachingTip(TeachingTip sender, object args)

@@ -49,7 +49,7 @@ namespace Flint3.Data
                 _starDictDb?.Close();
                 _starDictDb?.Dispose();
             }
-            catch { }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace Flint3.Data
                 }
                 return results;
             }
-            catch { }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
             return null;
         }
 
@@ -111,7 +111,7 @@ namespace Flint3.Data
                 }
                 return results;
             }
-            catch { }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
             return null;
         }
 
@@ -176,7 +176,7 @@ namespace Flint3.Data
                 }
                 return results;
             }
-            catch { }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
             return null;
         }
 
@@ -207,7 +207,7 @@ namespace Flint3.Data
                     return count;
                 }
             }
-            catch { }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
             return -1;
         }
 

@@ -43,7 +43,7 @@ namespace Flint3.Converters
                         return "灰色";
                 }
             }
-            catch { }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
             return string.Empty;
         }
 

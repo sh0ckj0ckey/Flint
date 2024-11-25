@@ -22,7 +22,7 @@ namespace Flint3.Converters
                     }
                 }
             }
-            catch { }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
             return value;
         }
 

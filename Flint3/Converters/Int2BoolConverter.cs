@@ -30,7 +30,7 @@ namespace Flint3.Converters
                     return parameter.ToString() == value.ToString();
                 }
             }
-            catch { }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
             return false;
         }
 

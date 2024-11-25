@@ -1,210 +1,210 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net7.0-windows10.0.22000.0</TargetFramework>
-    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
-    <RootNamespace>Flint3</RootNamespace>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-    <Platforms>x64;ARM64</Platforms>
-    <RuntimeIdentifiers>win10-x64;win10-arm64</RuntimeIdentifiers>
-    <PublishProfile>win10-$(Platform).pubxml</PublishProfile>
-    <UseWinUI>true</UseWinUI>
-    <EnableMsixTooling>true</EnableMsixTooling>
-    <PackageCertificateThumbprint>5A0BF8439709A49B4461A62D501B413C3C6D9293</PackageCertificateThumbprint>
-    <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
-    <DefaultLanguage>zh-CN</DefaultLanguage>
-    <ApplicationIcon>Assets\Logos\flint_logo.ico</ApplicationIcon>
-    <SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
-    <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
-    <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
-    <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
-    <AppxSymbolPackageEnabled>True</AppxSymbolPackageEnabled>
-    <GenerateTestArtifacts>True</GenerateTestArtifacts>
-    <AppxBundle>Always</AppxBundle>
-    <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
-    <AppxBundlePlatforms>x64</AppxBundlePlatforms>
-    <AppxPackageDir>C:\Users\Shock Jockey\Desktop\</AppxPackageDir>
-    <GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>
-	<DefineConstants>$(DefineConstants);DISABLE_XAML_GENERATED_MAIN</DefineConstants>
-	<WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
-	<SelfContained>true</SelfContained>
-  </PropertyGroup>
-  <ItemGroup>
-    <None Remove="Assets\flint_logo_background_dark.png" />
-    <None Remove="Assets\flint_logo_background_light.png" />
-    <None Remove="Assets\icon_github_dark.png" />
-    <None Remove="Assets\icon_github_light.png" />
-    <None Remove="Assets\icon_mail.png" />
-    <None Remove="Assets\icon_qq.png" />
-    <None Remove="Assets\icon_wechat.png" />
-    <None Remove="Assets\img_feedback_qq.jpg" />
-    <None Remove="Assets\img_feedback_wechat.jpg" />
-    <None Remove="Assets\Logos\flint_logo.ico" />
-    <None Remove="Assets\Logos\flint_logo.png" />
-    <None Remove="Assets\Manifests\LargeTile.scale-100.png" />
-    <None Remove="Assets\Manifests\LargeTile.scale-125.png" />
-    <None Remove="Assets\Manifests\LargeTile.scale-150.png" />
-    <None Remove="Assets\Manifests\LargeTile.scale-200.png" />
-    <None Remove="Assets\Manifests\LargeTile.scale-400.png" />
-    <None Remove="Assets\Manifests\SmallTile.scale-100.png" />
-    <None Remove="Assets\Manifests\SmallTile.scale-125.png" />
-    <None Remove="Assets\Manifests\SmallTile.scale-150.png" />
-    <None Remove="Assets\Manifests\SmallTile.scale-200.png" />
-    <None Remove="Assets\Manifests\SmallTile.scale-400.png" />
-    <None Remove="Assets\Manifests\SplashScreen.scale-100.png" />
-    <None Remove="Assets\Manifests\SplashScreen.scale-125.png" />
-    <None Remove="Assets\Manifests\SplashScreen.scale-150.png" />
-    <None Remove="Assets\Manifests\SplashScreen.scale-200.png" />
-    <None Remove="Assets\Manifests\SplashScreen.scale-400.png" />
-    <None Remove="Assets\Manifests\Square150x150Logo.scale-100.png" />
-    <None Remove="Assets\Manifests\Square150x150Logo.scale-125.png" />
-    <None Remove="Assets\Manifests\Square150x150Logo.scale-150.png" />
-    <None Remove="Assets\Manifests\Square150x150Logo.scale-200.png" />
-    <None Remove="Assets\Manifests\Square150x150Logo.scale-400.png" />
-    <None Remove="Assets\Manifests\Square44x44Logo.altform-lightunplated_targetsize-16.png" />
-    <None Remove="Assets\Manifests\Square44x44Logo.altform-lightunplated_targetsize-24.png" />
-    <None Remove="Assets\Manifests\Square44x44Logo.altform-lightunplated_targetsize-256.png" />
-    <None Remove="Assets\Manifests\Square44x44Logo.altform-lightunplated_targetsize-32.png" />
-    <None Remove="Assets\Manifests\Square44x44Logo.altform-lightunplated_targetsize-48.png" />
-    <None Remove="Assets\Manifests\Square44x44Logo.altform-unplated_targetsize-16.png" />
-    <None Remove="Assets\Manifests\Square44x44Logo.altform-unplated_targetsize-24.png" />
-    <None Remove="Assets\Manifests\Square44x44Logo.altform-unplated_targetsize-256.png" />
-    <None Remove="Assets\Manifests\Square44x44Logo.altform-unplated_targetsize-32.png" />
-    <None Remove="Assets\Manifests\Square44x44Logo.altform-unplated_targetsize-48.png" />
-    <None Remove="Assets\Manifests\Square44x44Logo.scale-100.png" />
-    <None Remove="Assets\Manifests\Square44x44Logo.scale-125.png" />
-    <None Remove="Assets\Manifests\Square44x44Logo.scale-150.png" />
-    <None Remove="Assets\Manifests\Square44x44Logo.scale-200.png" />
-    <None Remove="Assets\Manifests\Square44x44Logo.scale-400.png" />
-    <None Remove="Assets\Manifests\Square44x44Logo.targetsize-16.png" />
-    <None Remove="Assets\Manifests\Square44x44Logo.targetsize-24.png" />
-    <None Remove="Assets\Manifests\Square44x44Logo.targetsize-256.png" />
-    <None Remove="Assets\Manifests\Square44x44Logo.targetsize-32.png" />
-    <None Remove="Assets\Manifests\Square44x44Logo.targetsize-48.png" />
-    <None Remove="Assets\Manifests\StoreLogo.scale-100.png" />
-    <None Remove="Assets\Manifests\StoreLogo.scale-125.png" />
-    <None Remove="Assets\Manifests\StoreLogo.scale-150.png" />
-    <None Remove="Assets\Manifests\StoreLogo.scale-200.png" />
-    <None Remove="Assets\Manifests\StoreLogo.scale-400.png" />
-    <None Remove="Assets\Manifests\Wide310x150Logo.scale-100.png" />
-    <None Remove="Assets\Manifests\Wide310x150Logo.scale-125.png" />
-    <None Remove="Assets\Manifests\Wide310x150Logo.scale-150.png" />
-    <None Remove="Assets\Manifests\Wide310x150Logo.scale-200.png" />
-    <None Remove="Assets\Manifests\Wide310x150Logo.scale-400.png" />
-    <None Remove="Assets\photo.png" />
-    <None Remove="Assets\teachingtip_img.jpg" />
-    <None Remove="Controls\AddToGlossaryControl.xaml" />
-    <None Remove="Controls\KeyVisual\KeyVisual.xaml" />
-    <None Remove="Controls\ShortcutControl\ShortcutControl.xaml" />
-    <None Remove="Controls\ShortcutControl\ShortcutDialogContentControl.xaml" />
-    <None Remove="Data\stardict.db" />
-    <None Remove="FlintLiteWindow.xaml" />
-    <None Remove="ThemeResource\CustomControlStyle.xaml" />
-    <None Remove="ThemeResource\ThemeDictionary.xaml" />
-    <None Remove="Views\FlintPage.xaml" />
-    <None Remove="Views\GlossaryContentPage.xaml" />
-    <None Remove="Views\GlossaryPage.xaml" />
-    <None Remove="Views\GlossaryPropertyPage.xaml" />
-    <None Remove="Views\GlossaryWordPage.xaml" />
-    <None Remove="Views\SettingsPage.xaml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Data\stardict.db" />
-  </ItemGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>
+		<TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
+		<RootNamespace>Flint3</RootNamespace>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+		<Platforms>x64;ARM64</Platforms>
+		<RuntimeIdentifiers Condition="$([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)')) &gt;= 8">win-x86;win-x64;win-arm64</RuntimeIdentifiers>
+		<RuntimeIdentifiers Condition="$([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)')) &lt; 8">win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
+		<PublishProfile>win-$(Platform).pubxml</PublishProfile>
+		<UseWinUI>true</UseWinUI>
+		<EnableMsixTooling>true</EnableMsixTooling>
+		<AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
+		<DefaultLanguage>zh-CN</DefaultLanguage>
+		<SupportedOSPlatformVersion>10.0.22000.0</SupportedOSPlatformVersion>
+		<ApplicationIcon>Assets\Logos\flint_logo.ico</ApplicationIcon>
+		<GenerateAppInstallerFile>False</GenerateAppInstallerFile>
+		<AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
+		<AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
+		<AppxSymbolPackageEnabled>True</AppxSymbolPackageEnabled>
+		<GenerateTestArtifacts>True</GenerateTestArtifacts>
+		<AppxBundle>Always</AppxBundle>
+		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
+		<AppxBundlePlatforms>x64</AppxBundlePlatforms>
+		<AppxPackageDir>C:\Users\Shock Jockey\Desktop\</AppxPackageDir>
+		<GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>
+		<DefineConstants>$(DefineConstants);DISABLE_XAML_GENERATED_MAIN</DefineConstants>
+		<WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+		<SelfContained>true</SelfContained>
+	</PropertyGroup>
+	<ItemGroup>
+		<None Remove="Assets\flint_logo_background_dark.png" />
+		<None Remove="Assets\flint_logo_background_light.png" />
+		<None Remove="Assets\icon_github_dark.png" />
+		<None Remove="Assets\icon_github_light.png" />
+		<None Remove="Assets\icon_mail.png" />
+		<None Remove="Assets\icon_qq.png" />
+		<None Remove="Assets\icon_wechat.png" />
+		<None Remove="Assets\img_feedback_qq.jpg" />
+		<None Remove="Assets\img_feedback_wechat.jpg" />
+		<None Remove="Assets\Logos\flint_logo.ico" />
+		<None Remove="Assets\Logos\flint_logo.png" />
+		<None Remove="Assets\Manifests\LargeTile.scale-100.png" />
+		<None Remove="Assets\Manifests\LargeTile.scale-125.png" />
+		<None Remove="Assets\Manifests\LargeTile.scale-150.png" />
+		<None Remove="Assets\Manifests\LargeTile.scale-200.png" />
+		<None Remove="Assets\Manifests\LargeTile.scale-400.png" />
+		<None Remove="Assets\Manifests\SmallTile.scale-100.png" />
+		<None Remove="Assets\Manifests\SmallTile.scale-125.png" />
+		<None Remove="Assets\Manifests\SmallTile.scale-150.png" />
+		<None Remove="Assets\Manifests\SmallTile.scale-200.png" />
+		<None Remove="Assets\Manifests\SmallTile.scale-400.png" />
+		<None Remove="Assets\Manifests\SplashScreen.scale-100.png" />
+		<None Remove="Assets\Manifests\SplashScreen.scale-125.png" />
+		<None Remove="Assets\Manifests\SplashScreen.scale-150.png" />
+		<None Remove="Assets\Manifests\SplashScreen.scale-200.png" />
+		<None Remove="Assets\Manifests\SplashScreen.scale-400.png" />
+		<None Remove="Assets\Manifests\Square150x150Logo.scale-100.png" />
+		<None Remove="Assets\Manifests\Square150x150Logo.scale-125.png" />
+		<None Remove="Assets\Manifests\Square150x150Logo.scale-150.png" />
+		<None Remove="Assets\Manifests\Square150x150Logo.scale-200.png" />
+		<None Remove="Assets\Manifests\Square150x150Logo.scale-400.png" />
+		<None Remove="Assets\Manifests\Square44x44Logo.altform-lightunplated_targetsize-16.png" />
+		<None Remove="Assets\Manifests\Square44x44Logo.altform-lightunplated_targetsize-24.png" />
+		<None Remove="Assets\Manifests\Square44x44Logo.altform-lightunplated_targetsize-256.png" />
+		<None Remove="Assets\Manifests\Square44x44Logo.altform-lightunplated_targetsize-32.png" />
+		<None Remove="Assets\Manifests\Square44x44Logo.altform-lightunplated_targetsize-48.png" />
+		<None Remove="Assets\Manifests\Square44x44Logo.altform-unplated_targetsize-16.png" />
+		<None Remove="Assets\Manifests\Square44x44Logo.altform-unplated_targetsize-24.png" />
+		<None Remove="Assets\Manifests\Square44x44Logo.altform-unplated_targetsize-256.png" />
+		<None Remove="Assets\Manifests\Square44x44Logo.altform-unplated_targetsize-32.png" />
+		<None Remove="Assets\Manifests\Square44x44Logo.altform-unplated_targetsize-48.png" />
+		<None Remove="Assets\Manifests\Square44x44Logo.scale-100.png" />
+		<None Remove="Assets\Manifests\Square44x44Logo.scale-125.png" />
+		<None Remove="Assets\Manifests\Square44x44Logo.scale-150.png" />
+		<None Remove="Assets\Manifests\Square44x44Logo.scale-200.png" />
+		<None Remove="Assets\Manifests\Square44x44Logo.scale-400.png" />
+		<None Remove="Assets\Manifests\Square44x44Logo.targetsize-16.png" />
+		<None Remove="Assets\Manifests\Square44x44Logo.targetsize-24.png" />
+		<None Remove="Assets\Manifests\Square44x44Logo.targetsize-256.png" />
+		<None Remove="Assets\Manifests\Square44x44Logo.targetsize-32.png" />
+		<None Remove="Assets\Manifests\Square44x44Logo.targetsize-48.png" />
+		<None Remove="Assets\Manifests\StoreLogo.scale-100.png" />
+		<None Remove="Assets\Manifests\StoreLogo.scale-125.png" />
+		<None Remove="Assets\Manifests\StoreLogo.scale-150.png" />
+		<None Remove="Assets\Manifests\StoreLogo.scale-200.png" />
+		<None Remove="Assets\Manifests\StoreLogo.scale-400.png" />
+		<None Remove="Assets\Manifests\Wide310x150Logo.scale-100.png" />
+		<None Remove="Assets\Manifests\Wide310x150Logo.scale-125.png" />
+		<None Remove="Assets\Manifests\Wide310x150Logo.scale-150.png" />
+		<None Remove="Assets\Manifests\Wide310x150Logo.scale-200.png" />
+		<None Remove="Assets\Manifests\Wide310x150Logo.scale-400.png" />
+		<None Remove="Assets\photo.png" />
+		<None Remove="Assets\teachingtip_img.jpg" />
+		<None Remove="Controls\AddToGlossaryControl.xaml" />
+		<None Remove="Controls\KeyVisual\KeyVisual.xaml" />
+		<None Remove="Controls\ShortcutControl\ShortcutControl.xaml" />
+		<None Remove="Controls\ShortcutControl\ShortcutDialogContentControl.xaml" />
+		<None Remove="Data\stardict.db" />
+		<None Remove="FlintLiteWindow.xaml" />
+		<None Remove="ThemeResource\CustomControlStyle.xaml" />
+		<None Remove="ThemeResource\ThemeDictionary.xaml" />
+		<None Remove="Views\FlintPage.xaml" />
+		<None Remove="Views\GlossaryContentPage.xaml" />
+		<None Remove="Views\GlossaryPage.xaml" />
+		<None Remove="Views\GlossaryPropertyPage.xaml" />
+		<None Remove="Views\GlossaryWordPage.xaml" />
+		<None Remove="Views\SettingsPage.xaml" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="Data\stardict.db" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="CommunityToolkit.WinUI.Controls.Segmented" Version="8.0.240109" />
-    <PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.0.240109" />
-    <PackageReference Include="CommunityToolkit.WinUI.UI" Version="7.1.2" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240227000" />
-    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.3233" />
-    <PackageReference Include="WinUIEx" Version="2.3.4" />
-    <Manifest Include="$(ApplicationManifest)" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.WinUI.Controls.Segmented" Version="8.1.240916" />
+		<PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.1.240916" />
+		<PackageReference Include="CommunityToolkit.WinUI.UI" Version="7.1.2" />
+		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.241114003" />
+		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" />
+		<PackageReference Include="WinUIEx" Version="2.5.0" />
+		<Manifest Include="$(ApplicationManifest)" />
+	</ItemGroup>
 
-  <!-- 
+	<!-- 
     Defining the "Msix" ProjectCapability here allows the Single-project MSIX Packaging
     Tools extension to be activated for this project even if the Windows App SDK Nuget
     package has not yet been restored.
   -->
-  <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
-    <ProjectCapability Include="Msix" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Flint3.Core\Flint3.Core.csproj" />
-    <ProjectReference Include="..\Flint3.Data\Flint3.Data.csproj" />
-    <ProjectReference Include="..\Flint3.Interop\Flint3.Interop.vcxproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="FlintLiteWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Views\GlossaryWordPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\AddToGlossaryControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Views\GlossaryPropertyPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Views\GlossaryContentPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Views\GlossaryPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\ShortcutControl\ShortcutDialogContentControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Views\SettingsPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Views\FlintPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="ThemeResource\CustomControlStyle.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Update="ThemeResource\ThemeDictionary.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\ShortcutControl\ShortcutControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\KeyVisual\KeyVisual.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
+	<ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
+		<ProjectCapability Include="Msix" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Flint3.Core\Flint3.Core.csproj" />
+		<ProjectReference Include="..\Flint3.Data\Flint3.Data.csproj" />
+		<ProjectReference Include="..\Flint3.Interop\Flint3.Interop.vcxproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<Page Update="FlintLiteWindow.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+	<ItemGroup>
+		<Page Update="Views\GlossaryWordPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+	<ItemGroup>
+		<Page Update="Controls\AddToGlossaryControl.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+	<ItemGroup>
+		<Page Update="Views\GlossaryPropertyPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+	<ItemGroup>
+		<Page Update="Views\GlossaryContentPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+	<ItemGroup>
+		<Page Update="Views\GlossaryPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+	<ItemGroup>
+		<Page Update="Controls\ShortcutControl\ShortcutDialogContentControl.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+	<ItemGroup>
+		<Page Update="Views\SettingsPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+	<ItemGroup>
+		<Page Update="Views\FlintPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+	<ItemGroup>
+		<Page Update="ThemeResource\CustomControlStyle.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+		<Page Update="ThemeResource\ThemeDictionary.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+	<ItemGroup>
+		<Page Update="Controls\ShortcutControl\ShortcutControl.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+	<ItemGroup>
+		<Page Update="Controls\KeyVisual\KeyVisual.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
 
-  <!-- 
+	<!-- 
     Defining the "HasPackageAndPublishMenuAddedByProject" property here allows the Solution 
     Explorer "Package and Publish" context menu entry to be enabled for this project even if 
     the Windows App SDK Nuget package has not yet been restored.
   -->
-  <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
-    <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
+		<HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
+	</PropertyGroup>
 </Project>

@@ -54,7 +54,7 @@ namespace Flint3.Views
                     this.Frame.GoBack();
                 }
             }
-            catch { }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace Flint3.Views
                     }
                 }
             }
-            catch { }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         }
 
         private void OnClickSaveEditDesc(object sender, RoutedEventArgs e)

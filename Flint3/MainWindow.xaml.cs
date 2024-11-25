@@ -255,7 +255,7 @@ namespace Flint3
                     }
                 }
             }
-            catch { }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         }
 
         /// <summary>
@@ -338,7 +338,7 @@ namespace Flint3
                 MainFrame.GoBack();
                 return true;
             }
-            catch { }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
             return false;
         }
 

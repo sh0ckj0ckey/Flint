@@ -15,6 +15,7 @@ namespace Flint3.Core
         private const string SETTING_NAME_ACRYLICOPACITY = "AcrylicOpacity";
         private const string SETTING_NAME_ENABLEENGDEF = "EnableEngDefinition";
         private const string SETTING_NAME_ENABLEGLOSSARY = "EnableGlossary";
+        private const string SETTING_NAME_USELITEWINDOW = "UseLiteWindow";
         private const string SETTING_NAME_AUTOCLEARLASTINPUT = "AutoClearLastInput";
         private const string SETTING_NAME_CLOSEBUTTONMODE = "CloseButtonMode";
         private const string SETTING_NAME_SEARCHBOXSTYLE = "SearchBoxStyle";
@@ -22,14 +23,35 @@ namespace Flint3.Core
         private const string SETTING_NAME_MAINSIZE_HEIGHT = "MainWindowHeight";
         private const string SETTING_NAME_MAINSIZE_WIDTH = "MainWindowWidth";
 
-        private ApplicationDataContainer _localSettings = ApplicationData.Current.LocalSettings;
+        private readonly ApplicationDataContainer _localSettings = ApplicationData.Current.LocalSettings;
 
-        public Action<int> OnAppearanceSettingChanged { get; set; } = null;
-        public Action<int> OnBackdropSettingChanged { get; set; } = null;
-        public Action<double> OnAcrylicOpacitySettingChanged { get; set; } = null;
-
-        // 设置的应用程序的主题 0-System 1-Dark 2-Light
         private int _appearanceIndex = -1;
+
+        private int _backdropIndex = -1;
+
+        private double _acrylicOpacity = -1;
+
+        private bool? _enableEngDefinition = null;
+
+        private bool? _enableGlossary = null;
+
+        private bool? _useLiteWindow = null;
+
+        private bool? _autoClearLastInput = null;
+
+        private int _closeButtonMode = -1;
+
+        private int _searchBoxStyle = -1;
+
+        public event Action<int> OnAppearanceSettingChanged = null;
+
+        public event Action<int> OnBackdropSettingChanged = null;
+
+        public event Action<double> OnAcrylicOpacitySettingChanged = null;
+
+        /// <summary>
+        /// 设置的应用程序的主题 0-System 1-Dark 2-Light
+        /// </summary>
         public int AppearanceIndex
         {
             get
@@ -60,7 +82,7 @@ namespace Flint3.Core
                         }
                     }
                 }
-                catch { }
+                catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
                 if (_appearanceIndex < 0) _appearanceIndex = 0;
                 return _appearanceIndex < 0 ? 0 : _appearanceIndex;
             }
@@ -72,8 +94,9 @@ namespace Flint3.Core
             }
         }
 
-        // 设置的应用程序的背景材质 0-Mica 1-Acrylic
-        private int _backdropIndex = -1;
+        /// <summary>
+        /// 设置的应用程序的背景材质 0-Mica 1-Acrylic
+        /// </summary>
         public int BackdropIndex
         {
             get
@@ -100,7 +123,7 @@ namespace Flint3.Core
                         }
                     }
                 }
-                catch { }
+                catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
                 if (_backdropIndex < 0) _backdropIndex = 0;
                 return _backdropIndex < 0 ? 0 : _backdropIndex;
             }
@@ -112,8 +135,9 @@ namespace Flint3.Core
             }
         }
 
-        // 亚克力背景透明度
-        private double _acrylicOpacity = -1;
+        /// <summary>
+        /// 亚克力背景透明度
+        /// </summary>
         public double AcrylicOpacity
         {
             get
@@ -136,7 +160,7 @@ namespace Flint3.Core
                         }
                     }
                 }
-                catch { }
+                catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
                 if (_acrylicOpacity < 0) _acrylicOpacity = 1.0;
                 return _acrylicOpacity < 0 ? 1.0 : _acrylicOpacity;
             }
@@ -148,8 +172,9 @@ namespace Flint3.Core
             }
         }
 
-        // 是否显示英英释义
-        private bool? _enableEngDefinition = null;
+        /// <summary>
+        /// 是否显示英英释义
+        /// </summary>
         public bool EnableEngDefinition
         {
             get
@@ -172,7 +197,7 @@ namespace Flint3.Core
                         }
                     }
                 }
-                catch { }
+                catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
                 if (_enableEngDefinition is null) _enableEngDefinition = true;
                 return _enableEngDefinition != false;
             }
@@ -183,8 +208,9 @@ namespace Flint3.Core
             }
         }
 
-        // 是否启用生词本
-        private bool? _enableGlossary = null;
+        /// <summary>
+        /// 是否启用生词本
+        /// </summary>
         public bool EnableGlossary
         {
             get
@@ -207,7 +233,7 @@ namespace Flint3.Core
                         }
                     }
                 }
-                catch { }
+                catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
                 if (_enableGlossary is null) _enableGlossary = true;
                 return _enableGlossary != false;
             }
@@ -218,8 +244,45 @@ namespace Flint3.Core
             }
         }
 
-        // 是否自动清除上次输入
-        private bool? _autoClearLastInput = null;
+        /// <summary>
+        /// 是否启用精简搜索窗口
+        /// </summary>
+        public bool UseLiteWindow
+        {
+            get
+            {
+                try
+                {
+                    if (_useLiteWindow is null)
+                    {
+                        if (_localSettings.Values[SETTING_NAME_USELITEWINDOW] == null)
+                        {
+                            _useLiteWindow = false;
+                        }
+                        else if (_localSettings.Values[SETTING_NAME_USELITEWINDOW]?.ToString() == "True")
+                        {
+                            _useLiteWindow = true;
+                        }
+                        else
+                        {
+                            _useLiteWindow = false;
+                        }
+                    }
+                }
+                catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
+                if (_useLiteWindow is null) _useLiteWindow = false;
+                return _useLiteWindow == true;
+            }
+            set
+            {
+                SetProperty(ref _useLiteWindow, value);
+                ApplicationData.Current.LocalSettings.Values[SETTING_NAME_USELITEWINDOW] = _useLiteWindow;
+            }
+        }
+
+        /// <summary>
+        /// 是否自动清除上次输入
+        /// </summary>
         public bool AutoClearLastInput
         {
             get
@@ -242,7 +305,7 @@ namespace Flint3.Core
                         }
                     }
                 }
-                catch { }
+                catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
                 if (_autoClearLastInput is null) _autoClearLastInput = false;
                 return _autoClearLastInput == true;
             }
@@ -253,8 +316,9 @@ namespace Flint3.Core
             }
         }
 
-        // 设置关闭按钮的作用 0-隐藏 1-退出
-        private int _closeButtonMode = -1;
+        /// <summary>
+        /// 设置关闭按钮的作用 0-隐藏 1-退出
+        /// </summary>
         public int CloseButtonMode
         {
             get
@@ -281,7 +345,7 @@ namespace Flint3.Core
                         }
                     }
                 }
-                catch { }
+                catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
                 if (_closeButtonMode < 0) _closeButtonMode = 0;
                 return _closeButtonMode < 0 ? 0 : _closeButtonMode;
             }
@@ -292,8 +356,9 @@ namespace Flint3.Core
             }
         }
 
-        // 搜索框样式
-        private int _searchBoxStyle = -1;
+        /// <summary>
+        /// 搜索框样式
+        /// </summary>
         public int SearchBoxStyle
         {
             get
@@ -324,7 +389,7 @@ namespace Flint3.Core
                         }
                     }
                 }
-                catch { }
+                catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
                 if (_searchBoxStyle < 0) _searchBoxStyle = 2;
                 return _searchBoxStyle < 0 ? 2 : _searchBoxStyle;
             }
@@ -332,66 +397,6 @@ namespace Flint3.Core
             {
                 SetProperty(ref _searchBoxStyle, value);
                 ApplicationData.Current.LocalSettings.Values[SETTING_NAME_SEARCHBOXSTYLE] = _searchBoxStyle;
-            }
-        }
-
-        // 主窗口高度
-        private double _mainWindowHeight = -1;
-        public double MainWindowHeight
-        {
-            get
-            {
-                try
-                {
-                    if (_mainWindowHeight < 0)
-                    {
-                        if (_localSettings.Values[SETTING_NAME_MAINSIZE_HEIGHT] != null)
-                        {
-                            string heightStr = _localSettings.Values[SETTING_NAME_MAINSIZE_HEIGHT]?.ToString();
-                            if (double.TryParse(heightStr, out double height))
-                            {
-                                _mainWindowHeight = height;
-                            }
-                        }
-                    }
-                }
-                catch { }
-                return _mainWindowHeight;
-            }
-            set
-            {
-                SetProperty(ref _mainWindowHeight, value);
-                ApplicationData.Current.LocalSettings.Values[SETTING_NAME_MAINSIZE_HEIGHT] = _mainWindowHeight;
-            }
-        }
-
-        // 主窗口宽度
-        private double _mainWindowWidth = -1;
-        public double MainWindowWidth
-        {
-            get
-            {
-                try
-                {
-                    if (_mainWindowWidth < 0)
-                    {
-                        if (_localSettings.Values[SETTING_NAME_MAINSIZE_WIDTH] != null)
-                        {
-                            string heightStr = _localSettings.Values[SETTING_NAME_MAINSIZE_WIDTH]?.ToString();
-                            if (double.TryParse(heightStr, out double height))
-                            {
-                                _mainWindowWidth = height;
-                            }
-                        }
-                    }
-                }
-                catch { }
-                return _mainWindowWidth;
-            }
-            set
-            {
-                SetProperty(ref _mainWindowWidth, value);
-                ApplicationData.Current.LocalSettings.Values[SETTING_NAME_MAINSIZE_WIDTH] = _mainWindowWidth;
             }
         }
     }
