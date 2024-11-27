@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Flint3.Controls.KeyVisual;
 using Flint3.Data;
@@ -14,6 +15,11 @@ using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using WinUIEx;
+
+using Windows.Win32;
+using Windows.Win32.Foundation;
+using Windows.Win32.Graphics.Gdi;
+using Windows.Win32.UI.WindowsAndMessaging;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -225,5 +231,35 @@ namespace Flint3.Views
 
         #endregion
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            App.LiteWindow ??= new FlintLiteWindow();
+            App.LiteWindow.Show();
+
+            // 参考自 https://github.com/dotMorten/WinUIEx/blob/main/src/WinUIEx/HwndExtensions.cs
+            int width = 520;
+            int height = 56;
+            IntPtr hwnd = App.LiteWindow.GetWindowHandle();
+            var hwndDesktop = PInvoke.MonitorFromWindow(new(hwnd), MONITOR_FROM_FLAGS.MONITOR_DEFAULTTONEAREST);
+            MONITORINFO info = new MONITORINFO();
+            info.cbSize = 40;
+            PInvoke.GetMonitorInfo(hwndDesktop, ref info);
+            var dpi = PInvoke.GetDpiForWindow(new HWND(hwnd));
+            var scalingFactor = dpi / 96d;
+            PInvoke.GetWindowRect(new HWND(hwnd), out RECT windowRect);
+            var w = (int)(width * scalingFactor);
+            var h = (int)(height * scalingFactor);
+            var cx = (info.rcMonitor.left + info.rcMonitor.right) / 2;
+            var cy = (info.rcMonitor.bottom + info.rcMonitor.top) / 2;
+            var left = cx - (w / 2);
+            var top = cy - (h / 2) * 12;
+            bool result = PInvoke.SetWindowPos(new HWND(hwnd), new HWND(), left, top, w, h, (SET_WINDOW_POS_FLAGS)0);
+            if (!result)
+            {
+                Marshal.ThrowExceptionForHR(Marshal.GetLastWin32Error());
+            }
+
+            App.LiteWindow?.Activate();
+        }
     }
 }

@@ -21,6 +21,8 @@ namespace Flint3.ViewModels
 
         public SettingsService AppSettings { get; set; } = new SettingsService();
 
+        public FlintLiteWindow LiteWindow = null;
+
         /// <summary>
         /// 控制主窗口根据当前的主题进行切换
         /// </summary>

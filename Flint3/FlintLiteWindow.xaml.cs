@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using ABI.Windows.Foundation;
 using Flint3.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -27,12 +28,31 @@ namespace Flint3
     {
         public FlintLiteWindow()
         {
-            this.InitializeComponent(); 
+            this.InitializeComponent();
             this.SystemBackdrop = MainViewModel.Instance.AppSettings.BackdropIndex == 1 ? new Microsoft.UI.Xaml.Media.DesktopAcrylicBackdrop() : new Microsoft.UI.Xaml.Media.MicaBackdrop();
             this.AppWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/Logos/flint_logo.ico"));
             this.PersistenceId = "FlintLiteWindow";
             this.IsShownInSwitchers = false;
             this.IsTitleBarVisible = false;
+            this.IsAlwaysOnTop = true;
+            this.IsResizable = false;
+            this.IsMaximizable = false;
+            this.IsMinimizable = false;
+
+            this.Activated += (_, args) =>
+            {
+                try
+                {
+                    if (args.WindowActivationState == WindowActivationState.Deactivated)
+                    {
+                        this.Hide();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Trace.WriteLine(ex);
+                }
+            };
         }
     }
 }

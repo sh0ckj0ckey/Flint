@@ -1,0 +1,6 @@
+﻿MonitorFromWindow
+GetWindowRect
+GetMonitorInfo
+GetDpiForWindow
+MONITORINFOEXW
+SetWindowPos

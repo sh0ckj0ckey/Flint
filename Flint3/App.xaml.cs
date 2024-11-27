@@ -20,7 +20,7 @@ namespace Flint3
 
         public static WindowEx MainWindow { get; } = new MainWindow();
 
-        // public static WindowEx LiteWindow { get; } = new FlintLiteWindow();
+        public static WindowEx LiteWindow { get; } = null;
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -54,7 +54,7 @@ namespace Flint3
                 MainWindow.Activate();
             }
 
-            // LiteWindow.Hide();
+            LiteWindow?.Hide();
         }
 
         public async Task ShowMainWindowFromRedirectAsync()
@@ -66,6 +66,7 @@ namespace Flint3
 
             _dispatcherQueue.TryEnqueue(() =>
             {
+                LiteWindow?.Hide();
                 MainWindow.Restore();
                 MainWindow.CenterOnScreen();
                 MainWindow.BringToFront();
