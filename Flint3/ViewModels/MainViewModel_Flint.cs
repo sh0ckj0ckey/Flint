@@ -1,93 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Flint3.Core;
 using Flint3.Data;
 using Flint3.Data.Models;
-using Flint3.Helpers;
 
 namespace Flint3.ViewModels
 {
     public partial class MainViewModel : ObservableObject
     {
-        private static Lazy<MainViewModel> _lazyVM = new Lazy<MainViewModel>(() => new MainViewModel());
-        public static MainViewModel Instance => _lazyVM.Value;
-
-        public Microsoft.UI.Dispatching.DispatcherQueue Dispatcher { get; set; }
-
-        public SettingsService AppSettings { get; set; } = new SettingsService();
-
-        public FlintLiteWindow LiteWindow = null;
-
-        /// <summary>
-        /// 控制主窗口根据当前的主题进行切换
-        /// </summary>
-        public Action ActSwitchAppTheme { get; set; } = null;
-
-        /// <summary>
-        /// 控制主窗口根据当前的设置更改背景材质
-        /// </summary>
-        public Action ActChangeBackdrop { get; set; } = null;
-
-        /// <summary>
-        /// 将焦点聚焦到搜索框
-        /// </summary>
-        public Action ActFocusOnTextBox { get; set; } = null;
-
-        /// <summary>
-        /// 将搜索框清空
-        /// </summary>
-        public Action ActClearTextBox { get; set; } = null;
-
-        /// <summary>
-        /// 将主窗口隐藏到系统托盘
-        /// </summary>
-        public Action ActHideWindow { get; set; } = null;
-
-        /// <summary>
-        /// 将主窗口保持置顶或取消置顶
-        /// </summary>
-        public Action<bool> ActPinWindow { get; set; } = null;
-
-        /// <summary>
-        /// 显示应用
-        /// </summary>
-        public Action ActShowWindow { get; set; } = null;
-
-        /// <summary>
-        /// 退出应用
-        /// </summary>
-        public Action ActExitWindow { get; set; } = null;
-
         /// <summary>
         /// 搜索展示结果
         /// </summary>
         public ObservableCollection<StarDictWordItem> SearchResultWordItems { get; private set; } = new ObservableCollection<StarDictWordItem>();
 
-        public MainViewModel()
-        {
-            InitViewModel4Flint();
-            InitViewModel4Glossary();
-            InitViewModel4ShortcutKeys();
-        }
-
-        private void InitViewModel4Flint()
-        {
-            AppSettings.OnAppearanceSettingChanged += (index) => { ActSwitchAppTheme?.Invoke(); };
-            AppSettings.OnBackdropSettingChanged += (index) => { ActChangeBackdrop?.Invoke(); };
-            AppSettings.OnAcrylicOpacitySettingChanged += (opacity) => { };
-        }
-
         /// <summary>
-        /// 加载单词数据库
+        /// 进行对单词搜索相关的初始化
         /// </summary>
-        public void LoadStarDict()
+        private async void InitViewModel4Flint()
         {
-            StarDictDataAccess.InitializeDatabase();
+            await Task.Run(() =>
+            {
+                // 加载单词数据库
+                StarDictDataAccess.InitializeDatabase();
+            });
         }
 
         /// <summary>
@@ -123,9 +60,14 @@ namespace Flint3.ViewModels
             catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         }
 
+        /// <summary>
+        /// 将数据库返回的数据转换为界面展示的数据类型
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         private StarDictWordItem MakeupWord(StarDictWordItem item)
         {
-            if (AppSettings.EnableEngDefinition == false)
+            if (this.AppSettings.EnableEngDefinition == false)
             {
                 item.Definition = string.Empty;
             }

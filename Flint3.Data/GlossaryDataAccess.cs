@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
 using Flint3.Data.Models;
 using Microsoft.Data.Sqlite;
 using Windows.Storage;

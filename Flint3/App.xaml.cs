@@ -1,9 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Threading.Tasks;
-using Microsoft.UI.Dispatching;
+using Flint3.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.Windows.AppLifecycle;
-using Windows.System;
 using WinUIEx;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -16,12 +15,6 @@ namespace Flint3
     /// </summary>
     public partial class App : Application
     {
-        private readonly Microsoft.UI.Dispatching.DispatcherQueue _dispatcherQueue;
-
-        public static WindowEx MainWindow { get; } = new MainWindow();
-
-        public static WindowEx LiteWindow { get; } = null;
-
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -29,12 +22,13 @@ namespace Flint3
         public App()
         {
             this.InitializeComponent();
-            _dispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
+
+            MainViewModel.Instance.Dispatcher = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
 
             UnhandledException += (s, e) =>
             {
                 e.Handled = true;
-                Debug.WriteLine(e.Message);
+                Trace.WriteLine(e.Message);
             };
         }
 
@@ -47,30 +41,35 @@ namespace Flint3
             AppActivationArguments activatedArgs = AppInstance.GetCurrent().GetActivatedEventArgs();
             if (activatedArgs?.Kind == ExtendedActivationKind.StartupTask)
             {
-                MainWindow.Hide();
+                MainViewModel.Instance.FlintMainWindow.Hide();
             }
             else
             {
-                MainWindow.Activate();
+                MainViewModel.Instance.FlintMainWindow.BringToFront();
+                MainViewModel.Instance.FlintMainWindow.Activate();
             }
 
-            LiteWindow?.Hide();
+            MainViewModel.Instance.FlintLiteWindow?.Hide();
         }
 
+        /// <summary>
+        /// 重定向唤起主窗口
+        /// </summary>
+        /// <returns></returns>
         public async Task ShowMainWindowFromRedirectAsync()
         {
-            while (MainWindow == null)
+            while (MainViewModel.Instance.FlintMainWindow == null)
             {
                 await Task.Delay(100);
             }
 
-            _dispatcherQueue.TryEnqueue(() =>
+            MainViewModel.Instance.Dispatcher.TryEnqueue(() =>
             {
-                LiteWindow?.Hide();
-                MainWindow.Restore();
-                MainWindow.CenterOnScreen();
-                MainWindow.BringToFront();
-                MainWindow.Activate();
+                MainViewModel.Instance.FlintLiteWindow?.Hide();
+                MainViewModel.Instance.FlintMainWindow.Restore();
+                MainViewModel.Instance.FlintMainWindow.CenterOnScreen();
+                MainViewModel.Instance.FlintMainWindow.BringToFront();
+                MainViewModel.Instance.FlintMainWindow.Activate();
             });
         }
     }

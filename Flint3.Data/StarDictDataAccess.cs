@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
 using Flint3.Data.Models;
 using Microsoft.Data.Sqlite;
 
@@ -13,9 +12,12 @@ namespace Flint3.Data
 
         public static void InitializeDatabase()
         {
-            string dbpath = Path.Combine(AppContext.BaseDirectory, "Data/stardict.db");
-            _starDictDb = new SqliteConnection($"Filename={dbpath}");
-            _starDictDb.Open();
+            _starDictDb ??= new SqliteConnection($"Filename={Path.Combine(AppContext.BaseDirectory, "Data/stardict.db")}");
+
+            if (_starDictDb.State == System.Data.ConnectionState.Closed)
+            {
+                _starDictDb.Open();
+            }
 
             //string tableCommand =
             //    "CREATE TABLE IF NOT EXISTS stardict (" +

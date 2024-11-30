@@ -1,9 +1,9 @@
 using System;
 using System.IO;
 using Flint3.ViewModels;
-using Flint3.Views;
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Windows.System;
 using Windows.UI.ViewManagement;
@@ -17,20 +17,25 @@ namespace Flint3
     /// <summary>
     /// An empty window that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainWindow : WindowEx
+    public sealed partial class LiteWindow : WindowEx
     {
         private readonly MainViewModel _viewModel = null;
 
         private UISettings _uiSettings = null;
 
-        public MainWindow()
+        public LiteWindow()
         {
             _viewModel = MainViewModel.Instance;
 
             this.InitializeComponent();
-            this.PersistenceId = "FlintMainWindow";
+            this.PersistenceId = "FlintLiteWindow";
+            this.IsShownInSwitchers = false;
             this.ExtendsContentIntoTitleBar = true;
-            this.SetTitleBar(AppTitleBar);
+            this.IsTitleBarVisible = false;
+            this.IsAlwaysOnTop = true;
+            this.IsResizable = false;
+            this.IsMaximizable = false;
+            this.IsMinimizable = false;
 
             this.UpdateAppBackdrop();
 
@@ -48,50 +53,40 @@ namespace Flint3
                 this.UpdateAppBackdrop();
             };
 
-            // ç›‘å¬ç³»ç»Ÿä¸»é¢˜å˜åŒ–
+            // ¼àÌıÏµÍ³Ö÷Ìâ±ä»¯
             ListenThemeColorChange();
-
-            // é¦–æ¬¡å¯åŠ¨è®¾ç½®é»˜è®¤çª—å£å°ºå¯¸
-            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-            if (localSettings.Values["firstRun"] == null)
-            {
-                localSettings.Values["firstRun"] = true;
-                this.Height = 386;
-                this.Width = 580;
-                this.CenterOnScreen();
-            }
         }
 
         private void WindowEx_Activated(object sender, WindowActivatedEventArgs args)
         {
-            if (args.WindowActivationState != WindowActivationState.Deactivated)
+            if (args.WindowActivationState == WindowActivationState.Deactivated)
+            {
+                this.Hide();
+            }
+            else
             {
                 FocusOnTextBox?.Invoke();
             }
         }
 
         /// <summary>
-        /// MainFrame åŠ è½½å®Œæˆåï¼Œå¯¼èˆªåˆ°é¦–é¡µï¼Œæ³¨å†Œå¿«æ·é”®
+        /// ÄÚÈİ¼ÓÔØÍê³Éºó£¬×¢²á¿ì½İ¼ü
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnMainFrameLoaded(object sender, RoutedEventArgs e)
+        private void OnContentLoaded(object sender, RoutedEventArgs e)
         {
-            // åˆå§‹å¯¼èˆªé¡µé¢
-            MainFrame.Navigate(typeof(FlintPage));
-
             this.UpdateAppTheme();
 
-            // å¤„ç†ç³»ç»Ÿçš„è¿”å›é”®å’Œé€€å‡ºé”®
-            MainFrame.KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.Left, VirtualKeyModifiers.Menu, OnGoBackKeyboardAcceleratorInvoked));
-            MainFrame.KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.GoBack, null, OnGoBackKeyboardAcceleratorInvoked));
-            MainFrame.KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.XButton1, null, OnGoBackKeyboardAcceleratorInvoked));
-            MainFrame.KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.Escape, null, OnHideKeyboardAcceleratorInvoked));
-            MainFrame.KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.Tab, null, OnSearchKeyboardAcceleratorInvoked));
+            if (sender is Grid grid)
+            {
+                grid.KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.Escape, null, OnHideKeyboardAcceleratorInvoked));
+                grid.KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.Tab, null, OnSearchKeyboardAcceleratorInvoked));
+            }
         }
 
         /// <summary>
-        /// ç›‘å¬ç³»ç»Ÿé¢œè‰²è®¾ç½®å˜æ›´ï¼Œå¤„ç†ä¸»é¢˜ä¸º"è·Ÿéšç³»ç»Ÿ"æ—¶ä¸»é¢˜åˆ‡æ¢
+        /// ¼àÌıÏµÍ³ÑÕÉ«ÉèÖÃ±ä¸ü£¬´¦ÀíÖ÷ÌâÎª"¸úËæÏµÍ³"Ê±Ö÷ÌâÇĞ»»
         /// </summary>
         private void ListenThemeColorChange()
         {
@@ -109,19 +104,19 @@ namespace Flint3
         }
 
         /// <summary>
-        /// åˆ‡æ¢åº”ç”¨ç¨‹åºçš„ä¸»é¢˜
+        /// ÇĞ»»Ó¦ÓÃ³ÌĞòµÄÖ÷Ìâ
         /// </summary>
         private void UpdateAppTheme()
         {
             try
             {
-                // è®¾ç½®æ ‡é¢˜æ é¢œè‰² ä¸»é¢˜ 0-System 1-Dark 2-Light
+                // ÉèÖÃ±êÌâÀ¸ÑÕÉ« Ö÷Ìâ 0-System 1-Dark 2-Light
                 bool isLight = true;
                 if (_viewModel.AppSettings.AppearanceIndex == 0)
                 {
                     var color = _uiSettings?.GetColorValue(UIColorType.Foreground) ?? Colors.Black;
 
-                    // gè¶Šå°ï¼Œé¢œè‰²è¶Šæ·±
+                    // gÔ½Ğ¡£¬ÑÕÉ«Ô½Éî
                     var g = color.R * 0.299 + color.G * 0.587 + color.B * 0.114;
                     isLight = g < 100;
                 }
@@ -130,7 +125,7 @@ namespace Flint3
                     isLight = _viewModel.AppSettings.AppearanceIndex != 1;
                 }
 
-                // ä¿®æ”¹æ ‡é¢˜æ æŒ‰é’®é¢œè‰²
+                // ĞŞ¸Ä±êÌâÀ¸°´Å¥ÑÕÉ«
                 // TitleBarHelper.UpdateTitleBar(App.MainWindow, isLight ? ElementTheme.Light : ElementTheme.Dark);
                 var titleBar = this.AppWindow.TitleBar;
                 // Set active window colors
@@ -151,7 +146,7 @@ namespace Flint3
                 titleBar.ButtonInactiveForegroundColor = Colors.Gray;
                 titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
 
-                // è®¾ç½®åº”ç”¨ç¨‹åºé¢œè‰²
+                // ÉèÖÃÓ¦ÓÃ³ÌĞòÑÕÉ«
                 if (this.Content is FrameworkElement rootElement)
                 {
                     rootElement.RequestedTheme = isLight ? ElementTheme.Light : ElementTheme.Dark;
@@ -161,14 +156,14 @@ namespace Flint3
         }
 
         /// <summary>
-        /// åˆ‡æ¢åº”ç”¨ç¨‹åºçš„èƒŒæ™¯æè´¨
+        /// ÇĞ»»Ó¦ÓÃ³ÌĞòµÄ±³¾°²ÄÖÊ
         /// </summary>
         private void UpdateAppBackdrop()
         {
             this.SystemBackdrop = _viewModel.AppSettings.BackdropIndex == 1 ? new Microsoft.UI.Xaml.Media.DesktopAcrylicBackdrop() : new Microsoft.UI.Xaml.Media.MicaBackdrop();
         }
 
-        #region Go Back & Hide KeyboardAccelerators
+        #region Hide KeyboardAccelerators
 
         private KeyboardAccelerator BuildKeyboardAccelerator(VirtualKey key, VirtualKeyModifiers? modifiers, Action<KeyboardAccelerator, KeyboardAcceleratorInvokedEventArgs> callback)
         {
@@ -182,11 +177,6 @@ namespace Flint3
             keyboardAccelerator.Invoked += (s, args) => callback?.Invoke(s, args);
 
             return keyboardAccelerator;
-        }
-
-        private void OnGoBackKeyboardAcceleratorInvoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
-        {
-            args.Handled = TryGoBack();
         }
 
         private void OnHideKeyboardAcceleratorInvoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
@@ -204,25 +194,9 @@ namespace Flint3
             try
             {
                 args.Handled = true;
-                MainViewModel.Instance.ActFocusOnTextBox?.Invoke();
+                SearchTextBox.Focus(FocusState.Keyboard);
             }
             catch { args.Handled = false; }
-        }
-
-        private bool TryGoBack()
-        {
-            try
-            {
-                if (!MainFrame.CanGoBack)
-                {
-                    return false;
-                }
-
-                MainFrame.GoBack();
-                return true;
-            }
-            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
-            return false;
         }
 
         #endregion

@@ -1,32 +1,35 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Globalization;
 using System.Text.Json;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Flint3.Core;
 using Flint3.Models;
 using interop;
-using Microsoft.VisualBasic;
-using WinUIEx;
 
 namespace Flint3.ViewModels
 {
     public partial class MainViewModel : ObservableObject, IDisposable
     {
         private HotkeyManager _hotkeyManager = null;
+
         private ushort _hotkeyHandle;
+
+        private HotkeySettings _activationShortcut;
 
         /// <summary>
         /// 默认快捷键 Alt+Space
         /// </summary>
         private HotkeySettings _defaultActivationShortcut => new(false, false, true, false, 0x20);
 
-        // 快捷键变更回调
-        public Action<HotkeySettings/*PreviousHotkey*/, HotkeySettings/*NewHotkey*/> ActActivationShortcutChanged { get; set; } = null;
+        /// <summary>
+        /// 快捷键变更回调
+        /// </summary>
+        public event Action<HotkeySettings/*PreviousHotkey*/, HotkeySettings/*NewHotkey*/> OnActivationShortcutChanged  = null;
 
-        // 快捷键
-        private HotkeySettings _activationShortcut;
+        /// <summary>
+        /// 快捷键
+        /// </summary>
         public HotkeySettings ActivationShortcut
         {
             get => _activationShortcut;
@@ -37,20 +40,24 @@ namespace Flint3.ViewModels
                     HotkeySettings newValue = (value == null || !value.IsValid() || value.IsEmpty()) ? _defaultActivationShortcut : value;
                     HotkeySettings previousValue = _activationShortcut?.Clone();
                     SetProperty(ref _activationShortcut, newValue);
-                    ActActivationShortcutChanged?.Invoke(previousValue, _activationShortcut);
+                    this.OnActivationShortcutChanged?.Invoke(previousValue, _activationShortcut);
                 }
             }
         }
 
-        private void InitViewModel4ShortcutKeys()
+        /// <summary>
+        /// 进行对快捷键相关的初始化
+        /// </summary>
+        private async void InitViewModel4ShortcutKeys()
         {
-            // 读取唤起快捷键的设置
-            ReadShortcutSettings();
-        }
+            await ReadShortcutSettings();
 
-        public void RegisterShortcut()
-        {
-            ActActivationShortcutChanged += async (preSettings, newSettings) =>
+            if (this.ActivationShortcut?.IsValid() == true)
+            {
+                RegisterShortcut(this.ActivationShortcut, OnShortcutActivated);
+            }
+
+            this.OnActivationShortcutChanged += async (preSettings, newSettings) =>
             {
                 if (preSettings != null && !preSettings.IsEmpty())
                 {
@@ -63,19 +70,14 @@ namespace Flint3.ViewModels
 
                 if (newSettings?.IsValid() == true)
                 {
-                    SetShortcut(newSettings, OnShortcutActivated);
+                    RegisterShortcut(newSettings, OnShortcutActivated);
                 }
 
                 await SaveShortcutSettings();
             };
-
-            if (ActivationShortcut?.IsValid() == true)
-            {
-                SetShortcut(ActivationShortcut, OnShortcutActivated);
-            }
         }
 
-        private void SetShortcut(HotkeySettings hotkeySettings, HotkeyCallback action)
+        private void RegisterShortcut(HotkeySettings hotkeySettings, HotkeyCallback action)
         {
             try
             {
@@ -100,18 +102,28 @@ namespace Flint3.ViewModels
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
+                System.Diagnostics.Trace.WriteLine(e);
             }
         }
 
+        /// <summary>
+        /// 按下快捷键，唤出主窗口或精简窗口
+        /// </summary>
         private void OnShortcutActivated()
         {
-            ActShowWindow?.Invoke();
+            if (this.AppSettings.UseLiteWindow)
+            {
+                ShowLiteWindow();
+            }
+            else
+            {
+                ShowMainWindow();
+            }
         }
 
         #region 快捷键设置存取
 
-        private async void ReadShortcutSettings()
+        private async Task ReadShortcutSettings()
         {
             try
             {
@@ -119,19 +131,19 @@ namespace Flint3.ViewModels
                 if (!string.IsNullOrWhiteSpace(json))
                 {
                     var shortcut = JsonSerializer.Deserialize<HotkeySettings>(json);
-                    ActivationShortcut = shortcut;
+                    this.ActivationShortcut = shortcut;
                     return;
                 }
             }
             catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
-            ActivationShortcut = _defaultActivationShortcut;
+            this.ActivationShortcut = _defaultActivationShortcut;
         }
 
         private async Task SaveShortcutSettings()
         {
             try
             {
-                string json = JsonSerializer.Serialize(ActivationShortcut);
+                string json = JsonSerializer.Serialize(this.ActivationShortcut);
                 bool ret = await StorageFilesService.WriteFileAsync("shortcutsettings", json);
             }
             catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }

@@ -4,8 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.UI.Dispatching;
 using Microsoft.Windows.AppLifecycle;
-using Windows.ApplicationModel.Activation;
-using Windows.Storage;
 
 namespace Flint3
 {

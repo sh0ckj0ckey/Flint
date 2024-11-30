@@ -1,22 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
-using System.Net.NetworkInformation;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Flint3.Data;
 using Flint3.Data.Models;
 using Flint3.Models;
-using Windows.Storage.AccessCache;
-using Windows.Storage.Pickers;
 using Windows.Storage;
-using WinUIEx;
-using System.Xml.Linq;
-using System.IO;
 
 namespace Flint3.ViewModels
 {
@@ -91,6 +83,9 @@ namespace Flint3.ViewModels
 
         #endregion
 
+        /// <summary>
+        /// 进行对生词本相关的初始化
+        /// </summary>
         private void InitViewModel4Glossary()
         {
 

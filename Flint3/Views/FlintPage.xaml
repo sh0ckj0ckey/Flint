@@ -150,7 +150,6 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Rectangle Grid.ColumnSpan="5" Height="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" Fill="{ThemeResource ControlElevationBorderBrush}"/>
 
@@ -219,8 +218,6 @@
                               Visibility="{x:Bind PinToggleButton.IsChecked,Mode=OneWay,Converter={StaticResource Bool2Vis}}"/>
                 </Grid>
             </ToggleButton>
-
-            <Button Grid.Column="5" Height="38" Width="42" Click="Button_Click"/>
         </Grid>
 
         <!--教程 1/2-->

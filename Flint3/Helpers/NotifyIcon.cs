@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 using static Flint3.Helpers.NotifyIconTools;
 
@@ -139,9 +135,9 @@ namespace Flint3.Helpers
 
         private readonly SUBCLASSPROC SubClassDelegate;
 
-        internal Action OnShowWindow { get; set; } = null;
-        internal Action OnExitWindow { get; set; } = null;
-        internal Action OnClickCloseWindow { get; set; } = null;
+        internal event Action OnClickShowMainWindow = null;
+        internal event Action OnClickExitApp = null;
+        internal event Action OnClickCloseWindow = null;
 
         internal NotifyIcon(nint hwndMain, string iconPath)
         {
@@ -172,7 +168,7 @@ namespace Flint3.Helpers
                         switch (LOWORD((int)lParam))
                         {
                             case WM_LBUTTONUP:
-                                this.OnShowWindow?.Invoke();
+                                this.OnClickShowMainWindow?.Invoke();
                                 break;
                             case WM_CONTEXTMENU:
                             case WM_RBUTTONUP:
@@ -192,11 +188,11 @@ namespace Flint3.Helpers
                                     {
                                         if (nCmd == i)
                                         {
-                                            this.OnExitWindow?.Invoke();
+                                            this.OnClickExitApp?.Invoke();
                                         }
                                         else if (nCmd == 1)
                                         {
-                                            this.OnShowWindow?.Invoke();
+                                            this.OnClickShowMainWindow?.Invoke();
                                         }
                                     }
                                 }
@@ -223,8 +219,15 @@ namespace Flint3.Helpers
         {
             TrayMessage(m_hWndMain, null, IntPtr.Zero, IntPtr.Zero, NIM.DELETE, NIIF.NONE, null, null, 0);
 
-            if (m_hIcon != IntPtr.Zero) DestroyIcon(m_hIcon);
-            if (m_hBalloonIcon != IntPtr.Zero) DestroyIcon(m_hBalloonIcon);
+            if (m_hIcon != IntPtr.Zero)
+            {
+                DestroyIcon(m_hIcon);
+            }
+
+            if (m_hBalloonIcon != IntPtr.Zero)
+            {
+                DestroyIcon(m_hBalloonIcon);
+            }
         }
     }
 }

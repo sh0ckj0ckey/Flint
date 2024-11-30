@@ -98,7 +98,7 @@
 		<None Remove="Controls\ShortcutControl\ShortcutControl.xaml" />
 		<None Remove="Controls\ShortcutControl\ShortcutDialogContentControl.xaml" />
 		<None Remove="Data\stardict.db" />
-		<None Remove="FlintLiteWindow.xaml" />
+		<None Remove="LiteWindow.xaml" />
 		<None Remove="ThemeResource\CustomControlStyle.xaml" />
 		<None Remove="ThemeResource\ThemeDictionary.xaml" />
 		<None Remove="Views\FlintPage.xaml" />
@@ -140,7 +140,7 @@
 		<ProjectReference Include="..\Flint3.Interop\Flint3.Interop.vcxproj" />
 	</ItemGroup>
 	<ItemGroup>
-		<Page Update="FlintLiteWindow.xaml">
+		<Page Update="LiteWindow.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</Page>
 	</ItemGroup>

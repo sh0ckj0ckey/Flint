@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Flint3.Helpers;
 using Flint3.Models;
+using Flint3.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Windows.System;
-using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -71,9 +71,9 @@ namespace Flint3.Controls.ShortcutControl
             hook = new HotkeySettingsControlHook(Hotkey_KeyDown, Hotkey_KeyUp, Hotkey_IsActive, FilterAccessibleKeyboardEvents);
             Debug.WriteLine($"Add Hook");
 
-            if (App.MainWindow != null)
+            if (MainViewModel.Instance.FlintMainWindow != null)
             {
-                App.MainWindow.Activated += ShortcutDialog_SettingsWindow_Activated;
+                MainViewModel.Instance.FlintMainWindow.Activated += ShortcutDialog_SettingsWindow_Activated;
             }
 
             _settingShortcutDialog.PrimaryButtonClick += ShortcutDialog_PrimaryButtonClick;
@@ -89,9 +89,9 @@ namespace Flint3.Controls.ShortcutControl
             hook = null;
             Debug.WriteLine($"Delete Hook");
 
-            if (App.MainWindow != null)
+            if (MainViewModel.Instance.FlintMainWindow != null)
             {
-                App.MainWindow.Activated -= ShortcutDialog_SettingsWindow_Activated;
+                MainViewModel.Instance.FlintMainWindow.Activated -= ShortcutDialog_SettingsWindow_Activated;
             }
 
             _settingShortcutDialog.PrimaryButtonClick -= ShortcutDialog_PrimaryButtonClick;

@@ -7,9 +7,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:windowex="using:WinUIEx"
-    Title="Flint" MinWidth="580" MinHeight="386"
-    mc:Ignorable="d" 
-    SizeChanged="OnMainWindowSizeChanged" Activated="OnMainWindowActivated" Closed="OnMainWindowClosed">
+    Title="Flint" MinWidth="580" MinHeight="386" mc:Ignorable="d"
+    Activated="WindowEx_Activated">
 
     <windowex:WindowEx.Content>
         <Grid>
