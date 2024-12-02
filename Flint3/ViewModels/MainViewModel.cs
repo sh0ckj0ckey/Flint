@@ -146,7 +146,10 @@ namespace Flint3.ViewModels
             var cx = (info.rcMonitor.left + info.rcMonitor.right) / 2;
             var cy = (info.rcMonitor.bottom + info.rcMonitor.top) / 2;
             var left = cx - (w / 2);
-            var top = cy - (h / 2) * 12;
+
+            // 数值方向并非严格居中，而是偏上
+            var top = cy - (h / 3);
+
             bool result = PInvoke.SetWindowPos(new HWND(hwnd), new HWND(), left, top, w, h, (SET_WINDOW_POS_FLAGS)0);
             if (!result)
             {
