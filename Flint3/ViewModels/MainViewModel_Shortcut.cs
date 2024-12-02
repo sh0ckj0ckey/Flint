@@ -153,7 +153,8 @@ namespace Flint3.ViewModels
 
         #region Dispose
 
-        private static bool _disposed;
+        private static bool _disposed = false;
+
         protected virtual void Dispose(bool disposing)
         {
             if (!_disposed)
