@@ -115,15 +115,17 @@ namespace Flint3.ViewModels
             this.FlintLiteWindow?.Hide();
 
             this.FlintMainWindow ??= new MainWindow(this);
-            this.FlintMainWindow.Restore();
-            this.FlintMainWindow.BringToFront();
-            this.FlintMainWindow.Activate();
 
             if (this.AppSettings.AutoClearLastInput)
             {
-                this.SearchingWord = "";
+                this.SearchResultWordItems.Clear();
+                this.FlintMainWindow.TryClearSearchTextBox();
                 this.FlintMainWindow.CenterOnScreen();
             }
+
+            this.FlintMainWindow.Restore();
+            this.FlintMainWindow.BringToFront();
+            this.FlintMainWindow.Activate();
         }
 
         public void ShowLiteWindow()
@@ -135,7 +137,8 @@ namespace Flint3.ViewModels
 
             if (this.AppSettings.AutoClearLastInput)
             {
-                this.SearchingWord = "";
+                this.LiteSearchResultWordItems.Clear();
+                this.FlintLiteWindow.TryClearSearchTextBox();
             }
 
             // 获取鼠标当前所在的显示器
@@ -150,7 +153,7 @@ namespace Flint3.ViewModels
             info.cbSize = 40;
             PInvoke.GetMonitorInfo(hwndDesktop, ref info);
             int width = 540;
-            int height = string.IsNullOrWhiteSpace(this.SearchingWord) ? 64 : 386;
+            int height = this.LiteSearchResultWordItems.Count <= 0 ? 64 : 386;
 
             PInvoke.GetDpiForMonitor(hwndDesktop, Windows.Win32.UI.HiDpi.MONITOR_DPI_TYPE.MDT_EFFECTIVE_DPI, out uint dpiX, out uint dpiY);
             var scalingFactor = dpiX / 96d;
@@ -163,7 +166,7 @@ namespace Flint3.ViewModels
             var cx = (info.rcMonitor.left + info.rcMonitor.right) / 2;
             var cy = (info.rcMonitor.bottom + info.rcMonitor.top) / 4;
             var left = cx - (w / 2);
-            var top = cy - (h / 2);
+            var top = cy;
 
             bool result = PInvoke.SetWindowPos(new HWND(hwnd), new HWND(), left, top, w, h, (SET_WINDOW_POS_FLAGS)0);
             if (!result)

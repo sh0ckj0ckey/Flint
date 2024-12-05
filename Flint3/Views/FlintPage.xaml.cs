@@ -55,6 +55,16 @@ namespace Flint3.Views
         }
 
         /// <summary>
+        /// 输入文字搜索
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            MainViewModel.Instance.MatchWord(SearchTextBox?.Text, true);
+        }
+
+        /// <summary>
         /// 前往设置页面
         /// </summary>
         /// <param name="sender"></param>

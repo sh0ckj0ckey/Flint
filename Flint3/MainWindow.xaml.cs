@@ -79,6 +79,21 @@ namespace Flint3
         }
 
         /// <summary>
+        /// 尝试清空搜索框
+        /// </summary>
+        public void TryClearSearchTextBox()
+        {
+            if (MainFrame.Content is FlintPage flintPage)
+            {
+                var searchTextBox = flintPage.SearchTextBox;
+                if (searchTextBox is not null)
+                {
+                    searchTextBox.Text = "";
+                }
+            }
+        }
+
+        /// <summary>
         /// 窗口激活时自动聚焦到搜索框
         /// </summary>
         /// <param name="sender"></param>

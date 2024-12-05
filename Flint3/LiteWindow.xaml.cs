@@ -1,10 +1,13 @@
 using System;
 using System.IO;
+using Flint3.Controls;
+using Flint3.Data.Models;
 using Flint3.ViewModels;
 using Flint3.Views;
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Input;
 using Windows.System;
 using Windows.UI.ViewManagement;
@@ -63,7 +66,23 @@ namespace Flint3
         /// </summary>
         public void TryFocusOnSearchTextBox()
         {
-            SearchTextBox?.Focus(FocusState.Keyboard);
+            var searchTextBox = FlintLitePage.SearchTextBox;
+            searchTextBox?.Focus(FocusState.Keyboard);
+            if (!string.IsNullOrWhiteSpace(searchTextBox?.Text))
+            {
+                searchTextBox?.SelectAll();
+            }
+        }
+
+        /// <summary>
+        /// 尝试清空搜索框
+        /// </summary>
+        public void TryClearSearchTextBox()
+        {
+            if (FlintLitePage?.SearchTextBox is not null)
+            {
+                FlintLitePage.SearchTextBox.Text = "";
+            }
         }
 
         /// <summary>
@@ -92,10 +111,10 @@ namespace Flint3
         {
             this.UpdateAppTheme();
 
-            if (sender is Grid grid)
+            if (sender is LitePage page)
             {
-                grid.KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.Escape, null, OnHideKeyboardAcceleratorInvoked));
-                grid.KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.Tab, null, OnSearchKeyboardAcceleratorInvoked));
+                page.KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.Escape, null, OnHideKeyboardAcceleratorInvoked));
+                page.KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.Tab, null, OnSearchKeyboardAcceleratorInvoked));
             }
         }
 
@@ -208,26 +227,11 @@ namespace Flint3
             try
             {
                 args.Handled = true;
-                SearchTextBox.Focus(FocusState.Keyboard);
+                TryFocusOnSearchTextBox();
             }
             catch { args.Handled = false; }
         }
 
         #endregion
-
-        /// <summary>
-        /// 文本框有内容时窗口变大，无内容时只显示搜索框
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            this.Height = string.IsNullOrWhiteSpace(SearchTextBox?.Text) ? 64 : 386;
-        }
-
-        private void OnClickShowMainWindow(object sender, RoutedEventArgs e)
-        {
-            MainViewModel.Instance.ShowMainWindow();
-        }
     }
 }

@@ -108,6 +108,7 @@
 		<None Remove="Views\GlossaryPage.xaml" />
 		<None Remove="Views\GlossaryPropertyPage.xaml" />
 		<None Remove="Views\GlossaryWordPage.xaml" />
+		<None Remove="Views\LitePage.xaml" />
 		<None Remove="Views\SettingsPage.xaml" />
 	</ItemGroup>
 	<ItemGroup>
@@ -141,6 +142,11 @@
 		<ProjectReference Include="..\Flint3.Core\Flint3.Core.csproj" />
 		<ProjectReference Include="..\Flint3.Data\Flint3.Data.csproj" />
 		<ProjectReference Include="..\Flint3.Interop\Flint3.Interop.vcxproj" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Views\LitePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
 	</ItemGroup>
 	<ItemGroup>
 		<Page Update="LiteWindow.xaml">

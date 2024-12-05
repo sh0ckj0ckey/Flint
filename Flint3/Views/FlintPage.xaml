@@ -24,7 +24,7 @@
         <cvt:IsExpanded2OpacityConverter x:Key="Bool2Opacity"/>
     </Page.Resources>
 
-    <Grid>
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid.RowDefinitions>
             <RowDefinition Height="38"/>
             <RowDefinition Height="Auto"/>
@@ -39,7 +39,7 @@
 
         <!--搜索框-->
         <Grid Grid.Row="1" Padding="16,0" Margin="0,4,0,0">
-            <TextBox x:Name="SearchTextBox" x:FieldModifier="public" Text="{x:Bind ViewModel.SearchingWord,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox x:Name="SearchTextBox" x:FieldModifier="public" TextChanged="SearchTextBox_TextChanged"/>
             <TextBlock Text="开始键入..." Margin="16,6,0,0" FontSize="17.5" Opacity="0.3" HorizontalAlignment="Left" IsHitTestVisible="False" VerticalAlignment="Top"
                        Visibility="{x:Bind SearchTextBox.Text.Length,Mode=OneWay,Converter={StaticResource Int2Vis},ConverterParameter=-}"/>
         </Grid>

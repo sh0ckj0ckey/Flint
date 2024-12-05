@@ -13,26 +13,15 @@ namespace Flint3.ViewModels
         [System.Text.RegularExpressions.GeneratedRegex(@"[^\w]*")]
         private static partial System.Text.RegularExpressions.Regex WordSearchRegex();
 
-        private string _searchingWord = null;
-
-        /// <summary>
-        /// 当前输入的搜索词
-        /// </summary>
-        public string SearchingWord
-        {
-            get => _searchingWord;
-            set
-            {
-                SetProperty(ref _searchingWord, value);
-
-                MatchWord(_searchingWord);
-            }
-        }
-
         /// <summary>
         /// 查词结果
         /// </summary>
         public ObservableCollection<StarDictWordItem> SearchResultWordItems { get; private set; } = new ObservableCollection<StarDictWordItem>();
+
+        /// <summary>
+        /// 查词结果
+        /// </summary>
+        public ObservableCollection<StarDictWordItem> LiteSearchResultWordItems { get; private set; } = new ObservableCollection<StarDictWordItem>();
 
         /// <summary>
         /// 进行对单词搜索相关的初始化
@@ -47,11 +36,13 @@ namespace Flint3.ViewModels
         /// 查找模糊匹配的多个单词
         /// </summary>
         /// <param name="word"></param>
-        private async void MatchWord(string word, int limit = 10)
+        public async void MatchWord(string word, bool searchingFromMain, int limit = 10)
         {
             try
             {
-                this.SearchResultWordItems.Clear();
+                var wordsCollection = searchingFromMain ? this.SearchResultWordItems : this.LiteSearchResultWordItems;
+                
+                wordsCollection.Clear();
                 if (string.IsNullOrWhiteSpace(word)) return;
 
                 word = WordSearchRegex().Replace(word, "");
@@ -64,11 +55,11 @@ namespace Flint3.ViewModels
                         var wordItem = MakeupWordItem(item);
                         if (wordItem?.Word == word)
                         {
-                            this.SearchResultWordItems.Insert(0, wordItem);
+                            wordsCollection.Insert(0, wordItem);
                         }
                         else
                         {
-                            this.SearchResultWordItems.Add(wordItem);
+                            wordsCollection.Add(wordItem);
                         }
                     }
                 }
