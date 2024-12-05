@@ -69,7 +69,7 @@ namespace Flint3.Controls.ShortcutControl
         private void ShortcutControl_Loaded(object sender, RoutedEventArgs e)
         {
             hook = new HotkeySettingsControlHook(Hotkey_KeyDown, Hotkey_KeyUp, Hotkey_IsActive, FilterAccessibleKeyboardEvents);
-            Debug.WriteLine($"Add Hook");
+            System.Diagnostics.Trace.WriteLine($"Add Hook");
 
             if (MainViewModel.Instance.FlintMainWindow != null)
             {
@@ -87,7 +87,7 @@ namespace Flint3.Controls.ShortcutControl
             // Dispose the HotkeySettingsControlHook object to terminate the hook threads when the textbox is unloaded
             hook?.Dispose();
             hook = null;
-            Debug.WriteLine($"Delete Hook");
+            System.Diagnostics.Trace.WriteLine($"Delete Hook");
 
             if (MainViewModel.Instance.FlintMainWindow != null)
             {
@@ -123,7 +123,7 @@ namespace Flint3.Controls.ShortcutControl
 
             _ = KeyboardHelper.SendInput(1, inputs, KeyboardHelper.INPUT.Size);
 
-            Debug.WriteLine($"SendSingleKeyboardInput: {keyCode}");
+            System.Diagnostics.Trace.WriteLine($"SendSingleKeyboardInput: {keyCode}");
         }
 
         private bool FilterAccessibleKeyboardEvents(int key, UIntPtr extraInfo)
@@ -230,7 +230,7 @@ namespace Flint3.Controls.ShortcutControl
                     {
                         SendSingleKeyboardInput((short)virtualKey, (uint)KeyboardHelper.KeyEventF.KeyUp);
                         modifierKeysOnEntering.Remove(virtualKey);
-                        Debug.WriteLine("Simulate Win KeyUp");
+                        System.Diagnostics.Trace.WriteLine("Simulate Win KeyUp");
                     }
                     internalSettings.Win = matchValue;
                     break;
@@ -241,7 +241,7 @@ namespace Flint3.Controls.ShortcutControl
                     {
                         SendSingleKeyboardInput((short)VirtualKey.Control, (uint)KeyboardHelper.KeyEventF.KeyUp);
                         modifierKeysOnEntering.Remove(VirtualKey.Control);
-                        Debug.WriteLine("Simulate Control KeyUp");
+                        System.Diagnostics.Trace.WriteLine("Simulate Control KeyUp");
                     }
                     internalSettings.Ctrl = matchValue;
                     break;
@@ -252,7 +252,7 @@ namespace Flint3.Controls.ShortcutControl
                     {
                         SendSingleKeyboardInput((short)VirtualKey.Menu, (uint)KeyboardHelper.KeyEventF.KeyUp);
                         modifierKeysOnEntering.Remove(VirtualKey.Menu);
-                        Debug.WriteLine("Simulate Alt KeyUp");
+                        System.Diagnostics.Trace.WriteLine("Simulate Alt KeyUp");
                     }
                     internalSettings.Alt = matchValue;
                     break;
@@ -263,7 +263,7 @@ namespace Flint3.Controls.ShortcutControl
                     {
                         SendSingleKeyboardInput((short)VirtualKey.Shift, (uint)KeyboardHelper.KeyEventF.KeyUp);
                         modifierKeysOnEntering.Remove(VirtualKey.Shift);
-                        Debug.WriteLine("Simulate Shift KeyUp");
+                        System.Diagnostics.Trace.WriteLine("Simulate Shift KeyUp");
                     }
                     internalSettings.Shift = matchValue;
                     break;
@@ -343,14 +343,14 @@ namespace Flint3.Controls.ShortcutControl
             {
                 // If settings window gets focussed/activated again, we enable the keyboard hook to catch the keyboard input.
                 hook = new HotkeySettingsControlHook(Hotkey_KeyDown, Hotkey_KeyUp, Hotkey_IsActive, FilterAccessibleKeyboardEvents);
-                Debug.WriteLine($"Add Hook");
+                System.Diagnostics.Trace.WriteLine($"Add Hook");
             }
             else if (args.WindowActivationState == WindowActivationState.Deactivated && hook != null && hook.GetDisposedState() == false)
             {
                 // If settings window lost focus/activation, we disable the keyboard hook to allow keyboard input on other windows.
                 hook?.Dispose();
                 hook = null;
-                Debug.WriteLine($"Delete Hook");
+                System.Diagnostics.Trace.WriteLine($"Delete Hook");
             }
         }
 
@@ -402,25 +402,25 @@ namespace Flint3.Controls.ShortcutControl
             {
                 SendSingleKeyboardInput((short)VirtualKey.LeftWindows, (uint)KeyboardHelper.KeyEventF.KeyDown);
                 internalSettings.Win = false;
-                Debug.WriteLine("Simulate Win KeyDown");
+                System.Diagnostics.Trace.WriteLine("Simulate Win KeyDown");
             }
             if (internalSettings.Ctrl)
             {
                 SendSingleKeyboardInput((short)VirtualKey.Control, (uint)KeyboardHelper.KeyEventF.KeyDown);
                 internalSettings.Ctrl = false;
-                Debug.WriteLine("Simulate Control KeyDown");
+                System.Diagnostics.Trace.WriteLine("Simulate Control KeyDown");
             }
             if (internalSettings.Alt)
             {
                 SendSingleKeyboardInput((short)VirtualKey.Menu, (uint)KeyboardHelper.KeyEventF.KeyDown);
                 internalSettings.Alt = false;
-                Debug.WriteLine("Simulate Menu KeyDown");
+                System.Diagnostics.Trace.WriteLine("Simulate Menu KeyDown");
             }
             if (internalSettings.Shift)
             {
                 SendSingleKeyboardInput((short)VirtualKey.Shift, (uint)KeyboardHelper.KeyEventF.KeyDown);
                 internalSettings.Shift = false;
-                Debug.WriteLine("Simulate Shift KeyDown");
+                System.Diagnostics.Trace.WriteLine("Simulate Shift KeyDown");
             }
         }
 

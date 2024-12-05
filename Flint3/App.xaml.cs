@@ -23,7 +23,7 @@ namespace Flint3
         {
             this.InitializeComponent();
 
-            MainViewModel.Instance.Dispatcher = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
+            MainViewModel.Instance.Initialize(Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread());
 
             UnhandledException += (s, e) =>
             {
@@ -41,15 +41,12 @@ namespace Flint3
             AppActivationArguments activatedArgs = AppInstance.GetCurrent().GetActivatedEventArgs();
             if (activatedArgs?.Kind == ExtendedActivationKind.StartupTask)
             {
-                MainViewModel.Instance.FlintMainWindow.Hide();
+                MainViewModel.Instance.HideApp();
             }
             else
             {
-                MainViewModel.Instance.FlintMainWindow.BringToFront();
-                MainViewModel.Instance.FlintMainWindow.Activate();
+                MainViewModel.Instance.ShowMainWindow();
             }
-
-            MainViewModel.Instance.FlintLiteWindow?.Hide();
         }
 
         /// <summary>
@@ -65,11 +62,7 @@ namespace Flint3
 
             MainViewModel.Instance.Dispatcher.TryEnqueue(() =>
             {
-                MainViewModel.Instance.FlintLiteWindow?.Hide();
-                MainViewModel.Instance.FlintMainWindow.Restore();
-                MainViewModel.Instance.FlintMainWindow.CenterOnScreen();
-                MainViewModel.Instance.FlintMainWindow.BringToFront();
-                MainViewModel.Instance.FlintMainWindow.Activate();
+                MainViewModel.Instance.ShowMainWindow();
             });
         }
     }

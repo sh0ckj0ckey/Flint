@@ -1,4 +1,7 @@
 using System;
+using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.ComponentModel;
+using Flint3.Data;
 using Flint3.Data.Models;
 using Flint3.Models;
 using Flint3.ViewModels;
@@ -10,30 +13,70 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace Flint3.Controls
 {
+    [INotifyPropertyChanged]
     public sealed partial class AddToGlossaryControl : UserControl
     {
-        public MainViewModel ViewModel { get; set; } = null;
+        private Action _hideAddingFlyout = null;
 
-        public AddToGlossaryControl()
+        private StarDictWordItem _addingWordItem = null;
+
+        private GlossaryColorsEnum _addingWordColor = GlossaryColorsEnum.Transparent;
+
+        private bool _updatingAvailableGlossaries = false;
+
+        /// <summary>
+        /// 当前添加的单词
+        /// </summary>
+        public StarDictWordItem AddingWordItem
         {
-            this.InitializeComponent();
-
-            ViewModel = MainViewModel.Instance;
-
-            PopupShadow.Receivers.Add(AddToGlossaryPopupShadowReceiver);
+            get => _addingWordItem;
+            set => SetProperty(ref _addingWordItem, value);
         }
 
-        public void UpdateControl()
+        /// <summary>
+        /// 当前添加的单词颜色
+        /// </summary>
+        public GlossaryColorsEnum AddingWordColor
+        {
+            get => _addingWordColor;
+            set => SetProperty(ref _addingWordColor, value);
+        }
+
+        /// <summary>
+        /// 是否正在检索当前添加单词在各个生词本中是否存在
+        /// </summary>
+        public bool UpdatingAvailableGlossaries
+        {
+            get => _updatingAvailableGlossaries;
+            set => SetProperty(ref _updatingAvailableGlossaries, value);
+        }
+
+        /// <summary>
+        /// 可以添加当前单词的生词本列表
+        /// </summary>
+        public ObservableCollection<GlossaryMyModel> AvailableGlossaries { get; } = new ObservableCollection<GlossaryMyModel>();
+
+        public AddToGlossaryControl(Action hideAddingFlyout)
+        {
+            this.InitializeComponent();
+            _hideAddingFlyout = hideAddingFlyout;
+        }
+
+        public async void PrepareToAddWord(StarDictWordItem item)
         {
             try
             {
+                this.AddingWordItem = item;
+                this.AddingWordColor = GlossaryColorsEnum.Transparent;
+                WordColorScrollViewer?.ChangeView(0, 0, null, true);
                 GlossaryComboBox.SelectedIndex = -1;
                 WordDescTextBox.Text = "";
-                WordColorScrollViewer?.ScrollToHorizontalOffset(0);
-                WordColorScrollViewer?.ScrollToVerticalOffset(0);
-                MainViewModel.Instance.AddingWordColor = GlossaryColorsEnum.Transparent;
 
-                MainViewModel.Instance.GetAddGlossariesList();
+                this.AvailableGlossaries.Clear();
+                this.UpdatingAvailableGlossaries = true;
+                var glossaries = await MainViewModel.Instance.GetGlossariesWithoutThisWord(this.AddingWordItem);
+                glossaries.ForEach(this.AvailableGlossaries.Add);
+                this.UpdatingAvailableGlossaries = false;
             }
             catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         }
@@ -79,7 +122,7 @@ namespace Flint3.Controls
                             break;
                     }
 
-                    MainViewModel.Instance.AddingWordColor = colorsEnum;
+                    this.AddingWordColor = colorsEnum;
                 }
             }
             catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
@@ -87,24 +130,23 @@ namespace Flint3.Controls
 
         private void OnClickAddWord(object sender, RoutedEventArgs e)
         {
-            if (GlossaryComboBox.SelectedItem is GlossaryMyModel glossary && glossary is not null)
+            try
             {
-                string description = WordDescTextBox.Text;
-
-                var adding = MainViewModel.Instance.AddingWordItem;
-                MainViewModel.Instance.AddWordToMyGlossary(
-                    adding.Id,
+                var glossary = GlossaryComboBox.SelectedItem as GlossaryMyModel;
+                _ = MainViewModel.Instance.AddWordToMyGlossary(
+                    this.AddingWordItem.Id,
                     glossary.Id,
-                    adding.Word,
-                    adding.Phonetic,
-                    adding.Definition,
-                    adding.Translation,
-                    adding.Exchange,
-                    description,
-                    MainViewModel.Instance.AddingWordColor);
+                    this.AddingWordItem.Word,
+                    this.AddingWordItem.Phonetic,
+                    this.AddingWordItem.Definition,
+                    this.AddingWordItem.Translation,
+                    this.AddingWordItem.Exchange,
+                    WordDescTextBox.Text,
+                    this.AddingWordColor);
 
-                MainViewModel.Instance.ActHideAddingPopup?.Invoke();
+                _hideAddingFlyout?.Invoke();
             }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         }
     }
 }

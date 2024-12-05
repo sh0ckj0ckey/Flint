@@ -94,7 +94,7 @@ namespace Flint3.ViewModels
                 {
                     _hotkeyManager?.UnregisterHotkey(_hotkeyHandle);
                     _hotkeyHandle = 0;
-                    Debug.WriteLine("Unregistering previous low level key handler", GetType());
+                    System.Diagnostics.Trace.WriteLine("Unregistering previous low level key handler");
                 }
 
                 _hotkeyManager ??= new HotkeyManager();
@@ -107,11 +107,11 @@ namespace Flint3.ViewModels
         }
 
         /// <summary>
-        /// 按下快捷键，唤出主窗口或精简窗口
+        /// 按下快捷键，唤出主窗口或简洁窗口
         /// </summary>
         private void OnShortcutActivated()
         {
-            if (this.AppSettings.UseLiteWindow)
+            if (this.AppSettings.WindowMode == 1)
             {
                 ShowLiteWindow();
             }

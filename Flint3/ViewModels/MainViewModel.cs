@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Flint3.Core;
@@ -15,10 +16,10 @@ namespace Flint3.ViewModels
 {
     public partial class MainViewModel : ObservableObject
     {
-        private static readonly Lazy<MainViewModel> _lazy = new Lazy<MainViewModel>(() => new MainViewModel());
-        public static MainViewModel Instance { get { return _lazy.Value; } }
+        private static readonly Lazy<MainViewModel> _instance = new Lazy<MainViewModel>(() => new MainViewModel());
+        public static MainViewModel Instance => _instance.Value;
 
-        public Microsoft.UI.Dispatching.DispatcherQueue Dispatcher = null;
+        public Microsoft.UI.Dispatching.DispatcherQueue Dispatcher { get; private set; } = null;
 
         /// <summary>
         /// 应用程序设置
@@ -36,13 +37,17 @@ namespace Flint3.ViewModels
         public MainWindow FlintMainWindow { get; private set; } = null;
 
         /// <summary>
-        /// 燧石的精简搜索窗口，设置中开启精简窗口后，按下快捷键会唤起这个窗口
+        /// 燧石的简洁搜索窗口，设置中开启简洁窗口后，按下快捷键会唤起这个窗口
         /// </summary>
         public LiteWindow FlintLiteWindow { get; private set; } = null;
 
-        private MainViewModel()
+        private MainViewModel() { }
+
+        public void Initialize(Microsoft.UI.Dispatching.DispatcherQueue dispatcher)
         {
-            this.FlintMainWindow = new MainWindow();
+            this.Dispatcher = dispatcher;
+
+            this.FlintMainWindow = new MainWindow(this);
 
             // 创建常驻托盘图标
             var hwndMain = this.FlintMainWindow.GetWindowHandle();
@@ -93,6 +98,7 @@ namespace Flint3.ViewModels
         /// </summary>
         public void ExitApp()
         {
+            this.HideApp();
             GlossaryDataAccess.CloseDatabase();
             StarDictDataAccess.CloseDatabase();
             _notifyIcon?.Destroy();
@@ -106,55 +112,68 @@ namespace Flint3.ViewModels
 
         public void ShowMainWindow()
         {
-            this.FlintMainWindow ??= new MainWindow();
+            this.FlintLiteWindow?.Hide();
+
+            this.FlintMainWindow ??= new MainWindow(this);
             this.FlintMainWindow.Restore();
             this.FlintMainWindow.BringToFront();
             this.FlintMainWindow.Activate();
 
             if (this.AppSettings.AutoClearLastInput)
             {
-                this.FlintMainWindow.ClearSearch();
+                this.SearchingWord = "";
                 this.FlintMainWindow.CenterOnScreen();
             }
         }
 
         public void ShowLiteWindow()
         {
-            this.FlintLiteWindow ??= new LiteWindow();
-            this.FlintMainWindow.Restore();
-            this.FlintMainWindow.BringToFront();
-            this.FlintMainWindow.Activate();
+            this.FlintMainWindow?.Hide();
+
+            this.FlintLiteWindow ??= new LiteWindow(this);
+            IntPtr hwnd = this.FlintLiteWindow.GetWindowHandle();
 
             if (this.AppSettings.AutoClearLastInput)
             {
-                this.FlintLiteWindow.ClearSearch();
+                this.SearchingWord = "";
             }
 
-            // 参考自 https://github.com/dotMorten/WinUIEx/blob/main/src/WinUIEx/HwndExtensions.cs
-            int width = 520;
-            int height = this.FlintLiteWindow.IsSearchBoxEmpty ? 56 : 386;
-            IntPtr hwnd = this.FlintLiteWindow.GetWindowHandle();
-            var hwndDesktop = PInvoke.MonitorFromWindow(new(hwnd), MONITOR_FROM_FLAGS.MONITOR_DEFAULTTONEAREST);
+            // 获取鼠标当前所在的显示器
+            PInvoke.GetCursorPos(out Point pt);
+            var hwndDesktop = PInvoke.MonitorFromPoint(pt, MONITOR_FROM_FLAGS.MONITOR_DEFAULTTONEAREST);
+
+            // 获取当前激活窗口所在的显示器
+            //IntPtr focusedWindow = PInvoke.GetForegroundWindow();
+            //var hwndDesktop = PInvoke.MonitorFromWindow(new(focusedWindow), MONITOR_FROM_FLAGS.MONITOR_DEFAULTTONEAREST);
+
             MONITORINFO info = new MONITORINFO();
             info.cbSize = 40;
             PInvoke.GetMonitorInfo(hwndDesktop, ref info);
-            var dpi = PInvoke.GetDpiForWindow(new HWND(hwnd));
-            var scalingFactor = dpi / 96d;
-            PInvoke.GetWindowRect(new HWND(hwnd), out RECT windowRect);
+            int width = 540;
+            int height = string.IsNullOrWhiteSpace(this.SearchingWord) ? 64 : 386;
+
+            PInvoke.GetDpiForMonitor(hwndDesktop, Windows.Win32.UI.HiDpi.MONITOR_DPI_TYPE.MDT_EFFECTIVE_DPI, out uint dpiX, out uint dpiY);
+            var scalingFactor = dpiX / 96d;
+
+            //var dpi = PInvoke.GetDpiForWindow(new HWND(focusedWindow));
+            //var scalingFactor = dpi / 96d;
+
             var w = (int)(width * scalingFactor);
             var h = (int)(height * scalingFactor);
             var cx = (info.rcMonitor.left + info.rcMonitor.right) / 2;
-            var cy = (info.rcMonitor.bottom + info.rcMonitor.top) / 2;
+            var cy = (info.rcMonitor.bottom + info.rcMonitor.top) / 4;
             var left = cx - (w / 2);
-
-            // 数值方向并非严格居中，而是偏上
-            var top = cy - (h / 3);
+            var top = cy - (h / 2);
 
             bool result = PInvoke.SetWindowPos(new HWND(hwnd), new HWND(), left, top, w, h, (SET_WINDOW_POS_FLAGS)0);
             if (!result)
             {
                 Marshal.ThrowExceptionForHR(Marshal.GetLastWin32Error());
             }
+
+            this.FlintLiteWindow.Restore();
+            this.FlintLiteWindow.BringToFront();
+            this.FlintLiteWindow.Activate();
         }
     }
 }

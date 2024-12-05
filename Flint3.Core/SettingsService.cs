@@ -8,16 +8,12 @@ namespace Flint3.Core
     {
         private const string SETTING_NAME_APPEARANCEINDEX = "AppearanceIndex";
         private const string SETTING_NAME_BACKDROPINDEX = "BackdropIndex";
-        private const string SETTING_NAME_ACRYLICOPACITY = "AcrylicOpacity";
         private const string SETTING_NAME_ENABLEENGDEF = "EnableEngDefinition";
         private const string SETTING_NAME_ENABLEGLOSSARY = "EnableGlossary";
-        private const string SETTING_NAME_USELITEWINDOW = "UseLiteWindow";
+        private const string SETTING_NAME_WINDOWMODE = "WindowMode";
         private const string SETTING_NAME_AUTOCLEARLASTINPUT = "AutoClearLastInput";
         private const string SETTING_NAME_CLOSEBUTTONMODE = "CloseButtonMode";
         private const string SETTING_NAME_SEARCHBOXSTYLE = "SearchBoxStyle";
-
-        private const string SETTING_NAME_MAINSIZE_HEIGHT = "MainWindowHeight";
-        private const string SETTING_NAME_MAINSIZE_WIDTH = "MainWindowWidth";
 
         private readonly ApplicationDataContainer _localSettings = ApplicationData.Current.LocalSettings;
 
@@ -25,13 +21,11 @@ namespace Flint3.Core
 
         private int _backdropIndex = -1;
 
-        private double _acrylicOpacity = -1;
-
         private bool? _enableEngDefinition = null;
 
         private bool? _enableGlossary = null;
 
-        private bool? _useLiteWindow = null;
+        private int _windowMode = -1;
 
         private bool? _autoClearLastInput = null;
 
@@ -42,8 +36,6 @@ namespace Flint3.Core
         public event Action<int> OnAppearanceSettingChanged = null;
 
         public event Action<int> OnBackdropSettingChanged = null;
-
-        public event Action<double> OnAcrylicOpacitySettingChanged = null;
 
         /// <summary>
         /// 设置的应用程序的主题 0-System 1-Dark 2-Light
@@ -132,43 +124,6 @@ namespace Flint3.Core
         }
 
         /// <summary>
-        /// 亚克力背景透明度
-        /// </summary>
-        public double AcrylicOpacity
-        {
-            get
-            {
-                try
-                {
-                    if (_acrylicOpacity < 0)
-                    {
-                        if (_localSettings.Values[SETTING_NAME_ACRYLICOPACITY] == null)
-                        {
-                            _acrylicOpacity = 1.0;
-                        }
-                        else
-                        {
-                            string opacityStr = _localSettings.Values[SETTING_NAME_ACRYLICOPACITY]?.ToString();
-                            if (double.TryParse(opacityStr, out double opacity))
-                            {
-                                _acrylicOpacity = opacity;
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
-                if (_acrylicOpacity < 0) _acrylicOpacity = 1.0;
-                return _acrylicOpacity < 0 ? 1.0 : _acrylicOpacity;
-            }
-            set
-            {
-                SetProperty(ref _acrylicOpacity, value);
-                ApplicationData.Current.LocalSettings.Values[SETTING_NAME_ACRYLICOPACITY] = _acrylicOpacity;
-                OnAcrylicOpacitySettingChanged?.Invoke(_acrylicOpacity);
-            }
-        }
-
-        /// <summary>
         /// 是否显示英英释义
         /// </summary>
         public bool EnableEngDefinition
@@ -241,38 +196,42 @@ namespace Flint3.Core
         }
 
         /// <summary>
-        /// 是否启用精简搜索窗口
+        /// 快捷键唤起的窗口模式 0-完整 1-简洁
         /// </summary>
-        public bool UseLiteWindow
+        public int WindowMode
         {
             get
             {
                 try
                 {
-                    if (_useLiteWindow is null)
+                    if (_windowMode < 0)
                     {
-                        if (_localSettings.Values[SETTING_NAME_USELITEWINDOW] == null)
+                        if (_localSettings.Values[SETTING_NAME_WINDOWMODE] == null)
                         {
-                            _useLiteWindow = false;
+                            _windowMode = 0;
                         }
-                        else if (_localSettings.Values[SETTING_NAME_USELITEWINDOW]?.ToString() == "True")
+                        else if (_localSettings.Values[SETTING_NAME_WINDOWMODE]?.ToString() == "0")
                         {
-                            _useLiteWindow = true;
+                            _windowMode = 0;
+                        }
+                        else if (_localSettings.Values[SETTING_NAME_WINDOWMODE]?.ToString() == "1")
+                        {
+                            _windowMode = 1;
                         }
                         else
                         {
-                            _useLiteWindow = false;
+                            _windowMode = 0;
                         }
                     }
                 }
                 catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
-                if (_useLiteWindow is null) _useLiteWindow = false;
-                return _useLiteWindow == true;
+                if (_windowMode < 0) _windowMode = 0;
+                return _windowMode;
             }
             set
             {
-                SetProperty(ref _useLiteWindow, value);
-                ApplicationData.Current.LocalSettings.Values[SETTING_NAME_USELITEWINDOW] = _useLiteWindow;
+                SetProperty(ref _windowMode, value);
+                ApplicationData.Current.LocalSettings.Values[SETTING_NAME_WINDOWMODE] = _windowMode;
             }
         }
 

@@ -1,8 +1,10 @@
 using System;
+using Flint3.Controls;
 using Flint3.Data.Models;
 using Flint3.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls.Primitives;
 
 
 // To learn more about WinUI, the WinUI project structure,
@@ -17,52 +19,39 @@ namespace Flint3.Views
     {
         public MainViewModel ViewModel { get; set; } = null;
 
+        private Flyout _addToGlossaryFlyout = null;
+
+        private AddToGlossaryControl _addToGlossaryControl = null;
+
         public FlintPage()
         {
-            this.InitializeComponent();
-
             ViewModel = MainViewModel.Instance;
-
-            MainViewModel.Instance.ActFocusOnTextBox = () => { SearchTextBox?.Focus(FocusState.Keyboard); };
-
-            MainViewModel.Instance.ActClearTextBox = () => { SearchTextBox.Text = ""; };
-
-            MainViewModel.Instance.ActHideAddingPopup = () => { if (AddWordToGlossaryPopup != null) { AddWordToGlossaryPopup.IsOpen = false; } };
-
-            // 加载生词本数据库
-            MainViewModel.Instance.LoadMyGlossaries();
-            MainViewModel.Instance.LoadExGlossaries();
-        }
-
-        private void Page_Loaded(object sender, RoutedEventArgs e)
-        {
-            //TitleBarHelper.UpdateTitleBar(App.MainWindow, ActualTheme);
-
-            SearchTextBox.Style = GetSearchTextBoxStyle(MainViewModel.Instance.AppSettings.SearchBoxStyle);
-
-            // 首次启动显示 TeachingTips
-            TryShowNewFeatureButton();
+            this.InitializeComponent();
         }
 
         /// <summary>
-        /// 获取搜索输入框样式
+        /// 更新搜索框样式
         /// </summary>
-        /// <param name="styleName"></param>
-        /// <returns></returns>
-        private Style GetSearchTextBoxStyle(int searchBoxStyle)
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            int searchBoxStyle = MainViewModel.Instance.AppSettings.SearchBoxStyle;
             if (searchBoxStyle == 0)
             {
-                return (Style)App.Current.Resources["ModernTextBoxStyle"];
+                SearchTextBox.Style = (Style)App.Current.Resources["ModernTextBoxStyle"];
             }
             else if (searchBoxStyle == 1)
             {
-                return (Style)App.Current.Resources["RoundTextBoxStyle"];
+                SearchTextBox.Style = (Style)App.Current.Resources["RoundTextBoxStyle"];
             }
             else
             {
-                return (Style)App.Current.Resources["ClassicTextBoxStyle"];
+                SearchTextBox.Style = (Style)App.Current.Resources["ClassicTextBoxStyle"];
             }
+
+            // 首次启动显示 TeachingTips
+            TryShowNewFeatureButton();
         }
 
         /// <summary>
@@ -83,44 +72,6 @@ namespace Flint3.Views
         private void OnClickGlossary(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(GlossaryPage));
-        }
-
-        /// <summary>
-        /// 即时搜索
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnSearchTextChanged(object sender, TextChangedEventArgs e)
-        {
-            try
-            {
-                if (sender is TextBox tb && !string.IsNullOrWhiteSpace(tb?.Text))
-                {
-                    ViewModel.MatchWord(tb.Text);
-                }
-                else
-                {
-                    ViewModel.MatchWord(string.Empty);
-                }
-            }
-            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
-        }
-
-        /// <summary>
-        /// 取得焦点后，选中所有文字
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnSearchBoxGotFocus(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (sender is TextBox tb && !string.IsNullOrEmpty(tb?.Text))
-                {
-                    tb.SelectAll();
-                }
-            }
-            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         }
 
         /// <summary>
@@ -157,9 +108,12 @@ namespace Flint3.Views
         {
             if (sender is Button btn && btn.DataContext is StarDictWordItem item)
             {
-                MainViewModel.Instance.AddingWordItem = item;
-                AddWordControl.UpdateControl();
-                AddWordToGlossaryPopup.IsOpen = true;
+                _addToGlossaryControl ??= new AddToGlossaryControl(() => { _addToGlossaryFlyout?.Hide(); });
+                _addToGlossaryFlyout ??= new Flyout() { Content = _addToGlossaryControl };
+                _addToGlossaryControl.PrepareToAddWord(item);
+
+                FlyoutBase.SetAttachedFlyout(btn, _addToGlossaryFlyout);
+                FlyoutBase.ShowAttachedFlyout(btn);
             }
         }
 

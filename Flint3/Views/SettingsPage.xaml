@@ -47,10 +47,10 @@
                             </Image.Source>
                         </Image>
                         <StackPanel Orientation="Vertical" Spacing="-4">
-                            <TextBlock CharacterSpacing="56" HorizontalAlignment="Left" VerticalAlignment="Center" ui:Effects.Shadow="{StaticResource CommonShadow}">
+                            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" ui:Effects.Shadow="{StaticResource CommonShadow}">
                                 <Run Text="Flint" FontFamily="Times New Roman" FontWeight="SemiBold" FontSize="24"/>
                             </TextBlock>
-                            <TextBlock CharacterSpacing="20" HorizontalAlignment="Left" VerticalAlignment="Center" ui:Effects.Shadow="{StaticResource CommonShadow}">
+                            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" ui:Effects.Shadow="{StaticResource CommonShadow}">
                                 <Run Text="/flɪnt/" FontWeight="Normal" FontSize="15"/>
                                 <Run Text="noun" FontWeight="SemiBold" FontSize="15" FontStyle="Italic"/>
                                 <Run Text="燧石" FontWeight="SemiBold" FontSize="14"/>
@@ -59,7 +59,7 @@
                     </StackPanel>
                 </Grid>
 
-                <TextBlock Text="外观与功能" Margin="20,12,0,8" FontWeight="Bold" FontSize="14" CharacterSpacing="64"/>
+                <TextBlock Text="外观与功能" Margin="20,12,0,8" FontWeight="Bold" FontSize="14"/>
 
                 <!--主题设置-->
                 <labs:SettingsCard Margin="16,2,16,0" HorizontalAlignment="Stretch">
@@ -67,10 +67,10 @@
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE790;"/>
                     </labs:SettingsCard.HeaderIcon>
                     <labs:SettingsCard.Header>
-                        <TextBlock Text="主题" CharacterSpacing="64"/>
+                        <TextBlock Text="主题"/>
                     </labs:SettingsCard.Header>
                     <labs:SettingsCard.Description>
-                        <TextBlock Text="选择燧石的外观" CharacterSpacing="64"/>
+                        <TextBlock Text="选择燧石的外观"/>
                     </labs:SettingsCard.Description>
                     <ComboBox MinWidth="128" SelectedIndex="{x:Bind _viewModel.AppSettings.AppearanceIndex,Mode=TwoWay}">
                         <ComboBoxItem Content="跟随系统"/>
@@ -85,39 +85,16 @@
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE727;"/>
                     </labs:SettingsCard.HeaderIcon>
                     <labs:SettingsCard.Header>
-                        <TextBlock Text="背景" CharacterSpacing="64"/>
+                        <TextBlock Text="背景"/>
                     </labs:SettingsCard.Header>
                     <labs:SettingsCard.Description>
-                        <TextBlock Text="选择燧石的背景材质" CharacterSpacing="64"/>
+                        <TextBlock Text="选择燧石的背景材质"/>
                     </labs:SettingsCard.Description>
                     <ComboBox MinWidth="128" SelectedIndex="{x:Bind _viewModel.AppSettings.BackdropIndex,Mode=TwoWay}">
                         <ComboBoxItem Content="云母"/>
                         <ComboBoxItem Content="亚克力"/>
                     </ComboBox>
                 </labs:SettingsCard>
-                <!--<labs:SettingsExpander Margin="16,2,16,0" HorizontalAlignment="Stretch" IsExpanded="False">
-                    <labs:SettingsExpander.HeaderIcon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE727;"/>
-                    </labs:SettingsExpander.HeaderIcon>
-                    <labs:SettingsExpander.Header>
-                        <TextBlock Text="背景" CharacterSpacing="64"/>
-                    </labs:SettingsExpander.Header>
-                    <labs:SettingsExpander.Description>
-                        <TextBlock Text="选择燧石的背景材质" CharacterSpacing="64"/>
-                    </labs:SettingsExpander.Description>
-                    <ComboBox x:Name="BackdropComboBox" MinWidth="100" SelectedIndex="{x:Bind _viewModel.AppSettings.BackdropIndex,Mode=TwoWay}">
-                        <ComboBoxItem Content="云母"/>
-                        <ComboBoxItem Content="亚克力"/>
-                    </ComboBox>
-                    <labs:SettingsExpander.Items>
-                        <labs:SettingsCard HorizontalAlignment="Stretch">
-                            <labs:SettingsCard.Description>
-                                <TextBlock Text="调整亚克力背景的透明度" CharacterSpacing="64"/>
-                            </labs:SettingsCard.Description>
-                            <muxc:Slider Value="{x:Bind _viewModel.AppSettings.AcrylicOpacity,Mode=TwoWay}" Maximum="1.0" Minimum="0.1" StepFrequency="0.1" IsEnabled="{x:Bind BackdropComboBox.SelectedIndex,Mode=OneWay,Converter={StaticResource Eql2Bool},ConverterParameter=1}"/>
-                        </labs:SettingsCard>
-                    </labs:SettingsExpander.Items>
-                </labs:SettingsExpander>-->
 
                 <!--英英释义-->
                 <labs:SettingsCard Margin="16,2,16,0" HorizontalAlignment="Stretch">
@@ -125,10 +102,10 @@
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8D2;"/>
                     </labs:SettingsCard.HeaderIcon>
                     <labs:SettingsCard.Header>
-                        <TextBlock Text="英文释义" CharacterSpacing="64"/>
+                        <TextBlock Text="英文释义"/>
                     </labs:SettingsCard.Header>
                     <labs:SettingsCard.Description>
-                        <TextBlock Text="选择是否显示英英释义" CharacterSpacing="64"/>
+                        <TextBlock Text="选择是否显示英英释义"/>
                     </labs:SettingsCard.Description>
                     <ToggleSwitch MinWidth="0" Background="Transparent" IsOn="{x:Bind _viewModel.AppSettings.EnableEngDefinition,Mode=TwoWay}"/>
                 </labs:SettingsCard>
@@ -139,16 +116,15 @@
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE82D;"/>
                     </labs:SettingsExpander.HeaderIcon>
                     <labs:SettingsExpander.Header>
-                        <TextBlock Text="生词本功能" CharacterSpacing="64"/>
+                        <TextBlock Text="生词本功能"/>
                     </labs:SettingsExpander.Header>
                     <labs:SettingsExpander.Description>
                         <Grid>
-                            <TextBlock Text="选择是否启用生词本功能" CharacterSpacing="64" 
-                                       Visibility="{x:Bind EnableGlossaryToggleSwitch.IsOn,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}"/>
-                            <TextBlock CharacterSpacing="64" Visibility="{x:Bind EnableGlossaryToggleSwitch.IsOn,Mode=OneWay,Converter={StaticResource Bool2Vis}}">
+                            <TextBlock Text="选择是否启用生词本功能" Visibility="{x:Bind EnableGlossaryToggleSwitch.IsOn,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}"/>
+                            <TextBlock Visibility="{x:Bind EnableGlossaryToggleSwitch.IsOn,Mode=OneWay,Converter={StaticResource Bool2Vis}}">
                                 <Run Text="点击查词结果的"/>
                                 <Run Text="&#xF8AA;" FontSize="10" FontFamily="{ThemeResource SymbolThemeFontFamily}"/>
-                                <Run Text="，即可添加到生词本"/>
+                                <Run Text="，即可将其添加到生词本"/>
                             </TextBlock>
                         </Grid>
                     </labs:SettingsExpander.Description>
@@ -156,19 +132,19 @@
                     <labs:SettingsExpander.Items>
                         <labs:SettingsCard HorizontalAlignment="Stretch" IsEnabled="{x:Bind EnableGlossaryToggleSwitch.IsOn,Mode=OneWay}">
                             <labs:SettingsCard.Description>
-                                <TextBlock Text="生词本数据文件存放在 &quot;文档&quot; 中" CharacterSpacing="64"/>
+                                <TextBlock Text="生词本数据文件存放在 &quot;文档&quot; 中"/>
                             </labs:SettingsCard.Description>
                             <Button Height="32" MinWidth="72" Click="OnClickDbPath">
                                 <StackPanel Orientation="Horizontal" Spacing="4">
                                     <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE838;" FontSize="12"/>
-                                    <TextBlock Text="前往查看" CharacterSpacing="64"/>
+                                    <TextBlock Text="前往查看"/>
                                 </StackPanel>
                             </Button>
                         </labs:SettingsCard>
                     </labs:SettingsExpander.Items>
                 </labs:SettingsExpander>
 
-                <TextBlock Text="行为" Margin="20,12,0,8" FontWeight="Bold" FontSize="14" CharacterSpacing="64"/>
+                <TextBlock Text="行为" Margin="20,12,0,8" FontWeight="Bold" FontSize="14"/>
 
                 <!--开机自启设置-->
                 <labs:SettingsCard Margin="16,2,16,0" HorizontalAlignment="Stretch">
@@ -176,10 +152,10 @@
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE7B5;"/>
                     </labs:SettingsCard.HeaderIcon>
                     <labs:SettingsCard.Header>
-                        <TextBlock Text="开机自启动" CharacterSpacing="64"/>
+                        <TextBlock Text="开机自启动"/>
                     </labs:SettingsCard.Header>
                     <labs:SettingsCard.Description>
-                        <TextBlock x:Name="StartupDescTextBlock" Text="登录到 Windows 时自动启动燧石" CharacterSpacing="64"/>
+                        <TextBlock x:Name="StartupDescTextBlock" Text="登录到 Windows 时自动启动燧石"/>
                     </labs:SettingsCard.Description>
                     <ToggleSwitch x:Name="StartupSettingToggleSwitch" MinWidth="0" Background="Transparent" Toggled="OnStartupToggled"/>
                 </labs:SettingsCard>
@@ -190,26 +166,32 @@
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEDA7;"/>
                     </labs:SettingsCard.HeaderIcon>
                     <labs:SettingsCard.Header>
-                        <TextBlock Text="快捷键" CharacterSpacing="64"/>
+                        <TextBlock Text="快捷键"/>
                     </labs:SettingsCard.Header>
                     <labs:SettingsCard.Description>
-                        <TextBlock Text="自定义唤醒窗口的快捷键" CharacterSpacing="64"/>
+                        <TextBlock Text="自定义唤醒窗口的快捷键"/>
                     </labs:SettingsCard.Description>
                     <control:ShortcutControl x:Name="ShortcutSettingControl" Margin="0,-4" HotkeySettings="{x:Bind _viewModel.ActivationShortcut,Mode=TwoWay}"/>
                 </labs:SettingsCard>
 
-                <!--启用精简搜索窗口-->
+                <!--快捷键窗口模式-->
                 <labs:SettingsCard Margin="16,2,16,0" HorizontalAlignment="Stretch">
                     <labs:SettingsCard.HeaderIcon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xF8A5;"/>
                     </labs:SettingsCard.HeaderIcon>
                     <labs:SettingsCard.Header>
-                        <TextBlock Text="精简窗口" CharacterSpacing="64"/>
+                        <TextBlock Text="快捷窗口"/>
                     </labs:SettingsCard.Header>
                     <labs:SettingsCard.Description>
-                        <TextBlock Text="按下快捷键时，唤出一个更为精简的搜索窗口" CharacterSpacing="64"/>
+                        <Grid>
+                            <TextBlock Text="按下快捷键时，唤出完整的窗口" Visibility="{x:Bind WindowModeComboBox.SelectedIndex,Mode=OneWay,Converter={StaticResource Int2Vis},ConverterParameter=-}"/>
+                            <TextBlock Text="按下快捷键时，唤出一个简洁的搜索窗口" Visibility="{x:Bind WindowModeComboBox.SelectedIndex,Mode=OneWay,Converter={StaticResource Int2Vis}}"/>
+                        </Grid>
                     </labs:SettingsCard.Description>
-                    <ToggleSwitch MinWidth="0" Background="Transparent" IsOn="{x:Bind _viewModel.AppSettings.UseLiteWindow,Mode=TwoWay}"/>
+                    <ComboBox x:Name="WindowModeComboBox" MinWidth="128" SelectedIndex="{x:Bind _viewModel.AppSettings.WindowMode,Mode=TwoWay}">
+                        <ComboBoxItem Content="完整"/>
+                        <ComboBoxItem Content="简洁"/>
+                    </ComboBox>
                 </labs:SettingsCard>
                 
                 <!--唤醒自动清除设置-->
@@ -218,10 +200,10 @@
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE13E;"/>
                     </labs:SettingsCard.HeaderIcon>
                     <labs:SettingsCard.Header>
-                        <TextBlock Text="自动清除" CharacterSpacing="64"/>
+                        <TextBlock Text="自动清除"/>
                     </labs:SettingsCard.Header>
                     <labs:SettingsCard.Description>
-                        <TextBlock Text="唤醒后清除上一次输入并居中窗口" CharacterSpacing="64"/>
+                        <TextBlock Text="唤醒后清除上一次输入并居中窗口"/>
                     </labs:SettingsCard.Description>
                     <ToggleSwitch MinWidth="0" Background="Transparent" IsOn="{x:Bind _viewModel.AppSettings.AutoClearLastInput,Mode=TwoWay}"/>
                 </labs:SettingsCard>
@@ -232,13 +214,13 @@
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEA39;"/>
                     </labs:SettingsCard.HeaderIcon>
                     <labs:SettingsCard.Header>
-                        <TextBlock Text="关闭按钮" CharacterSpacing="64"/>
+                        <TextBlock Text="关闭按钮"/>
                     </labs:SettingsCard.Header>
                     <labs:SettingsCard.Description>
                         <Grid>
-                            <TextBlock Text="点击关闭后，燧石将隐藏到系统托盘" CharacterSpacing="64" 
+                            <TextBlock Text="点击关闭后，燧石将隐藏到系统托盘" 
                                        Visibility="{x:Bind CloseModeComboBox.SelectedIndex,Mode=OneWay,Converter={StaticResource Int2Vis},ConverterParameter=-}"/>
-                            <TextBlock Text="点击关闭后，燧石将完全退出" CharacterSpacing="64"
+                            <TextBlock Text="点击关闭后，燧石将完全退出"
                                        Visibility="{x:Bind CloseModeComboBox.SelectedIndex,Mode=OneWay,Converter={StaticResource Int2Vis}}"/>
                         </Grid>
                     </labs:SettingsCard.Description>
@@ -248,7 +230,7 @@
                     </ComboBox>
                 </labs:SettingsCard>
 
-                <TextBlock Text="搜索" Margin="20,12,0,8" FontWeight="Bold" FontSize="14" CharacterSpacing="64"/>
+                <TextBlock Text="搜索" Margin="20,12,0,8" FontWeight="Bold" FontSize="14"/>
 
                 <!--搜索框样式设置-->
                 <labs:SettingsExpander Margin="16,2,16,0" HorizontalAlignment="Stretch" IsExpanded="False">
@@ -256,10 +238,10 @@
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE773;"/>
                     </labs:SettingsExpander.HeaderIcon>
                     <labs:SettingsExpander.Header>
-                        <TextBlock Text="搜索框样式" CharacterSpacing="64"/>
+                        <TextBlock Text="搜索框样式"/>
                     </labs:SettingsExpander.Header>
                     <labs:SettingsExpander.Description>
-                        <TextBlock Text="选择主页搜索框的外观" CharacterSpacing="64"/>
+                        <TextBlock Text="选择主页搜索框的外观"/>
                     </labs:SettingsExpander.Description>
                     <labs:SettingsExpander.Items>
                         <labs:SettingsCard HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" ContentAlignment="Vertical">
@@ -275,7 +257,7 @@
                                         <Grid Height="72" Width="108" CornerRadius="8" BorderBrush="Black" BorderThickness="4" Background="{ThemeResource SystemAccentColorDark3}">
                                             <Border Height="28" Width="64" HorizontalAlignment="Right" VerticalAlignment="Center" CornerRadius="4,0,0,4" BorderThickness="0,0,0,2"
                                                     BorderBrush="{ThemeResource SystemAccentColorDark1}" Background="#20FFFFFF">
-                                                <TextBlock Text="搜索" Margin="8,-1,0,1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="12.5" CharacterSpacing="64" FontWeight="SemiBold" Foreground="#33FFFFFF"/>
+                                                <TextBlock Text="搜索" Margin="8,-1,0,1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="12.5" FontWeight="SemiBold" Foreground="#33FFFFFF"/>
                                             </Border>
                                         </Grid>
                                     </RadioButton.Content>
@@ -296,7 +278,7 @@
                                         <Grid Height="72" Width="108" CornerRadius="8" BorderBrush="Black" BorderThickness="4" Background="{ThemeResource SystemAccentColorDark3}">
                                             <Border Height="28" Width="64" HorizontalAlignment="Right" VerticalAlignment="Center" CornerRadius="12,0,0,12" BorderThickness="0,0,0,0"
                                                     BorderBrush="{ThemeResource SystemAccentColorDark1}" Background="#20FFFFFF">
-                                                <TextBlock Text="搜索" Margin="10,-1,0,1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="12.5" CharacterSpacing="64" FontWeight="SemiBold" Foreground="#33FFFFFF"/>
+                                                <TextBlock Text="搜索" Margin="10,-1,0,1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="12.5" FontWeight="SemiBold" Foreground="#33FFFFFF"/>
                                             </Border>
                                         </Grid>
                                     </RadioButton.Content>
@@ -317,7 +299,7 @@
                                         <Grid Height="72" Width="108" CornerRadius="8" BorderBrush="Black" BorderThickness="4" Background="{ThemeResource SystemAccentColorDark3}">
                                             <Border Height="28" Width="64" HorizontalAlignment="Right" VerticalAlignment="Center" CornerRadius="2,0,0,2" BorderThickness="1.5,1.5,0,1.5"
                                                     BorderBrush="#33FFFFFF" Background="#20FFFFFF">
-                                                <TextBlock Text="搜索" Margin="8,-1,0,1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="12.5" CharacterSpacing="64" FontWeight="SemiBold" Foreground="#33FFFFFF"/>
+                                                <TextBlock Text="搜索" Margin="8,-1,0,1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="12.5" FontWeight="SemiBold" Foreground="#33FFFFFF"/>
                                             </Border>
                                         </Grid>
                                     </RadioButton.Content>
@@ -337,7 +319,7 @@
                     </labs:SettingsExpander.Items>
                 </labs:SettingsExpander>
 
-                <TextBlock Text="关于" Margin="20,12,0,8" FontWeight="Bold" FontSize="14" CharacterSpacing="64"/>
+                <TextBlock Text="关于" Margin="20,12,0,8" FontWeight="Bold" FontSize="14"/>
 
                 <!--关于版本号-->
                 <labs:SettingsCard Margin="16,2,16,0" HorizontalAlignment="Stretch">
@@ -345,19 +327,19 @@
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE946;"/>
                     </labs:SettingsCard.HeaderIcon>
                     <labs:SettingsCard.Header>
-                        <TextBlock Text="{x:Bind _appVersion}" CharacterSpacing="64"/>
+                        <TextBlock Text="{x:Bind _appVersion}"/>
                     </labs:SettingsCard.Header>
                     <labs:SettingsCard.Description>
-                        <TextBlock Text="燧石是一款开源应用程序" CharacterSpacing="64"/>
+                        <TextBlock Text="燧石是一款开源应用程序"/>
                     </labs:SettingsCard.Description>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="8">
                         <Button Height="34" Click="OnClickGoToStoreRate" ToolTipService.ToolTip="去应用商店打分评价">
-                            <TextBlock Text="❤ 给个好评" VerticalAlignment="Center" FontSize="13" CharacterSpacing="40"/>
+                            <TextBlock Text="❤ 给个好评" VerticalAlignment="Center" FontSize="13"/>
                         </Button>
                         <Button Height="34" Click="OnClickFlintGitHub" ToolTipService.ToolTip="GitHub 存储库">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <Image Width="20" Height="20" Margin="0,0,0,0" Source="{ThemeResource ABOUT_GITHUB_IMG}"/>
-                                <!--<TextBlock Text="GitHub 存储库" VerticalAlignment="Center" FontSize="13" Margin="8,0,2,0" CharacterSpacing="40"/>-->
+                                <!--<TextBlock Text="GitHub 存储库" VerticalAlignment="Center" FontSize="13" Margin="8,0,2,0"/>-->
                             </StackPanel>
                         </Button>
                     </StackPanel>
@@ -369,15 +351,15 @@
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE1D3;"/>
                     </labs:SettingsCard.HeaderIcon>
                     <labs:SettingsCard.Header>
-                        <TextBlock Text="数据来源" CharacterSpacing="64"/>
+                        <TextBlock Text="数据来源"/>
                     </labs:SettingsCard.Header>
                     <labs:SettingsCard.Description>
-                        <TextBlock Text="离线词典数据来自 ECDICT" CharacterSpacing="64"/>
+                        <TextBlock Text="离线词典数据来自 ECDICT"/>
                     </labs:SettingsCard.Description>
                     <Button Height="34" Click="OnClickGitHub">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                             <Image Width="20" Height="20" Margin="0,0,0,0" Source="{ThemeResource ABOUT_GITHUB_IMG}"/>
-                            <TextBlock Text="ECDICT on GitHub" VerticalAlignment="Center" FontSize="13" Margin="8,0,2,0" CharacterSpacing="40"/>
+                            <TextBlock Text="ECDICT on GitHub" VerticalAlignment="Center" FontSize="13" Margin="8,0,2,0"/>
                         </StackPanel>
                     </Button>
                 </labs:SettingsCard>
@@ -388,10 +370,10 @@
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xED15;"/>
                     </labs:SettingsCard.HeaderIcon>
                     <labs:SettingsCard.Header>
-                        <TextBlock Text="反馈" CharacterSpacing="64"/>
+                        <TextBlock Text="反馈"/>
                     </labs:SettingsCard.Header>
                     <labs:SettingsCard.Description>
-                        <TextBlock Text="如果您遇到问题或有任何建议" CharacterSpacing="64"/>
+                        <TextBlock Text="如果您遇到问题或有任何建议"/>
                     </labs:SettingsCard.Description>
                     <StackPanel Orientation="Horizontal" Spacing="8">
                         <Button Height="34">
@@ -401,7 +383,7 @@
                                         <BitmapImage UriSource="ms-appx:///Assets/icon_mail.png" DecodePixelHeight="40" DecodePixelType="Logical"/>
                                     </Image.Source>
                                 </Image>
-                                <TextBlock Text="发送邮件" VerticalAlignment="Center" FontSize="13" Margin="8,0,2,0" CharacterSpacing="40"/>
+                                <TextBlock Text="发送邮件" VerticalAlignment="Center" FontSize="13" Margin="8,0,2,0"/>
                             </StackPanel>
                             <Button.Flyout>
                                 <Flyout>
@@ -452,7 +434,7 @@
                     </StackPanel>
                 </labs:SettingsCard>
 
-                <TextBlock Text="©2024 NoMewing." FontSize="12" FontFamily="Consolas" FontWeight="Light" Opacity="0.5" CharacterSpacing="40" Margin="20,8,0,8"/>
+                <TextBlock Text="©2024 NoMewing." FontSize="12" FontFamily="Consolas" FontWeight="Light" Opacity="0.5" Margin="20,8,0,8"/>
             </StackPanel>
         </ScrollViewer>
         <Border x:Name="SettingsPageHeaderSeperatorLineBorder" Height="1" Opacity="0" Margin="0,32,0,0" Background="{ThemeResource ControlElevationBorderBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Top"/>

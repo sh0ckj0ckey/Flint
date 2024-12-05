@@ -16,11 +16,11 @@ namespace Flint3.Views
         private SlideNavigationTransitionInfo SlideNaviTransition = new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight };
 
         public MainViewModel ViewModel { get; set; } = null;
+
         public GlossaryPage()
         {
-            this.InitializeComponent();
-
             ViewModel = MainViewModel.Instance;
+            this.InitializeComponent();
         }
 
         private void OnClickBackButton(object sender, RoutedEventArgs e)
@@ -33,7 +33,7 @@ namespace Flint3.Views
 
         private void OnClickCreateGlossary(object sender, RoutedEventArgs e)
         {
-            MainViewModel.Instance.CreateMyGlossary(AddGlossaryNameTextBox.Text, AddGlossaryDescTextBox.Text);
+            _ = MainViewModel.Instance.AddMyGlossary(AddGlossaryNameTextBox.Text, AddGlossaryDescTextBox.Text);
             AddGlossaryFlyout.Hide();
             AddGlossaryNameTextBox.Text = "";
             AddGlossaryDescTextBox.Text = "";
@@ -41,7 +41,7 @@ namespace Flint3.Views
 
         private void OnClickGoMyGlossary(object sender, RoutedEventArgs e)
         {
-            if (sender is Button btn && btn.DataContext is Models.GlossaryModelBase model)
+            if (sender is Button btn && btn.DataContext is Models.GlossaryMyModel model)
             {
                 MainViewModel.Instance.SelectGlossary(model);
                 this.Frame.Navigate(typeof(GlossaryContentPage), null, SlideNaviTransition);
@@ -50,7 +50,7 @@ namespace Flint3.Views
 
         private void OnClickGoExGlossary(object sender, RoutedEventArgs e)
         {
-            if (sender is Button btn && btn.DataContext is Models.GlossaryModelBase model)
+            if (sender is Button btn && btn.DataContext is Models.GlossaryExModel model)
             {
                 MainViewModel.Instance.SelectGlossary(model);
                 this.Frame.Navigate(typeof(GlossaryContentPage), null, SlideNaviTransition);

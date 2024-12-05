@@ -18,7 +18,7 @@ WinUI 3 目前不像 UWP 支持直接打出 appxbundle、msixbundle 这种类型
 将这两个 msix 文件放到例如 C 盘根目录的 Source 文件夹内(不能有其他文件)，然后管理员运行终端如下命令：
 
 ```
- "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22000.0\x86\MakeAppx.exe" bundle /d "C:\Source" /p C:\out.msixbundle
+ "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x86\MakeAppx.exe" bundle /d "C:\Source" /p C:\out.msixbundle
 ```
 
 这样就可以得到一个 msixbundle 包用来上传微软商店了
@@ -38,8 +38,8 @@ WinUI 3 目前不像 UWP 支持直接打出 appxbundle、msixbundle 这种类型
 ---
 
 #### 数据库文件
-Flint3 项目和 Flint 共用 stardict.db 文件，但是 LFS 空间不够，所以只放在了 Flint/Data 中，需要手动复制到 Flint3/Data 中，然后记得将文件属性设置为"内容"，这样就可以作为内置的文件来访问了
+GitHub 的 LFS 空间和带宽不够用，所以压缩成 7z 文件放在 Flint3/Data 中，解压后将文件属性设置为"内容"，这样就可以作为内置的文件来访问了
 
 ---
 
-© 2023 sh0ckj0ckey.
+© 2024 sh0ckj0ckey.

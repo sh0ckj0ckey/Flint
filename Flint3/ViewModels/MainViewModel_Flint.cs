@@ -10,49 +10,65 @@ namespace Flint3.ViewModels
 {
     public partial class MainViewModel : ObservableObject
     {
+        [System.Text.RegularExpressions.GeneratedRegex(@"[^\w]*")]
+        private static partial System.Text.RegularExpressions.Regex WordSearchRegex();
+
+        private string _searchingWord = null;
+
         /// <summary>
-        /// 搜索展示结果
+        /// 当前输入的搜索词
+        /// </summary>
+        public string SearchingWord
+        {
+            get => _searchingWord;
+            set
+            {
+                SetProperty(ref _searchingWord, value);
+
+                MatchWord(_searchingWord);
+            }
+        }
+
+        /// <summary>
+        /// 查词结果
         /// </summary>
         public ObservableCollection<StarDictWordItem> SearchResultWordItems { get; private set; } = new ObservableCollection<StarDictWordItem>();
 
         /// <summary>
         /// 进行对单词搜索相关的初始化
         /// </summary>
-        private async void InitViewModel4Flint()
+        private void InitViewModel4Flint()
         {
-            await Task.Run(() =>
-            {
-                // 加载单词数据库
-                StarDictDataAccess.InitializeDatabase();
-            });
+            // 加载单词数据库（不使用await将无法捕获方法内部的异常）
+            _ = StarDictDataAccess.InitializeDatabase();
         }
 
         /// <summary>
         /// 查找模糊匹配的多个单词
         /// </summary>
         /// <param name="word"></param>
-        public void MatchWord(string word, int limit = 10)
+        private async void MatchWord(string word, int limit = 10)
         {
             try
             {
-                SearchResultWordItems.Clear();
+                this.SearchResultWordItems.Clear();
                 if (string.IsNullOrWhiteSpace(word)) return;
 
-                word = System.Text.RegularExpressions.Regex.Replace(word, @"[^\w]*", "");
+                word = WordSearchRegex().Replace(word, "");
 
-                var results = StarDictDataAccess.MatchWord(word, limit);
+                var results = await StarDictDataAccess.MatchWord(word, limit);
                 if (results != null)
                 {
                     foreach (StarDictWordItem item in results)
                     {
-                        var wordItem = MakeupWord(item);
+                        var wordItem = MakeupWordItem(item);
                         if (wordItem?.Word == word)
                         {
-                            SearchResultWordItems.Insert(0, wordItem);
+                            this.SearchResultWordItems.Insert(0, wordItem);
                         }
                         else
                         {
-                            SearchResultWordItems.Add(wordItem);
+                            this.SearchResultWordItems.Add(wordItem);
                         }
                     }
                 }
@@ -65,7 +81,7 @@ namespace Flint3.ViewModels
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        private StarDictWordItem MakeupWord(StarDictWordItem item)
+        private StarDictWordItem MakeupWordItem(StarDictWordItem item)
         {
             if (this.AppSettings.EnableEngDefinition == false)
             {

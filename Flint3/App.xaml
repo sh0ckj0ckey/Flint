@@ -22,7 +22,7 @@
                     <Color x:Key="SystemAccentColorDark3">#333333</Color>-->
 
                     <!--移除GridView和ListView的Reveal效果-->
-                    <SolidColorBrush x:Key="SystemControlTransparentRevealBackgroundBrush" Color="Transparent" />
+                    <!--<SolidColorBrush x:Key="SystemControlTransparentRevealBackgroundBrush" Color="Transparent" />
                     <SolidColorBrush x:Key="SystemControlTransparentRevealBorderBrush" Color="Transparent" />
                     <SolidColorBrush x:Key="GridViewItemRevealBorderBrush" Color="Transparent" />
                     <Thickness x:Key="ListViewItemRevealBorderThemeThickness">0</Thickness>
@@ -35,7 +35,7 @@
                     <SolidColorBrush x:Key="GridViewItemRevealBackgroundSelected" Color="Transparent" />
                     <SolidColorBrush x:Key="GridViewItemRevealBackgroundSelectedPointerOver" Color="Transparent" />
                     <SolidColorBrush x:Key="GridViewItemRevealBackgroundSelectedPressed" Color="Transparent" />
-                    <SolidColorBrush x:Key="GridViewItemRevealPlaceholderBackground" Color="Transparent" />
+                    <SolidColorBrush x:Key="GridViewItemRevealPlaceholderBackground" Color="Transparent" />-->
 
                     <!--<Thickness x:Key="ScrollViewerScrollBarMargin">0</Thickness>-->
 

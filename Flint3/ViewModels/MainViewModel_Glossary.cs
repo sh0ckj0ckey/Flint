@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Flint3.Data;
@@ -14,47 +16,46 @@ namespace Flint3.ViewModels
 {
     public partial class MainViewModel : ObservableObject
     {
-        /// <summary>
-        /// 生词本生词列表滚动到顶部
-        /// </summary>
-        public Action ActScrollToGlossaryTop { get; set; } = null;
+        private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
-        /// <summary>
-        /// 关闭添加到生词本的Popup
-        /// </summary>
-        public Action ActHideAddingPopup { get; set; } = null;
+        private GlossaryBaseModel _selectedGlossary = null;
 
-        /// <summary>
-        /// 当前查看的生词本
-        /// </summary>
-        private GlossaryModelBase _selectedGlossary = null;
-        public GlossaryModelBase SelectedGlossary
-        {
-            get => _selectedGlossary;
-            set => SetProperty(ref _selectedGlossary, value);
-        }
-
-        /// <summary>
-        /// 当前查看的生词
-        /// </summary>
         private StarDictWordItem _selectedGlossaryWord = null;
-        public StarDictWordItem SelectedGlossaryWord
-        {
-            get => _selectedGlossaryWord;
-            set => SetProperty(ref _selectedGlossaryWord, value);
-        }
 
         /// <summary>
         /// 当前查看的生词本单词列表
         /// </summary>
         public ObservableCollection<StarDictWordItem> GlossaryWordItems { get; private set; } = new ObservableCollection<StarDictWordItem>();
 
+        /// <summary>
+        /// 当前查看的生词本
+        /// </summary>
+        public GlossaryBaseModel SelectedGlossary
+        {
+            get => _selectedGlossary;
+            private set => SetProperty(ref _selectedGlossary, value);
+        }
+
+        /// <summary>
+        /// 当前查看的生词
+        /// </summary>
+        public StarDictWordItem SelectedGlossaryWord
+        {
+            get => _selectedGlossaryWord;
+            private set => SetProperty(ref _selectedGlossaryWord, value);
+        }
+
         #region 筛选生词列表
+
+        private string _filterGlossaryWord = "";
+
+        private GlossaryColorsEnum _filterGlossaryColor = GlossaryColorsEnum.Transparent;
+
+        private int _glossaryWordsOrderMode = 0;
 
         /// <summary>
         /// 正在搜索的生词
         /// </summary>
-        private string _filterGlossaryWord = "";
         public string FilterGlossaryWord
         {
             get => _filterGlossaryWord;
@@ -64,7 +65,6 @@ namespace Flint3.ViewModels
         /// <summary>
         /// 当前筛选的单词颜色
         /// </summary>
-        private GlossaryColorsEnum _filterGlossaryColor = GlossaryColorsEnum.Transparent;
         public GlossaryColorsEnum FilterGlossaryColor
         {
             get => _filterGlossaryColor;
@@ -74,12 +74,11 @@ namespace Flint3.ViewModels
         /// <summary>
         /// 0-按照单词首字母排序，1-单词添加时间排序
         /// </summary>
-        //private int _glossaryWordsOrderMode = 0;
-        //public int GlossaryWordsOrderMode
-        //{
-        //    get => _glossaryWordsOrderMode;
-        //    set => SetProperty(ref _glossaryWordsOrderMode, value);
-        //}
+        public int GlossaryWordsOrderMode
+        {
+            get => _glossaryWordsOrderMode;
+            set => SetProperty(ref _glossaryWordsOrderMode, value);
+        }
 
         #endregion
 
@@ -88,60 +87,98 @@ namespace Flint3.ViewModels
         /// </summary>
         private void InitViewModel4Glossary()
         {
-
+            // 加载生词本数据库
+            this.LoadMyGlossaries();
+            this.LoadExGlossaries();
         }
 
         /// <summary>
         /// 查看生词本
         /// </summary>
         /// <param name="selectedGlossary"></param>
-        /// <param name="count"></param>
-        public void SelectGlossary(GlossaryModelBase selectedGlossary, int count = 50)
+        public void SelectGlossary(GlossaryBaseModel selectedGlossary)
         {
-            Debug.WriteLine($"Select Glossary: {selectedGlossary.GlossaryTitle}");
-
-            ActScrollToGlossaryTop?.Invoke();
-            GlossaryWordItems.Clear();
-
-            FilterGlossaryColor = GlossaryColorsEnum.Transparent;
-            SelectedGlossary = selectedGlossary;
+            System.Diagnostics.Trace.WriteLine($"Select Glossary: {selectedGlossary.GlossaryTitle}");
+            this.SelectedGlossary = selectedGlossary;
+            this.SelectedGlossaryWord = null;
+            this.GlossaryWordItems.Clear();
+            this.FilterGlossaryWord = "";
+            this.FilterGlossaryColor = GlossaryColorsEnum.Transparent;
+            this.GlossaryWordsOrderMode = 0;
         }
 
         /// <summary>
-        /// 清空正在显示的生词本单词列表
+        /// 查看生词
         /// </summary>
-        /// <param name="count"></param>
-        /// <param name="word"></param>
-        /// <param name="color"></param>
-        public void ClearGlossaryWords()
+        /// <param name="wordItem"></param>
+        public void SelectGlossaryWord(StarDictWordItem wordItem)
         {
-            ActScrollToGlossaryTop?.Invoke();
-            GlossaryWordItems.Clear();
+            System.Diagnostics.Trace.WriteLine($"Select Glossary Word: {wordItem.Word}");
+            this.SelectedGlossaryWord = wordItem;
+        }
+
+        /// <summary>
+        /// 加载所有生词
+        /// </summary>
+        /// <returns></returns>
+        public async Task GetAllGlossaryWords()
+        {
+            try
+            {
+                System.Diagnostics.Trace.WriteLine($"Getting All GlossaryWords: {this.SelectedGlossary.GlossaryTitle}, {this.FilterGlossaryWord}, {this.FilterGlossaryColor}, {this.GlossaryWordsOrderMode}");
+
+                // 取消前一次的查询
+                _cancellationTokenSource.Cancel();
+                _cancellationTokenSource = new CancellationTokenSource();
+                var token = _cancellationTokenSource.Token;
+
+                this.GlossaryWordItems.Clear();
+
+                if (this.SelectedGlossary is Models.GlossaryExModel)
+                {
+                    await GetAllExGlossaryWords(this.FilterGlossaryWord.Trim(), token);
+                }
+                else if (this.SelectedGlossary is GlossaryMyModel)
+                {
+                    await GetAllMyGlossaryWords(this.FilterGlossaryWord.Trim(), this.FilterGlossaryColor, this.GlossaryWordsOrderMode != 1, token);
+                }
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Trace.WriteLine($"GetMoreGlossaryWords Error: {e.Message}");
+            }
         }
 
         /// <summary>
         /// 增量加载生词
         /// </summary>
-        public void GetMoreGlossaryWords(int count = 50)
+        public async Task GetMoreGlossaryWords(int count = 50)
         {
             try
             {
-                Debug.WriteLine($"Getting More GlossaryWords: {SelectedGlossary.GlossaryTitle}, {FilterGlossaryWord}, {FilterGlossaryColor}");
+                System.Diagnostics.Trace.WriteLine($"Getting More GlossaryWords: {this.SelectedGlossary.GlossaryTitle}, {this.FilterGlossaryWord}, {this.FilterGlossaryColor}");
 
-                if (SelectedGlossary is Models.GlossaryExModel)
+                // 取消前一次的查询
+                _cancellationTokenSource.Cancel();
+                _cancellationTokenSource = new CancellationTokenSource();
+                var token = _cancellationTokenSource.Token;
+
+                if (this.SelectedGlossary is Models.GlossaryExModel)
                 {
-                    long lastId = GlossaryWordItems.Count > 0 ? GlossaryWordItems.Last().Id : -1;
-                    GetMoreExGlossaryWords(lastId, count, FilterGlossaryWord.Trim());
+                    // 内置生词本单词为顺序，因此从-1开始顺序加载
+                    long lastId = this.GlossaryWordItems.Count > 0 ? this.GlossaryWordItems.Last().Id : -1;
+                    await GetMoreExGlossaryWords(lastId, count, this.FilterGlossaryWord.Trim(), token);
                 }
-                else if (SelectedGlossary is GlossaryMyModel)
+                else if (this.SelectedGlossary is GlossaryMyModel)
                 {
-                    long lastId = GlossaryWordItems.Count > 0 ? GlossaryWordItems.Last().Id : long.MaxValue;
-                    GetMoreMyGlossaryWords(lastId, count, FilterGlossaryWord.Trim(), FilterGlossaryColor/*, GlossaryWordsOrderMode == 0*/);
+                    // 用户生词本为倒序，新添加的在后面，因此从无穷大开始倒叙加载
+                    long lastId = this.GlossaryWordItems.Count > 0 ? this.GlossaryWordItems.Last().Id : long.MaxValue;
+                    await GetMoreMyGlossaryWords(lastId, count, this.FilterGlossaryWord.Trim(), this.FilterGlossaryColor, token);
                 }
             }
             catch (Exception e)
             {
-                Debug.WriteLine($"GetMoreGlossaryWords Error: {e.Message}");
+                System.Diagnostics.Trace.WriteLine($"GetMoreGlossaryWords Error: {e.Message}");
             }
         }
 
@@ -159,9 +196,9 @@ namespace Flint3.ViewModels
         {
             try
             {
-                ExGlossaries?.Clear();
+                this.ExGlossaries.Clear();
 
-                ExGlossaries.Add(new()
+                this.ExGlossaries.Add(new()
                 {
                     GlossaryTitle = "牛津核心词汇",
                     ExtraGlossaryInternalTag = "oxford",
@@ -171,7 +208,7 @@ namespace Flint3.ViewModels
                     GlossaryWordsCount = 3461
                 });
 
-                ExGlossaries.Add(new()
+                this.ExGlossaries.Add(new()
                 {
                     GlossaryTitle = "雅思词汇",
                     ExtraGlossaryInternalTag = "ielts",
@@ -181,7 +218,7 @@ namespace Flint3.ViewModels
                     GlossaryWordsCount = 5040
                 });
 
-                ExGlossaries.Add(new()
+                this.ExGlossaries.Add(new()
                 {
                     GlossaryTitle = "托福词汇",
                     ExtraGlossaryInternalTag = "toefl",
@@ -191,7 +228,7 @@ namespace Flint3.ViewModels
                     GlossaryWordsCount = 6974
                 });
 
-                ExGlossaries.Add(new()
+                this.ExGlossaries.Add(new()
                 {
                     GlossaryTitle = "GRE 词汇",
                     ExtraGlossaryInternalTag = "gre",
@@ -201,7 +238,7 @@ namespace Flint3.ViewModels
                     GlossaryWordsCount = 7504
                 });
 
-                ExGlossaries.Add(new()
+                this.ExGlossaries.Add(new()
                 {
                     GlossaryTitle = "考研词汇",
                     ExtraGlossaryInternalTag = "ky",
@@ -211,7 +248,7 @@ namespace Flint3.ViewModels
                     GlossaryWordsCount = 4801
                 });
 
-                ExGlossaries.Add(new()
+                this.ExGlossaries.Add(new()
                 {
                     GlossaryTitle = "CET 6 词汇",
                     ExtraGlossaryInternalTag = "cet6",
@@ -221,7 +258,7 @@ namespace Flint3.ViewModels
                     GlossaryWordsCount = 5407
                 });
 
-                ExGlossaries.Add(new()
+                this.ExGlossaries.Add(new()
                 {
                     GlossaryTitle = "CET 4 词汇",
                     ExtraGlossaryInternalTag = "cet4",
@@ -231,7 +268,7 @@ namespace Flint3.ViewModels
                     GlossaryWordsCount = 3849
                 });
 
-                ExGlossaries.Add(new()
+                this.ExGlossaries.Add(new()
                 {
                     GlossaryTitle = "高考词汇",
                     ExtraGlossaryInternalTag = "gk",
@@ -241,7 +278,7 @@ namespace Flint3.ViewModels
                     GlossaryWordsCount = 3677
                 });
 
-                ExGlossaries.Add(new()
+                this.ExGlossaries.Add(new()
                 {
                     GlossaryTitle = "中考词汇",
                     ExtraGlossaryInternalTag = "zk",
@@ -267,7 +304,24 @@ namespace Flint3.ViewModels
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
+                System.Diagnostics.Trace.WriteLine(e.Message);
+            }
+        }
+
+        /// <summary>
+        /// 加载内置生词本的所有单词
+        /// </summary>
+        /// <param name="count"></param>
+        private async Task GetAllExGlossaryWords(string word, CancellationToken token)
+        {
+            if (this.SelectedGlossary is GlossaryExModel glossary)
+            {
+                var list = await StarDictDataAccess.GetAllExtraGlossaryWords(glossary.ExtraGlossaryInternalTag, word, token);
+
+                foreach (var item in list)
+                {
+                    this.GlossaryWordItems.Add(MakeupWordItem(item));
+                }
             }
         }
 
@@ -275,17 +329,17 @@ namespace Flint3.ViewModels
         /// 增量加载内置生词本的单词
         /// </summary>
         /// <param name="count"></param>
-        private void GetMoreExGlossaryWords(long lastId, int count, string word)
+        private async Task GetMoreExGlossaryWords(long lastId, int count, string word, CancellationToken token)
         {
-            Debug.WriteLine($"Last id: {lastId}, count={GlossaryWordItems.Count}");
+            System.Diagnostics.Trace.WriteLine($"Last id: {lastId}, count={GlossaryWordItems.Count}");
 
-            if (SelectedGlossary is GlossaryExModel glossary)
+            if (this.SelectedGlossary is GlossaryExModel glossary)
             {
-                var list = StarDictDataAccess.GetExtraGlossaryWords(glossary.ExtraGlossaryInternalTag, lastId, count, word);
+                var list = await StarDictDataAccess.GetIncrementalExtraGlossaryWords(glossary.ExtraGlossaryInternalTag, lastId, count, word, token);
 
                 foreach (var item in list)
                 {
-                    GlossaryWordItems.Add(MakeupWord(item));
+                    this.GlossaryWordItems.Add(MakeupWordItem(item));
                 }
             }
         }
@@ -295,16 +349,6 @@ namespace Flint3.ViewModels
         #region 我的生词本
 
         /// <summary>
-        /// 当前是否正在编辑生词本属性
-        /// </summary>
-        private bool _editingGlossaryProperty = false;
-        public bool EditingGlossaryProperty
-        {
-            get => _editingGlossaryProperty;
-            set => SetProperty(ref _editingGlossaryProperty, value);
-        }
-
-        /// <summary>
         /// 用户生词本列表
         /// </summary>
         public ObservableCollection<GlossaryMyModel> MyGlossaries { get; private set; } = new ObservableCollection<GlossaryMyModel>();
@@ -312,59 +356,69 @@ namespace Flint3.ViewModels
         /// <summary>
         /// 加载我的生词本
         /// </summary>
-        public void LoadMyGlossaries()
+        public async void LoadMyGlossaries()
         {
             try
             {
-                MyGlossaries?.Clear();
-
-                StorageFolder documentsFolder = StorageFolder.GetFolderFromPathAsync(UserDataPaths.GetDefault().Documents).GetAwaiter().GetResult();
-
-                var oldFlintFolder = documentsFolder.TryGetItemAsync("Flint").GetAwaiter().GetResult();
-
-                var noMewingFolder = documentsFolder.CreateFolderAsync("NoMewing", CreationCollisionOption.OpenIfExists).GetAwaiter().GetResult();
-
-                // 把Flint文件夹迁移到NoMewing下面
-                if (oldFlintFolder != null && !Directory.Exists(Path.Combine(noMewingFolder.Path, "Flint")))
-                {
-                    Directory.Move(oldFlintFolder.Path, Path.Combine(noMewingFolder.Path, "Flint"));
-                }
-
-                var flintFolder = noMewingFolder.CreateFolderAsync("Flint", CreationCollisionOption.OpenIfExists).GetAwaiter().GetResult();
-
                 GlossaryDataAccess.CloseDatabase();
-                GlossaryDataAccess.LoadDatabase(flintFolder);
+                await GlossaryDataAccess.LoadDatabase();
 
-                GlossaryDataAccess.GetAllGlossaries().ForEach(item =>
-                    MyGlossaries.Add(new GlossaryMyModel()
-                    {
-                        Id = item.Id,
-                        GlossaryTitle = item.Title,
-                        GlossaryDescription = item.Description,
-                        GlossaryIcon = "\uEE56"
-                    }));
+                var glossaries = await GlossaryDataAccess.GetGlossaries();
+
+                this.MyGlossaries?.Clear();
+                glossaries.ForEach(item => this.MyGlossaries.Add(new GlossaryMyModel()
+                {
+                    Id = item.Id,
+                    GlossaryTitle = item.Title,
+                    GlossaryDescription = item.Description,
+                    GlossaryIcon = "\uEE56"
+                }));
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
+                System.Diagnostics.Trace.WriteLine(e.Message);
             }
         }
 
         /// <summary>
-        /// 增量加载内置生词本的单词
+        /// 获取生词本内的所有单词
         /// </summary>
-        /// <param name="count"></param>
-        private void GetMoreMyGlossaryWords(long lastId, int count, string word, GlossaryColorsEnum color/*, bool orderByWord*/)
+        /// <param name="word"></param>
+        /// <param name="color"></param>
+        /// <param name="orderByWord"></param>
+        /// <returns></returns>
+        private async Task GetAllMyGlossaryWords(string word, GlossaryColorsEnum color, bool orderByWord, CancellationToken token)
         {
-            Debug.WriteLine($"Last id: {lastId}, count={GlossaryWordItems.Count}, word={word}, color={color}");
-
-            if (SelectedGlossary is GlossaryMyModel glossary)
+            if (this.SelectedGlossary is GlossaryMyModel glossary)
             {
-                var list = GlossaryDataAccess.GetGlossaryWords(glossary.Id, lastId, count, word, color/*, orderByWord*/);
+                var list = await GlossaryDataAccess.GetAllGlossaryWords(glossary.Id, word, color, orderByWord, token);
 
                 foreach (var item in list)
                 {
-                    GlossaryWordItems.Add(MakeupWord(item));
+                    this.GlossaryWordItems.Add(MakeupWordItem(item));
+                }
+            }
+        }
+
+        /// <summary>
+        /// 增量加载生词本的单词
+        /// </summary>
+        /// <param name="lastId"></param>
+        /// <param name="count"></param>
+        /// <param name="word"></param>
+        /// <param name="color"></param>
+        /// <returns></returns>
+        private async Task GetMoreMyGlossaryWords(long lastId, int count, string word, GlossaryColorsEnum color, CancellationToken token)
+        {
+            System.Diagnostics.Trace.WriteLine($"Last id: {lastId}, count={GlossaryWordItems.Count}, word={word}, color={color}");
+
+            if (this.SelectedGlossary is GlossaryMyModel glossary)
+            {
+                var list = await GlossaryDataAccess.GetIncrementalGlossaryWords(glossary.Id, lastId, count, word, color, token);
+
+                foreach (var item in list)
+                {
+                    this.GlossaryWordItems.Add(MakeupWordItem(item));
                 }
             }
         }
@@ -374,17 +428,16 @@ namespace Flint3.ViewModels
         /// </summary>
         /// <param name="name"></param>
         /// <param name="desc"></param>
-        public void CreateMyGlossary(string name, string desc)
+        public async Task AddMyGlossary(string name, string desc)
         {
             try
             {
-                GlossaryDataAccess.AddOneGlossary(name, desc);
-
+                await GlossaryDataAccess.AddGlossary(name, desc);
                 LoadMyGlossaries();
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
+                System.Diagnostics.Trace.WriteLine(e.Message);
             }
         }
 
@@ -393,23 +446,22 @@ namespace Flint3.ViewModels
         /// </summary>
         /// <param name="name"></param>
         /// <param name="desc"></param>
-        public void UpdateMyGlossary(int id, string name, string desc)
+        public async Task UpdateMyGlossary(int id, string name, string desc)
         {
             try
             {
-                GlossaryDataAccess.UpdateOneGlossary(id, name, desc);
-
+                await GlossaryDataAccess.UpdateGlossary(id, name, desc);
                 LoadMyGlossaries();
 
-                if (SelectedGlossary.Id == id)
+                if (this.SelectedGlossary.Id == id)
                 {
-                    SelectedGlossary.GlossaryTitle = name;
-                    SelectedGlossary.GlossaryDescription = desc;
+                    this.SelectedGlossary.GlossaryTitle = name;
+                    this.SelectedGlossary.GlossaryDescription = desc;
                 }
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
+                System.Diagnostics.Trace.WriteLine(e.Message);
             }
         }
 
@@ -417,17 +469,16 @@ namespace Flint3.ViewModels
         /// 删除生词本
         /// </summary>
         /// <param name="id"></param>
-        public void DeleteMyGlossary(int id)
+        public async Task DeleteMyGlossary(int id)
         {
             try
             {
-                GlossaryDataAccess.DeleteOneGlossary(id);
-
+                await GlossaryDataAccess.DeleteGlossary(id);
                 LoadMyGlossaries();
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
+                System.Diagnostics.Trace.WriteLine(e.Message);
             }
         }
 
@@ -443,15 +494,15 @@ namespace Flint3.ViewModels
         /// <param name="exchange"></param>
         /// <param name="description"></param>
         /// <param name="color"></param>
-        public void AddWordToMyGlossary(long wordid, int glossaryId, string word, string phonetic, string definition, string translation, string exchange, string description, GlossaryColorsEnum color)
+        public async Task AddWordToMyGlossary(long wordid, int glossaryId, string word, string phonetic, string definition, string translation, string exchange, string description, GlossaryColorsEnum color)
         {
             try
             {
-                GlossaryDataAccess.AddGlossaryWord(wordid, glossaryId, word, phonetic, definition, translation, exchange, description, color);
+                await GlossaryDataAccess.AddGlossaryWord(wordid, glossaryId, word, phonetic, definition, translation, exchange, description, color);
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
+                System.Diagnostics.Trace.WriteLine(e.Message);
             }
         }
 
@@ -461,15 +512,15 @@ namespace Flint3.ViewModels
         /// <param name="wordid"></param>
         /// <param name="desc"></param>
         /// <param name="color"></param>
-        public void UpdateWordFromMyGlossary(long id, string desc, GlossaryColorsEnum color)
+        public async Task UpdateWordFromMyGlossary(long id, string desc, GlossaryColorsEnum color)
         {
             try
             {
-                GlossaryDataAccess.UpdateGlossaryWord(id, desc, color);
+                await GlossaryDataAccess.UpdateGlossaryWord(id, desc, color);
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
+                System.Diagnostics.Trace.WriteLine(e.Message);
             }
         }
 
@@ -477,15 +528,15 @@ namespace Flint3.ViewModels
         /// 删除指定id的生词
         /// </summary>
         /// <param name="id"></param>
-        public void DeleteWordFromMyGlossary(long id)
+        public async Task DeleteWordFromMyGlossary(long id)
         {
             try
             {
-                GlossaryDataAccess.DeleteGlossaryWord(id);
+                await GlossaryDataAccess.DeleteGlossaryWord(id);
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
+                System.Diagnostics.Trace.WriteLine(e.Message);
             }
         }
 
@@ -495,85 +546,44 @@ namespace Flint3.ViewModels
         /// <param name="glossaryId"></param>
         /// <param name="color"></param>
         /// <returns></returns>
-        public int GetWordsCountOfMyGlossary(int glossaryId, GlossaryColorsEnum color)
+        public async Task<int> GetWordsCountOfMyGlossary(int glossaryId, GlossaryColorsEnum color)
         {
             try
             {
-                return GlossaryDataAccess.GetGlossaryWordsCount(glossaryId, color);
+                return await GlossaryDataAccess.GetGlossaryWordsCount(glossaryId, color);
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
+                System.Diagnostics.Trace.WriteLine(e.Message);
             }
             return 0;
         }
 
-        #endregion
-
-        #region 添加到我的生词本
-
         /// <summary>
-        /// 可以添加当前单词的生词本列表
+        /// 返回所有不包含指定单词的生词本
         /// </summary>
-        public ObservableCollection<GlossaryMyModel> AddingGlossaries { get; private set; } = new ObservableCollection<GlossaryMyModel>();
-
-        /// <summary>
-        /// 正在添加的单词
-        /// </summary>
-        private StarDictWordItem _addingWordItem = null;
-        public StarDictWordItem AddingWordItem
+        /// <param name="addingWordItem"></param>
+        /// <returns></returns>
+        public async Task<List<GlossaryMyModel>> GetGlossariesWithoutThisWord(StarDictWordItem addingWordItem)
         {
-            get => _addingWordItem;
-            set => SetProperty(ref _addingWordItem, value);
-        }
+            List<GlossaryMyModel> result = new List<GlossaryMyModel>();
 
-        /// <summary>
-        /// 当前添加的单词颜色
-        /// </summary>
-        private GlossaryColorsEnum _addingWordColor = GlossaryColorsEnum.Transparent;
-        public GlossaryColorsEnum AddingWordColor
-        {
-            get => _addingWordColor;
-            set => SetProperty(ref _addingWordColor, value);
-        }
-
-        /// <summary>
-        /// 是否正在检索当前添加单词在各个生词本中是否存在
-        /// </summary>
-        private bool _searchingWordItemExist = false;
-        public bool SearchingWordItemExist
-        {
-            get => _searchingWordItemExist;
-            set => SetProperty(ref _searchingWordItemExist, value);
-        }
-
-        /// <summary>
-        /// 获取可以添加当前单词的生词本列表
-        /// </summary>
-        public async void GetAddGlossariesList()
-        {
-            SearchingWordItemExist = true;
-
-            AddingGlossaries.Clear();
-            ObservableCollection<GlossaryMyModel> tempList = new ObservableCollection<GlossaryMyModel>();
-
-            await Task.Run(() =>
+            try
             {
-                foreach (var item in MyGlossaries)
+                foreach (var item in this.MyGlossaries)
                 {
-                    if (!GlossaryDataAccess.IfExistGlossaryWord(AddingWordItem.Id, item.Id))
+                    if (!await GlossaryDataAccess.CheckGlossaryContainsWord(addingWordItem.Id, item.Id))
                     {
-                        tempList.Add(item);
+                        result.Add(item);
                     }
                 }
-            });
-
-            foreach (var item in tempList)
+            }
+            catch (Exception ex)
             {
-                AddingGlossaries.Add(item);
+                System.Diagnostics.Trace.WriteLine(ex);
             }
 
-            SearchingWordItemExist = false;
+            return result;
         }
 
         #endregion

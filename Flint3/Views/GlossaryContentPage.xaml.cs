@@ -18,47 +18,32 @@ namespace Flint3.Views
     public sealed partial class GlossaryContentPage : Page
     {
         public MainViewModel ViewModel { get; set; } = null;
+
         private ScrollViewer _glossaryWordsScrollViewer = null;
 
         private SlideNavigationTransitionInfo SlideNaviTransition = new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight };
 
         public GlossaryContentPage()
         {
+            ViewModel = MainViewModel.Instance;
             this.InitializeComponent();
-
-            this.Loaded += OnLoaded;
             GlossaryWordsListView.Loaded += OnGlossaryWordsListViewLoaded;
             GlossaryWordsListView.Unloaded += OnGlossaryWordsListViewUnloaded;
-
-            ViewModel = MainViewModel.Instance;
-
-            ViewModel.ActScrollToGlossaryTop = () =>
-            {
-                try
-                {
-                    _glossaryWordsScrollViewer?.ChangeView(0, 0, null, true);
-                }
-                catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
-            };
         }
 
-        private void OnLoaded(object sender, RoutedEventArgs e)
+        private async void OnLoaded(object sender, RoutedEventArgs e)
         {
             try
             {
-                if (string.IsNullOrEmpty(FilterWordTextBox.Text))
-                {
-                    ViewModel?.ClearGlossaryWords();
-                    ViewModel?.GetMoreGlossaryWords();
-                }
-                else
-                {
-                    FilterWordTextBox.Text = "";
-                }
+                FilterWordTextBox.TextChanged -= OnFilterTextChanged;
+                FilterWordTextBox.Text = MainViewModel.Instance.FilterGlossaryWord;
+                FilterWordTextBox.TextChanged += OnFilterTextChanged;
+                ScrollGlossaryWordsListViewToTop();
+                await MainViewModel.Instance.GetAllGlossaryWords();
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                System.Diagnostics.Trace.WriteLine(ex.Message);
             }
         }
 
@@ -70,12 +55,11 @@ namespace Flint3.Views
                 Border border = VisualTreeHelper.GetChild(listView, 0) as Border;
                 _glossaryWordsScrollViewer = VisualTreeHelper.GetChild(border, 0) as ScrollViewer;
 
-                if (_glossaryWordsScrollViewer != null)
-                {
-                    _glossaryWordsScrollViewer.ViewChanged += GlossaryWordsScrollViewer_ViewChanged;
-
-                    Debug.WriteLine($"OnGlossaryWordsListViewLoaded ViewChanged Registered");
-                }
+                //if (_glossaryWordsScrollViewer != null)
+                //{
+                //    _glossaryWordsScrollViewer.ViewChanged += GlossaryWordsScrollViewer_ViewChanged;
+                //    System.Diagnostics.Trace.WriteLine($"OnGlossaryWordsListViewLoaded ViewChanged Registered");
+                //}
             }
             catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         }
@@ -84,10 +68,29 @@ namespace Flint3.Views
         {
             try
             {
-                if (_glossaryWordsScrollViewer != null)
+                //if (_glossaryWordsScrollViewer != null)
+                //{
+                //    _glossaryWordsScrollViewer.ViewChanged -= GlossaryWordsScrollViewer_ViewChanged;
+                //    System.Diagnostics.Trace.WriteLine($"OnGlossaryWordsListViewUnloaded ViewChanged Unregistered");
+                //}
+            }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
+        }
+
+        private void ScrollGlossaryWordsListViewToTop()
+        {
+            try
+            {
+                if (_glossaryWordsScrollViewer is not null)
                 {
-                    _glossaryWordsScrollViewer.ViewChanged -= GlossaryWordsScrollViewer_ViewChanged;
-                    Debug.WriteLine($"OnGlossaryWordsListViewUnloaded ViewChanged Unregistered");
+                    _glossaryWordsScrollViewer?.ChangeView(0, 0, null, true);
+                }
+                else
+                {
+                    if (GlossaryWordsListView.Items.Count > 0)
+                    {
+                        GlossaryWordsListView.ScrollIntoView(GlossaryWordsListView.Items[0]);
+                    }
                 }
             }
             catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
@@ -102,47 +105,20 @@ namespace Flint3.Views
         }
 
         /// <summary>
-        /// 滚动到底部时增量加载
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void GlossaryWordsScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
-        {
-            try
-            {
-                if (!e.IsIntermediate)
-                {
-                    var scroller = (ScrollViewer)sender;
-                    var distanceToEnd = scroller.ExtentHeight - (scroller.VerticalOffset + scroller.ViewportHeight);
-
-                    if (distanceToEnd <= 20)
-                    {
-                        ViewModel.GetMoreGlossaryWords();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-            }
-        }
-
-        /// <summary>
         /// 搜索词汇
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnFilterTextChanged(object sender, TextChangedEventArgs e)
+        private async void OnFilterTextChanged(object sender, TextChangedEventArgs e)
         {
-            if (sender is TextBox tb)
+            if (sender is TextBox filterTextBox)
             {
-                string word = tb.Text;
+                string word = filterTextBox.Text;
                 if (MainViewModel.Instance.FilterGlossaryWord != word)
                 {
                     MainViewModel.Instance.FilterGlossaryWord = word;
-
-                    ViewModel?.ClearGlossaryWords();
-                    ViewModel?.GetMoreGlossaryWords();
+                    ScrollGlossaryWordsListViewToTop();
+                    await MainViewModel.Instance.GetAllGlossaryWords();
                 }
             }
         }
@@ -152,7 +128,7 @@ namespace Flint3.Views
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnClickFilterColor(object sender, RoutedEventArgs e)
+        private async void OnClickFilterColor(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -195,13 +171,28 @@ namespace Flint3.Views
 
                     if (MainViewModel.Instance.FilterGlossaryColor != colorsEnum)
                     {
-                        ColorFilterFlyout.Hide();
                         MainViewModel.Instance.FilterGlossaryColor = colorsEnum;
-
-                        ViewModel?.ClearGlossaryWords();
-                        ViewModel?.GetMoreGlossaryWords();
+                        ColorFilterFlyout?.Hide();
+                        ScrollGlossaryWordsListViewToTop();
+                        await MainViewModel.Instance.GetAllGlossaryWords();
                     }
                 }
+            }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
+        }
+
+        /// <summary>
+        /// 切换排序方式
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void OnSelectOrderMode(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                OrderByModeFlyout?.Hide();
+                ScrollGlossaryWordsListViewToTop();
+                await MainViewModel.Instance.GetAllGlossaryWords();
             }
             catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         }
@@ -225,25 +216,40 @@ namespace Flint3.Views
         {
             if (sender is Button btn && btn.DataContext is StarDictWordItem item)
             {
-                MainViewModel.Instance.SelectedGlossaryWord = item;
+                MainViewModel.Instance.SelectGlossaryWord(item);
                 this.Frame.Navigate(typeof(GlossaryWordPage), null, SlideNaviTransition);
             }
         }
 
+        #region 增量加载
+
         /// <summary>
-        /// 切换排序方式
+        /// 滚动到底部时增量加载
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        //private void OnSelectOrderMode(object sender, SelectionChangedEventArgs e)
+        //private void GlossaryWordsScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         //{
         //    try
         //    {
-        //        ViewModel?.ClearGlossaryWords();
-        //        ViewModel?.GetMoreGlossaryWords();
-        //        OrderByModeFlyout?.Hide();
+        //        if (!e.IsIntermediate)
+        //        {
+        //            var scroller = (ScrollViewer)sender;
+        //            var distanceToEnd = scroller.ExtentHeight - (scroller.VerticalOffset + scroller.ViewportHeight);
+
+        //            if (distanceToEnd <= 20)
+        //            {
+        //                MainViewModel.Instance.GetMoreGlossaryWords();
+        //            }
+        //        }
         //    }
-        //    catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
+        //    catch (Exception ex)
+        //    {
+        //        System.Diagnostics.Trace.WriteLine(ex.Message);
+        //    }
         //}
+
+        #endregion
+
     }
 }

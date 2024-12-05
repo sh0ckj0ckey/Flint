@@ -10,8 +10,6 @@
     xmlns:models="using:Flint3.Models"
     mc:Ignorable="d" Background="Transparent">
     <UserControl.Resources>
-        <ThemeShadow x:Name="PopupShadow"/>
-
         <cvt:Int2BoolConverter x:Key="Int2Bool"/>
         <cvt:Equal2VisibilityConverter x:Key="Eql2Vis"/>
         <cvt:Unequal2VisibilityConverter x:Key="UnEql2Vis"/>
@@ -19,110 +17,107 @@
         <cvt:Bool2VisibilityConverter x:Key="Bool2Vis"/>
     </UserControl.Resources>
 
-    <Grid>
-        <Grid x:Name="AddToGlossaryPopupShadowReceiver" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent"/>
-        <Grid Width="256" CornerRadius="8" Shadow="{StaticResource PopupShadow}" Translation="0,0,64">
-            <Grid.Background>
-                <AcrylicBrush TintColor="Transparent" TintLuminosityOpacity="0" TintOpacity="0" FallbackColor="{ThemeResource SolidBackgroundFillColorBase}"/>
-            </Grid.Background>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0" Margin="22,12,20,10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <FontIcon Grid.Column="0" FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xEE56;" FontSize="14" Margin="0,-1,8,1" Opacity="0.5"/>
-                <TextBlock Grid.Column="1" Text="{x:Bind ViewModel.AddingWordItem.Word,Mode=OneWay}" FontFamily="Segoe Print" FontSize="16" FontWeight="Medium" Opacity="0.9" CharacterSpacing="64" TextTrimming="CharacterEllipsis"/>
-            </Grid>
-            <Grid Grid.Row="1" Margin="20,0,20,8">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <ComboBox x:Name="GlossaryComboBox" PlaceholderText="选择生词本" HorizontalAlignment="Stretch" ItemsSource="{x:Bind ViewModel.AddingGlossaries,Mode=OneWay}" SelectedValuePath="GlossaryTitle" VerticalAlignment="Center"
-                          IsEnabled="{x:Bind ViewModel.SearchingWordItemExist,Mode=OneWay,Converter={StaticResource BoolReverse}}">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate x:DataType="models:GlossaryMyModel">
-                            <TextBlock MaxWidth="168" Text="{x:Bind GlossaryTitle,Mode=OneWay}" HorizontalAlignment="Left" TextTrimming="CharacterEllipsis"/>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
-                <ProgressRing Grid.Column="1" IsEnabled="{x:Bind ViewModel.SearchingWordItemExist,Mode=OneWay}" Visibility="{x:Bind ViewModel.SearchingWordItemExist,Mode=OneWay,Converter={StaticResource Bool2Vis}}" ToolTipService.ToolTip="正在检索生词本..."/>
-            </Grid>
-            <TextBox x:Name="WordDescTextBox" Grid.Row="2" Text="" BorderThickness="0" Margin="20,0,20,0" HorizontalAlignment="Stretch" CharacterSpacing="40" TextWrapping="Wrap" Height="54" PlaceholderText="备注"/>
-            <ScrollViewer x:Name="WordColorScrollViewer" Grid.Row="3" Margin="0,10,0,0" HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" VerticalScrollMode="Disabled" ZoomMode="Disabled">
-                <StackPanel Orientation="Horizontal" Spacing="6" Margin="22,0,20,0">
-                    <TextBlock Text="颜色标签" FontSize="12" Opacity="0.5" VerticalAlignment="Center" CharacterSpacing="40"/>
-                    <Button Height="26" Width="26" Padding="0" CornerRadius="16" Tag="0" Click="OnClickAddingWordColor">
-                        <Border Height="18" Width="18" CornerRadius="16" Background="Transparent" BorderBrush="{ThemeResource APPLICATION_NORMAL_FR}" BorderThickness="2" ToolTipService.ToolTip="无">
-                            <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="10" Foreground="{ThemeResource APPLICATION_NORMAL_FR}" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                      Visibility="{x:Bind ViewModel.AddingWordColor,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=Transparent}"/>
-                        </Border>
-                    </Button>
-                    <Button Height="26" Width="26" Padding="0" CornerRadius="16" Tag="1" Click="OnClickAddingWordColor">
-                        <Border Height="18" Width="18" CornerRadius="16" Background="Firebrick" ToolTipService.ToolTip="红色">
-                            <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                      Visibility="{x:Bind ViewModel.AddingWordColor,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=Red}"/>
-                        </Border>
-                    </Button>
-                    <Button Height="26" Width="26" Padding="0" CornerRadius="16" Tag="2" Click="OnClickAddingWordColor">
-                        <Border Height="18" Width="18" CornerRadius="16" Background="Tomato" ToolTipService.ToolTip="橙色">
-                            <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                      Visibility="{x:Bind ViewModel.AddingWordColor,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=Orange}"/>
-                        </Border>
-                    </Button>
-                    <Button Height="26" Width="26" Padding="0" CornerRadius="16" Tag="3" Click="OnClickAddingWordColor">
-                        <Border Height="18" Width="18" CornerRadius="16" Background="Gold" ToolTipService.ToolTip="黄色">
-                            <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                      Visibility="{x:Bind ViewModel.AddingWordColor,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=Yellow}"/>
-                        </Border>
-                    </Button>
-                    <Button Height="26" Width="26" Padding="0" CornerRadius="16" Tag="4" Click="OnClickAddingWordColor">
-                        <Border Height="18" Width="18" CornerRadius="16" Background="ForestGreen" ToolTipService.ToolTip="绿色">
-                            <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                      Visibility="{x:Bind ViewModel.AddingWordColor,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=Green}"/>
-                        </Border>
-                    </Button>
-                    <Button Height="26" Width="26" Padding="0" CornerRadius="16" Tag="5" Click="OnClickAddingWordColor">
-                        <Border Height="18" Width="18" CornerRadius="16" Background="DodgerBlue" ToolTipService.ToolTip="蓝色">
-                            <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                      Visibility="{x:Bind ViewModel.AddingWordColor,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=Blue}"/>
-                        </Border>
-                    </Button>
-                    <Button Height="26" Width="26" Padding="0" CornerRadius="16" Tag="6" Click="OnClickAddingWordColor">
-                        <Border Height="18" Width="18" CornerRadius="16" Background="Orchid" ToolTipService.ToolTip="紫色">
-                            <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                      Visibility="{x:Bind ViewModel.AddingWordColor,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=Purple}"/>
-                        </Border>
-                    </Button>
-                    <Button Height="26" Width="26" Padding="0" CornerRadius="16" Tag="7" Click="OnClickAddingWordColor">
-                        <Border Height="18" Width="18" CornerRadius="16" Background="DeepPink" ToolTipService.ToolTip="粉色">
-                            <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                      Visibility="{x:Bind ViewModel.AddingWordColor,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=Pink}"/>
-                        </Border>
-                    </Button>
-                    <Button Height="26" Width="26" Padding="0" CornerRadius="16" Tag="8" Click="OnClickAddingWordColor">
-                        <Border Height="18" Width="18" CornerRadius="16" Background="Sienna" ToolTipService.ToolTip="棕色">
-                            <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                      Visibility="{x:Bind ViewModel.AddingWordColor,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=Brown}"/>
-                        </Border>
-                    </Button>
-                    <Button Height="26" Width="26" Padding="0" CornerRadius="16" Tag="9" Click="OnClickAddingWordColor">
-                        <Border Height="18" Width="18" CornerRadius="16" Background="Gray" ToolTipService.ToolTip="灰色">
-                            <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                      Visibility="{x:Bind ViewModel.AddingWordColor,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=Gray}"/>
-                        </Border>
-                    </Button>
-                </StackPanel>
-            </ScrollViewer>
-            <Button Grid.Row="4" Content="添加" Margin="20,12,20,18" BorderThickness="0" HorizontalAlignment="Stretch" Style="{StaticResource AccentButtonStyle}"
-                    IsEnabled="{x:Bind GlossaryComboBox.SelectedIndex,Mode=OneWay,Converter={StaticResource Int2Bool},ConverterParameter=0}" Click="OnClickAddWord"/>
+    <Grid Width="256" CornerRadius="8">
+        <Grid.Background>
+            <AcrylicBrush TintColor="Transparent" TintLuminosityOpacity="0" TintOpacity="0" FallbackColor="{ThemeResource SolidBackgroundFillColorBase}"/>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Margin="22,12,20,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <FontIcon Grid.Column="0" FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xEE56;" FontSize="14" Margin="0,-1,8,1" Opacity="0.5"/>
+            <TextBlock Grid.Column="1" Text="{x:Bind AddingWordItem.Word,Mode=OneWay}" FontFamily="Segoe Print" FontSize="16" FontWeight="Medium" Opacity="0.9" TextTrimming="CharacterEllipsis"/>
         </Grid>
+        <Grid Grid.Row="1" Margin="20,0,20,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <ComboBox x:Name="GlossaryComboBox" PlaceholderText="选择生词本" HorizontalAlignment="Stretch" ItemsSource="{x:Bind AvailableGlossaries,Mode=OneWay}" SelectedValuePath="GlossaryTitle" VerticalAlignment="Center"
+                      IsEnabled="{x:Bind UpdatingAvailableGlossaries,Mode=OneWay,Converter={StaticResource BoolReverse}}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate x:DataType="models:GlossaryMyModel">
+                        <TextBlock MaxWidth="168" Text="{x:Bind GlossaryTitle,Mode=OneWay}" HorizontalAlignment="Left" TextTrimming="CharacterEllipsis"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <ProgressRing Grid.Column="1" IsEnabled="{x:Bind UpdatingAvailableGlossaries,Mode=OneWay}" Visibility="{x:Bind UpdatingAvailableGlossaries,Mode=OneWay,Converter={StaticResource Bool2Vis}}" ToolTipService.ToolTip="正在检索生词本..."/>
+        </Grid>
+        <TextBox x:Name="WordDescTextBox" Grid.Row="2" Text="" BorderThickness="0" Margin="20,0,20,0" HorizontalAlignment="Stretch" TextWrapping="Wrap" Height="54" PlaceholderText="备注"/>
+        <ScrollViewer x:Name="WordColorScrollViewer" Grid.Row="3" Margin="0,10,0,0" HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" VerticalScrollMode="Disabled" ZoomMode="Disabled">
+            <StackPanel Orientation="Horizontal" Spacing="6" Margin="22,0,20,0">
+                <TextBlock Text="颜色标签" FontSize="12" Opacity="0.5" VerticalAlignment="Center"/>
+                <Button Height="26" Width="26" Padding="0" CornerRadius="16" Tag="0" Click="OnClickAddingWordColor">
+                    <Border Height="18" Width="18" CornerRadius="16" Background="Transparent" BorderBrush="{ThemeResource APPLICATION_NORMAL_FR}" BorderThickness="2" ToolTipService.ToolTip="无">
+                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="10" Foreground="{ThemeResource APPLICATION_NORMAL_FR}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                  Visibility="{x:Bind AddingWordColor,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=Transparent}"/>
+                    </Border>
+                </Button>
+                <Button Height="26" Width="26" Padding="0" CornerRadius="16" Tag="1" Click="OnClickAddingWordColor">
+                    <Border Height="18" Width="18" CornerRadius="16" Background="Firebrick" ToolTipService.ToolTip="红色">
+                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                  Visibility="{x:Bind AddingWordColor,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=Red}"/>
+                    </Border>
+                </Button>
+                <Button Height="26" Width="26" Padding="0" CornerRadius="16" Tag="2" Click="OnClickAddingWordColor">
+                    <Border Height="18" Width="18" CornerRadius="16" Background="Tomato" ToolTipService.ToolTip="橙色">
+                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                  Visibility="{x:Bind AddingWordColor,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=Orange}"/>
+                    </Border>
+                </Button>
+                <Button Height="26" Width="26" Padding="0" CornerRadius="16" Tag="3" Click="OnClickAddingWordColor">
+                    <Border Height="18" Width="18" CornerRadius="16" Background="Gold" ToolTipService.ToolTip="黄色">
+                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                  Visibility="{x:Bind AddingWordColor,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=Yellow}"/>
+                    </Border>
+                </Button>
+                <Button Height="26" Width="26" Padding="0" CornerRadius="16" Tag="4" Click="OnClickAddingWordColor">
+                    <Border Height="18" Width="18" CornerRadius="16" Background="ForestGreen" ToolTipService.ToolTip="绿色">
+                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                  Visibility="{x:Bind AddingWordColor,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=Green}"/>
+                    </Border>
+                </Button>
+                <Button Height="26" Width="26" Padding="0" CornerRadius="16" Tag="5" Click="OnClickAddingWordColor">
+                    <Border Height="18" Width="18" CornerRadius="16" Background="DodgerBlue" ToolTipService.ToolTip="蓝色">
+                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                  Visibility="{x:Bind AddingWordColor,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=Blue}"/>
+                    </Border>
+                </Button>
+                <Button Height="26" Width="26" Padding="0" CornerRadius="16" Tag="6" Click="OnClickAddingWordColor">
+                    <Border Height="18" Width="18" CornerRadius="16" Background="Orchid" ToolTipService.ToolTip="紫色">
+                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                  Visibility="{x:Bind AddingWordColor,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=Purple}"/>
+                    </Border>
+                </Button>
+                <Button Height="26" Width="26" Padding="0" CornerRadius="16" Tag="7" Click="OnClickAddingWordColor">
+                    <Border Height="18" Width="18" CornerRadius="16" Background="DeepPink" ToolTipService.ToolTip="粉色">
+                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                  Visibility="{x:Bind AddingWordColor,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=Pink}"/>
+                    </Border>
+                </Button>
+                <Button Height="26" Width="26" Padding="0" CornerRadius="16" Tag="8" Click="OnClickAddingWordColor">
+                    <Border Height="18" Width="18" CornerRadius="16" Background="Sienna" ToolTipService.ToolTip="棕色">
+                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                  Visibility="{x:Bind AddingWordColor,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=Brown}"/>
+                    </Border>
+                </Button>
+                <Button Height="26" Width="26" Padding="0" CornerRadius="16" Tag="9" Click="OnClickAddingWordColor">
+                    <Border Height="18" Width="18" CornerRadius="16" Background="Gray" ToolTipService.ToolTip="灰色">
+                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                  Visibility="{x:Bind AddingWordColor,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=Gray}"/>
+                    </Border>
+                </Button>
+            </StackPanel>
+        </ScrollViewer>
+        <Button Grid.Row="4" Content="添加" Margin="20,12,20,18" BorderThickness="0" HorizontalAlignment="Stretch" Style="{StaticResource AccentButtonStyle}"
+                IsEnabled="{x:Bind GlossaryComboBox.SelectedIndex,Mode=OneWay,Converter={StaticResource Int2Bool},ConverterParameter=0}" Click="OnClickAddWord"/>
     </Grid>
 </UserControl>

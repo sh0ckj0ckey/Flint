@@ -4,3 +4,7 @@ GetMonitorInfo
 GetDpiForWindow
 MONITORINFOEXW
 SetWindowPos
+GetForegroundWindow
+GetCursorPos
+MonitorFromPoint
+GetDpiForMonitor

@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Flint3.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -12,37 +13,43 @@ namespace Flint3.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
+    [INotifyPropertyChanged]
     public sealed partial class GlossaryPropertyPage : Page
     {
-        private readonly Microsoft.UI.Dispatching.DispatcherQueue _dispatcherQueue;
         public MainViewModel ViewModel { get; set; } = null;
+
+        private bool _editingGlossaryProperty = false;
+
+        /// <summary>
+        /// 当前是否正在编辑生词本属性
+        /// </summary>
+        public bool EditingGlossaryProperty
+        {
+            get => _editingGlossaryProperty;
+            set => SetProperty(ref _editingGlossaryProperty, value);
+        }
 
         public GlossaryPropertyPage()
         {
-            this.InitializeComponent();
             ViewModel = MainViewModel.Instance;
-            _dispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
-
-            this.Loaded += OnLoaded;
-            this.Unloaded += OnUnloaded;
+            this.InitializeComponent();
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            MainViewModel.Instance.EditingGlossaryProperty = false;
-
-            // 只有非内置生词本才需要查询词汇数量
+            this.EditingGlossaryProperty = false;
             if (!MainViewModel.Instance.SelectedGlossary.IsReadOnly)
             {
+                // 只有非内置生词本才需要查询词汇数量
                 UpdateGlossaryWordsCount();
             }
         }
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
-            MainViewModel.Instance.EditingGlossaryProperty = false;
-            EditGlossaryTitleTextBox.Text = ViewModel.SelectedGlossary.GlossaryTitle;
-            EditGlossaryDescTextBox.Text = ViewModel.SelectedGlossary.GlossaryDescription;
+            this.EditingGlossaryProperty = false;
+            EditGlossaryTitleTextBox.Text = MainViewModel.Instance.SelectedGlossary.GlossaryTitle;
+            EditGlossaryDescTextBox.Text = MainViewModel.Instance.SelectedGlossary.GlossaryDescription;
         }
 
         /// <summary>
@@ -50,44 +57,46 @@ namespace Flint3.Views
         /// </summary>
         private async void UpdateGlossaryWordsCount()
         {
-            await Task.Run(() =>
+            int glossaryId = MainViewModel.Instance.SelectedGlossary.Id;
+            var glossaryAllWordsCount = await MainViewModel.Instance.GetWordsCountOfMyGlossary(glossaryId, Data.Models.GlossaryColorsEnum.Transparent);
+            MainViewModel.Instance.SelectedGlossary.GlossaryWordsCount = glossaryAllWordsCount;
+
+            if (MainViewModel.Instance.SelectedGlossary is Models.GlossaryMyModel glossary)
             {
-                int glossaryId = MainViewModel.Instance.SelectedGlossary.Id;
-                var glossaryAllWordsCount = MainViewModel.Instance.GetWordsCountOfMyGlossary(glossaryId, Data.Models.GlossaryColorsEnum.Transparent);
-                var glossaryRedWordsCount = MainViewModel.Instance.GetWordsCountOfMyGlossary(glossaryId, Data.Models.GlossaryColorsEnum.Red);
-                var glossaryOrgWordsCount = MainViewModel.Instance.GetWordsCountOfMyGlossary(glossaryId, Data.Models.GlossaryColorsEnum.Orange);
-                var glossaryYlwWordsCount = MainViewModel.Instance.GetWordsCountOfMyGlossary(glossaryId, Data.Models.GlossaryColorsEnum.Yellow);
-                var glossaryGrnWordsCount = MainViewModel.Instance.GetWordsCountOfMyGlossary(glossaryId, Data.Models.GlossaryColorsEnum.Green);
-                var glossaryBluWordsCount = MainViewModel.Instance.GetWordsCountOfMyGlossary(glossaryId, Data.Models.GlossaryColorsEnum.Blue);
-                var glossaryPplWordsCount = MainViewModel.Instance.GetWordsCountOfMyGlossary(glossaryId, Data.Models.GlossaryColorsEnum.Purple);
-                var glossaryPnkWordsCount = MainViewModel.Instance.GetWordsCountOfMyGlossary(glossaryId, Data.Models.GlossaryColorsEnum.Pink);
-                var glossaryBrnWordsCount = MainViewModel.Instance.GetWordsCountOfMyGlossary(glossaryId, Data.Models.GlossaryColorsEnum.Brown);
-                var glossaryGryWordsCount = MainViewModel.Instance.GetWordsCountOfMyGlossary(glossaryId, Data.Models.GlossaryColorsEnum.Gray);
+                glossary.WordsColorPercentage.Clear();
 
-                _dispatcherQueue.TryEnqueue(() =>
+                if (glossaryAllWordsCount > 0)
                 {
-                    MainViewModel.Instance.SelectedGlossary.GlossaryWordsCount = glossaryAllWordsCount;
-                    if (MainViewModel.Instance.SelectedGlossary is Models.GlossaryMyModel glossary)
-                    {
-                        glossary.WordsColorPercentage.Clear();
+                    var glossaryRedWordsCount = await MainViewModel.Instance.GetWordsCountOfMyGlossary(glossaryId, Data.Models.GlossaryColorsEnum.Red);
+                    if (glossaryRedWordsCount > 0) { glossary.WordsColorPercentage.Add(new(Data.Models.GlossaryColorsEnum.Red, glossaryRedWordsCount, glossaryAllWordsCount)); }
 
-                        if (glossaryAllWordsCount > 0)
-                        {
-                            if (glossaryRedWordsCount > 0) { glossary.WordsColorPercentage.Add(new Models.GlossaryColorPercentagePair(Data.Models.GlossaryColorsEnum.Red, glossaryRedWordsCount, glossaryAllWordsCount)); }
-                            if (glossaryOrgWordsCount > 0) { glossary.WordsColorPercentage.Add(new Models.GlossaryColorPercentagePair(Data.Models.GlossaryColorsEnum.Orange, glossaryOrgWordsCount, glossaryAllWordsCount)); }
-                            if (glossaryYlwWordsCount > 0) { glossary.WordsColorPercentage.Add(new Models.GlossaryColorPercentagePair(Data.Models.GlossaryColorsEnum.Yellow, glossaryYlwWordsCount, glossaryAllWordsCount)); }
-                            if (glossaryGrnWordsCount > 0) { glossary.WordsColorPercentage.Add(new Models.GlossaryColorPercentagePair(Data.Models.GlossaryColorsEnum.Green, glossaryGrnWordsCount, glossaryAllWordsCount)); }
-                            if (glossaryBluWordsCount > 0) { glossary.WordsColorPercentage.Add(new Models.GlossaryColorPercentagePair(Data.Models.GlossaryColorsEnum.Blue, glossaryBluWordsCount, glossaryAllWordsCount)); }
-                            if (glossaryPplWordsCount > 0) { glossary.WordsColorPercentage.Add(new Models.GlossaryColorPercentagePair(Data.Models.GlossaryColorsEnum.Purple, glossaryPplWordsCount, glossaryAllWordsCount)); }
-                            if (glossaryPnkWordsCount > 0) { glossary.WordsColorPercentage.Add(new Models.GlossaryColorPercentagePair(Data.Models.GlossaryColorsEnum.Pink, glossaryPnkWordsCount, glossaryAllWordsCount)); }
-                            if (glossaryBrnWordsCount > 0) { glossary.WordsColorPercentage.Add(new Models.GlossaryColorPercentagePair(Data.Models.GlossaryColorsEnum.Brown, glossaryBrnWordsCount, glossaryAllWordsCount)); }
-                            if (glossaryGryWordsCount > 0) { glossary.WordsColorPercentage.Add(new Models.GlossaryColorPercentagePair(Data.Models.GlossaryColorsEnum.Gray, glossaryGryWordsCount, glossaryAllWordsCount)); }
+                    var glossaryOrgWordsCount = await MainViewModel.Instance.GetWordsCountOfMyGlossary(glossaryId, Data.Models.GlossaryColorsEnum.Orange);
+                    if (glossaryOrgWordsCount > 0) { glossary.WordsColorPercentage.Add(new(Data.Models.GlossaryColorsEnum.Orange, glossaryOrgWordsCount, glossaryAllWordsCount)); }
 
-                            GlossaryColorPercentItemsRepeater.ItemsSource = glossary.WordsColorPercentage;
-                        }
-                    }
-                });
-            });
+                    var glossaryYlwWordsCount = await MainViewModel.Instance.GetWordsCountOfMyGlossary(glossaryId, Data.Models.GlossaryColorsEnum.Yellow);
+                    if (glossaryYlwWordsCount > 0) { glossary.WordsColorPercentage.Add(new(Data.Models.GlossaryColorsEnum.Yellow, glossaryYlwWordsCount, glossaryAllWordsCount)); }
+
+                    var glossaryGrnWordsCount = await MainViewModel.Instance.GetWordsCountOfMyGlossary(glossaryId, Data.Models.GlossaryColorsEnum.Green);
+                    if (glossaryGrnWordsCount > 0) { glossary.WordsColorPercentage.Add(new(Data.Models.GlossaryColorsEnum.Green, glossaryGrnWordsCount, glossaryAllWordsCount)); }
+
+                    var glossaryBluWordsCount = await MainViewModel.Instance.GetWordsCountOfMyGlossary(glossaryId, Data.Models.GlossaryColorsEnum.Blue);
+                    if (glossaryBluWordsCount > 0) { glossary.WordsColorPercentage.Add(new(Data.Models.GlossaryColorsEnum.Blue, glossaryBluWordsCount, glossaryAllWordsCount)); }
+
+                    var glossaryPplWordsCount = await MainViewModel.Instance.GetWordsCountOfMyGlossary(glossaryId, Data.Models.GlossaryColorsEnum.Purple);
+                    if (glossaryPplWordsCount > 0) { glossary.WordsColorPercentage.Add(new(Data.Models.GlossaryColorsEnum.Purple, glossaryPplWordsCount, glossaryAllWordsCount)); }
+
+                    var glossaryPnkWordsCount = await MainViewModel.Instance.GetWordsCountOfMyGlossary(glossaryId, Data.Models.GlossaryColorsEnum.Pink);
+                    if (glossaryPnkWordsCount > 0) { glossary.WordsColorPercentage.Add(new(Data.Models.GlossaryColorsEnum.Pink, glossaryPnkWordsCount, glossaryAllWordsCount)); }
+
+                    var glossaryBrnWordsCount = await MainViewModel.Instance.GetWordsCountOfMyGlossary(glossaryId, Data.Models.GlossaryColorsEnum.Brown);
+                    if (glossaryBrnWordsCount > 0) { glossary.WordsColorPercentage.Add(new(Data.Models.GlossaryColorsEnum.Brown, glossaryBrnWordsCount, glossaryAllWordsCount)); }
+
+                    var glossaryGryWordsCount = await MainViewModel.Instance.GetWordsCountOfMyGlossary(glossaryId, Data.Models.GlossaryColorsEnum.Gray);
+                    if (glossaryGryWordsCount > 0) { glossary.WordsColorPercentage.Add(new(Data.Models.GlossaryColorsEnum.Gray, glossaryGryWordsCount, glossaryAllWordsCount)); }
+                }
+
+                GlossaryColorPercentItemsRepeater.ItemsSource = glossary.WordsColorPercentage;
+            }
         }
 
         private void OnClickBackButton(object sender, RoutedEventArgs e)
@@ -100,33 +109,33 @@ namespace Flint3.Views
 
         private void OnClickEditButton(object sender, RoutedEventArgs e)
         {
-            MainViewModel.Instance.EditingGlossaryProperty = true;
-            EditGlossaryTitleTextBox.Focus(FocusState.Pointer);
+            this.EditingGlossaryProperty = true;
+            EditGlossaryTitleTextBox.Focus(FocusState.Keyboard);
         }
 
         private void OnClickSaveButton(object sender, RoutedEventArgs e)
         {
-            MainViewModel.Instance.EditingGlossaryProperty = false;
-            ViewModel.SelectedGlossary.GlossaryTitle = EditGlossaryTitleTextBox.Text;
-            ViewModel.SelectedGlossary.GlossaryDescription = EditGlossaryDescTextBox.Text;
+            this.EditingGlossaryProperty = false;
+            MainViewModel.Instance.SelectedGlossary.GlossaryTitle = EditGlossaryTitleTextBox.Text;
+            MainViewModel.Instance.SelectedGlossary.GlossaryDescription = EditGlossaryDescTextBox.Text;
 
-            ViewModel.UpdateMyGlossary(ViewModel.SelectedGlossary.Id, ViewModel.SelectedGlossary.GlossaryTitle, ViewModel.SelectedGlossary.GlossaryDescription);
+            _ = MainViewModel.Instance.UpdateMyGlossary(ViewModel.SelectedGlossary.Id, ViewModel.SelectedGlossary.GlossaryTitle, ViewModel.SelectedGlossary.GlossaryDescription);
         }
 
         private void OnClickCancelButton(object sender, RoutedEventArgs e)
         {
-            MainViewModel.Instance.EditingGlossaryProperty = false;
-            EditGlossaryTitleTextBox.Text = ViewModel.SelectedGlossary.GlossaryTitle;
-            EditGlossaryDescTextBox.Text = ViewModel.SelectedGlossary.GlossaryDescription;
+            this.EditingGlossaryProperty = false;
+            EditGlossaryTitleTextBox.Text = MainViewModel.Instance.SelectedGlossary.GlossaryTitle;
+            EditGlossaryDescTextBox.Text = MainViewModel.Instance.SelectedGlossary.GlossaryDescription;
         }
 
-        private void OnClickDeleteButton(object sender, RoutedEventArgs e)
+        private async void OnClickDeleteButton(object sender, RoutedEventArgs e)
         {
             try
             {
                 DeleteGlossaryFlyout.Hide();
 
-                ViewModel.DeleteMyGlossary(ViewModel.SelectedGlossary.Id);
+                await MainViewModel.Instance.DeleteMyGlossary(ViewModel.SelectedGlossary.Id);
 
                 if (this.Frame.CanGoBack)
                 {

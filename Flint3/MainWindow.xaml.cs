@@ -23,9 +23,9 @@ namespace Flint3
 
         private UISettings _uiSettings = null;
 
-        public MainWindow()
+        public MainWindow(MainViewModel viewModel)
         {
-            _viewModel = MainViewModel.Instance;
+            _viewModel = viewModel;
 
             this.InitializeComponent();
             this.PersistenceId = "FlintMainWindow";
@@ -62,11 +62,32 @@ namespace Flint3
             }
         }
 
-        private void WindowEx_Activated(object sender, WindowActivatedEventArgs args)
+        /// <summary>
+        /// 将主窗口的焦点设置到搜索框，如果主窗口此时不在搜索页面则不会生效
+        /// </summary>
+        public void TryFocusOnSearchTextBox()
+        {
+            if (MainFrame.Content is FlintPage flintPage)
+            {
+                var searchTextBox = flintPage.SearchTextBox;
+                searchTextBox?.Focus(FocusState.Keyboard);
+                if (!string.IsNullOrWhiteSpace(searchTextBox?.Text))
+                {
+                    searchTextBox?.SelectAll();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 窗口激活时自动聚焦到搜索框
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        private void OnMainWindowActivated(object sender, WindowActivatedEventArgs args)
         {
             if (args.WindowActivationState != WindowActivationState.Deactivated)
             {
-                FocusOnTextBox?.Invoke();
+                TryFocusOnSearchTextBox();
             }
         }
 
@@ -204,7 +225,7 @@ namespace Flint3
             try
             {
                 args.Handled = true;
-                MainViewModel.Instance.ActFocusOnTextBox?.Invoke();
+                TryFocusOnSearchTextBox();
             }
             catch { args.Handled = false; }
         }

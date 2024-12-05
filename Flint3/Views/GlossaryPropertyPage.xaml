@@ -11,7 +11,9 @@
     xmlns:labs="using:CommunityToolkit.WinUI.Controls"
     xmlns:cvt="using:Flint3.Converters" 
     xmlns:mdl="using:Flint3.Models"
-    mc:Ignorable="d" Background="Transparent" NavigationCacheMode="Required">
+    mc:Ignorable="d" Background="Transparent" NavigationCacheMode="Required"
+    Loaded="OnLoaded" Unloaded="OnUnloaded">
+    
     <Page.Resources>
         <cvt:Int2VisibilityConverter x:Key="Int2Vis"/>
         <cvt:Equal2BoolConverter x:Key="Eql2Bool"/>
@@ -37,11 +39,11 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Text="Glossary" FontFamily="Times New Roman" Margin="20,0,0,4" FontWeight="Bold" FontSize="20" CharacterSpacing="40" VerticalAlignment="Bottom" Opacity="0.7"/>
+            <TextBlock Text="Glossary" FontFamily="Times New Roman" Margin="20,0,0,4" FontWeight="Bold" FontSize="20" VerticalAlignment="Bottom" Opacity="0.7"/>
             <FontIcon Grid.Column="1" FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE00F;" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="14" FontWeight="Bold" Opacity="0.5" Margin="4,0,4,8"/>
-            <TextBlock Grid.Column="2" Margin="0,0,0,5" Text="{x:Bind ViewModel.SelectedGlossary.GlossaryTitle,Mode=OneWay}" FontSize="16" MaxWidth="220" FontWeight="Bold" CharacterSpacing="40" Opacity="0.7" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+            <TextBlock Grid.Column="2" Margin="0,0,0,5" Text="{x:Bind ViewModel.SelectedGlossary.GlossaryTitle,Mode=OneWay}" FontSize="16" MaxWidth="220" FontWeight="Bold" Opacity="0.7" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
             <FontIcon Grid.Column="3" FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE00F;" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="14" FontWeight="Bold" Opacity="0.5" Margin="4,0,4,8"/>
-            <TextBlock Grid.Column="4" IsTabStop="True" Margin="0,0,120,5" Text="属性" FontSize="16" FontWeight="Bold" CharacterSpacing="40" Opacity="0.9" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+            <TextBlock Grid.Column="4" IsTabStop="True" Margin="0,0,120,5" Text="属性" FontSize="16" FontWeight="Bold" Opacity="0.9" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
         </Grid>
 
         <!--属性详情-->
@@ -49,21 +51,21 @@
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Margin="20,0,20,10">
                 <labs:SettingsCard Margin="0,2,0,0" HorizontalAlignment="Stretch" MinHeight="0" Padding="20,10">
                     <labs:SettingsCard.Header>
-                        <TextBlock Text="名称" CharacterSpacing="64"/>
+                        <TextBlock Text="名称"/>
                     </labs:SettingsCard.Header>
-                    <TextBox x:Name="EditGlossaryTitleTextBox" Text="{x:Bind ViewModel.SelectedGlossary.GlossaryTitle,Mode=OneWay}" IsReadOnly="{x:Bind ViewModel.EditingGlossaryProperty,Mode=OneWay,Converter={StaticResource BoolReverse}}" Width="256" CharacterSpacing="40"/>
+                    <TextBox x:Name="EditGlossaryTitleTextBox" Text="{x:Bind ViewModel.SelectedGlossary.GlossaryTitle,Mode=OneWay}" IsReadOnly="{x:Bind EditingGlossaryProperty,Mode=OneWay,Converter={StaticResource BoolReverse}}" Width="256"/>
                 </labs:SettingsCard>
                 <labs:SettingsCard Margin="0,2,0,0" HorizontalAlignment="Stretch" MinHeight="0" Padding="20,10">
                     <labs:SettingsCard.Header>
-                        <TextBlock Text="描述" CharacterSpacing="64"/>
+                        <TextBlock Text="描述"/>
                     </labs:SettingsCard.Header>
-                    <TextBox x:Name="EditGlossaryDescTextBox" Text="{x:Bind ViewModel.SelectedGlossary.GlossaryDescription,Mode=OneWay}" IsReadOnly="{x:Bind ViewModel.EditingGlossaryProperty,Mode=OneWay,Converter={StaticResource BoolReverse}}" Width="256" CharacterSpacing="40" PlaceholderText="没有添加描述" TextWrapping="Wrap"/>
+                    <TextBox x:Name="EditGlossaryDescTextBox" Text="{x:Bind ViewModel.SelectedGlossary.GlossaryDescription,Mode=OneWay}" IsReadOnly="{x:Bind EditingGlossaryProperty,Mode=OneWay,Converter={StaticResource BoolReverse}}" Width="256" PlaceholderText="没有添加描述" TextWrapping="Wrap"/>
                 </labs:SettingsCard>
                 <labs:SettingsCard Margin="0,2,0,0" HorizontalAlignment="Stretch" MinHeight="0" Padding="20,16">
                     <labs:SettingsCard.Header>
-                        <TextBlock Text="词汇" CharacterSpacing="64"/>
+                        <TextBlock Text="词汇"/>
                     </labs:SettingsCard.Header>
-                    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" CharacterSpacing="40" Opacity="0.7">
+                    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Opacity="0.7">
                         <Run Text="共"/>
                         <Run Text="{x:Bind ViewModel.SelectedGlossary.GlossaryWordsCount,Mode=OneWay}"/>
                         <Run Text="个单词"/>
@@ -81,8 +83,8 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Text="{x:Bind Color,Mode=OneWay,Converter={StaticResource Enum2Name}}" HorizontalAlignment="Left" VerticalAlignment="Center" Opacity="0.5" FontSize="13" Margin="2,0,4,0" CharacterSpacing="64"/>
-                                <TextBlock Text="{x:Bind Count,Mode=OneWay}" HorizontalAlignment="Right" VerticalAlignment="Center" Opacity="0.7" FontSize="13" FontWeight="Medium" Margin="0,0,4,0" CharacterSpacing="32"/>
+                                <TextBlock Text="{x:Bind Color,Mode=OneWay,Converter={StaticResource Enum2Name}}" HorizontalAlignment="Left" VerticalAlignment="Center" Opacity="0.5" FontSize="13" Margin="2,0,4,0"/>
+                                <TextBlock Text="{x:Bind Count,Mode=OneWay}" HorizontalAlignment="Right" VerticalAlignment="Center" Opacity="0.7" FontSize="13" FontWeight="Medium" Margin="0,0,4,0"/>
                                 <ProgressBar Grid.Row="1" Maximum="{x:Bind TotalCount,Mode=OneWay}" Value="{x:Bind Count,Mode=OneWay}" Width="256" Foreground="{x:Bind Color,Mode=OneWay,Converter={StaticResource Enum2Color}}" Margin="0,4,0,8"/>
                             </Grid>
                         </DataTemplate>
@@ -129,7 +131,7 @@
             <!--编辑生词本-->
             <Grid Grid.Column="2" Visibility="{x:Bind ViewModel.SelectedGlossary.IsReadOnly,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}">
                 <Button Margin="4,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center" Click="OnClickEditButton"
-                        Visibility="{x:Bind ViewModel.EditingGlossaryProperty,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}">
+                        Visibility="{x:Bind EditingGlossaryProperty,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}">
                     <ToolTipService.ToolTip>
                         <ToolTip>
                             <TextBlock>
@@ -147,7 +149,7 @@
             <!--保存编辑-->
             <Grid Grid.Column="3" Visibility="{x:Bind ViewModel.SelectedGlossary.IsReadOnly,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}">
                 <Button Margin="4,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center" Click="OnClickSaveButton"
-                        Visibility="{x:Bind ViewModel.EditingGlossaryProperty,Mode=OneWay,Converter={StaticResource Bool2Vis}}">
+                        Visibility="{x:Bind EditingGlossaryProperty,Mode=OneWay,Converter={StaticResource Bool2Vis}}">
                     <ToolTipService.ToolTip>
                         <ToolTip>
                             <TextBlock>
@@ -165,7 +167,7 @@
             <!--取消编辑-->
             <Grid Grid.Column="4" Visibility="{x:Bind ViewModel.SelectedGlossary.IsReadOnly,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}">
                 <Button Margin="4,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center" Click="OnClickCancelButton"
-                        Visibility="{x:Bind ViewModel.EditingGlossaryProperty,Mode=OneWay,Converter={StaticResource Bool2Vis}}">
+                        Visibility="{x:Bind EditingGlossaryProperty,Mode=OneWay,Converter={StaticResource Bool2Vis}}">
                     <ToolTipService.ToolTip>
                         <ToolTip>
                             <TextBlock>
@@ -202,8 +204,8 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Text="删除生词本" FontSize="14" FontWeight="Bold" CharacterSpacing="40"/>
-                                <TextBlock Grid.Row="1" Margin="0,4,0,0" TextWrapping="Wrap" Text="确认要删除这个生词本吗，删除后无法恢复。" MaxWidth="200" Opacity="0.7" FontSize="13" CharacterSpacing="40"/>
+                                <TextBlock Text="删除生词本" FontSize="14" FontWeight="Bold"/>
+                                <TextBlock Grid.Row="1" Margin="0,4,0,0" TextWrapping="Wrap" Text="确认要删除这个生词本吗，删除后无法恢复。" MaxWidth="200" Opacity="0.7" FontSize="13"/>
                                 <Grid Grid.Row="2" Margin="0,12,0,0">
                                     <Border Background="Firebrick" CornerRadius="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                                     <Button Content="确认删除" FontSize="13" Background="Transparent" CornerRadius="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="OnClickDeleteButton"/>

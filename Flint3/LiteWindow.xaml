@@ -7,8 +7,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:windowex="using:WinUIEx"
-    Title="Flint" Width="520" Height="56" mc:Ignorable="d"
-    Activated="WindowEx_Activated">
+    Title="Flint" Width="540" Height="64" mc:Ignorable="d"
+    Activated="OnLiteWindowActivated">
 
     <windowex:WindowEx.Content>
         <Grid Loaded="OnContentLoaded" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
@@ -17,10 +17,7 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Grid Grid.Row="0">
-                <TextBox x:Name="SearchTextBox" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"/>
-                <TextBlock Text="开始键入..." Margin="16,6,0,0" FontSize="17.5" Opacity="0.3" HorizontalAlignment="Left" CharacterSpacing="64" IsHitTestVisible="False" VerticalAlignment="Top"
-                           />
-
+                <TextBox x:Name="SearchTextBox" TextChanged="SearchTextBox_TextChanged" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"/>
             </Grid>
         </Grid>
     </windowex:WindowEx.Content>

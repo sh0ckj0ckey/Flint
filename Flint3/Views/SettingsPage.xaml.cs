@@ -22,19 +22,20 @@ namespace Flint3.Views
 
         private string _appVersion = string.Empty;
 
-        private bool _startupEnabled = false;
-
         public SettingsPage()
         {
-            this.InitializeComponent();
-
             _viewModel = MainViewModel.Instance;
-            _appVersion = $"Flint {AppVersionUtil.GetAppVersion()}";
+            this.InitializeComponent();
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             UpdateStartupState();
+
+            if (string.IsNullOrWhiteSpace(_appVersion))
+            {
+                _appVersion = $"Flint {AppVersionUtil.GetAppVersion()}";
+            }
         }
 
         /// <summary>
@@ -48,31 +49,26 @@ namespace Flint3.Views
                 switch (task.State)
                 {
                     case StartupTaskState.Disabled:
-                        _startupEnabled = false;
                         StartupSettingToggleSwitch.IsEnabled = true;
                         StartupSettingToggleSwitch.IsOn = false;
                         StartupDescTextBlock.Text = "登录到 Windows 时自动启动燧石";
                         break;
                     case StartupTaskState.Enabled:
-                        _startupEnabled = true;
                         StartupSettingToggleSwitch.IsEnabled = true;
                         StartupSettingToggleSwitch.IsOn = true;
                         StartupDescTextBlock.Text = "登录到 Windows 时自动启动燧石";
                         break;
                     case StartupTaskState.DisabledByUser:
-                        _startupEnabled = false;
                         StartupSettingToggleSwitch.IsEnabled = false;
                         StartupSettingToggleSwitch.IsOn = false;
                         StartupDescTextBlock.Text = "无法修改，已被系统设置禁用";
                         break;
                     case StartupTaskState.DisabledByPolicy:
-                        _startupEnabled = false;
                         StartupSettingToggleSwitch.IsEnabled = false;
                         StartupSettingToggleSwitch.IsOn = false;
                         StartupDescTextBlock.Text = "无法修改，已被策略禁用";
                         break;
                     case StartupTaskState.EnabledByPolicy:
-                        _startupEnabled = true;
                         StartupSettingToggleSwitch.IsEnabled = false;
                         StartupSettingToggleSwitch.IsOn = true;
                         StartupDescTextBlock.Text = "无法修改，已被策略启用";
@@ -83,7 +79,7 @@ namespace Flint3.Views
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                System.Diagnostics.Trace.WriteLine(ex.Message);
             }
         }
 
@@ -113,7 +109,7 @@ namespace Flint3.Views
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                System.Diagnostics.Trace.WriteLine(ex.Message);
             }
         }
 
@@ -133,7 +129,7 @@ namespace Flint3.Views
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                System.Diagnostics.Trace.WriteLine(ex.Message);
             }
         }
 
@@ -151,7 +147,6 @@ namespace Flint3.Views
                 {
                     case StartupTaskState.Disabled:
                         {
-                            _startupEnabled = false;
                             if (StartupSettingToggleSwitch.IsOn != false)
                             {
                                 await task.RequestEnableAsync();
@@ -160,7 +155,6 @@ namespace Flint3.Views
                         break;
                     case StartupTaskState.Enabled:
                         {
-                            _startupEnabled = true;
                             if (StartupSettingToggleSwitch.IsOn != true)
                             {
                                 task.Disable();
@@ -173,7 +167,7 @@ namespace Flint3.Views
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                System.Diagnostics.Trace.WriteLine(ex.Message);
             }
         }
 
@@ -207,7 +201,7 @@ namespace Flint3.Views
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                System.Diagnostics.Trace.WriteLine(ex.Message);
             }
         }
 
@@ -224,7 +218,7 @@ namespace Flint3.Views
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                System.Diagnostics.Trace.WriteLine(ex.Message);
             }
         }
 
@@ -241,7 +235,7 @@ namespace Flint3.Views
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                System.Diagnostics.Trace.WriteLine(ex.Message);
             }
         }
 

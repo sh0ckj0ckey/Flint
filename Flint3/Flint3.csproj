@@ -97,6 +97,8 @@
 		<None Remove="Controls\KeyVisual\KeyVisual.xaml" />
 		<None Remove="Controls\ShortcutControl\ShortcutControl.xaml" />
 		<None Remove="Controls\ShortcutControl\ShortcutDialogContentControl.xaml" />
+		<None Remove="Data\stardict.7z.001" />
+		<None Remove="Data\stardict.7z.002" />
 		<None Remove="Data\stardict.db" />
 		<None Remove="LiteWindow.xaml" />
 		<None Remove="ThemeResource\CustomControlStyle.xaml" />

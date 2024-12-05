@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using Flint3.ViewModels;
+using Flint3.Views;
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -23,9 +24,9 @@ namespace Flint3
 
         private UISettings _uiSettings = null;
 
-        public LiteWindow()
+        public LiteWindow(MainViewModel viewModel)
         {
-            _viewModel = MainViewModel.Instance;
+            _viewModel = viewModel;
 
             this.InitializeComponent();
             this.PersistenceId = "FlintLiteWindow";
@@ -57,7 +58,20 @@ namespace Flint3
             ListenThemeColorChange();
         }
 
-        private void WindowEx_Activated(object sender, WindowActivatedEventArgs args)
+        /// <summary>
+        /// 将简洁窗口的焦点设置到搜索框
+        /// </summary>
+        public void TryFocusOnSearchTextBox()
+        {
+            SearchTextBox?.Focus(FocusState.Keyboard);
+        }
+
+        /// <summary>
+        /// 窗口激活时自动聚焦到搜索框，失去焦点时隐藏窗口
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        private void OnLiteWindowActivated(object sender, WindowActivatedEventArgs args)
         {
             if (args.WindowActivationState == WindowActivationState.Deactivated)
             {
@@ -65,7 +79,7 @@ namespace Flint3
             }
             else
             {
-                FocusOnTextBox?.Invoke();
+                TryFocusOnSearchTextBox();
             }
         }
 
@@ -200,5 +214,15 @@ namespace Flint3
         }
 
         #endregion
+
+        /// <summary>
+        /// 文本框有内容时窗口变大，无内容时只显示搜索框
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            this.Height = string.IsNullOrWhiteSpace(SearchTextBox?.Text) ? 64 : 386;
+        }
     }
 }

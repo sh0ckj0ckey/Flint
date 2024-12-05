@@ -18,8 +18,8 @@ namespace Flint3.Views
 
         public GlossaryWordPage()
         {
-            this.InitializeComponent();
             ViewModel = MainViewModel.Instance;
+            this.InitializeComponent();
         }
 
         private void OnClickBackButton(object sender, RoutedEventArgs e)
@@ -36,7 +36,7 @@ namespace Flint3.Views
             {
                 DeleteGlossaryWordFlyout.Hide();
 
-                ViewModel.DeleteWordFromMyGlossary(ViewModel.SelectedGlossaryWord.Id);
+                _ = MainViewModel.Instance.DeleteWordFromMyGlossary(MainViewModel.Instance.SelectedGlossaryWord.Id);
 
                 if (this.Frame.CanGoBack)
                 {
@@ -55,8 +55,9 @@ namespace Flint3.Views
         {
             try
             {
-                if (sender is Button btn && btn.Tag is string tag)
+                if (sender is Button btn)
                 {
+                    string tag = btn?.Tag?.ToString();
                     GlossaryColorsEnum colorsEnum = GlossaryColorsEnum.Transparent;
                     switch (tag)
                     {
@@ -94,10 +95,9 @@ namespace Flint3.Views
 
                     if (MainViewModel.Instance.SelectedGlossaryWord.Color != colorsEnum)
                     {
-                        ColorSetFlyout.Hide();
                         MainViewModel.Instance.SelectedGlossaryWord.Color = colorsEnum;
-
-                        MainViewModel.Instance.UpdateWordFromMyGlossary(
+                        ColorSetFlyout?.Hide();
+                        _ = MainViewModel.Instance.UpdateWordFromMyGlossary(
                             MainViewModel.Instance.SelectedGlossaryWord.Id,
                             MainViewModel.Instance.SelectedGlossaryWord.Description,
                             MainViewModel.Instance.SelectedGlossaryWord.Color);
@@ -107,17 +107,27 @@ namespace Flint3.Views
             catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         }
 
+        /// <summary>
+        /// 修改单词的描述
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnClickSaveEditDesc(object sender, RoutedEventArgs e)
         {
             MainViewModel.Instance.SelectedGlossaryWord.Description = EditWordDescTextBox.Text;
             EditWordDescFlyout?.Hide();
+            _ = MainViewModel.Instance.UpdateWordFromMyGlossary(
+                MainViewModel.Instance.SelectedGlossaryWord.Id,
+                MainViewModel.Instance.SelectedGlossaryWord.Description,
+                MainViewModel.Instance.SelectedGlossaryWord.Color);
 
-            MainViewModel.Instance.UpdateWordFromMyGlossary(
-                            MainViewModel.Instance.SelectedGlossaryWord.Id,
-                            MainViewModel.Instance.SelectedGlossaryWord.Description,
-                            MainViewModel.Instance.SelectedGlossaryWord.Color);
         }
 
+        /// <summary>
+        /// 还原单词的描述
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnClickCancelEditDesc(object sender, RoutedEventArgs e)
         {
             EditWordDescTextBox.Text = MainViewModel.Instance.SelectedGlossaryWord.Description;

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Flint3.Data.Models;
 using Microsoft.Data.Sqlite;
 using Windows.Storage;
@@ -10,21 +12,23 @@ namespace Flint3.Data
     {
         private static SqliteConnection _glossaryDb = null;
 
-        public static void LoadDatabase(StorageFolder folder/*string filePath*/)
+        public static async Task LoadDatabase()
         {
-            var file = folder.CreateFileAsync("flint_glossary.db", CreationCollisionOption.OpenIfExists).GetAwaiter().GetResult();
-
+            StorageFolder documentsFolder = await StorageFolder.GetFolderFromPathAsync(UserDataPaths.GetDefault().Documents);
+            var noMewingFolder = await documentsFolder.CreateFolderAsync("NoMewing", CreationCollisionOption.OpenIfExists);
+            var flintFolder = await noMewingFolder.CreateFolderAsync("Flint", CreationCollisionOption.OpenIfExists);
+            var file = await flintFolder.CreateFileAsync("flint_glossary.db", CreationCollisionOption.OpenIfExists);
             string dbpath = file.Path;
             _glossaryDb = new SqliteConnection($"Filename={dbpath}");
-            _glossaryDb.Open();
+            await _glossaryDb.OpenAsync();
 
             string categoryTableCommand =
                 "CREATE TABLE IF NOT EXISTS glossaryCategory (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE," +
                     "title TEXT," +
                     "description TEXT);";
-            SqliteCommand createCategoryTable = new SqliteCommand(categoryTableCommand, _glossaryDb);
-            createCategoryTable.ExecuteReader();
+            using SqliteCommand createCategoryTable = new SqliteCommand(categoryTableCommand, _glossaryDb);
+            await createCategoryTable.ExecuteReaderAsync();
 
             string glossaryTableCommand =
                 "CREATE TABLE IF NOT EXISTS glossary (" +
@@ -38,15 +42,19 @@ namespace Flint3.Data
                     "exchange TEXT," +
                     "description TEXT," +
                     "color INTEGER);";
-            SqliteCommand createGlossaryTable = new SqliteCommand(glossaryTableCommand, _glossaryDb);
-            createGlossaryTable.ExecuteReader();
+            using SqliteCommand createGlossaryTable = new SqliteCommand(glossaryTableCommand, _glossaryDb);
+            await createGlossaryTable.ExecuteReaderAsync();
         }
 
         public static void CloseDatabase()
         {
-            _glossaryDb?.Close();
-            _glossaryDb?.Dispose();
-            _glossaryDb = null;
+            try
+            {
+                _glossaryDb?.Close();
+                _glossaryDb?.Dispose();
+                _glossaryDb = null;
+            }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         }
 
         #region 生词本
@@ -55,14 +63,14 @@ namespace Flint3.Data
         /// 获取所有的生词本列表
         /// </summary>
         /// <returns></returns>
-        public static List<GlossaryItem> GetAllGlossaries()
+        public static async Task<List<GlossaryItem>> GetGlossaries()
         {
             try
             {
                 List<GlossaryItem> results = new List<GlossaryItem>();
-                SqliteCommand selectCommand = new SqliteCommand($"SELECT * FROM glossaryCategory", _glossaryDb);
-                SqliteDataReader query = selectCommand?.ExecuteReader();
-                while (query?.Read() == true)
+                using SqliteCommand selectCommand = new SqliteCommand($"SELECT * FROM glossaryCategory", _glossaryDb);
+                using SqliteDataReader query = await selectCommand.ExecuteReaderAsync();
+                while (await query.ReadAsync() == true)
                 {
                     GlossaryItem item = new GlossaryItem();
                     item.Id = query.IsDBNull(0) ? -1 : query.GetInt32(0);
@@ -70,6 +78,7 @@ namespace Flint3.Data
                     item.Description = query.IsDBNull(2) ? string.Empty : query.GetString(2);
                     results.Add(item);
                 }
+
                 return results;
             }
             catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
@@ -81,14 +90,14 @@ namespace Flint3.Data
         /// </summary>
         /// <param name="title"></param>
         /// <param name="desc"></param>
-        public static void AddOneGlossary(string title, string desc)
+        public static async Task AddGlossary(string title, string desc)
         {
             try
             {
-                SqliteCommand insertCommand = new SqliteCommand($"INSERT INTO glossaryCategory(title, description) VALUES($title, $desc);", _glossaryDb);
+                using SqliteCommand insertCommand = new SqliteCommand($"INSERT INTO glossaryCategory(title, description) VALUES($title, $desc);", _glossaryDb);
                 insertCommand.Parameters.AddWithValue("$title", title);
                 insertCommand.Parameters.AddWithValue("$desc", desc);
-                SqliteDataReader query = insertCommand?.ExecuteReader();
+                using SqliteDataReader query = await insertCommand.ExecuteReaderAsync();
             }
             catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         }
@@ -98,15 +107,15 @@ namespace Flint3.Data
         /// </summary>
         /// <param name="title"></param>
         /// <param name="desc"></param>
-        public static void UpdateOneGlossary(int id, string title, string desc)
+        public static async Task UpdateGlossary(int id, string title, string desc)
         {
             try
             {
-                SqliteCommand updateCommand = new SqliteCommand($"UPDATE glossaryCategory SET title=$title, description=$desc WHERE id=$glossaryid;", _glossaryDb);
+                using SqliteCommand updateCommand = new SqliteCommand($"UPDATE glossaryCategory SET title=$title, description=$desc WHERE id=$glossaryid;", _glossaryDb);
                 updateCommand.Parameters.AddWithValue("$title", title);
                 updateCommand.Parameters.AddWithValue("$desc", desc);
                 updateCommand.Parameters.AddWithValue("$glossaryid", id);
-                SqliteDataReader query = updateCommand?.ExecuteReader();
+                using SqliteDataReader query = await updateCommand.ExecuteReaderAsync();
             }
             catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         }
@@ -117,17 +126,17 @@ namespace Flint3.Data
         /// <param name="id"></param>
         /// <param name="title"></param>
         /// <param name="desc"></param>
-        public static void DeleteOneGlossary(int id)
+        public static async Task DeleteGlossary(int id)
         {
             try
             {
-                SqliteCommand deleteCommand = new SqliteCommand($"DELETE FROM glossaryCategory WHERE id=$glossaryid;", _glossaryDb);
+                using SqliteCommand deleteCommand = new SqliteCommand($"DELETE FROM glossaryCategory WHERE id=$glossaryid;", _glossaryDb);
                 deleteCommand.Parameters.AddWithValue("$glossaryid", id);
-                SqliteDataReader query = deleteCommand?.ExecuteReader();
+                using SqliteDataReader query = await deleteCommand.ExecuteReaderAsync();
 
-                SqliteCommand deleteWordsCommand = new SqliteCommand($"DELETE FROM glossary WHERE glossaryid=$glossaryid;", _glossaryDb);
+                using SqliteCommand deleteWordsCommand = new SqliteCommand($"DELETE FROM glossary WHERE glossaryid=$glossaryid;", _glossaryDb);
                 deleteWordsCommand.Parameters.AddWithValue("$glossaryid", id);
-                SqliteDataReader wordsQuery = deleteWordsCommand?.ExecuteReader();
+                using SqliteDataReader wordsQuery = await deleteWordsCommand.ExecuteReaderAsync();
             }
             catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         }
@@ -138,25 +147,22 @@ namespace Flint3.Data
         /// <param name="glossaryId"></param>
         /// <param name="color"></param>
         /// <returns></returns>
-        public static int GetGlossaryWordsCount(int glossaryId, GlossaryColorsEnum color)
+        public static async Task<int> GetGlossaryWordsCount(int glossaryId, GlossaryColorsEnum color)
         {
             try
             {
-                SqliteCommand selectCommand = null;
+                using SqliteCommand selectCommand = color != GlossaryColorsEnum.Transparent
+                    ? new SqliteCommand($"select count(*) from glossary where glossaryid=$glossaryid AND color=$color", _glossaryDb)
+                    : new SqliteCommand($"select count(*) from glossary where glossaryid=$glossaryid", _glossaryDb);
+
+                selectCommand.Parameters.AddWithValue("$glossaryid", glossaryId);
                 if (color != GlossaryColorsEnum.Transparent)
                 {
-                    selectCommand = new SqliteCommand($"select count(*) from glossary where glossaryid=$glossaryid AND color=$color", _glossaryDb);
-                    selectCommand.Parameters.AddWithValue("$glossaryid", glossaryId);
                     selectCommand.Parameters.AddWithValue("$color", (int)color);
                 }
-                else
-                {
-                    selectCommand = new SqliteCommand($"select count(*) from glossary where glossaryid=$glossaryid", _glossaryDb);
-                    selectCommand.Parameters.AddWithValue("$glossaryid", glossaryId);
-                }
 
-                SqliteDataReader query = selectCommand?.ExecuteReader();
-                while (query?.Read() == true)
+                using SqliteDataReader query = await selectCommand.ExecuteReaderAsync();
+                while (await query.ReadAsync() == true)
                 {
                     StarDictWordItem item = new StarDictWordItem();
                     var count = query.IsDBNull(0) ? -1 : query.GetInt32(0);
@@ -172,17 +178,16 @@ namespace Flint3.Data
         #region 生词
 
         /// <summary>
-        /// 获取某个生词本的指定数量的生词
+        /// 获取某个生词本的全部生词，按照添加时间或者首字母排序
         /// </summary>
         /// <returns></returns>
-        public static List<StarDictWordItem> GetGlossaryWords(int glossaryId, long startId, int limit, string word, GlossaryColorsEnum color/*, bool orderByWord*/)
+        public static async Task<List<StarDictWordItem>> GetAllGlossaryWords(int glossaryId, string word, GlossaryColorsEnum color, bool orderByWord, CancellationToken cancellationToken)
         {
             try
             {
                 List<StarDictWordItem> results = new List<StarDictWordItem>();
-                SqliteCommand selectCommand = null;
 
-                string sql = $"SELECT * FROM glossary WHERE glossaryid=$glossaryid AND id<$id"; // 这里是小于号，因为是倒序
+                string sql = $"SELECT * FROM glossary WHERE glossaryid=$glossaryid";
 
                 if (!string.IsNullOrWhiteSpace(word))
                 {
@@ -194,30 +199,30 @@ namespace Flint3.Data
                     sql += $" AND color=$color";
                 }
 
-                // 目前是增量加载，如果支持根据首字母排序的话，就没办法添加 id>$id 的条件了，所以先不做这个功能了
-                //sql += orderByWord ? $" ORDER BY word,id COLLATE NOCASE LIMIT $limit" : $" ORDER BY id DESC LIMIT $limit";
-                sql += $" ORDER BY id DESC LIMIT $limit";
+                sql += orderByWord ? $" ORDER BY word,id COLLATE NOCASE" : $" ORDER BY id DESC";
 
-                selectCommand = new SqliteCommand(sql, _glossaryDb);
+                using SqliteCommand selectCommand = new SqliteCommand(sql, _glossaryDb);
 
                 selectCommand.Parameters.AddWithValue("$glossaryid", glossaryId);
-                selectCommand.Parameters.AddWithValue("$id", startId);
-                selectCommand.Parameters.AddWithValue("$limit", limit);
 
                 if (!string.IsNullOrWhiteSpace(word))
                 {
                     selectCommand.Parameters.AddWithValue("$word", word + "%");
                 }
 
-                if (color > 0)
+                if (color != GlossaryColorsEnum.Transparent)
                 {
                     selectCommand.Parameters.AddWithValue("$color", (int)color);
                 }
 
-                SqliteDataReader query = selectCommand?.ExecuteReader();
-
-                while (query?.Read() == true)
+                using SqliteDataReader query = await selectCommand.ExecuteReaderAsync(cancellationToken);
+                while (await query.ReadAsync(cancellationToken) == true)
                 {
+                    if (cancellationToken.IsCancellationRequested)
+                    {
+                        throw new TaskCanceledException();
+                    }
+
                     StarDictWordItem item = new StarDictWordItem();
                     item.Id = query.IsDBNull(0) ? -1 : query.GetInt32(0);
                     item.Word = query.IsDBNull(3) ? string.Empty : query.GetString(3);
@@ -230,6 +235,75 @@ namespace Flint3.Data
                     item.Color = (colorValue > 0 && colorValue < 10) ? (GlossaryColorsEnum)colorValue : GlossaryColorsEnum.Transparent;
                     results.Add(item);
                 }
+
+                return results;
+            }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
+            return null;
+        }
+
+        /// <summary>
+        /// 获取某个生词本的指定数量的生词，仅支持按照添加时间排序，可以增量加载（按照ID即添加时间增量）
+        /// </summary>
+        /// <returns></returns>
+        public static async Task<List<StarDictWordItem>> GetIncrementalGlossaryWords(int glossaryId, long startId, int limit, string word, GlossaryColorsEnum color, CancellationToken cancellationToken)
+        {
+            try
+            {
+                List<StarDictWordItem> results = new List<StarDictWordItem>();
+
+                // 这里是小于号，因为是倒序
+                string sql = $"SELECT * FROM glossary WHERE glossaryid=$glossaryid AND id<$id";
+
+                if (!string.IsNullOrWhiteSpace(word))
+                {
+                    sql += $" AND word LIKE $word";
+                }
+
+                if (color != GlossaryColorsEnum.Transparent)
+                {
+                    sql += $" AND color=$color";
+                }
+
+                sql += $" ORDER BY id DESC LIMIT $limit";
+
+                using SqliteCommand selectCommand = new SqliteCommand(sql, _glossaryDb);
+
+                selectCommand.Parameters.AddWithValue("$glossaryid", glossaryId);
+                selectCommand.Parameters.AddWithValue("$id", startId);
+                selectCommand.Parameters.AddWithValue("$limit", limit);
+
+                if (!string.IsNullOrWhiteSpace(word))
+                {
+                    selectCommand.Parameters.AddWithValue("$word", word + "%");
+                }
+
+                if (color != GlossaryColorsEnum.Transparent)
+                {
+                    selectCommand.Parameters.AddWithValue("$color", (int)color);
+                }
+
+                using SqliteDataReader query = await selectCommand.ExecuteReaderAsync(cancellationToken);
+                while (await query.ReadAsync(cancellationToken) == true)
+                {
+                    if (cancellationToken.IsCancellationRequested)
+                    {
+                        throw new TaskCanceledException();
+                    }
+
+                    StarDictWordItem item = new StarDictWordItem();
+                    item.Id = query.IsDBNull(0) ? -1 : query.GetInt32(0);
+                    item.Word = query.IsDBNull(3) ? string.Empty : query.GetString(3);
+                    item.Phonetic = query.IsDBNull(4) ? string.Empty : query.GetString(4);
+                    item.Definition = query.IsDBNull(5) ? string.Empty : query.GetString(5);
+                    item.Translation = query.IsDBNull(6) ? string.Empty : query.GetString(6);
+                    item.Exchange = query.IsDBNull(7) ? string.Empty : query.GetString(7);
+                    item.Description = query.IsDBNull(8) ? string.Empty : query.GetString(8);
+                    var colorValue = query.IsDBNull(9) ? -1 : query.GetInt32(9);
+                    item.Color = (colorValue > 0 && colorValue < 10) ? (GlossaryColorsEnum)colorValue : GlossaryColorsEnum.Transparent;
+                    results.Add(item);
+                }
+
                 return results;
             }
             catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
@@ -241,11 +315,11 @@ namespace Flint3.Data
         /// </summary>
         /// <param name="title"></param>
         /// <param name="desc"></param>
-        public static void AddGlossaryWord(long wordid, int glossaryId, string word, string phonetic, string definition, string translation, string exchange, string description, GlossaryColorsEnum color)
+        public static async Task AddGlossaryWord(long wordid, int glossaryId, string word, string phonetic, string definition, string translation, string exchange, string description, GlossaryColorsEnum color)
         {
             try
             {
-                SqliteCommand insertCommand = new SqliteCommand(
+                using SqliteCommand insertCommand = new SqliteCommand(
                     $"INSERT INTO glossary(wordid,glossaryid,word,phonetic,definition,translation,exchange,description,color) VALUES($wordid,$glossaryid,$word,$phonetic,$definition,$translation,$exchange,$description,$color);",
                     _glossaryDb);
                 insertCommand.Parameters.AddWithValue("$wordid", wordid);
@@ -257,7 +331,7 @@ namespace Flint3.Data
                 insertCommand.Parameters.AddWithValue("$exchange", exchange);
                 insertCommand.Parameters.AddWithValue("$description", description);
                 insertCommand.Parameters.AddWithValue("$color", (int)color);
-                SqliteDataReader query = insertCommand?.ExecuteReader();
+                using SqliteDataReader query = await insertCommand.ExecuteReaderAsync();
             }
             catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         }
@@ -267,17 +341,17 @@ namespace Flint3.Data
         /// </summary>
         /// <param name="title"></param>
         /// <param name="desc"></param>
-        public static void UpdateGlossaryWord(long id, string description, GlossaryColorsEnum color)
+        public static async Task UpdateGlossaryWord(long id, string description, GlossaryColorsEnum color)
         {
             try
             {
-                SqliteCommand updateCommand = new SqliteCommand(
+                using SqliteCommand updateCommand = new SqliteCommand(
                     $"UPDATE glossary SET description=$description,color=$color WHERE id=$id;",
                     _glossaryDb);
                 updateCommand.Parameters.AddWithValue("$description", description);
                 updateCommand.Parameters.AddWithValue("$color", (int)color);
                 updateCommand.Parameters.AddWithValue("$id", id);
-                SqliteDataReader query = updateCommand?.ExecuteReader();
+                using SqliteDataReader query = await updateCommand.ExecuteReaderAsync();
             }
             catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         }
@@ -288,13 +362,13 @@ namespace Flint3.Data
         /// <param name="id"></param>
         /// <param name="title"></param>
         /// <param name="desc"></param>
-        public static void DeleteGlossaryWord(long id)
+        public static async Task DeleteGlossaryWord(long id)
         {
             try
             {
-                SqliteCommand deleteWordsCommand = new SqliteCommand($"DELETE FROM glossary WHERE id=$id;", _glossaryDb);
+                using SqliteCommand deleteWordsCommand = new SqliteCommand($"DELETE FROM glossary WHERE id=$id;", _glossaryDb);
                 deleteWordsCommand.Parameters.AddWithValue("$id", id);
-                SqliteDataReader wordsQuery = deleteWordsCommand?.ExecuteReader();
+                using SqliteDataReader wordsQuery = await deleteWordsCommand.ExecuteReaderAsync();
             }
             catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         }
@@ -305,16 +379,15 @@ namespace Flint3.Data
         /// <param name="wordid"></param>
         /// <param name="glossaryid"></param>
         /// <returns></returns>
-        public static bool IfExistGlossaryWord(long wordid, int glossaryid)
+        public static async Task<bool> CheckGlossaryContainsWord(long wordid, int glossaryid)
         {
             try
             {
-                SqliteCommand selectWordsCommand = new SqliteCommand($"SELECT 1 FROM glossary WHERE wordid=$wordid AND glossaryid=$glossaryid;", _glossaryDb);
+                using SqliteCommand selectWordsCommand = new SqliteCommand($"SELECT 1 FROM glossary WHERE wordid=$wordid AND glossaryid=$glossaryid;", _glossaryDb);
                 selectWordsCommand.Parameters.AddWithValue("$wordid", wordid);
                 selectWordsCommand.Parameters.AddWithValue("$glossaryid", glossaryid);
-                SqliteDataReader wordsQuery = selectWordsCommand?.ExecuteReader();
-
-                return wordsQuery?.Read() == true;
+                using SqliteDataReader wordsQuery = await selectWordsCommand.ExecuteReaderAsync();
+                return await wordsQuery.ReadAsync() == true;
             }
             catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
             return false;
