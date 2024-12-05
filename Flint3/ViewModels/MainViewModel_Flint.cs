@@ -83,97 +83,105 @@ namespace Flint3.ViewModels
         /// <returns></returns>
         private StarDictWordItem MakeupWordItem(StarDictWordItem item)
         {
-            if (this.AppSettings.EnableEngDefinition == false)
+            try
             {
-                item.Definition = string.Empty;
-            }
-
-            if (!string.IsNullOrWhiteSpace(item.Exchange))
-            {
-                string exchange = item.Exchange;
-                string[] exchanges = exchange.Split('/');
-                item.Exchanges = new List<WordExchangeItem>();
-                string word = string.Empty;
-                foreach (var exc in exchanges)
+                if (this.AppSettings.EnableEngDefinition == false)
                 {
-                    if (exc.Contains("p:"))
-                    {
-                        word = exc.Replace("p:", "");
-                        if (!string.IsNullOrWhiteSpace(word))
-                        {
-                            item.Exchanges.Add(new WordExchangeItem(word, "过去式"));
-                        }
-                    }
-                    else if (exc.Contains("d:"))
-                    {
-                        word = exc.Replace("d:", "");
-                        if (!string.IsNullOrWhiteSpace(word))
-                        {
-                            item.Exchanges.Add(new WordExchangeItem(word, "过去分词"));
-                        }
-                    }
-                    else if (exc.Contains("i:"))
-                    {
-                        word = exc.Replace("i:", "");
-                        if (!string.IsNullOrWhiteSpace(word))
-                        {
-                            item.Exchanges.Add(new WordExchangeItem(word, "现在分词"));
-                        }
-                    }
-                    else if (exc.Contains("3:"))
-                    {
-                        word = exc.Replace("3:", "");
-                        if (!string.IsNullOrWhiteSpace(word))
-                        {
-                            item.Exchanges.Add(new WordExchangeItem(word, "第三人称单数"));
-                        }
-                    }
-                    else if (exc.Contains("r:"))
-                    {
-                        word = exc.Replace("r:", "");
-                        if (!string.IsNullOrWhiteSpace(word))
-                        {
-                            item.Exchanges.Add(new WordExchangeItem(word, "比较级"));
-                        }
-                    }
-                    else if (exc.Contains("t:"))
-                    {
-                        word = exc.Replace("t:", "");
-                        if (!string.IsNullOrWhiteSpace(word))
-                        {
-                            item.Exchanges.Add(new WordExchangeItem(word, "最高级"));
-                        }
-                    }
-                    else if (exc.Contains("s:"))
-                    {
-                        word = exc.Replace("s:", "");
-                        if (!string.IsNullOrWhiteSpace(word))
-                        {
-                            item.Exchanges.Add(new WordExchangeItem(word, "复数"));
-                        }
-                    }
-                    else if (exc.Contains("0:"))
-                    {
-                        word = exc.Replace("0:", "");
-                        if (!string.IsNullOrWhiteSpace(word))
-                        {
-                            item.Exchanges.Add(new WordExchangeItem(word, "原型"));
-                        }
-                    }
-                    //else if (exc.Contains("1:"))
-                    //{
-                    //    word = 
-                    //    item.Exchanges.Add(new WordExchangeItem(exc.Replace("1:", ""), ""));
-                    //}
+                    item.Definition = string.Empty;
                 }
 
-                if (item.Exchanges.Count <= 0)
+                if (!string.IsNullOrWhiteSpace(item.Exchange))
                 {
-                    item.Exchanges = null;
-                }
-            }
+                    string exchange = item.Exchange;
+                    string[] exchanges = exchange.Split('/');
+                    item.Exchanges = new List<WordExchangeItem>();
+                    string word = string.Empty;
+                    foreach (var exc in exchanges)
+                    {
+                        if (exc.Contains("p:"))
+                        {
+                            word = exc.Replace("p:", "");
+                            if (!string.IsNullOrWhiteSpace(word))
+                            {
+                                item.Exchanges.Add(new WordExchangeItem(word, "过去式"));
+                            }
+                        }
+                        else if (exc.Contains("d:"))
+                        {
+                            word = exc.Replace("d:", "");
+                            if (!string.IsNullOrWhiteSpace(word))
+                            {
+                                item.Exchanges.Add(new WordExchangeItem(word, "过去分词"));
+                            }
+                        }
+                        else if (exc.Contains("i:"))
+                        {
+                            word = exc.Replace("i:", "");
+                            if (!string.IsNullOrWhiteSpace(word))
+                            {
+                                item.Exchanges.Add(new WordExchangeItem(word, "现在分词"));
+                            }
+                        }
+                        else if (exc.Contains("3:"))
+                        {
+                            word = exc.Replace("3:", "");
+                            if (!string.IsNullOrWhiteSpace(word))
+                            {
+                                item.Exchanges.Add(new WordExchangeItem(word, "第三人称单数"));
+                            }
+                        }
+                        else if (exc.Contains("r:"))
+                        {
+                            word = exc.Replace("r:", "");
+                            if (!string.IsNullOrWhiteSpace(word))
+                            {
+                                item.Exchanges.Add(new WordExchangeItem(word, "比较级"));
+                            }
+                        }
+                        else if (exc.Contains("t:"))
+                        {
+                            word = exc.Replace("t:", "");
+                            if (!string.IsNullOrWhiteSpace(word))
+                            {
+                                item.Exchanges.Add(new WordExchangeItem(word, "最高级"));
+                            }
+                        }
+                        else if (exc.Contains("s:"))
+                        {
+                            word = exc.Replace("s:", "");
+                            if (!string.IsNullOrWhiteSpace(word))
+                            {
+                                item.Exchanges.Add(new WordExchangeItem(word, "复数"));
+                            }
+                        }
+                        else if (exc.Contains("0:"))
+                        {
+                            word = exc.Replace("0:", "");
+                            if (!string.IsNullOrWhiteSpace(word))
+                            {
+                                item.Exchanges.Add(new WordExchangeItem(word, "原型"));
+                            }
+                        }
+                        //else if (exc.Contains("1:"))
+                        //{
+                        //    word = 
+                        //    item.Exchanges.Add(new WordExchangeItem(exc.Replace("1:", ""), ""));
+                        //}
+                    }
 
-            return item;
+                    if (item.Exchanges.Count <= 0)
+                    {
+                        item.Exchanges = null;
+                    }
+                }
+
+                return item;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Trace.WriteLine(ex);
+                return item;
+            }
         }
     }
 }

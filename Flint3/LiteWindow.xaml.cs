@@ -224,5 +224,10 @@ namespace Flint3
         {
             this.Height = string.IsNullOrWhiteSpace(SearchTextBox?.Text) ? 64 : 386;
         }
+
+        private void OnClickShowMainWindow(object sender, RoutedEventArgs e)
+        {
+            MainViewModel.Instance.ShowMainWindow();
+        }
     }
 }

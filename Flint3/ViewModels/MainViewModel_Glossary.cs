@@ -22,10 +22,7 @@ namespace Flint3.ViewModels
 
         private StarDictWordItem _selectedGlossaryWord = null;
 
-        /// <summary>
-        /// 当前查看的生词本单词列表
-        /// </summary>
-        public ObservableCollection<StarDictWordItem> GlossaryWordItems { get; private set; } = new ObservableCollection<StarDictWordItem>();
+        private bool _loadedGlossaryWords = true;
 
         /// <summary>
         /// 当前查看的生词本
@@ -43,6 +40,20 @@ namespace Flint3.ViewModels
         {
             get => _selectedGlossaryWord;
             private set => SetProperty(ref _selectedGlossaryWord, value);
+        }
+
+        /// <summary>
+        /// 当前查看的生词本单词列表
+        /// </summary>
+        public ObservableCollection<StarDictWordItem> GlossaryWordItems = new ObservableCollection<StarDictWordItem>();
+
+        /// <summary>
+        /// 生词是否已经加载结束
+        /// </summary>
+        public bool LoadedGlossaryWords
+        {
+            get => _loadedGlossaryWords;
+            private set => SetProperty(ref _loadedGlossaryWords, value);
         }
 
         #region 筛选生词列表
@@ -105,6 +116,7 @@ namespace Flint3.ViewModels
             this.FilterGlossaryWord = "";
             this.FilterGlossaryColor = GlossaryColorsEnum.Transparent;
             this.GlossaryWordsOrderMode = 0;
+            this.LoadedGlossaryWords = true;
         }
 
         /// <summary>
@@ -123,15 +135,16 @@ namespace Flint3.ViewModels
         /// <returns></returns>
         public async Task GetAllGlossaryWords()
         {
+            // 取消前一次的查询
+            _cancellationTokenSource.Cancel();
+            _cancellationTokenSource = new CancellationTokenSource();
+            var token = _cancellationTokenSource.Token;
+
             try
             {
                 System.Diagnostics.Trace.WriteLine($"Getting All GlossaryWords: {this.SelectedGlossary.GlossaryTitle}, {this.FilterGlossaryWord}, {this.FilterGlossaryColor}, {this.GlossaryWordsOrderMode}");
 
-                // 取消前一次的查询
-                _cancellationTokenSource.Cancel();
-                _cancellationTokenSource = new CancellationTokenSource();
-                var token = _cancellationTokenSource.Token;
-
+                this.LoadedGlossaryWords = false;
                 this.GlossaryWordItems.Clear();
 
                 if (this.SelectedGlossary is Models.GlossaryExModel)
@@ -147,6 +160,14 @@ namespace Flint3.ViewModels
             {
                 System.Diagnostics.Trace.WriteLine($"GetMoreGlossaryWords Error: {e.Message}");
             }
+            finally
+            {
+                // 如果并非主动取消，则改为加载完成，否则保持加载中状态，因为在主动取消后一定会再跟一次新的查询
+                if (!token.IsCancellationRequested)
+                {
+                    this.LoadedGlossaryWords = true;
+                }
+            }
         }
 
         /// <summary>
@@ -154,14 +175,16 @@ namespace Flint3.ViewModels
         /// </summary>
         public async Task GetMoreGlossaryWords(int count = 50)
         {
+            // 取消前一次的查询
+            _cancellationTokenSource.Cancel();
+            _cancellationTokenSource = new CancellationTokenSource();
+            var token = _cancellationTokenSource.Token;
+
             try
             {
                 System.Diagnostics.Trace.WriteLine($"Getting More GlossaryWords: {this.SelectedGlossary.GlossaryTitle}, {this.FilterGlossaryWord}, {this.FilterGlossaryColor}");
 
-                // 取消前一次的查询
-                _cancellationTokenSource.Cancel();
-                _cancellationTokenSource = new CancellationTokenSource();
-                var token = _cancellationTokenSource.Token;
+                this.LoadedGlossaryWords = false;
 
                 if (this.SelectedGlossary is Models.GlossaryExModel)
                 {
@@ -179,6 +202,14 @@ namespace Flint3.ViewModels
             catch (Exception e)
             {
                 System.Diagnostics.Trace.WriteLine($"GetMoreGlossaryWords Error: {e.Message}");
+            }
+            finally
+            {
+                // 如果并非主动取消，则改为加载完成，否则保持加载中状态，因为在主动取消后一定会再跟一次新的查询
+                if (!token.IsCancellationRequested)
+                {
+                    this.LoadedGlossaryWords = true;
+                }
             }
         }
 
@@ -314,15 +345,21 @@ namespace Flint3.ViewModels
         /// <param name="count"></param>
         private async Task GetAllExGlossaryWords(string word, CancellationToken token)
         {
-            if (this.SelectedGlossary is GlossaryExModel glossary)
+            await Task.Run(async () =>
             {
-                var list = await StarDictDataAccess.GetAllExtraGlossaryWords(glossary.ExtraGlossaryInternalTag, word, token);
-
-                foreach (var item in list)
+                if (this.SelectedGlossary is GlossaryExModel glossary)
                 {
-                    this.GlossaryWordItems.Add(MakeupWordItem(item));
+                    var list = await StarDictDataAccess.GetAllExtraGlossaryWords(glossary.ExtraGlossaryInternalTag, word, token);
+                    List<StarDictWordItem> words = new List<StarDictWordItem>();
+                    list?.ForEach(item => words.Add(MakeupWordItem(item)));
+
+                    this.Dispatcher.TryEnqueue(() =>
+                    {
+                        this.GlossaryWordItems.Clear();
+                        words.ForEach(item => this.GlossaryWordItems.Add(item));
+                    });
                 }
-            }
+            }, token);
         }
 
         /// <summary>
@@ -336,11 +373,9 @@ namespace Flint3.ViewModels
             if (this.SelectedGlossary is GlossaryExModel glossary)
             {
                 var list = await StarDictDataAccess.GetIncrementalExtraGlossaryWords(glossary.ExtraGlossaryInternalTag, lastId, count, word, token);
-
-                foreach (var item in list)
-                {
-                    this.GlossaryWordItems.Add(MakeupWordItem(item));
-                }
+                List<StarDictWordItem> words = new List<StarDictWordItem>();
+                list?.ForEach(item => words.Add(MakeupWordItem(item)));
+                words.ForEach(item => this.GlossaryWordItems.Add(item));
             }
         }
 
@@ -389,15 +424,21 @@ namespace Flint3.ViewModels
         /// <returns></returns>
         private async Task GetAllMyGlossaryWords(string word, GlossaryColorsEnum color, bool orderByWord, CancellationToken token)
         {
-            if (this.SelectedGlossary is GlossaryMyModel glossary)
+            await Task.Run(async () =>
             {
-                var list = await GlossaryDataAccess.GetAllGlossaryWords(glossary.Id, word, color, orderByWord, token);
-
-                foreach (var item in list)
+                if (this.SelectedGlossary is GlossaryMyModel glossary)
                 {
-                    this.GlossaryWordItems.Add(MakeupWordItem(item));
+                    var list = await GlossaryDataAccess.GetAllGlossaryWords(glossary.Id, word, color, orderByWord, token);
+                    List<StarDictWordItem> words = new List<StarDictWordItem>();
+                    list?.ForEach(item => words.Add(MakeupWordItem(item)));
+
+                    this.Dispatcher.TryEnqueue(() =>
+                    {
+                        this.GlossaryWordItems.Clear();
+                        words.ForEach(item => this.GlossaryWordItems.Add(item));
+                    });
                 }
-            }
+            }, token);
         }
 
         /// <summary>
@@ -415,11 +456,9 @@ namespace Flint3.ViewModels
             if (this.SelectedGlossary is GlossaryMyModel glossary)
             {
                 var list = await GlossaryDataAccess.GetIncrementalGlossaryWords(glossary.Id, lastId, count, word, color, token);
-
-                foreach (var item in list)
-                {
-                    this.GlossaryWordItems.Add(MakeupWordItem(item));
-                }
+                List<StarDictWordItem> words = new List<StarDictWordItem>();
+                list?.ForEach(item => words.Add(MakeupWordItem(item)));
+                words.ForEach(item => this.GlossaryWordItems.Add(item));
             }
         }
 

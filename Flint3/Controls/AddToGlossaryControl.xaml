@@ -8,7 +8,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:cvt="using:Flint3.Converters" 
     xmlns:models="using:Flint3.Models"
-    mc:Ignorable="d" Background="Transparent">
+    mc:Ignorable="d" 
+    Margin="-16">
+    
     <UserControl.Resources>
         <cvt:Int2BoolConverter x:Key="Int2Bool"/>
         <cvt:Equal2VisibilityConverter x:Key="Eql2Vis"/>
@@ -17,10 +19,7 @@
         <cvt:Bool2VisibilityConverter x:Key="Bool2Vis"/>
     </UserControl.Resources>
 
-    <Grid Width="256" CornerRadius="8">
-        <Grid.Background>
-            <AcrylicBrush TintColor="Transparent" TintLuminosityOpacity="0" TintOpacity="0" FallbackColor="{ThemeResource SolidBackgroundFillColorBase}"/>
-        </Grid.Background>
+    <Grid Width="256">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -51,7 +50,7 @@
             </ComboBox>
             <ProgressRing Grid.Column="1" IsEnabled="{x:Bind UpdatingAvailableGlossaries,Mode=OneWay}" Visibility="{x:Bind UpdatingAvailableGlossaries,Mode=OneWay,Converter={StaticResource Bool2Vis}}" ToolTipService.ToolTip="正在检索生词本..."/>
         </Grid>
-        <TextBox x:Name="WordDescTextBox" Grid.Row="2" Text="" BorderThickness="0" Margin="20,0,20,0" HorizontalAlignment="Stretch" TextWrapping="Wrap" Height="54" PlaceholderText="备注"/>
+        <TextBox x:Name="WordDescTextBox" Grid.Row="2" Text="" Margin="20,0,20,0" HorizontalAlignment="Stretch" TextWrapping="Wrap" Height="54" PlaceholderText="备注"/>
         <ScrollViewer x:Name="WordColorScrollViewer" Grid.Row="3" Margin="0,10,0,0" HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" VerticalScrollMode="Disabled" ZoomMode="Disabled">
             <StackPanel Orientation="Horizontal" Spacing="6" Margin="22,0,20,0">
                 <TextBlock Text="颜色标签" FontSize="12" Opacity="0.5" VerticalAlignment="Center"/>

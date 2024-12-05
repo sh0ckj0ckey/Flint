@@ -31,7 +31,7 @@ namespace Flint3.Views
             GlossaryWordsListView.Unloaded += OnGlossaryWordsListViewUnloaded;
         }
 
-        private async void OnLoaded(object sender, RoutedEventArgs e)
+        private void OnLoaded(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -39,7 +39,7 @@ namespace Flint3.Views
                 FilterWordTextBox.Text = MainViewModel.Instance.FilterGlossaryWord;
                 FilterWordTextBox.TextChanged += OnFilterTextChanged;
                 ScrollGlossaryWordsListViewToTop();
-                await MainViewModel.Instance.GetAllGlossaryWords();
+                _ = MainViewModel.Instance.GetAllGlossaryWords();
             }
             catch (Exception ex)
             {
@@ -109,7 +109,7 @@ namespace Flint3.Views
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void OnFilterTextChanged(object sender, TextChangedEventArgs e)
+        private void OnFilterTextChanged(object sender, TextChangedEventArgs e)
         {
             if (sender is TextBox filterTextBox)
             {
@@ -118,7 +118,7 @@ namespace Flint3.Views
                 {
                     MainViewModel.Instance.FilterGlossaryWord = word;
                     ScrollGlossaryWordsListViewToTop();
-                    await MainViewModel.Instance.GetAllGlossaryWords();
+                    _ = MainViewModel.Instance.GetAllGlossaryWords();
                 }
             }
         }
@@ -128,7 +128,7 @@ namespace Flint3.Views
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void OnClickFilterColor(object sender, RoutedEventArgs e)
+        private void OnClickFilterColor(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -174,7 +174,7 @@ namespace Flint3.Views
                         MainViewModel.Instance.FilterGlossaryColor = colorsEnum;
                         ColorFilterFlyout?.Hide();
                         ScrollGlossaryWordsListViewToTop();
-                        await MainViewModel.Instance.GetAllGlossaryWords();
+                        _ = MainViewModel.Instance.GetAllGlossaryWords();
                     }
                 }
             }
@@ -186,13 +186,13 @@ namespace Flint3.Views
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void OnSelectOrderMode(object sender, SelectionChangedEventArgs e)
+        private void OnSelectOrderMode(object sender, SelectionChangedEventArgs e)
         {
             try
             {
                 OrderByModeFlyout?.Hide();
                 ScrollGlossaryWordsListViewToTop();
-                await MainViewModel.Instance.GetAllGlossaryWords();
+                _ = MainViewModel.Instance.GetAllGlossaryWords();
             }
             catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         }

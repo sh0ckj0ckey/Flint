@@ -327,7 +327,7 @@
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE946;"/>
                     </labs:SettingsCard.HeaderIcon>
                     <labs:SettingsCard.Header>
-                        <TextBlock Text="{x:Bind _appVersion}"/>
+                        <TextBlock x:Name="AppVersionTextBlock"/>
                     </labs:SettingsCard.Header>
                     <labs:SettingsCard.Description>
                         <TextBlock Text="燧石是一款开源应用程序"/>

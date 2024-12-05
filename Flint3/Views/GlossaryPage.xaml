@@ -10,6 +10,7 @@
     xmlns:labs="using:CommunityToolkit.WinUI.Controls" 
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls" 
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
+    xmlns:animations="using:CommunityToolkit.WinUI.Animations"
     xmlns:cvt="using:Flint3.Converters"
     xmlns:models="using:Flint3.Models"
     mc:Ignorable="d"
@@ -51,6 +52,14 @@
 
         <!--My Glossaries-->
         <Grid x:Name="MyGlossariesGrid" Grid.Row="2" Visibility="{x:Bind GlossaryTabSegmented.SelectedIndex,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=0}">
+            <animations:Implicit.ShowAnimations>
+                <animations:TranslationAnimation From="-64,0,0" To="0,0,0" EasingMode="EaseOut" Duration="0:0:0.8"/>
+                <animations:OpacityAnimation To="1" Duration="0:0:0.4"/>
+            </animations:Implicit.ShowAnimations>
+            <animations:Implicit.HideAnimations>
+                <animations:TranslationAnimation To="-64,0,0" From="0,0,0" EasingMode="EaseOut" Duration="0:0:0.8"/>
+                <animations:OpacityAnimation To="0" Duration="0:0:0.2"/>
+            </animations:Implicit.HideAnimations>
             <StackPanel Visibility="{x:Bind ViewModel.MyGlossaries.Count,Mode=OneWay,Converter={StaticResource Int2Vis},ConverterParameter=-}" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" Spacing="8" Margin="0,-20,0,0">
                 <Image Source="/Assets/Logos/flint_logo.png" Height="72" Width="72" Opacity="1"/>
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
@@ -87,6 +96,14 @@
 
         <!--Extra Glossaries-->
         <Grid x:Name="ExGlossariesGrid" Grid.Row="2" Visibility="{x:Bind GlossaryTabSegmented.SelectedIndex,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=1}">
+            <animations:Implicit.ShowAnimations>
+                <animations:TranslationAnimation From="64,0,0" To="0,0,0" EasingMode="EaseOut" Duration="0:0:0.8"/>
+                <animations:OpacityAnimation To="1" Duration="0:0:0.4"/>
+            </animations:Implicit.ShowAnimations>
+            <animations:Implicit.HideAnimations>
+                <animations:TranslationAnimation To="64,0,0" From="0,0,0" EasingMode="EaseOut" Duration="0:0:0.8"/>
+                <animations:OpacityAnimation To="0" Duration="0:0:0.2"/>
+            </animations:Implicit.HideAnimations>
             <ScrollViewer Padding="0,0">
                 <muxc:ItemsRepeater Margin="16,0,16,8" HorizontalAlignment="Center" ItemsSource="{x:Bind ViewModel.ExGlossaries,Mode=OneWay}">
                     <muxc:ItemsRepeater.Layout>

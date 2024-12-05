@@ -9,6 +9,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls" 
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
+    xmlns:animations="using:CommunityToolkit.WinUI.Animations"
     xmlns:cvt="using:Flint3.Converters" 
     xmlns:mdl="using:Flint3.Data.Models" 
     xmlns:controls="using:Flint3.Controls"
@@ -38,14 +39,22 @@
 
         <!--搜索框-->
         <Grid Grid.Row="1" Padding="16,0" Margin="0,4,0,0">
-            <TextBox x:Name="SearchTextBox" x:FieldModifier="public" Text="{x:Bind ViewModel.SearchingWord,Mode=TwoWay}"/>
+            <TextBox x:Name="SearchTextBox" x:FieldModifier="public" Text="{x:Bind ViewModel.SearchingWord,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
             <TextBlock Text="开始键入..." Margin="16,6,0,0" FontSize="17.5" Opacity="0.3" HorizontalAlignment="Left" IsHitTestVisible="False" VerticalAlignment="Top"
                        Visibility="{x:Bind SearchTextBox.Text.Length,Mode=OneWay,Converter={StaticResource Int2Vis},ConverterParameter=-}"/>
         </Grid>
 
         <!--占位图片-->
         <Grid Grid.Row="2" Visibility="{x:Bind ViewModel.SearchResultWordItems.Count,Mode=OneWay,Converter={StaticResource Int2Vis},ConverterParameter=-}">
-            <Image Source="/Assets/Logos/flint_logo.png" Height="72" Width="72" Opacity="0.2"/>
+            <Image Source="/Assets/Logos/flint_logo.png" Height="72" Width="72" Opacity="0.2">
+                <animations:Implicit.ShowAnimations>
+                    <animations:TranslationAnimation From="0,32,0" To="0,0,0" EasingMode="EaseOut" Duration="0:0:0.8"/>
+                    <animations:OpacityAnimation To="0.2" Duration="0:0:0.4"/>
+                </animations:Implicit.ShowAnimations>
+                <animations:Implicit.HideAnimations>
+                    <animations:OpacityAnimation To="0" Duration="0:0:0.2"/>
+                </animations:Implicit.HideAnimations>
+            </Image>
         </Grid>
 
         <!--搜索结果列表-->

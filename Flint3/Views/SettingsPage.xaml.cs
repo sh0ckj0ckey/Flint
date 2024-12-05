@@ -20,16 +20,9 @@ namespace Flint3.Views
     {
         private MainViewModel _viewModel = null;
 
-        private string _appVersion = string.Empty;
-
         public SettingsPage()
         {
             _viewModel = MainViewModel.Instance;
-
-            if (string.IsNullOrWhiteSpace(_appVersion))
-            {
-                _appVersion = $"Flint {AppVersionUtil.GetAppVersion()}";
-            }
 
             this.InitializeComponent();
         }
@@ -37,6 +30,11 @@ namespace Flint3.Views
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             UpdateStartupState();
+
+            if (string.IsNullOrWhiteSpace(AppVersionTextBlock.Text))
+            {
+                AppVersionTextBlock.Text = $"Flint {AppVersionUtil.GetAppVersion()}";
+            }
         }
 
         /// <summary>

@@ -11,14 +11,25 @@
     Activated="OnLiteWindowActivated">
 
     <windowex:WindowEx.Content>
-        <Grid Loaded="OnContentLoaded" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <Grid Grid.Row="0">
-                <TextBox x:Name="SearchTextBox" TextChanged="SearchTextBox_TextChanged" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"/>
+        <Grid Loaded="OnContentLoaded" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Height="Auto">
+                <TextBox x:Name="SearchTextBox" Padding="46,12,68,-12" FontSize="22" Height="56" FontWeight="Medium" PlaceholderText="开始键入..." TextChanged="SearchTextBox_TextChanged" VerticalAlignment="Top" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"
+                         Style="{ThemeResource LiteTextBoxStyle}" Text="{x:Bind _viewModel.SearchingWord,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE721;" FontSize="20" Opacity="0.7" Margin="18,0,0,0" IsHitTestVisible="False" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Button Click="OnClickShowMainWindow" HorizontalAlignment="Right" VerticalAlignment="Center" Height="56" Width="64" Padding="0" CornerRadius="0" Background="Transparent" BorderThickness="0">
+                    <Image Height="28" Width="28">
+                        <Image.Source>
+                            <BitmapImage UriSource="ms-appx:///Assets/Logos/flint_logo.png" DecodePixelHeight="56" DecodePixelType="Logical"/>
+                        </Image.Source>
+                    </Image>
+                </Button>
             </Grid>
+            <Border Grid.Row="1" Height="1" Background="{ThemeResource ControlElevationBorderBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Top"/>
         </Grid>
     </windowex:WindowEx.Content>
 </windowex:WindowEx>
