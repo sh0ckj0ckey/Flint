@@ -26,21 +26,6 @@ namespace Flint3.ViewModels
         /// </summary>
         public SettingsService AppSettings { get; set; } = new SettingsService();
 
-        /// <summary>
-        /// 应用程序系统托盘
-        /// </summary>
-        private NotifyIcon _notifyIcon = null;
-
-        /// <summary>
-        /// 燧石的主窗口，点击桌面图标或者右下角托盘时一定打开这个窗口
-        /// </summary>
-        public MainWindow FlintMainWindow { get; private set; } = null;
-
-        /// <summary>
-        /// 燧石的简洁搜索窗口，设置中开启简洁窗口后，按下快捷键会唤起这个窗口
-        /// </summary>
-        public LiteWindow FlintLiteWindow { get; private set; } = null;
-
         private MainViewModel() { }
 
         public void Initialize(Microsoft.UI.Dispatching.DispatcherQueue dispatcher)
@@ -51,18 +36,18 @@ namespace Flint3.ViewModels
 
             // 创建常驻托盘图标
             var hwndMain = this.FlintMainWindow.GetWindowHandle();
-            _notifyIcon = new NotifyIcon(hwndMain, @"Assets\Logos\flint_logo.ico");
-            _notifyIcon.OnClickShowMainWindow += () =>
+            NotifyIcon = new NotifyIcon(hwndMain, @"Assets\Logos\flint_logo.ico");
+            NotifyIcon.OnClickShowMainWindow += () =>
             {
                 this.ShowMainWindow();
             };
 
-            _notifyIcon.OnClickExitApp += () =>
+            NotifyIcon.OnClickExitApp += () =>
             {
                 this.ExitApp();
             };
 
-            _notifyIcon.OnClickCloseWindow += () =>
+            NotifyIcon.OnClickCloseWindow += () =>
             {
                 if (this.AppSettings.CloseButtonMode == 0)
                 {
@@ -74,7 +59,7 @@ namespace Flint3.ViewModels
                 }
             };
 
-            _notifyIcon.CreateNotifyIcon();
+            NotifyIcon.CreateNotifyIcon();
 
             InitViewModel4Flint();
             InitViewModel4Glossary();
@@ -101,7 +86,7 @@ namespace Flint3.ViewModels
             this.HideApp();
             GlossaryDataAccess.CloseDatabase();
             StarDictDataAccess.CloseDatabase();
-            _notifyIcon?.Destroy();
+            NotifyIcon?.Destroy();
             this.FlintLiteWindow?.Close();
             this.FlintMainWindow?.Close();
             this.Dispose();

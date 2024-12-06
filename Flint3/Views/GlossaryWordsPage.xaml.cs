@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using Flint3.Data.Models;
 using Flint3.ViewModels;
 using Microsoft.UI.Xaml;
@@ -15,7 +14,7 @@ namespace Flint3.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class GlossaryContentPage : Page
+    public sealed partial class GlossaryWordsPage : Page
     {
         public MainViewModel ViewModel { get; set; } = null;
 
@@ -23,7 +22,7 @@ namespace Flint3.Views
 
         private SlideNavigationTransitionInfo SlideNaviTransition = new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight };
 
-        public GlossaryContentPage()
+        public GlossaryWordsPage()
         {
             ViewModel = MainViewModel.Instance;
             this.InitializeComponent();
@@ -272,7 +271,7 @@ namespace Flint3.Views
             if (sender is Button btn && btn.DataContext is StarDictWordItem item)
             {
                 MainViewModel.Instance.SelectGlossaryWord(item);
-                this.Frame.Navigate(typeof(GlossaryWordPage), null, SlideNaviTransition);
+                this.Frame.Navigate(typeof(GlossaryWordInfoPage), null, SlideNaviTransition);
             }
         }
 

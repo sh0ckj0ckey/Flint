@@ -12,6 +12,6 @@
     Activated="OnLiteWindowActivated">
 
     <windowex:WindowEx.Content>
-        <views:LitePage x:Name="FlintLitePage" Loaded="OnContentLoaded"/>
+        <views:FlintLitePage x:Name="FlintLitePage" Loaded="OnContentLoaded"/>
     </windowex:WindowEx.Content>
 </windowex:WindowEx>

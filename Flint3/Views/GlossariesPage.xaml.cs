@@ -11,13 +11,13 @@ namespace Flint3.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class GlossaryPage : Page
+    public sealed partial class GlossariesPage : Page
     {
         private SlideNavigationTransitionInfo SlideNaviTransition = new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight };
 
         public MainViewModel ViewModel { get; set; } = null;
 
-        public GlossaryPage()
+        public GlossariesPage()
         {
             ViewModel = MainViewModel.Instance;
             this.InitializeComponent();
@@ -44,7 +44,7 @@ namespace Flint3.Views
             if (sender is Button btn && btn.DataContext is Models.GlossaryMyModel model)
             {
                 MainViewModel.Instance.SelectGlossary(model);
-                this.Frame.Navigate(typeof(GlossaryContentPage), null, SlideNaviTransition);
+                this.Frame.Navigate(typeof(GlossaryWordsPage), null, SlideNaviTransition);
             }
         }
 
@@ -53,7 +53,7 @@ namespace Flint3.Views
             if (sender is Button btn && btn.DataContext is Models.GlossaryExModel model)
             {
                 MainViewModel.Instance.SelectGlossary(model);
-                this.Frame.Navigate(typeof(GlossaryContentPage), null, SlideNaviTransition);
+                this.Frame.Navigate(typeof(GlossaryWordsPage), null, SlideNaviTransition);
             }
         }
     }

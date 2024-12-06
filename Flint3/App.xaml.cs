@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Flint3.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.Windows.AppLifecycle;
-using WinUIEx;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -15,6 +14,23 @@ namespace Flint3
     /// </summary>
     public partial class App : Application
     {
+        public static new App Current => (App)Application.Current;
+
+        /// <summary>
+        /// 应用程序系统托盘
+        /// </summary>
+        public NotifyIcon NotifyIcon = null;
+
+        /// <summary>
+        /// 燧石的主窗口，点击桌面图标或者右下角托盘时一定打开这个窗口
+        /// </summary>
+        public MainWindow FlintMainWindow { get; private set; } = null;
+
+        /// <summary>
+        /// 燧石的简洁搜索窗口，设置中开启简洁窗口后，按下快捷键会唤起这个窗口
+        /// </summary>
+        public LiteWindow FlintLiteWindow { get; private set; } = null;
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -36,7 +52,7 @@ namespace Flint3
         /// Invoked when the application is launched.
         /// </summary>
         /// <param name="args">Details about the launch request and process.</param>
-        protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
+        protected override async void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
             AppActivationArguments activatedArgs = AppInstance.GetCurrent().GetActivatedEventArgs();
             if (activatedArgs?.Kind == ExtendedActivationKind.StartupTask)
@@ -45,7 +61,7 @@ namespace Flint3
             }
             else
             {
-                MainViewModel.Instance.ShowMainWindow();
+                await ShowMainWindowFromRedirectAsync();
             }
         }
 
@@ -60,7 +76,7 @@ namespace Flint3
                 await Task.Delay(100);
             }
 
-            MainViewModel.Instance.Dispatcher.TryEnqueue(() =>
+            Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread().TryEnqueue(() =>
             {
                 MainViewModel.Instance.ShowMainWindow();
             });

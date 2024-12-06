@@ -12,11 +12,11 @@ namespace Flint3.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class GlossaryWordPage : Page
+    public sealed partial class GlossaryWordInfoPage : Page
     {
         public MainViewModel ViewModel { get; set; } = null;
 
-        public GlossaryWordPage()
+        public GlossaryWordInfoPage()
         {
             ViewModel = MainViewModel.Instance;
             this.InitializeComponent();

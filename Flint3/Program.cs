@@ -42,10 +42,9 @@ namespace Flint3
                 {
                     Microsoft.UI.Xaml.Application.Start((p) =>
                     {
-                        DispatcherQueueSynchronizationContext context = new(
-                            DispatcherQueue.GetForCurrentThread());
+                        DispatcherQueueSynchronizationContext context = new(DispatcherQueue.GetForCurrentThread());
                         SynchronizationContext.SetSynchronizationContext(context);
-                        new App();
+                        _ = new App();
                     });
                 }
             }

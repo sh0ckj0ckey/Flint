@@ -1,13 +1,9 @@
 using System;
 using System.IO;
-using Flint3.Controls;
-using Flint3.Data.Models;
 using Flint3.ViewModels;
 using Flint3.Views;
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Input;
 using Windows.System;
 using Windows.UI.ViewManagement;
@@ -111,7 +107,7 @@ namespace Flint3
         {
             this.UpdateAppTheme();
 
-            if (sender is LitePage page)
+            if (sender is FlintLitePage page)
             {
                 page.KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.Escape, null, OnHideKeyboardAcceleratorInvoked));
                 page.KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.Tab, null, OnSearchKeyboardAcceleratorInvoked));

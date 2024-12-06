@@ -103,12 +103,7 @@
 		<None Remove="LiteWindow.xaml" />
 		<None Remove="ThemeResource\CustomControlStyle.xaml" />
 		<None Remove="ThemeResource\ThemeDictionary.xaml" />
-		<None Remove="Views\FlintPage.xaml" />
-		<None Remove="Views\GlossaryContentPage.xaml" />
-		<None Remove="Views\GlossaryPage.xaml" />
 		<None Remove="Views\GlossaryPropertyPage.xaml" />
-		<None Remove="Views\GlossaryWordPage.xaml" />
-		<None Remove="Views\LitePage.xaml" />
 		<None Remove="Views\SettingsPage.xaml" />
 	</ItemGroup>
 	<ItemGroup>
@@ -144,7 +139,7 @@
 		<ProjectReference Include="..\Flint3.Interop\Flint3.Interop.vcxproj" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Page Update="Views\LitePage.xaml">
+	  <Page Update="Views\FlintLitePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </Page>
 	</ItemGroup>
@@ -154,7 +149,7 @@
 		</Page>
 	</ItemGroup>
 	<ItemGroup>
-		<Page Update="Views\GlossaryWordPage.xaml">
+		<Page Update="Views\GlossaryWordInfoPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</Page>
 	</ItemGroup>
@@ -169,12 +164,12 @@
 		</Page>
 	</ItemGroup>
 	<ItemGroup>
-		<Page Update="Views\GlossaryContentPage.xaml">
+		<Page Update="Views\GlossaryWordsPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</Page>
 	</ItemGroup>
 	<ItemGroup>
-		<Page Update="Views\GlossaryPage.xaml">
+		<Page Update="Views\GlossariesPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</Page>
 	</ItemGroup>
@@ -189,7 +184,7 @@
 		</Page>
 	</ItemGroup>
 	<ItemGroup>
-		<Page Update="Views\FlintPage.xaml">
+		<Page Update="Views\FlintFullPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</Page>
 	</ItemGroup>

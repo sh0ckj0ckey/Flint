@@ -67,7 +67,7 @@ namespace Flint3
         /// </summary>
         public void TryFocusOnSearchTextBox()
         {
-            if (MainFrame.Content is FlintPage flintPage)
+            if (MainFrame.Content is FlintFullPage flintPage)
             {
                 var searchTextBox = flintPage.SearchTextBox;
                 searchTextBox?.Focus(FocusState.Keyboard);
@@ -83,7 +83,7 @@ namespace Flint3
         /// </summary>
         public void TryClearSearchTextBox()
         {
-            if (MainFrame.Content is FlintPage flintPage)
+            if (MainFrame.Content is FlintFullPage flintPage)
             {
                 var searchTextBox = flintPage.SearchTextBox;
                 if (searchTextBox is not null)
@@ -114,7 +114,7 @@ namespace Flint3
         private void OnMainFrameLoaded(object sender, RoutedEventArgs e)
         {
             // 初始导航页面
-            MainFrame.Navigate(typeof(FlintPage));
+            MainFrame.Navigate(typeof(FlintFullPage));
 
             this.UpdateAppTheme();
 

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,7 +8,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using Flint3.Data;
 using Flint3.Data.Models;
 using Flint3.Models;
-using Windows.Storage;
 
 namespace Flint3.ViewModels
 {

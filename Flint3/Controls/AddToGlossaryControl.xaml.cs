@@ -1,7 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Flint3.Data;
 using Flint3.Data.Models;
 using Flint3.Models;
 using Flint3.ViewModels;
