@@ -23,6 +23,8 @@ namespace Flint3
     /// </summary>
     public partial class App : Application
     {
+        private readonly Microsoft.UI.Dispatching.DispatcherQueue _dispatcherQueue;
+
         /// <summary>
         /// 应用程序系统托盘
         /// </summary>
@@ -45,6 +47,8 @@ namespace Flint3
         public App()
         {
             this.InitializeComponent();
+
+            _dispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
 
             UnhandledException += (s, e) =>
             {
@@ -83,7 +87,7 @@ namespace Flint3
                 await Task.Delay(100);
             }
 
-            Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread().TryEnqueue(() =>
+            _dispatcherQueue.TryEnqueue(() =>
             {
                 ShowMainWindow();
             });

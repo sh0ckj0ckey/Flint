@@ -28,6 +28,7 @@
 		<DefineConstants>$(DefineConstants);DISABLE_XAML_GENERATED_MAIN</DefineConstants>
 		<WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
 		<SelfContained>true</SelfContained>
+		<PackageCertificateKeyFile>Flint3_TemporaryKey.pfx</PackageCertificateKeyFile>
 	</PropertyGroup>
 	<ItemGroup>
 		<None Remove="Assets\flint_logo_background_dark.png" />
