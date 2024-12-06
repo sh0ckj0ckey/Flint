@@ -34,7 +34,7 @@ namespace Flint3.Views
         /// <param name="e"></param>
         private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            MainViewModel.Instance.FlintLiteWindow.Height = string.IsNullOrWhiteSpace(SearchTextBox?.Text) ? 64 : 386;
+            App.FlintLiteWindow.Height = string.IsNullOrWhiteSpace(SearchTextBox?.Text) ? 64 : 386;
             MainViewModel.Instance.MatchWord(SearchTextBox?.Text, false);
         }
 
@@ -45,7 +45,7 @@ namespace Flint3.Views
         /// <param name="e"></param>
         private void OnClickShowMainWindow(object sender, RoutedEventArgs e)
         {
-            MainViewModel.Instance.ShowMainWindow();
+            App.ShowMainWindow();
         }
 
         /// <summary>

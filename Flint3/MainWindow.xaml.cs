@@ -19,14 +19,10 @@ namespace Flint3
     /// </summary>
     public sealed partial class MainWindow : WindowEx
     {
-        private readonly MainViewModel _viewModel = null;
-
         private UISettings _uiSettings = null;
 
-        public MainWindow(MainViewModel viewModel)
+        public MainWindow()
         {
-            _viewModel = viewModel;
-
             this.InitializeComponent();
             this.PersistenceId = "FlintMainWindow";
             this.ExtendsContentIntoTitleBar = true;
@@ -38,12 +34,12 @@ namespace Flint3
             this.SetIcon(iconPath);
             this.SetTaskBarIcon(Icon.FromFile(iconPath));
 
-            _viewModel.AppSettings.OnAppearanceSettingChanged += (_) =>
+            MainViewModel.Instance.AppSettings.OnAppearanceSettingChanged += (_) =>
             {
                 this.UpdateAppTheme();
             };
 
-            _viewModel.AppSettings.OnBackdropSettingChanged += (_) =>
+            MainViewModel.Instance.AppSettings.OnBackdropSettingChanged += (_) =>
             {
                 this.UpdateAppBackdrop();
             };
@@ -134,9 +130,9 @@ namespace Flint3
             _uiSettings = new UISettings();
             _uiSettings.ColorValuesChanged += (s, args) =>
             {
-                if (_viewModel.AppSettings.AppearanceIndex == 0)
+                if (MainViewModel.Instance.AppSettings.AppearanceIndex == 0)
                 {
-                    _viewModel.Dispatcher.TryEnqueue(() =>
+                    MainViewModel.Instance.Dispatcher.TryEnqueue(() =>
                     {
                         UpdateAppTheme();
                     });
@@ -153,7 +149,7 @@ namespace Flint3
             {
                 // 设置标题栏颜色 主题 0-System 1-Dark 2-Light
                 bool isLight = true;
-                if (_viewModel.AppSettings.AppearanceIndex == 0)
+                if (MainViewModel.Instance.AppSettings.AppearanceIndex == 0)
                 {
                     var color = _uiSettings?.GetColorValue(UIColorType.Foreground) ?? Colors.Black;
 
@@ -163,7 +159,7 @@ namespace Flint3
                 }
                 else
                 {
-                    isLight = _viewModel.AppSettings.AppearanceIndex != 1;
+                    isLight = MainViewModel.Instance.AppSettings.AppearanceIndex != 1;
                 }
 
                 // 修改标题栏按钮颜色
@@ -201,7 +197,7 @@ namespace Flint3
         /// </summary>
         private void UpdateAppBackdrop()
         {
-            this.SystemBackdrop = _viewModel.AppSettings.BackdropIndex == 1 ? new Microsoft.UI.Xaml.Media.DesktopAcrylicBackdrop() : new Microsoft.UI.Xaml.Media.MicaBackdrop();
+            this.SystemBackdrop = MainViewModel.Instance.AppSettings.BackdropIndex == 1 ? new Microsoft.UI.Xaml.Media.DesktopAcrylicBackdrop() : new Microsoft.UI.Xaml.Media.MicaBackdrop();
         }
 
         #region Go Back & Hide KeyboardAccelerators

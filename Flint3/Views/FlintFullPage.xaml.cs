@@ -95,17 +95,17 @@ namespace Flint3.Views
             {
                 if (PinToggleButton?.IsChecked == true)
                 {
-                    MainViewModel.Instance.FlintMainWindow.IsAlwaysOnTop = true;
+                    App.FlintMainWindow.IsAlwaysOnTop = true;
                 }
                 else
                 {
-                    MainViewModel.Instance.FlintMainWindow.IsAlwaysOnTop = false;
+                    App.FlintMainWindow.IsAlwaysOnTop = false;
                 }
             }
             catch
             {
                 PinToggleButton.IsChecked = false;
-                MainViewModel.Instance.FlintMainWindow.IsAlwaysOnTop = false;
+                App.FlintMainWindow.IsAlwaysOnTop = false;
             }
         }
 

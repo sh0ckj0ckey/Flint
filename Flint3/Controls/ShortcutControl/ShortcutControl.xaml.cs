@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using Flint3.Helpers;
 using Flint3.Models;
-using Flint3.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
@@ -70,9 +69,9 @@ namespace Flint3.Controls.ShortcutControl
             hook = new HotkeySettingsControlHook(Hotkey_KeyDown, Hotkey_KeyUp, Hotkey_IsActive, FilterAccessibleKeyboardEvents);
             System.Diagnostics.Trace.WriteLine($"Add Hook");
 
-            if (MainViewModel.Instance.FlintMainWindow != null)
+            if (App.FlintMainWindow != null)
             {
-                MainViewModel.Instance.FlintMainWindow.Activated += ShortcutDialog_SettingsWindow_Activated;
+                App.FlintMainWindow.Activated += ShortcutDialog_SettingsWindow_Activated;
             }
 
             _settingShortcutDialog.PrimaryButtonClick += ShortcutDialog_PrimaryButtonClick;
@@ -88,9 +87,9 @@ namespace Flint3.Controls.ShortcutControl
             hook = null;
             System.Diagnostics.Trace.WriteLine($"Delete Hook");
 
-            if (MainViewModel.Instance.FlintMainWindow != null)
+            if (App.FlintMainWindow != null)
             {
-                MainViewModel.Instance.FlintMainWindow.Activated -= ShortcutDialog_SettingsWindow_Activated;
+                App.FlintMainWindow.Activated -= ShortcutDialog_SettingsWindow_Activated;
             }
 
             _settingShortcutDialog.PrimaryButtonClick -= ShortcutDialog_PrimaryButtonClick;

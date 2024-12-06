@@ -32,7 +32,7 @@
         <!--搜索框-->
         <Grid Grid.Row="0" Height="Auto">
             <TextBox x:Name="SearchTextBox" x:FieldModifier="public" TextChanged="SearchTextBox_TextChanged"
-                     Style="{ThemeResource LiteTextBoxStyle}" PlaceholderText="开始键入..." Padding="46,12,68,-12" FontSize="22" Height="56" FontWeight="Medium"
+                     Style="{ThemeResource LiteTextBoxStyle}" PlaceholderText="开始键入..." Padding="48,12,68,-12" FontSize="22" Height="56" FontWeight="Medium"
                      HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"/>
             <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE721;" FontSize="20" Opacity="0.7" Margin="18,0,0,0" IsHitTestVisible="False" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <Button Click="OnClickShowMainWindow" HorizontalAlignment="Right" VerticalAlignment="Center" Height="56" Width="64" Padding="0" CornerRadius="0" Background="Transparent" BorderThickness="0">

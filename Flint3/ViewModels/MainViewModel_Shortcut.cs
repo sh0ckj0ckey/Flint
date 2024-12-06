@@ -113,11 +113,11 @@ namespace Flint3.ViewModels
         {
             if (this.AppSettings.WindowMode == 1)
             {
-                ShowLiteWindow();
+                App.ShowLiteWindow();
             }
             else
             {
-                ShowMainWindow();
+                App.ShowMainWindow();
             }
         }
 
