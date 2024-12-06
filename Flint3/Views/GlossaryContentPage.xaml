@@ -26,6 +26,8 @@
         <cvt:GlossaryEnum2ColorConverter x:Key="Enum2Color"/>
         <cvt:GlossaryEnum2NameConverter x:Key="Enum2Name"/>
         <cvt:BoolReverseConverter x:Key="BoolReverse"/>
+        <cvt:Equal2BoolConverter x:Key="Eql2Bool"/>
+        <cvt:Unequal2BoolConverter x:Key="UnEql2Bool"/>
     </Page.Resources>
 
     <Grid>
@@ -162,7 +164,7 @@
 
             <!--查找生词-->
             <Grid Grid.Column="4" VerticalAlignment="Center" Margin="0,0,1,0">
-                <TextBox x:Name="FilterWordTextBox" Width="168" PlaceholderText="查找生词" FontSize="12" FontWeight="Medium" Padding="26,8,4,0" Height="34" MinHeight="0" BorderBrush="Transparent" BorderThickness="0" VerticalAlignment="Center"/>
+                <TextBox x:Name="FilterWordTextBox" Width="196" PlaceholderText="查找生词" FontSize="12" FontWeight="Medium" Padding="26,8,4,0" Height="34" MinHeight="0" BorderBrush="Transparent" BorderThickness="0" VerticalAlignment="Center"/>
                 <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE094;" Opacity="0.7" FontSize="12" Margin="8,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" IsHitTestVisible="False"/>
             </Grid>
         </Grid>
@@ -172,8 +174,9 @@
                       Visibility="{x:Bind ViewModel.LoadedGlossaryWords,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}"
                       Height="34" Width="34" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
-        <!--空白占位-->
         <Grid Grid.Row="2" Visibility="{x:Bind ViewModel.LoadedGlossaryWords,Mode=OneWay,Converter={StaticResource Bool2Vis}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+
+            <!--空白占位-->
             <StackPanel Spacing="12" HorizontalAlignment="Stretch" VerticalAlignment="Center" Orientation="Vertical"
                         Visibility="{x:Bind ViewModel.GlossaryWordItems.Count,Mode=OneWay,Converter={StaticResource Int2Vis},ConverterParameter=-}">
                 <Image Source="/Assets/Logos/flint_logo.png" Height="72" Width="72" Opacity="0.2" HorizontalAlignment="Center"/>
@@ -198,7 +201,7 @@
                 </ListView.ItemContainerTransitions>
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="mdl:StarDictWordItem">
-                        <Button DataContext="{x:Bind }" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="0" Margin="0,2" Click="OnClickGlossaryWord">
+                        <Button DataContext="{x:Bind }" MinHeight="48" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Padding="0" Margin="0,2" Click="OnClickGlossaryWord">
                             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Padding="20,4,10,4">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
@@ -206,7 +209,7 @@
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <StackPanel Grid.Column="0" Orientation="Vertical" Margin="0,8,0,8" HorizontalAlignment="Stretch" VerticalAlignment="Center">
-                                    <Grid HorizontalAlignment="Stretch" Visibility="{Binding IsChecked,ElementName=HideEnglishToggleButton,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}">
+                                    <Grid HorizontalAlignment="Stretch" Visibility="{Binding IsChecked,ElementName=HideWordToggleMenuItem,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto"/>
                                             <ColumnDefinition Width="*"/>
@@ -219,7 +222,9 @@
                                             <Run Text="/" FontSize="14"/>
                                         </TextBlock>
                                     </Grid>
-                                    <TextBlock Text="{x:Bind Translation,Converter={StaticResource LinebreakRemove}}" Margin="0,2,0,0" Opacity="0.8" FontSize="13" MaxLines="2" LineHeight="20" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"/>
+                                    <TextBlock Text="{x:Bind Translation,Converter={StaticResource LinebreakRemove}}" 
+                                               Visibility="{Binding IsChecked,ElementName=HideExplainToggleMenuItem,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}"
+                                               Margin="0,2,0,0" Opacity="0.8" FontSize="13" MaxLines="2" LineHeight="20" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"/>
                                     <Grid Margin="0,2,0,0" HorizontalAlignment="Stretch" Opacity="0.6" Visibility="{x:Bind Description,Mode=OneWay,Converter={StaticResource Null2Vis}}">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto"/>
@@ -274,7 +279,7 @@
             </Button>
 
             <!--隐藏英文单词-->
-            <ToggleButton x:Name="HideEnglishToggleButton" Grid.Column="3" Margin="4,8,0,8" IsChecked="False" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center">
+            <Button Grid.Column="3" Margin="4,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center">
                 <ToolTipService.ToolTip>
                     <ToolTip>
                         <TextBlock>
@@ -285,13 +290,17 @@
                         </TextBlock>
                     </ToolTip>
                 </ToolTipService.ToolTip>
-                <Grid>
-                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE18B;" FontSize="16" Height="22" Width="22" Opacity="0.8"
-                              Visibility="{x:Bind HideEnglishToggleButton.IsChecked,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}"/>
-                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xED1A;" FontSize="16" Height="22" Width="22" Opacity="0.8"
-                              Visibility="{x:Bind HideEnglishToggleButton.IsChecked,Mode=OneWay,Converter={StaticResource Bool2Vis}}"/>
+                <Grid Opacity="0.8">
+                    <FontIcon x:Name="NoHideFontIcon" FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE18B;" FontSize="16" Height="22" Width="22"/>
+                    <FontIcon x:Name="HidingFontIcon" FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xED1A;" FontSize="16" Height="22" Width="22"/>
                 </Grid>
-            </ToggleButton>
+                <Button.Flyout>
+                    <MenuFlyout>
+                        <ToggleMenuFlyoutItem x:Name="HideWordToggleMenuItem" Icon="" Text="隐藏单词" Click="OnClickHideMenuItem"/>
+                        <ToggleMenuFlyoutItem x:Name="HideExplainToggleMenuItem" Icon="" Text="隐藏释义" Click="OnClickHideMenuItem"/>
+                    </MenuFlyout>
+                </Button.Flyout>
+            </Button>
 
             <!--切换排序方式-->
             <Button Grid.Column="4" Margin="4,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center"
@@ -306,21 +315,14 @@
                         </TextBlock>
                     </ToolTip>
                 </ToolTipService.ToolTip>
-                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE174;" FontSize="16" Height="22" Width="22" Opacity="0.8"/>
+                <Grid Opacity="0.8">
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE174;" FontSize="16" Height="22" Width="22"/>
+                </Grid>
                 <Button.Flyout>
-                    <Flyout x:Name="OrderByModeFlyout" Placement="Bottom">
-                        <Grid HorizontalAlignment="Left" MaxWidth="128">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <TextBlock Text="切换列表排序方式" FontSize="14" FontWeight="Bold"/>
-                            <muxc:RadioButtons Grid.Row="1" MaxColumns="1" SelectionChanged="OnSelectOrderMode" SelectedIndex="{x:Bind ViewModel.GlossaryWordsOrderMode,Mode=TwoWay}">
-                                <RadioButton Content="按首字母排序"/>
-                                <RadioButton Content="按时间排序"/>
-                            </muxc:RadioButtons>
-                        </Grid>
-                    </Flyout>
+                    <MenuFlyout>
+                        <ToggleMenuFlyoutItem Text="按首字母排序" IsChecked="{x:Bind ViewModel.GlossaryWordsOrderMode,Mode=OneWay,Converter={StaticResource Eql2Bool},ConverterParameter=0}" Click="OnCheckOrderByAlphabet"/>
+                        <ToggleMenuFlyoutItem Text="按时间排序" IsChecked="{x:Bind ViewModel.GlossaryWordsOrderMode,Mode=OneWay,Converter={StaticResource Eql2Bool},ConverterParameter=1}" Click="OnCheckOrderByDate"/>
+                    </MenuFlyout>
                 </Button.Flyout>
             </Button>
 

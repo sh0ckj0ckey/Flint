@@ -40,6 +40,8 @@ namespace Flint3.Views
                 FilterWordTextBox.TextChanged += OnFilterTextChanged;
                 ScrollGlossaryWordsListViewToTop();
                 _ = MainViewModel.Instance.GetAllGlossaryWords();
+
+                UpdateHideButtonIcon();
             }
             catch (Exception ex)
             {
@@ -182,19 +184,72 @@ namespace Flint3.Views
         }
 
         /// <summary>
-        /// 切换排序方式
+        /// 切换到字母排序
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnSelectOrderMode(object sender, SelectionChangedEventArgs e)
+        private void OnCheckOrderByAlphabet(object sender, RoutedEventArgs e)
         {
             try
             {
-                OrderByModeFlyout?.Hide();
-                ScrollGlossaryWordsListViewToTop();
-                _ = MainViewModel.Instance.GetAllGlossaryWords();
+                if (MainViewModel.Instance.GlossaryWordsOrderMode != 0)
+                {
+                    MainViewModel.Instance.GlossaryWordsOrderMode = 0;
+                    ScrollGlossaryWordsListViewToTop();
+                    _ = MainViewModel.Instance.GetAllGlossaryWords();
+                }
+
+                if (sender is ToggleMenuFlyoutItem menuItem)
+                {
+                    menuItem.IsChecked = true;
+                }
             }
             catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
+        }
+
+        /// <summary>
+        /// 切换到日期排序
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnCheckOrderByDate(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (MainViewModel.Instance.GlossaryWordsOrderMode != 1)
+                {
+                    MainViewModel.Instance.GlossaryWordsOrderMode = 1;
+                    ScrollGlossaryWordsListViewToTop();
+                    _ = MainViewModel.Instance.GetAllGlossaryWords();
+                }
+
+                if (sender is ToggleMenuFlyoutItem menuItem)
+                {
+                    menuItem.IsChecked = true;
+                }
+            }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
+        }
+
+        /// <summary>
+        /// 切换隐藏单词或者释义
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnClickHideMenuItem(object sender, RoutedEventArgs e)
+        {
+            UpdateHideButtonIcon();
+        }
+
+        /// <summary>
+        /// 根据菜单勾选情况更新隐藏按钮图标
+        /// </summary>
+        private void UpdateHideButtonIcon()
+        {
+            var hidingWord = HideWordToggleMenuItem.IsChecked;
+            var hidingExplain = HideExplainToggleMenuItem.IsChecked;
+            NoHideFontIcon.Visibility = !hidingWord && !hidingExplain ? Visibility.Visible : Visibility.Collapsed;
+            HidingFontIcon.Visibility = (hidingWord || hidingExplain) ? Visibility.Visible : Visibility.Collapsed;
         }
 
         /// <summary>

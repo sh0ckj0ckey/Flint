@@ -11,21 +11,16 @@ namespace Flint3.ViewModels
 {
     public partial class MainViewModel : ObservableObject, IDisposable
     {
-        private HotkeyManager _hotkeyManager = null;
-
-        private ushort _hotkeyHandle;
-
-        private HotkeySettings _activationShortcut;
-
         /// <summary>
         /// 默认快捷键 Alt+Space
         /// </summary>
         private HotkeySettings _defaultActivationShortcut => new(false, false, true, false, 0x20);
 
-        /// <summary>
-        /// 快捷键变更回调
-        /// </summary>
-        public event Action<HotkeySettings/*PreviousHotkey*/, HotkeySettings/*NewHotkey*/> OnActivationShortcutChanged  = null;
+        private HotkeyManager _hotkeyManager = null;
+
+        private ushort _hotkeyHandle;
+
+        private HotkeySettings _activationShortcut;
 
         /// <summary>
         /// 快捷键
@@ -40,7 +35,8 @@ namespace Flint3.ViewModels
                     HotkeySettings newValue = (value == null || !value.IsValid() || value.IsEmpty()) ? _defaultActivationShortcut : value;
                     HotkeySettings previousValue = _activationShortcut?.Clone();
                     SetProperty(ref _activationShortcut, newValue);
-                    this.OnActivationShortcutChanged?.Invoke(previousValue, _activationShortcut);
+
+                    UpdateActivationShortcut(previousValue, _activationShortcut);
                 }
             }
         }
@@ -56,25 +52,30 @@ namespace Flint3.ViewModels
             {
                 RegisterShortcut(this.ActivationShortcut, OnShortcutActivated);
             }
+        }
 
-            this.OnActivationShortcutChanged += async (preSettings, newSettings) =>
+        /// <summary>
+        /// 取消注册旧的快捷键，注册新的快捷键
+        /// </summary>
+        /// <param name="previousHotkey"></param>
+        /// <param name="newHotkey"></param>
+        private async void UpdateActivationShortcut(HotkeySettings previousHotkey, HotkeySettings newHotkey)
+        {
+            if (previousHotkey != null && !previousHotkey.IsEmpty())
             {
-                if (preSettings != null && !preSettings.IsEmpty())
+                if (_hotkeyHandle != 0)
                 {
-                    if (_hotkeyHandle != 0)
-                    {
-                        _hotkeyManager?.UnregisterHotkey(_hotkeyHandle);
-                        _hotkeyHandle = 0;
-                    }
+                    _hotkeyManager?.UnregisterHotkey(_hotkeyHandle);
+                    _hotkeyHandle = 0;
                 }
+            }
 
-                if (newSettings?.IsValid() == true)
-                {
-                    RegisterShortcut(newSettings, OnShortcutActivated);
-                }
+            if (newHotkey?.IsValid() == true)
+            {
+                RegisterShortcut(newHotkey, OnShortcutActivated);
+            }
 
-                await SaveShortcutSettings();
-            };
+            await SaveShortcutSettings();
         }
 
         private void RegisterShortcut(HotkeySettings hotkeySettings, HotkeyCallback action)

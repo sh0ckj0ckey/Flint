@@ -16,6 +16,7 @@ namespace Flint3.ViewModels
 {
     public partial class MainViewModel : ObservableObject
     {
+        // 生词本单词列表的查询统一受其控制，新的查询触发时要先取消旧的未完成的查询
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
         private GlossaryBaseModel _selectedGlossary = null;
@@ -113,10 +114,9 @@ namespace Flint3.ViewModels
             this.SelectedGlossary = selectedGlossary;
             this.SelectedGlossaryWord = null;
             this.GlossaryWordItems.Clear();
+            this.LoadedGlossaryWords = true;
             this.FilterGlossaryWord = "";
             this.FilterGlossaryColor = GlossaryColorsEnum.Transparent;
-            this.GlossaryWordsOrderMode = 0;
-            this.LoadedGlossaryWords = true;
         }
 
         /// <summary>
@@ -218,7 +218,7 @@ namespace Flint3.ViewModels
         /// <summary>
         /// 内置生词本列表
         /// </summary>
-        public ObservableCollection<GlossaryExModel> ExGlossaries { get; private set; } = new ObservableCollection<GlossaryExModel>();
+        public ObservableCollection<GlossaryExModel> ExGlossaries { get; } = new ObservableCollection<GlossaryExModel>();
 
         /// <summary>
         /// 初始化内置生词本
@@ -386,7 +386,7 @@ namespace Flint3.ViewModels
         /// <summary>
         /// 用户生词本列表
         /// </summary>
-        public ObservableCollection<GlossaryMyModel> MyGlossaries { get; private set; } = new ObservableCollection<GlossaryMyModel>();
+        public ObservableCollection<GlossaryMyModel> MyGlossaries { get; } = new ObservableCollection<GlossaryMyModel>();
 
         /// <summary>
         /// 加载我的生词本
