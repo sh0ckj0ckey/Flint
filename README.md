@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="Flint3/Assets/Logos/flint_logo.png" alt="logo" height="128" width="128"/>
+    <img src="Flint3/Assets/Logos/flint_logo.png" alt="logo" height="96" width="96"/>
 </p>
 
 <h3 align="center">燧石，随地查单词</h3>
