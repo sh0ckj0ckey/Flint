@@ -48,12 +48,12 @@
         <Border Grid.Row="1" Height="1" Background="{ThemeResource ControlElevationBorderBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Top"/>
 
         <!--占位图片-->
-        <Grid Grid.Row="2" Visibility="{x:Bind ViewModel.LiteSearchResultWordItems.Count,Mode=OneWay,Converter={StaticResource Int2Vis},ConverterParameter=-}">
-            <Image Source="/Assets/Logos/flint_logo.png" Height="72" Width="72" Opacity="0.2"/>
+        <Grid Grid.Row="2" Visibility="{x:Bind ViewModel.LiteSearchResultWordItems.Count,Mode=OneWay,Converter={StaticResource Int2Vis},ConverterParameter=-}" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Image Source="/Assets/Logos/flint_logo.png" Height="72" Width="72" Opacity="0.2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Grid>
 
         <!--搜索结果列表-->
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Top">
             <ListView ItemsSource="{x:Bind ViewModel.LiteSearchResultWordItems,Mode=OneWay}" HorizontalContentAlignment="Stretch" Margin="0,4,0,0" Padding="0,8,2,8" HorizontalAlignment="Stretch" SelectionMode="None" IsItemClickEnabled="False" IsSwipeEnabled="False">
                 <ListView.ItemContainerTransitions>
                     <TransitionCollection />

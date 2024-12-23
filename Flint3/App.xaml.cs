@@ -193,6 +193,13 @@ namespace Flint3
             FlintMainWindow.Restore();
             FlintMainWindow.BringToFront();
             FlintMainWindow.Activate();
+
+            if (MainViewModel.Instance.AppSettings.AutoClearLastInput)
+            {
+                MainViewModel.Instance.SearchResultWordItems.Clear();
+                FlintMainWindow.TryClearSearchTextBox();
+                FlintMainWindow.CenterOnScreen();
+            }
         }
 
         /// <summary>
@@ -252,6 +259,12 @@ namespace Flint3
             FlintLiteWindow.Restore();
             FlintLiteWindow.BringToFront();
             FlintLiteWindow.Activate();
+
+            if (MainViewModel.Instance.AppSettings.AutoClearLastInput)
+            {
+                MainViewModel.Instance.LiteSearchResultWordItems.Clear();
+                FlintLiteWindow.TryClearSearchTextBox();
+            }
         }
 
     }

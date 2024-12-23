@@ -45,8 +45,8 @@
         </Grid>
 
         <!--占位图片-->
-        <Grid Grid.Row="2" Visibility="{x:Bind ViewModel.SearchResultWordItems.Count,Mode=OneWay,Converter={StaticResource Int2Vis},ConverterParameter=-}">
-            <Image Source="/Assets/Logos/flint_logo.png" Height="72" Width="72" Opacity="0.2">
+        <Grid Grid.Row="2" Visibility="{x:Bind ViewModel.SearchResultWordItems.Count,Mode=OneWay,Converter={StaticResource Int2Vis},ConverterParameter=-}" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Image Source="/Assets/Logos/flint_logo.png" Height="72" Width="72" Opacity="0.2" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <animations:Implicit.ShowAnimations>
                     <animations:TranslationAnimation From="0,32,0" To="0,0,0" EasingMode="EaseOut" Duration="0:0:0.8"/>
                     <animations:OpacityAnimation To="0.2" Duration="0:0:0.4"/>
@@ -58,7 +58,7 @@
         </Grid>
 
         <!--搜索结果列表-->
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Top">
             <ListView ItemsSource="{x:Bind ViewModel.SearchResultWordItems,Mode=OneWay}" HorizontalContentAlignment="Stretch" Margin="0,4,0,0" Padding="0,8,2,8" HorizontalAlignment="Stretch" SelectionMode="None" IsItemClickEnabled="False" IsSwipeEnabled="False">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="mdl:StarDictWordItem">
