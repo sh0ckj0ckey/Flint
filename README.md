@@ -15,6 +15,12 @@
 	<img src="https://get.microsoft.com/images/zh-cn%20dark.svg" width="200"/>
 </a>
 
+#### TODO
+
+- 修复首次唤起简洁搜索框时焦点并不在搜索框中，并且有概率显示出空白结果的区域；
+- 生词本各个页面底部栏增加主页按钮，点击后逐页向上返回至搜词主页；
+- 增加联网搜词的功能，藉此中英互搜就能够得到支持；
+
 #### 一睹芳容
 ![screenshot.png](README/screenshot.png)
 
