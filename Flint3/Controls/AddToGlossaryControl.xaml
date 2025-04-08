@@ -41,7 +41,7 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <ComboBox x:Name="GlossaryComboBox" PlaceholderText="选择生词本" HorizontalAlignment="Stretch" ItemsSource="{x:Bind AvailableGlossaries,Mode=OneWay}" SelectedValuePath="GlossaryTitle" VerticalAlignment="Center"
-                      IsEnabled="{x:Bind UpdatingAvailableGlossaries,Mode=OneWay,Converter={StaticResource BoolReverse}}">
+                      IsEnabled="{x:Bind UpdatingAvailableGlossaries,Mode=OneWay,Converter={StaticResource BoolReverse}}" SelectionChanged="GlossaryComboBox_SelectionChanged">
                 <ComboBox.ItemTemplate>
                     <DataTemplate x:DataType="models:GlossaryMyModel">
                         <TextBlock MaxWidth="168" Text="{x:Bind GlossaryTitle,Mode=OneWay}" HorizontalAlignment="Left" TextTrimming="CharacterEllipsis"/>

@@ -15,6 +15,11 @@ namespace Flint3.Controls
     [INotifyPropertyChanged]
     public sealed partial class AddToGlossaryControl : UserControl
     {
+        /// <summary>
+        /// 上次选中的生词本 ID
+        /// </summary>
+        private static int _lastTimeSelectedGlossaryId = -1;
+
         private Action _hideAddingFlyout = null;
 
         private StarDictWordItem _addingWordItem = null;
@@ -68,14 +73,27 @@ namespace Flint3.Controls
                 this.AddingWordItem = item;
                 this.AddingWordColor = GlossaryColorsEnum.Transparent;
                 WordColorScrollViewer?.ChangeView(0, 0, null, true);
-                GlossaryComboBox.SelectedIndex = -1;
                 WordDescTextBox.Text = "";
 
                 this.AvailableGlossaries.Clear();
                 this.UpdatingAvailableGlossaries = true;
                 var glossaries = await MainViewModel.Instance.GetGlossariesWithoutThisWord(this.AddingWordItem);
-                glossaries.ForEach(this.AvailableGlossaries.Add);
+
+                int selectIndex = 0;
+                foreach (var glossary in glossaries)
+                {
+                    this.AvailableGlossaries.Add(glossary);
+
+                    if (_lastTimeSelectedGlossaryId >= 0 && glossary.Id == _lastTimeSelectedGlossaryId)
+                    {
+                        selectIndex = this.AvailableGlossaries.Count - 1;
+                    }
+                }
+
                 this.UpdatingAvailableGlossaries = false;
+
+                GlossaryComboBox.SelectedIndex = selectIndex;
+
             }
             catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         }
@@ -146,6 +164,19 @@ namespace Flint3.Controls
                 _hideAddingFlyout?.Invoke();
             }
             catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
+        }
+
+        /// <summary>
+        /// 记录上次选中的生词本 ID
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void GlossaryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is ComboBox comboBox && comboBox.SelectedItem is GlossaryMyModel glossary)
+            {
+                _lastTimeSelectedGlossaryId = glossary.Id;
+            }
         }
     }
 }
