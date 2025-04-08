@@ -262,6 +262,7 @@ namespace Flint3.Views
                     newOpacity = 0;
                 }
 
+                SettingsPageHeaderTitleGrid.Opacity = newOpacity;
                 SettingsPageHeaderSeperatorLineBorder.Opacity = newOpacity;
                 // LogoGrid.Opacity = 1 - newOpacity;
             }

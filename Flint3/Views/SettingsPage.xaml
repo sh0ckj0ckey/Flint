@@ -25,10 +25,17 @@
 
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="38"/>
+            <RowDefinition Height="4"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <ScrollViewer Grid.Row="0" ViewChanged="ScrollViewer_ViewChanged" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="0,0,0,0" Margin="0,32,0,0">
+        <Grid x:Name="SettingsPageHeaderTitleGrid" Grid.Row="0" Opacity="0" Background="Transparent">
+            <TextBlock Text="Settings" FontFamily="Times New Roman" Margin="20,0,0,4" FontWeight="Bold" FontSize="20" VerticalAlignment="Bottom" Opacity="0.9"/>
+        </Grid>
+        <Border x:Name="SettingsPageHeaderSeperatorLineBorder" Grid.Row="1" Height="1" Opacity="0" Background="{ThemeResource ControlElevationBorderBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"/>
+
+        <ScrollViewer Grid.Row="2" ViewChanged="ScrollViewer_ViewChanged" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Top">
 
                 <!--标题Logo-->
@@ -434,13 +441,12 @@
                     </StackPanel>
                 </labs:SettingsCard>
 
-                <TextBlock Text="©2024 NoMewing." FontSize="12" FontFamily="Consolas" FontWeight="Light" Opacity="0.5" Margin="20,8,0,8"/>
+                <TextBlock Text="©2025 NoMewing." FontSize="12" FontFamily="Consolas" FontWeight="Light" Opacity="0.5" Margin="20,8,0,8"/>
             </StackPanel>
         </ScrollViewer>
-        <Border x:Name="SettingsPageHeaderSeperatorLineBorder" Height="1" Opacity="0" Margin="0,32,0,0" Background="{ThemeResource ControlElevationBorderBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Top"/>
-
+        
         <!--工具栏-->
-        <Grid Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Grid Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>

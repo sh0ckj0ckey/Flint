@@ -35,10 +35,10 @@
                      Style="{ThemeResource LiteTextBoxStyle}" PlaceholderText="开始键入..." Padding="48,12,68,-12" FontSize="22" Height="56" FontWeight="Medium"
                      HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"/>
             <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE721;" FontSize="20" Opacity="0.7" Margin="18,0,0,0" IsHitTestVisible="False" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <Button Click="OnClickShowMainWindow" HorizontalAlignment="Right" VerticalAlignment="Center" Height="48" Width="48" Margin="0,0,4,0" Padding="0" Background="Transparent" BorderThickness="0">
-                <Image Height="28" Width="28">
+            <Button Click="OnClickShowMainWindow" HorizontalAlignment="Right" VerticalAlignment="Center" Height="40" Width="40" Margin="0,0,8,0" Padding="0" Background="Transparent" BorderBrush="Transparent">
+                <Image Height="24" Width="24">
                     <Image.Source>
-                        <BitmapImage UriSource="ms-appx:///Assets/Logos/flint_logo.png" DecodePixelHeight="56" DecodePixelType="Logical"/>
+                        <BitmapImage UriSource="ms-appx:///Assets/Logos/flint_logo.png" DecodePixelHeight="48" DecodePixelType="Logical"/>
                     </Image.Source>
                 </Image>
             </Button>

@@ -51,7 +51,13 @@ namespace Flint3
 
             this.Width = MainViewModel.Instance.AppSettings.MainWindowWidth;
             this.Height = MainViewModel.Instance.AppSettings.MainWindowHeight;
-            // this.CenterOnScreen();
+
+            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+            if (localSettings.Values["firstTimeRun"] == null)
+            {
+                localSettings.Values["firstTimeRun"] = true;
+                this.CenterOnScreen();
+            }
         }
 
         /// <summary>
