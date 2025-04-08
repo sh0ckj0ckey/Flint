@@ -21,6 +21,8 @@ namespace Flint3
     {
         private UISettings _uiSettings = null;
 
+        private DispatcherTimer _sizeChangedTimer = null;
+
         public MainWindow()
         {
             this.InitializeComponent();
@@ -47,15 +49,9 @@ namespace Flint3
             // 监听系统主题变化
             ListenThemeColorChange();
 
-            // 首次启动设置默认窗口尺寸
-            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-            if (localSettings.Values["firstRun"] == null)
-            {
-                localSettings.Values["firstRun"] = true;
-                this.Height = 386;
-                this.Width = 580;
-                this.CenterOnScreen();
-            }
+            this.Width = MainViewModel.Instance.AppSettings.MainWindowWidth;
+            this.Height = MainViewModel.Instance.AppSettings.MainWindowHeight;
+            // this.CenterOnScreen();
         }
 
         /// <summary>
@@ -120,6 +116,35 @@ namespace Flint3
             MainFrame.KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.XButton1, null, OnGoBackKeyboardAcceleratorInvoked));
             MainFrame.KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.Escape, null, OnHideKeyboardAcceleratorInvoked));
             MainFrame.KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.Tab, null, OnSearchKeyboardAcceleratorInvoked));
+        }
+
+        /// <summary>
+        /// 窗口尺寸变化时，延迟500ms存储尺寸，便于下次启动时恢复到相同的尺寸
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        private void OnMainWindowSizeChanged(object sender, WindowSizeChangedEventArgs args)
+        {
+            if (this.WindowState != WindowState.Normal || !this.Visible)
+            {
+                return;
+            }
+
+            if (_sizeChangedTimer is null)
+            {
+                _sizeChangedTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(500) };
+                _sizeChangedTimer.Tick += (_, _) =>
+                {
+                    _sizeChangedTimer.Stop();
+
+                    MainViewModel.Instance.AppSettings.MainWindowWidth = this.Width;
+                    MainViewModel.Instance.AppSettings.MainWindowHeight = this.Height;
+                    System.Diagnostics.Debug.WriteLine($"Size setted to {MainViewModel.Instance.AppSettings.MainWindowWidth} x {MainViewModel.Instance.AppSettings.MainWindowHeight}");
+                };
+            }
+
+            _sizeChangedTimer.Stop();
+            _sizeChangedTimer.Start();
         }
 
         /// <summary>
@@ -258,5 +283,6 @@ namespace Flint3
         }
 
         #endregion
+
     }
 }

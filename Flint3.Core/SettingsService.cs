@@ -6,6 +6,9 @@ namespace Flint3.Core
 {
     public class SettingsService : ObservableObject
     {
+        private const string FLINT_MAINWINDOW_WIDTH = "FlintMainWindowWidth";
+        private const string FLINT_MAINWINDOW_HEIGHT = "FlintMainWindowHeight";
+
         private const string SETTING_NAME_APPEARANCEINDEX = "AppearanceIndex";
         private const string SETTING_NAME_BACKDROPINDEX = "BackdropIndex";
         private const string SETTING_NAME_ENABLEENGDEF = "EnableEngDefinition";
@@ -16,6 +19,10 @@ namespace Flint3.Core
         private const string SETTING_NAME_SEARCHBOXSTYLE = "SearchBoxStyle";
 
         private readonly ApplicationDataContainer _localSettings = ApplicationData.Current.LocalSettings;
+
+        private double _mainWindowWidth = -1;
+
+        private double _mainWindowHeight = -1;
 
         private int _appearanceIndex = -1;
 
@@ -36,6 +43,70 @@ namespace Flint3.Core
         public event Action<int> OnAppearanceSettingChanged = null;
 
         public event Action<int> OnBackdropSettingChanged = null;
+
+        /// <summary>
+        /// 主窗口的宽度
+        /// </summary>
+        public double MainWindowWidth
+        {
+            get
+            {
+                try
+                {
+                    if (_mainWindowWidth < 0)
+                    {
+                        if (double.TryParse(_localSettings.Values[FLINT_MAINWINDOW_WIDTH]?.ToString(), out double width))
+                        {
+                            _mainWindowWidth = width;
+                        }
+                        else
+                        {
+                            _mainWindowWidth = 580;
+                        }
+                    }
+                }
+                catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
+                if (_mainWindowWidth <= 0) _mainWindowWidth = 580;
+                return _mainWindowWidth <= 0 ? 580 : _mainWindowWidth;
+            }
+            set
+            {
+                SetProperty(ref _mainWindowWidth, value);
+                ApplicationData.Current.LocalSettings.Values[FLINT_MAINWINDOW_WIDTH] = _mainWindowWidth;
+            }
+        }
+
+        /// <summary>
+        /// 主窗口的高度
+        /// </summary>
+        public double MainWindowHeight
+        {
+            get
+            {
+                try
+                {
+                    if (_mainWindowHeight < 0)
+                    {
+                        if (double.TryParse(_localSettings.Values[FLINT_MAINWINDOW_HEIGHT]?.ToString(), out double height))
+                        {
+                            _mainWindowHeight = height;
+                        }
+                        else
+                        {
+                            _mainWindowHeight = 386;
+                        }
+                    }
+                }
+                catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
+                if (_mainWindowHeight <= 0) _mainWindowHeight = 580;
+                return _mainWindowHeight <= 0 ? 580 : _mainWindowHeight;
+            }
+            set
+            {
+                SetProperty(ref _mainWindowHeight, value);
+                ApplicationData.Current.LocalSettings.Values[FLINT_MAINWINDOW_HEIGHT] = _mainWindowHeight;
+            }
+        }
 
         /// <summary>
         /// 设置的应用程序的主题 0-System 1-Dark 2-Light

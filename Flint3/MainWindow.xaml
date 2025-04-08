@@ -8,7 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:windowex="using:WinUIEx"
     Title="Flint" MinWidth="580" MinHeight="386" mc:Ignorable="d"
-    Activated="OnMainWindowActivated">
+    Activated="OnMainWindowActivated" SizeChanged="OnMainWindowSizeChanged">
 
     <windowex:WindowEx.Content>
         <Grid>
