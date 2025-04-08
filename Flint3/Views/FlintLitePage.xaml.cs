@@ -25,6 +25,15 @@ namespace Flint3.Views
         {
             ViewModel = MainViewModel.Instance;
             this.InitializeComponent();
+
+            //ViewModel.LiteSearchResultWordItems.CollectionChanged += (_, e) =>
+            //{
+            //    try
+            //    {
+            //        App.FlintLiteWindow.Height = (e.NewItems != null && e.NewItems.Count > 0) ? 386 : 64;
+            //    }
+            //    catch { }
+            //};
         }
 
         /// <summary>

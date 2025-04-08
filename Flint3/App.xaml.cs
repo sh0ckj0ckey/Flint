@@ -219,7 +219,7 @@ namespace Flint3
 
             // 更新窗口位置
             {
-                bool searchEmpty = MainViewModel.Instance.LiteSearchResultWordItems.Count <= 0;
+                bool searchEmpty = string.IsNullOrWhiteSpace(FlintLiteWindow.TryGetSearchTextBoxContent());
 
                 // 获取鼠标当前所在的显示器
                 PInvoke.GetCursorPos(out Point pt);

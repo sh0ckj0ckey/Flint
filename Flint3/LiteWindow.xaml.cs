@@ -58,7 +58,7 @@ namespace Flint3
         /// </summary>
         public void TryFocusOnSearchTextBox()
         {
-            var searchTextBox = FlintLitePage.SearchTextBox;
+            var searchTextBox = FlintLitePage?.SearchTextBox;
             searchTextBox?.Focus(FocusState.Keyboard);
             if (!string.IsNullOrWhiteSpace(searchTextBox?.Text))
             {
@@ -75,6 +75,15 @@ namespace Flint3
             {
                 FlintLitePage.SearchTextBox.Text = "";
             }
+        }
+
+        /// <summary>
+        /// 尝试获取搜索框的内容
+        /// </summary>
+        /// <returns></returns>
+        public string TryGetSearchTextBoxContent()
+        {
+            return FlintLitePage?.SearchTextBox?.Text ?? string.Empty;
         }
 
         /// <summary>

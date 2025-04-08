@@ -22,7 +22,7 @@
         <cvt:IsExpanded2OpacityConverter x:Key="Bool2Opacity"/>
     </Page.Resources>
 
-    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Top">
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -35,7 +35,7 @@
                      Style="{ThemeResource LiteTextBoxStyle}" PlaceholderText="开始键入..." Padding="48,12,68,-12" FontSize="22" Height="56" FontWeight="Medium"
                      HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"/>
             <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE721;" FontSize="20" Opacity="0.7" Margin="18,0,0,0" IsHitTestVisible="False" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <Button Click="OnClickShowMainWindow" HorizontalAlignment="Right" VerticalAlignment="Center" Height="56" Width="64" Padding="0" CornerRadius="0" Background="Transparent" BorderThickness="0">
+            <Button Click="OnClickShowMainWindow" HorizontalAlignment="Right" VerticalAlignment="Center" Height="48" Width="48" Margin="0,0,4,0" Padding="0" Background="Transparent" BorderThickness="0">
                 <Image Height="28" Width="28">
                     <Image.Source>
                         <BitmapImage UriSource="ms-appx:///Assets/Logos/flint_logo.png" DecodePixelHeight="56" DecodePixelType="Logical"/>
