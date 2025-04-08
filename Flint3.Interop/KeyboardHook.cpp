@@ -33,7 +33,7 @@ void KeyboardHook::Start()
 	hookHandle = SetWindowsHookEx(WH_KEYBOARD_LL, (HOOKPROC)(void*)Marshal::GetFunctionPointerForDelegate(hookProc), 0, 0);
 	if (hookHandle == nullptr)
 	{
-		DWORD errorCode = GetLastError();
+		//DWORD errorCode = GetLastError();
 		//show_last_error_message(L"SetWindowsHookEx", errorCode, L"Flint3 - Interop");
 	}
 }
