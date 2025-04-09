@@ -36,6 +36,11 @@ namespace Flint3.Views
             //};
         }
 
+        private void FlintLiteViewPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            App.FlintLiteWindow.Height = string.IsNullOrWhiteSpace(SearchTextBox?.Text) ? 64 : 386;
+        }
+
         /// <summary>
         /// 文本框有内容时窗口变大，无内容时只显示搜索框
         /// </summary>

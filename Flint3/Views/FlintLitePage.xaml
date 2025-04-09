@@ -11,7 +11,7 @@
     xmlns:cvt="using:Flint3.Converters" 
     xmlns:mdl="using:Flint3.Data.Models" 
     xmlns:controls="using:Flint3.Controls"
-    Background="Transparent" NavigationCacheMode="Required">
+    Background="Transparent" NavigationCacheMode="Required" Loaded="FlintLiteViewPage_Loaded">
 
     <Page.Resources>
         <cvt:Int2VisibilityConverter x:Key="Int2Vis"/>
