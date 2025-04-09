@@ -104,6 +104,18 @@ namespace Flint3.Views
                 this.Frame.GoBack();
             }
         }
+        private void OnClickBackHomeButton(object sender, RoutedEventArgs e)
+        {
+            if (this.Frame.CanGoBack)
+            {
+                this.Frame.GoBack();
+            }
+
+            if (this.Frame.CanGoBack)
+            {
+                this.Frame.GoBack();
+            }
+        }
 
         /// <summary>
         /// ËÑË÷´Ê»ã

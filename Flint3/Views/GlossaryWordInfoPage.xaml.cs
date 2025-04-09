@@ -30,6 +30,24 @@ namespace Flint3.Views
             }
         }
 
+        private void OnClickBackHomeButton(object sender, RoutedEventArgs e)
+        {
+            if (this.Frame.CanGoBack)
+            {
+                this.Frame.GoBack();
+            }
+
+            if (this.Frame.CanGoBack)
+            {
+                this.Frame.GoBack();
+            }
+
+            if (this.Frame.CanGoBack)
+            {
+                this.Frame.GoBack();
+            }
+        }
+
         private void OnClickDeleteButton(object sender, RoutedEventArgs e)
         {
             try

@@ -247,8 +247,8 @@
         <Grid Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
@@ -261,10 +261,10 @@
                 <ToolTipService.ToolTip>
                     <ToolTip>
                         <TextBlock>
-                            <Run Text="back" FontWeight="Bold"/>
-                            <Run Text="/bæk/"/>
-                            <Run Text="adverb" FontStyle="Italic" FontWeight="Medium"/>
-                            <Run Text="返回"/>
+                           <Run Text="back" FontWeight="Bold"/>
+                           <Run Text="/bæk/"/>
+                           <Run Text="adverb" FontStyle="Italic" FontWeight="Medium"/>
+                           <Run Text="返回"/>
                         </TextBlock>
                     </ToolTip>
                 </ToolTipService.ToolTip>
@@ -276,6 +276,21 @@
                         <muxc:SymbolIconSource Symbol="Back"/>
                     </muxc:AnimatedIcon.FallbackIconSource>
                 </muxc:AnimatedIcon>
+            </Button>
+            
+            <!--首页-->
+            <Button Grid.Column="1" Margin="4,8,0,8" Background="Transparent" BorderBrush="Transparent" VerticalAlignment="Center" Click="OnClickBackHomeButton">
+                <ToolTipService.ToolTip>
+                    <ToolTip>
+                        <TextBlock>
+                           <Run Text="home page" FontWeight="Bold"/>
+                           <Run Text="/ˈhəʊm ˌpeɪdʒ/"/>
+                           <Run Text="noun" FontStyle="Italic" FontWeight="Medium"/>
+                           <Run Text="首页"/>
+                        </TextBlock>
+                    </ToolTip>
+                </ToolTipService.ToolTip>
+                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE80F;" FontSize="16" Height="22" Width="22" Opacity="0.8"/>
             </Button>
 
             <!--隐藏英文单词-->
