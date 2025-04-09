@@ -39,6 +39,8 @@ namespace Flint3.Views
         private void FlintLiteViewPage_Loaded(object sender, RoutedEventArgs e)
         {
             App.FlintLiteWindow.Height = string.IsNullOrWhiteSpace(SearchTextBox?.Text) ? 64 : 386;
+            App.FlintLiteWindow.Activate();
+            App.FlintLiteWindow.TryFocusOnSearchTextBox();
         }
 
         /// <summary>
