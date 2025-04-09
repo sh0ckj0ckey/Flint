@@ -66,10 +66,10 @@
                 <ToolTipService.ToolTip>
                     <ToolTip>
                         <TextBlock>
-                            <Run Text="filter" FontWeight="Bold"/>
-                            <Run Text="/ˈfɪl.tər/"/>
-                            <Run Text="verb" FontStyle="Italic" FontWeight="Medium"/>
-                            <Run Text="过滤"/>
+                            <Run Text="color" FontWeight="Bold"/>
+                            <Run Text="/ˈkʌl.ər/"/>
+                            <Run Text="noun" FontStyle="Italic" FontWeight="Medium"/>
+                            <Run Text="颜色"/>
                         </TextBlock>
                     </ToolTip>
                 </ToolTipService.ToolTip>
@@ -92,13 +92,13 @@
                                 </Button>
                                 <Button Height="34" Width="34" Padding="0" CornerRadius="17" Tag="2" Click="OnClickFilterColor">
                                     <Border Height="22" Width="22" CornerRadius="17" Background="Tomato" ToolTipService.ToolTip="橙色">
-                                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"
                                                   Visibility="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=Orange}"/>
                                     </Border>
                                 </Button>
                                 <Button Height="34" Width="34" Padding="0" CornerRadius="17" Tag="3" Click="OnClickFilterColor">
                                     <Border Height="22" Width="22" CornerRadius="17" Background="Gold" ToolTipService.ToolTip="黄色">
-                                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"
                                                   Visibility="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=Yellow}"/>
                                     </Border>
                                 </Button>
@@ -118,13 +118,13 @@
                                 </Button>
                                 <Button Height="34" Width="34" Padding="0" CornerRadius="17" Tag="6" Click="OnClickFilterColor">
                                     <Border Height="22" Width="22" CornerRadius="17" Background="Orchid" ToolTipService.ToolTip="紫色">
-                                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"
                                                   Visibility="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=Purple}"/>
                                     </Border>
                                 </Button>
                                 <Button Height="34" Width="34" Padding="0" CornerRadius="17" Tag="7" Click="OnClickFilterColor">
                                     <Border Height="22" Width="22" CornerRadius="17" Background="DeepPink" ToolTipService.ToolTip="粉色">
-                                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"
                                                   Visibility="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=Pink}"/>
                                     </Border>
                                 </Button>
@@ -149,7 +149,7 @@
                             Visibility="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=Transparent}"/>
                     <Border Height="10" Width="10" CornerRadius="6" Background="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Enum2Color}}" VerticalAlignment="Center"
                             Visibility="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource UnEql2Vis},ConverterParameter=Transparent}"/>
-                    <TextBlock Text="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Enum2Name}}" FontSize="12" Height="18" FontWeight="Light" Opacity="0.9" Margin="4,0,0,0" VerticalAlignment="Center"/>
+                    <TextBlock Text="{x:Bind ViewModel.FilterGlossaryColor,Mode=OneWay,Converter={StaticResource Enum2Name}}" FontSize="14" Opacity="0.9" Margin="6,0,0,0" VerticalAlignment="Center"/>
 
                     <AnimatedIcon Height="14" Width="14" Margin="4,0,0,0" Opacity="0.7">
                         <AnimatedIcon.Source>
@@ -164,8 +164,19 @@
 
             <!--查找生词-->
             <Grid Grid.Column="4" VerticalAlignment="Center" Margin="0,0,1,0">
-                <TextBox x:Name="FilterWordTextBox" Width="196" PlaceholderText="查找生词" FontSize="12" FontWeight="Medium" Padding="26,8,4,0" Height="34" MinHeight="0" BorderBrush="Transparent" BorderThickness="0" VerticalAlignment="Center"/>
-                <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE094;" Opacity="0.7" FontSize="12" Margin="8,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" IsHitTestVisible="False"/>
+                <TextBox x:Name="FilterWordTextBox" Width="196" PlaceholderText="查找生词" FontSize="14" FontWeight="Medium" Padding="30,8,4,2" Height="34" MinHeight="0" BorderBrush="Transparent" BorderThickness="0" VerticalAlignment="Center">
+                    <ToolTipService.ToolTip>
+                        <ToolTip>
+                            <TextBlock>
+                                <Run Text="filter" FontWeight="Bold"/>
+                                <Run Text="/ˈfɪl.tər/"/>
+                                <Run Text="verb" FontStyle="Italic" FontWeight="Medium"/>
+                                <Run Text="过滤"/>
+                            </TextBlock>
+                        </ToolTip> 
+                    </ToolTipService.ToolTip>
+                </TextBox>
+                <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE094;" Opacity="0.7" FontSize="14" Margin="10,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" IsHitTestVisible="False"/>
             </Grid>
         </Grid>
 
