@@ -9,6 +9,8 @@
                     
                     <Color x:Key="SEARCHBOX_NORMAL_BD">#16FFFFFF</Color>
                     <Color x:Key="SEARCHBOX_HOVER_BD">#20FFFFFF</Color>
+                    
+                    <Color x:Key="SEARCHBOX_LITE_HOVER_BK">#08FFFFFF</Color>
 
                     <Color x:Key="SETTING_ITEM_BK">#0BFFFFFF</Color>
                     <SolidColorBrush x:Key="SETTING_KEY_BK" Color="{ThemeResource SystemAccentColorLight2}"/>
@@ -30,6 +32,8 @@
                     <Color x:Key="SEARCHBOX_NORMAL_BD">#10000000</Color>
                     <Color x:Key="SEARCHBOX_HOVER_BD">#20000000</Color>
 
+                    <Color x:Key="SEARCHBOX_LITE_HOVER_BK">#08000000</Color>
+                    
                     <Color x:Key="SETTING_ITEM_BK">#08000000</Color>
                     <SolidColorBrush x:Key="SETTING_KEY_BK" Color="{ThemeResource SystemAccentColorDark1}"/>
 
