@@ -36,11 +36,15 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <TextBlock Text="Glossary" FontFamily="Times New Roman" Margin="20,0,0,4" FontWeight="Bold" FontSize="20" VerticalAlignment="Bottom" Opacity="0.7"/>
             <FontIcon Grid.Column="1" FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE00F;" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="14" FontWeight="Bold" Opacity="0.5" Margin="4,0,4,8"/>
-            <TextBlock Grid.Column="2" Margin="0,0,120,5" Text="{x:Bind ViewModel.SelectedGlossary.GlossaryTitle,Mode=OneWay}" FontSize="16" FontWeight="Bold" Opacity="0.9" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+            <TextBlock Grid.Column="2" Margin="0,0,0,5" Text="{x:Bind ViewModel.SelectedGlossary.GlossaryTitle,Mode=OneWay}" FontSize="16" FontWeight="Bold" Opacity="0.9" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+            <FontIcon Grid.Column="3" FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE00F;" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="14" FontWeight="Bold" Opacity="0.5" Margin="4,0,4,8"/>
+            <TextBlock Grid.Column="4" Margin="0,0,156,5" Text="{x:Bind ViewModel.SelectedGlossaryWord.Word,Mode=OneWay}" FontSize="16" FontWeight="Bold" Opacity="0.9" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
         </Grid>
 
         <!--单词详情-->
@@ -108,13 +112,13 @@
                                             </Button>
                                             <Button Height="34" Width="34" Padding="0" CornerRadius="17" Tag="2" Click="OnClickSetWordColor">
                                                 <Border Height="22" Width="22" CornerRadius="17" Background="Tomato" ToolTipService.ToolTip="橙色">
-                                                    <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                    <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"
                                                               Visibility="{x:Bind ViewModel.SelectedGlossaryWord.Color,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=Orange}"/>
                                                 </Border>
                                             </Button>
                                             <Button Height="34" Width="34" Padding="0" CornerRadius="17" Tag="3" Click="OnClickSetWordColor">
                                                 <Border Height="22" Width="22" CornerRadius="17" Background="Gold" ToolTipService.ToolTip="黄色">
-                                                    <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                    <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"
                                                               Visibility="{x:Bind ViewModel.SelectedGlossaryWord.Color,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=Yellow}"/>
                                                 </Border>
                                             </Button>
@@ -134,13 +138,13 @@
                                             </Button>
                                             <Button Height="34" Width="34" Padding="0" CornerRadius="17" Tag="6" Click="OnClickSetWordColor">
                                                 <Border Height="22" Width="22" CornerRadius="17" Background="Orchid" ToolTipService.ToolTip="紫色">
-                                                    <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                    <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"
                                                               Visibility="{x:Bind ViewModel.SelectedGlossaryWord.Color,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=Purple}"/>
                                                 </Border>
                                             </Button>
                                             <Button Height="34" Width="34" Padding="0" CornerRadius="17" Tag="7" Click="OnClickSetWordColor">
                                                 <Border Height="22" Width="22" CornerRadius="17" Background="DeepPink" ToolTipService.ToolTip="粉色">
-                                                    <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                    <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE001;" FontSize="12" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"
                                                               Visibility="{x:Bind ViewModel.SelectedGlossaryWord.Color,Mode=OneWay,Converter={StaticResource Eql2Vis},ConverterParameter=Pink}"/>
                                                 </Border>
                                             </Button>
