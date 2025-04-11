@@ -123,7 +123,7 @@
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE82D;"/>
                     </labs:SettingsExpander.HeaderIcon>
                     <labs:SettingsExpander.Header>
-                        <TextBlock Text="生词本功能"/>
+                        <TextBlock Text="生词本"/>
                     </labs:SettingsExpander.Header>
                     <labs:SettingsExpander.Description>
                         <Grid>
@@ -259,7 +259,7 @@
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
                                 <RadioButton Grid.Column="0" Style="{StaticResource SettingsRadioButtonStyle}" HorizontalAlignment="Center" Padding="0" Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                                             IsChecked="{x:Bind _viewModel.AppSettings.SearchBoxStyle,Mode=OneWay,Converter={StaticResource Eql2Bool},ConverterParameter=0}" Tag="0" Checked="OnSearchBoxStyleChecked">
+                                             IsChecked="{x:Bind _viewModel.AppSettings.SearchBoxStyle,Mode=OneWay,Converter={StaticResource Eql2Bool},ConverterParameter=0}" Tag="新颖" Checked="OnSearchBoxStyleChecked">
                                     <RadioButton.Content>
                                         <Grid Height="72" Width="108" CornerRadius="8" BorderBrush="Black" BorderThickness="4" Background="{ThemeResource SystemAccentColorDark3}">
                                             <Border Height="28" Width="64" HorizontalAlignment="Right" VerticalAlignment="Center" CornerRadius="4,0,0,4" BorderThickness="0,0,0,2"
@@ -280,7 +280,7 @@
                                     </ToolTipService.ToolTip>
                                 </RadioButton>
                                 <RadioButton Grid.Column="1" Style="{StaticResource SettingsRadioButtonStyle}" HorizontalAlignment="Center" Padding="0" Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                                             IsChecked="{x:Bind _viewModel.AppSettings.SearchBoxStyle,Mode=OneWay,Converter={StaticResource Eql2Bool},ConverterParameter=1}" Tag="1" Checked="OnSearchBoxStyleChecked">
+                                             IsChecked="{x:Bind _viewModel.AppSettings.SearchBoxStyle,Mode=OneWay,Converter={StaticResource Eql2Bool},ConverterParameter=1}" Tag="圆角" Checked="OnSearchBoxStyleChecked">
                                     <RadioButton.Content>
                                         <Grid Height="72" Width="108" CornerRadius="8" BorderBrush="Black" BorderThickness="4" Background="{ThemeResource SystemAccentColorDark3}">
                                             <Border Height="28" Width="64" HorizontalAlignment="Right" VerticalAlignment="Center" CornerRadius="12,0,0,12" BorderThickness="0,0,0,0"
@@ -301,7 +301,7 @@
                                     </ToolTipService.ToolTip>
                                 </RadioButton>
                                 <RadioButton Grid.Column="2" Style="{StaticResource SettingsRadioButtonStyle}" HorizontalAlignment="Center" Padding="0" Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                                             IsChecked="{x:Bind _viewModel.AppSettings.SearchBoxStyle,Mode=OneWay,Converter={StaticResource Eql2Bool},ConverterParameter=2}" Tag="2" Checked="OnSearchBoxStyleChecked">
+                                             IsChecked="{x:Bind _viewModel.AppSettings.SearchBoxStyle,Mode=OneWay,Converter={StaticResource Eql2Bool},ConverterParameter=2}" Tag="经典" Checked="OnSearchBoxStyleChecked">
                                     <RadioButton.Content>
                                         <Grid Height="72" Width="108" CornerRadius="8" BorderBrush="Black" BorderThickness="4" Background="{ThemeResource SystemAccentColorDark3}">
                                             <Border Height="28" Width="64" HorizontalAlignment="Right" VerticalAlignment="Center" CornerRadius="2,0,0,2" BorderThickness="1.5,1.5,0,1.5"
@@ -329,117 +329,116 @@
                 <TextBlock Text="关于" Margin="20,12,0,8" FontWeight="Bold" FontSize="14"/>
 
                 <!--关于版本号-->
-                <labs:SettingsCard Margin="16,2,16,0" HorizontalAlignment="Stretch">
-                    <labs:SettingsCard.HeaderIcon>
+                <labs:SettingsExpander Margin="16,2,16,0" HorizontalAlignment="Stretch">
+                    <labs:SettingsExpander.HeaderIcon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE946;"/>
-                    </labs:SettingsCard.HeaderIcon>
-                    <labs:SettingsCard.Header>
+                    </labs:SettingsExpander.HeaderIcon>
+                    <labs:SettingsExpander.Header>
                         <TextBlock x:Name="AppVersionTextBlock"/>
-                    </labs:SettingsCard.Header>
-                    <labs:SettingsCard.Description>
-                        <TextBlock Text="燧石是一款开源应用程序"/>
-                    </labs:SettingsCard.Description>
+                    </labs:SettingsExpander.Header>
+                    <labs:SettingsExpander.Description>
+                        <TextBlock Text="燧石是一款开源的离线英汉词典"/>
+                    </labs:SettingsExpander.Description>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="8">
                         <Button Height="34" Click="OnClickGoToStoreRate" ToolTipService.ToolTip="去应用商店打分评价">
-                            <TextBlock Text="❤ 给个好评" VerticalAlignment="Center" FontSize="13"/>
-                        </Button>
-                        <Button Height="34" Click="OnClickFlintGitHub" ToolTipService.ToolTip="GitHub 存储库">
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <Image Width="20" Height="20" Margin="0,0,0,0" Source="{ThemeResource ABOUT_GITHUB_IMG}"/>
-                                <!--<TextBlock Text="GitHub 存储库" VerticalAlignment="Center" FontSize="13" Margin="8,0,2,0"/>-->
-                            </StackPanel>
+                            <TextBlock Text="❤️ 给个好评" VerticalAlignment="Center" FontSize="13"/>
                         </Button>
                     </StackPanel>
-                </labs:SettingsCard>
+                    <labs:SettingsExpander.Items>
 
-                <!--ECDICT介绍-->
-                <labs:SettingsCard Margin="16,2,16,0" HorizontalAlignment="Stretch">
-                    <labs:SettingsCard.HeaderIcon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE1D3;"/>
-                    </labs:SettingsCard.HeaderIcon>
-                    <labs:SettingsCard.Header>
-                        <TextBlock Text="数据来源"/>
-                    </labs:SettingsCard.Header>
-                    <labs:SettingsCard.Description>
-                        <TextBlock Text="离线词典数据来自 ECDICT"/>
-                    </labs:SettingsCard.Description>
-                    <Button Height="34" Click="OnClickGitHub">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <Image Width="20" Height="20" Margin="0,0,0,0" Source="{ThemeResource ABOUT_GITHUB_IMG}"/>
-                            <TextBlock Text="ECDICT on GitHub" VerticalAlignment="Center" FontSize="13" Margin="8,0,2,0"/>
-                        </StackPanel>
-                    </Button>
-                </labs:SettingsCard>
+                        <!--开源地址-->
+                        <labs:SettingsCard HorizontalAlignment="Stretch">
+                            <labs:SettingsCard.Description>
+                                <TextBlock Text="前往 GitHub 查看源代码"/>
+                            </labs:SettingsCard.Description>
+                            <Button Height="34" Background="Transparent" Click="OnClickFlintGitHub">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Image Width="20" Height="20" Margin="0,0,8,0" Source="{ThemeResource ABOUT_GITHUB_IMG}"/>
+                                    <TextBlock Text="GitHub 存储库" VerticalAlignment="Center" FontSize="13" Margin="0,0,8,0"/>
+                                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8A7;" FontSize="14"/>
+                                </StackPanel>
+                            </Button>
+                        </labs:SettingsCard>
 
-                <!--反馈-->
-                <labs:SettingsCard Margin="16,2,16,0" HorizontalAlignment="Stretch">
-                    <labs:SettingsCard.HeaderIcon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xED15;"/>
-                    </labs:SettingsCard.HeaderIcon>
-                    <labs:SettingsCard.Header>
-                        <TextBlock Text="反馈"/>
-                    </labs:SettingsCard.Header>
-                    <labs:SettingsCard.Description>
-                        <TextBlock Text="如果您遇到问题或有任何建议"/>
-                    </labs:SettingsCard.Description>
-                    <StackPanel Orientation="Horizontal" Spacing="8">
-                        <Button Height="34">
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <Image Width="20" Height="20" Margin="0,0,0,0">
-                                    <Image.Source>
-                                        <BitmapImage UriSource="ms-appx:///Assets/icon_mail.png" DecodePixelHeight="40" DecodePixelType="Logical"/>
-                                    </Image.Source>
-                                </Image>
-                                <TextBlock Text="发送邮件" VerticalAlignment="Center" FontSize="13" Margin="8,0,2,0"/>
+                        <!--ECDICT介绍-->
+                        <labs:SettingsCard HorizontalAlignment="Stretch">
+                            <labs:SettingsCard.Description>
+                                <TextBlock Text="离线词典数据来自 ECDICT"/>
+                            </labs:SettingsCard.Description>
+                            <HyperlinkButton Height="34" Click="OnClickGitHub">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <TextBlock Text="ECDICT on GitHub" VerticalAlignment="Center" FontSize="13" Margin="0,0,8,0"/>
+                                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8A7;" FontSize="14"/>
+                                </StackPanel>
+                            </HyperlinkButton>
+                        </labs:SettingsCard>
+
+                        <!--反馈-->
+                        <labs:SettingsCard HorizontalAlignment="Stretch">
+                            <labs:SettingsCard.Description>
+                                <TextBlock Text="如果您遇到问题或有任何建议"/>
+                            </labs:SettingsCard.Description>
+                            <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,8">
+                                <Button Height="34" Background="Transparent">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <Image Width="20" Height="20" Margin="0,0,0,0">
+                                            <Image.Source>
+                                                <BitmapImage UriSource="ms-appx:///Assets/icon_mail.png" DecodePixelHeight="40" DecodePixelType="Logical"/>
+                                            </Image.Source>
+                                        </Image>
+                                        <TextBlock Text="发送邮件" VerticalAlignment="Center" FontSize="13" Margin="8,0,2,0"/>
+                                    </StackPanel>
+                                    <Button.Flyout>
+                                        <Flyout>
+                                            <HyperlinkButton Content="yaoyiming123@live.com" ToolTipService.ToolTip="点击向我发送邮件" NavigateUri="mailto:yaoyiming123@live.com"/>
+                                        </Flyout>
+                                    </Button.Flyout>
+                                </Button>
+                                <Button Height="34" Background="Transparent">
+                                    <Image Width="20" Height="20" Margin="0,0,0,0">
+                                        <Image.Source>
+                                            <BitmapImage UriSource="ms-appx:///Assets/icon_qq.png" DecodePixelHeight="40" DecodePixelType="Logical"/>
+                                        </Image.Source>
+                                    </Image>
+                                    <Button.Flyout>
+                                        <Flyout Placement="Left">
+                                            <Border Width="218" Height="300" CornerRadius="4">
+                                                <Border.Background>
+                                                    <ImageBrush Stretch="UniformToFill">
+                                                        <ImageBrush.ImageSource>
+                                                            <BitmapImage UriSource="ms-appx:///Assets/img_feedback_qq.jpg" DecodePixelHeight="600" DecodePixelType="Logical"/>
+                                                        </ImageBrush.ImageSource>
+                                                    </ImageBrush>
+                                                </Border.Background>
+                                            </Border>
+                                        </Flyout>
+                                    </Button.Flyout>
+                                </Button>
+                                <Button Height="34" Background="Transparent">
+                                    <Image Width="20" Height="20" Margin="0,0,0,0">
+                                        <Image.Source>
+                                            <BitmapImage UriSource="ms-appx:///Assets/icon_wechat.png" DecodePixelHeight="40" DecodePixelType="Logical"/>
+                                        </Image.Source>
+                                    </Image>
+                                    <Button.Flyout>
+                                        <Flyout Placement="Left">
+                                            <Border Width="225" Height="300" CornerRadius="4">
+                                                <Border.Background>
+                                                    <ImageBrush Stretch="UniformToFill">
+                                                        <ImageBrush.ImageSource>
+                                                            <BitmapImage UriSource="ms-appx:///Assets/img_feedback_wechat.jpg" DecodePixelHeight="600" DecodePixelType="Logical"/>
+                                                        </ImageBrush.ImageSource>
+                                                    </ImageBrush>
+                                                </Border.Background>
+                                            </Border>
+                                        </Flyout>
+                                    </Button.Flyout>
+                                </Button>
                             </StackPanel>
-                            <Button.Flyout>
-                                <Flyout>
-                                    <HyperlinkButton Content="yaoyiming123@live.com" ToolTipService.ToolTip="点击向我发送邮件" NavigateUri="mailto:yaoyiming123@live.com"/>
-                                </Flyout>
-                            </Button.Flyout>
-                        </Button>
-                        <Button Height="34">
-                            <Image Width="20" Height="20" Margin="0,0,0,0">
-                                <Image.Source>
-                                    <BitmapImage UriSource="ms-appx:///Assets/icon_qq.png" DecodePixelHeight="40" DecodePixelType="Logical"/>
-                                </Image.Source>
-                            </Image>
-                            <Button.Flyout>
-                                <Flyout Placement="Left">
-                                    <Border Width="218" Height="300" CornerRadius="4">
-                                        <Border.Background>
-                                            <ImageBrush Stretch="UniformToFill">
-                                                <ImageBrush.ImageSource>
-                                                    <BitmapImage UriSource="ms-appx:///Assets/img_feedback_qq.jpg" DecodePixelHeight="600" DecodePixelType="Logical"/>
-                                                </ImageBrush.ImageSource>
-                                            </ImageBrush>
-                                        </Border.Background>
-                                    </Border>
-                                </Flyout>
-                            </Button.Flyout>
-                        </Button>
-                        <Button Height="34">
-                            <Image Width="20" Height="20" Margin="0,0,0,0">
-                                <Image.Source>
-                                    <BitmapImage UriSource="ms-appx:///Assets/icon_wechat.png" DecodePixelHeight="40" DecodePixelType="Logical"/>
-                                </Image.Source>
-                            </Image>
-                            <Button.Flyout>
-                                <Flyout Placement="Left">
-                                    <Border Width="225" Height="300" CornerRadius="4">
-                                        <Border.Background>
-                                            <ImageBrush Stretch="UniformToFill">
-                                                <ImageBrush.ImageSource>
-                                                    <BitmapImage UriSource="ms-appx:///Assets/img_feedback_wechat.jpg" DecodePixelHeight="600" DecodePixelType="Logical"/>
-                                                </ImageBrush.ImageSource>
-                                            </ImageBrush>
-                                        </Border.Background>
-                                    </Border>
-                                </Flyout>
-                            </Button.Flyout>
-                        </Button>
-                    </StackPanel>
-                </labs:SettingsCard>
+                        </labs:SettingsCard>
+                    </labs:SettingsExpander.Items>
+                </labs:SettingsExpander>
+
 
                 <TextBlock Text="©2025 NoMewing." FontSize="12" FontFamily="Consolas" FontWeight="Light" Opacity="0.5" Margin="20,8,0,8"/>
             </StackPanel>

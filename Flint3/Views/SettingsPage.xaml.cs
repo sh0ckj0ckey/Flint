@@ -183,13 +183,13 @@ namespace Flint3.Views
                     string tag = rb?.Tag?.ToString();
                     switch (tag)
                     {
-                        case "0":
+                        case "新颖":
                             _viewModel.AppSettings.SearchBoxStyle = 0;
                             break;
-                        case "1":
+                        case "圆角":
                             _viewModel.AppSettings.SearchBoxStyle = 1;
                             break;
-                        case "2":
+                        case "经典":
                             _viewModel.AppSettings.SearchBoxStyle = 2;
                             break;
                         default:
