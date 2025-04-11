@@ -49,7 +49,7 @@
 
         <!--占位图片-->
         <Grid Grid.Row="2" Visibility="{x:Bind ViewModel.LiteSearchResultWordItems.Count,Mode=OneWay,Converter={StaticResource Int2Vis},ConverterParameter=-}" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Image Source="/Assets/Logos/flint_logo_gray.png" Height="72" Width="72" Opacity="0.1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Image Source="/Assets/Logos/flint_logo_gray.png" Height="72" Width="72" Opacity="0.07" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Grid>
 
         <!--搜索结果列表-->
