@@ -341,7 +341,7 @@
                     </labs:SettingsExpander.Description>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="8">
                         <Button Height="34" Click="OnClickGoToStoreRate" ToolTipService.ToolTip="去应用商店打分评价">
-                            <TextBlock Text="❤️ 给个好评" VerticalAlignment="Center" FontSize="13"/>
+                            <TextBlock Text="❤️ 打分评价" VerticalAlignment="Center" FontSize="13"/>
                         </Button>
                     </StackPanel>
                     <labs:SettingsExpander.Items>
