@@ -28,7 +28,7 @@ namespace Flint3.Data
                     "title TEXT," +
                     "description TEXT);";
             using SqliteCommand createCategoryTable = new SqliteCommand(categoryTableCommand, _glossaryDb);
-            await createCategoryTable.ExecuteReaderAsync();
+            await createCategoryTable.ExecuteNonQueryAsync();
 
             string glossaryTableCommand =
                 "CREATE TABLE IF NOT EXISTS glossary (" +
@@ -43,7 +43,7 @@ namespace Flint3.Data
                     "description TEXT," +
                     "color INTEGER);";
             using SqliteCommand createGlossaryTable = new SqliteCommand(glossaryTableCommand, _glossaryDb);
-            await createGlossaryTable.ExecuteReaderAsync();
+            await createGlossaryTable.ExecuteNonQueryAsync();
         }
 
         public static void CloseDatabase()
@@ -97,7 +97,7 @@ namespace Flint3.Data
                 using SqliteCommand insertCommand = new SqliteCommand($"INSERT INTO glossaryCategory(title, description) VALUES($title, $desc);", _glossaryDb);
                 insertCommand.Parameters.AddWithValue("$title", title);
                 insertCommand.Parameters.AddWithValue("$desc", desc);
-                using SqliteDataReader query = await insertCommand.ExecuteReaderAsync();
+                await insertCommand.ExecuteNonQueryAsync();
             }
             catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         }
@@ -115,7 +115,7 @@ namespace Flint3.Data
                 updateCommand.Parameters.AddWithValue("$title", title);
                 updateCommand.Parameters.AddWithValue("$desc", desc);
                 updateCommand.Parameters.AddWithValue("$glossaryid", id);
-                using SqliteDataReader query = await updateCommand.ExecuteReaderAsync();
+                await updateCommand.ExecuteNonQueryAsync();
             }
             catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         }
@@ -132,11 +132,11 @@ namespace Flint3.Data
             {
                 using SqliteCommand deleteCommand = new SqliteCommand($"DELETE FROM glossaryCategory WHERE id=$glossaryid;", _glossaryDb);
                 deleteCommand.Parameters.AddWithValue("$glossaryid", id);
-                using SqliteDataReader query = await deleteCommand.ExecuteReaderAsync();
+                await deleteCommand.ExecuteNonQueryAsync();
 
                 using SqliteCommand deleteWordsCommand = new SqliteCommand($"DELETE FROM glossary WHERE glossaryid=$glossaryid;", _glossaryDb);
                 deleteWordsCommand.Parameters.AddWithValue("$glossaryid", id);
-                using SqliteDataReader wordsQuery = await deleteWordsCommand.ExecuteReaderAsync();
+                await deleteWordsCommand.ExecuteNonQueryAsync();
             }
             catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         }
@@ -331,7 +331,7 @@ namespace Flint3.Data
                 insertCommand.Parameters.AddWithValue("$exchange", exchange);
                 insertCommand.Parameters.AddWithValue("$description", description);
                 insertCommand.Parameters.AddWithValue("$color", (int)color);
-                using SqliteDataReader query = await insertCommand.ExecuteReaderAsync();
+                await insertCommand.ExecuteNonQueryAsync();
             }
             catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         }
@@ -351,7 +351,7 @@ namespace Flint3.Data
                 updateCommand.Parameters.AddWithValue("$description", description);
                 updateCommand.Parameters.AddWithValue("$color", (int)color);
                 updateCommand.Parameters.AddWithValue("$id", id);
-                using SqliteDataReader query = await updateCommand.ExecuteReaderAsync();
+                await updateCommand.ExecuteNonQueryAsync();
             }
             catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         }
@@ -368,7 +368,7 @@ namespace Flint3.Data
             {
                 using SqliteCommand deleteWordsCommand = new SqliteCommand($"DELETE FROM glossary WHERE id=$id;", _glossaryDb);
                 deleteWordsCommand.Parameters.AddWithValue("$id", id);
-                using SqliteDataReader wordsQuery = await deleteWordsCommand.ExecuteReaderAsync();
+                await deleteWordsCommand.ExecuteNonQueryAsync();
             }
             catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
         }
