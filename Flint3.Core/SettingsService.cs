@@ -13,6 +13,7 @@ namespace Flint3.Core
         private const string SETTING_NAME_BACKDROPINDEX = "BackdropIndex";
         private const string SETTING_NAME_ENABLEENGDEF = "EnableEngDefinition";
         private const string SETTING_NAME_ENABLEGLOSSARY = "EnableGlossary";
+        private const string SETTING_NAME_ENABLETTS = "EnableTTS";
         private const string SETTING_NAME_WINDOWMODE = "WindowMode";
         private const string SETTING_NAME_AUTOCLEARLASTINPUT = "AutoClearLastInput";
         private const string SETTING_NAME_CLOSEBUTTONMODE = "CloseButtonMode";
@@ -31,6 +32,8 @@ namespace Flint3.Core
         private bool? _enableEngDefinition = null;
 
         private bool? _enableGlossary = null;
+
+        private bool? _enableTTS = null;
 
         private int _windowMode = -1;
 
@@ -263,6 +266,35 @@ namespace Flint3.Core
             {
                 SetProperty(ref _enableGlossary, value);
                 ApplicationData.Current.LocalSettings.Values[SETTING_NAME_ENABLEGLOSSARY] = _enableGlossary;
+            }
+        }
+
+        public bool EnableTTS
+        {
+            get
+            {
+                try
+                {
+                    if (_enableTTS is null)
+                    {
+                        if (_localSettings.Values[SETTING_NAME_ENABLETTS]?.ToString() == "True")
+                        {
+                            _enableTTS = true;
+                        }
+                        else
+                        {
+                            _enableTTS = false;
+                        }
+                    }
+                }
+                catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
+                if (_enableTTS is null) _enableTTS = false;
+                return _enableTTS == true;
+            }
+            set
+            {
+                SetProperty(ref _enableTTS, value);
+                ApplicationData.Current.LocalSettings.Values[SETTING_NAME_ENABLETTS] = _enableTTS;
             }
         }
 

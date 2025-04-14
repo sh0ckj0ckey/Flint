@@ -267,5 +267,21 @@ namespace Flint3.Views
                 // LogoGrid.Opacity = 1 - newOpacity;
             }
         }
+
+        /// <summary>
+        /// 展开 TTS 设置卡时，加载声音列表
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnTTSSettingsExpanderExpanded(object sender, EventArgs e)
+        {
+            var voices = Flint3.Helpers.TextToSpeechHelper.GetAllVoices();
+            TTSVoicesComboBox.ItemsSource = voices;
+        }
+
+        private void OnClickHearVoice(object sender, RoutedEventArgs e)
+        {
+            _ = Flint3.Helpers.TextToSpeechHelper.SpeakTextAsync("The quick brown fox jumps over the lazy dog.", 0.5, TTSVoicesComboBox.SelectedItem?.ToString());
+        }
     }
 }

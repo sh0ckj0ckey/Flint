@@ -150,6 +150,44 @@
                         </labs:SettingsCard>
                     </labs:SettingsExpander.Items>
                 </labs:SettingsExpander>
+                
+                <!--朗读单词-->
+                <labs:SettingsExpander Margin="16,2,16,0" HorizontalAlignment="Stretch" IsExpanded="False" Expanded="OnTTSSettingsExpanderExpanded">
+                    <labs:SettingsExpander.HeaderIcon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEFA9;"/>
+                    </labs:SettingsExpander.HeaderIcon>
+                    <labs:SettingsExpander.Header>
+                        <TextBlock Text="朗读单词"/>
+                    </labs:SettingsExpander.Header>
+                    <labs:SettingsExpander.Description>
+                        <Grid>
+                            <TextBlock Text="选择是否启用朗读单词功能" Visibility="{x:Bind EnableTTSToggleSwitch.IsOn,Mode=OneWay,Converter={StaticResource Bool2Vis},ConverterParameter=-}"/>
+                            <TextBlock Visibility="{x:Bind EnableTTSToggleSwitch.IsOn,Mode=OneWay,Converter={StaticResource Bool2Vis}}">
+                                <Run Text="点击查词结果的"/>
+                                <Run Text="&#xE767;" FontSize="10" FontFamily="{ThemeResource SymbolThemeFontFamily}"/>
+                                <Run Text="，即可尝试朗读单词"/>
+                            </TextBlock>
+                        </Grid>
+                    </labs:SettingsExpander.Description>
+                    <ToggleSwitch x:Name="EnableTTSToggleSwitch" MinWidth="0" Background="Transparent" IsOn="{x:Bind _viewModel.AppSettings.EnableTTS,Mode=TwoWay}"/>
+                    <labs:SettingsExpander.Items>
+                        <labs:SettingsCard HorizontalAlignment="Stretch" IsEnabled="{x:Bind EnableTTSToggleSwitch.IsOn,Mode=OneWay}">
+                            <labs:SettingsCard.Description>
+                                <TextBlock Text="设置朗读单词的声音"/>
+                            </labs:SettingsCard.Description>
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <HyperlinkButton FontFamily="{ThemeResource SymbolThemeFontFamily}" Padding="8" Content="&#xE767;" Click="OnClickHearVoice"/>
+                                <ComboBox x:Name="TTSVoicesComboBox" PlaceholderText="默认声音"/>
+                            </StackPanel>
+                        </labs:SettingsCard>
+                        <labs:SettingsCard HorizontalAlignment="Stretch" IsEnabled="{x:Bind EnableTTSToggleSwitch.IsOn,Mode=OneWay}">
+                            <labs:SettingsCard.Description>
+                                <TextBlock Text="设置朗读单词的音量"/>
+                            </labs:SettingsCard.Description>
+                            <Slider/>
+                        </labs:SettingsCard>
+                    </labs:SettingsExpander.Items>
+                </labs:SettingsExpander>
 
                 <TextBlock Text="行为" Margin="20,12,0,8" FontWeight="Bold" FontSize="14"/>
 
