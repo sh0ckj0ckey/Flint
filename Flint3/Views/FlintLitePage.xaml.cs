@@ -82,5 +82,27 @@ namespace Flint3.Views
             }
         }
 
+        /// <summary>
+        /// ¿ ∂¡µ•¥ 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnClickReadWord(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender is Button btn && btn.DataContext is StarDictWordItem item && !string.IsNullOrWhiteSpace(item.Word))
+                {
+                    _ = Flint3.Helpers.TextToSpeechHelper.SpeakTextAsync(
+                        item.Word,
+                        MainViewModel.Instance.AppSettings.TTSVolume / 10.0,
+                        MainViewModel.Instance.AppSettings.TTSVoice);
+                }
+            }
+            catch (System.Exception ex)
+            {
+                System.Diagnostics.Trace.WriteLine(ex);
+            }
+        }
     }
 }

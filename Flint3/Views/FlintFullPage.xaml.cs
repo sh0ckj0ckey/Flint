@@ -127,6 +127,29 @@ namespace Flint3.Views
             }
         }
 
+        /// <summary>
+        /// 朗读单词
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnClickReadWord(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender is Button btn && btn.DataContext is StarDictWordItem item && !string.IsNullOrWhiteSpace(item.Word))
+                {
+                    _ = Flint3.Helpers.TextToSpeechHelper.SpeakTextAsync(
+                        item.Word,
+                        MainViewModel.Instance.AppSettings.TTSVolume / 10.0,
+                        MainViewModel.Instance.AppSettings.TTSVoice);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Trace.WriteLine(ex);
+            }
+        }
+
         #region 功能介绍
 
         private void TryShowNewFeatureButton()
@@ -171,5 +194,6 @@ namespace Flint3.Views
         }
 
         #endregion
+
     }
 }
