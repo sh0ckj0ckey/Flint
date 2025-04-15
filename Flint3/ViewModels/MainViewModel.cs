@@ -1,7 +1,6 @@
 ﻿using System;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Flint3.Core;
-using Flint3.Core.Utils;
+using Flint3.Helpers;
 
 namespace Flint3.ViewModels
 {

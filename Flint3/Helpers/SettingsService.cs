@@ -3,7 +3,7 @@ using System;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Windows.Storage;
 
-namespace Flint3.Core
+namespace Flint3.Helpers
 {
     public class SettingsService : ObservableObject
     {

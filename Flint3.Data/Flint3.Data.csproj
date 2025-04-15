@@ -8,13 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+      <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
       <PackageReference Include="Microsoft.Data.Sqlite" Version="7.0.8" />
       <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="7.0.8" />
       <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.3.230502000" />
       <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.755" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Flint3.Core\Flint3.Core.csproj" />
   </ItemGroup>
 </Project>

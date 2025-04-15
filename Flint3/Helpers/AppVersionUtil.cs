@@ -1,7 +1,7 @@
 ﻿using System;
 using Windows.ApplicationModel;
 
-namespace Flint3.Core.Utils
+namespace Flint3.Helpers
 {
     public static class AppVersionUtil
     {

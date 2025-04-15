@@ -2,7 +2,7 @@
 using System.Text.Json;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Flint3.Core;
+using Flint3.Helpers;
 using Flint3.Models;
 using interop;
 
