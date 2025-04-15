@@ -259,7 +259,7 @@ namespace Flint3.Views
             {
                 _ = Flint3.Helpers.TextToSpeechHelper.SpeakTextAsync(
                     "The quick brown fox jumps over the lazy dog.",
-                    MainViewModel.Instance.AppSettings.TTSVolume / 10,
+                    MainViewModel.Instance.AppSettings.TTSVolume / 10.0,
                     MainViewModel.Instance.AppSettings.TTSVoice);
             }
             catch (Exception ex)
