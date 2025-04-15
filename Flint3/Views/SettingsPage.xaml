@@ -13,7 +13,7 @@
     xmlns:cvt="using:Flint3.Converters"
     xmlns:control="using:Flint3.Controls.ShortcutControl"
     xmlns:labs="using:CommunityToolkit.WinUI.Controls"
-    Background="Transparent" NavigationCacheMode="Required">
+    Background="Transparent" NavigationCacheMode="Disabled">
     <Page.Resources>
         <ui:AttachedDropShadow x:Key="CommonShadow" BlurRadius="16" IsMasked="False" Color="{ThemeResource FLINT_LOGO_SHADOW_BK}" Offset="4,4" Opacity="1" CastTo="{x:Bind FlintLogoMaskBorder}"/>
 
