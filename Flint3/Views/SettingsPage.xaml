@@ -13,7 +13,7 @@
     xmlns:cvt="using:Flint3.Converters"
     xmlns:control="using:Flint3.Controls.ShortcutControl"
     xmlns:labs="using:CommunityToolkit.WinUI.Controls"
-    Background="Transparent" NavigationCacheMode="Required" Loaded="OnLoaded">
+    Background="Transparent" NavigationCacheMode="Required">
     <Page.Resources>
         <ui:AttachedDropShadow x:Key="CommonShadow" BlurRadius="16" IsMasked="False" Color="{ThemeResource FLINT_LOGO_SHADOW_BK}" Offset="4,4" Opacity="1" CastTo="{x:Bind FlintLogoMaskBorder}"/>
 
@@ -39,7 +39,7 @@
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Top">
 
                 <!--标题Logo-->
-                <Grid x:Name="LogoGrid" Grid.Row="0" Margin="16,0,16,0" BorderThickness="1" CornerRadius="4" Height="96" HorizontalAlignment="Stretch">
+                <Grid x:Name="LogoGrid" x:Load="True" Margin="16,0,16,0" BorderThickness="1" CornerRadius="4" Height="96" HorizontalAlignment="Stretch">
                     <Grid.Background>
                         <ImageBrush Stretch="UniformToFill" ImageSource="{ThemeResource FLINT_LOGO_BK_IMG}"/>
                     </Grid.Background>
@@ -66,10 +66,10 @@
                     </StackPanel>
                 </Grid>
 
-                <TextBlock Text="外观与功能" Margin="20,12,0,8" FontWeight="Bold" FontSize="14"/>
+                <TextBlock x:Name="AppearanceSettingsHeaderTextBlock" x:Load="True" Text="外观与功能" Margin="20,12,0,8" FontWeight="Bold" FontSize="14"/>
 
                 <!--主题设置-->
-                <labs:SettingsCard Margin="16,2,16,0" HorizontalAlignment="Stretch">
+                <labs:SettingsCard x:Name="ThemeSettingsCard" x:Load="True" Margin="16,2,16,0" HorizontalAlignment="Stretch">
                     <labs:SettingsCard.HeaderIcon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE790;"/>
                     </labs:SettingsCard.HeaderIcon>
@@ -87,7 +87,7 @@
                 </labs:SettingsCard>
 
                 <!--背景材质设置-->
-                <labs:SettingsCard Margin="16,2,16,0" HorizontalAlignment="Stretch">
+                <labs:SettingsCard x:Name="BackdropSettingsCard" x:Load="True" Margin="16,2,16,0" HorizontalAlignment="Stretch">
                     <labs:SettingsCard.HeaderIcon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE727;"/>
                     </labs:SettingsCard.HeaderIcon>
@@ -104,7 +104,7 @@
                 </labs:SettingsCard>
 
                 <!--英英释义-->
-                <labs:SettingsCard Margin="16,2,16,0" HorizontalAlignment="Stretch">
+                <labs:SettingsCard x:Name="EnglishDefSettingsCard" x:Load="True" Margin="16,2,16,0" HorizontalAlignment="Stretch">
                     <labs:SettingsCard.HeaderIcon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8D2;"/>
                     </labs:SettingsCard.HeaderIcon>
@@ -118,7 +118,7 @@
                 </labs:SettingsCard>
 
                 <!--生词本-->
-                <labs:SettingsExpander Margin="16,2,16,0" HorizontalAlignment="Stretch" IsExpanded="False">
+                <labs:SettingsExpander x:Name="GlossarySettingsCard" x:Load="True" Margin="16,2,16,0" HorizontalAlignment="Stretch" IsExpanded="False">
                     <labs:SettingsExpander.HeaderIcon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE82D;"/>
                     </labs:SettingsExpander.HeaderIcon>
@@ -150,9 +150,9 @@
                         </labs:SettingsCard>
                     </labs:SettingsExpander.Items>
                 </labs:SettingsExpander>
-                
+
                 <!--朗读单词-->
-                <labs:SettingsExpander Margin="16,2,16,0" HorizontalAlignment="Stretch" IsExpanded="False" Expanded="OnTTSSettingsExpanderExpanded">
+                <labs:SettingsExpander x:Name="TTSSettingsCard" x:Load="True" Margin="16,2,16,0" HorizontalAlignment="Stretch" IsExpanded="False" Expanded="OnTTSSettingsExpanderExpanded">
                     <labs:SettingsExpander.HeaderIcon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEFA9;"/>
                     </labs:SettingsExpander.HeaderIcon>
@@ -177,22 +177,23 @@
                             </labs:SettingsCard.Description>
                             <StackPanel Orientation="Horizontal" Spacing="8">
                                 <HyperlinkButton FontFamily="{ThemeResource SymbolThemeFontFamily}" Padding="8" Content="&#xE767;" Click="OnClickHearVoice"/>
-                                <ComboBox x:Name="TTSVoicesComboBox" PlaceholderText="默认声音"/>
+                                <ComboBox x:Name="TTSVoicesComboBox" PlaceholderText="默认声音" SelectionChanged="OnSelectedVoiceChanged"/>
                             </StackPanel>
                         </labs:SettingsCard>
                         <labs:SettingsCard HorizontalAlignment="Stretch" IsEnabled="{x:Bind EnableTTSToggleSwitch.IsOn,Mode=OneWay}">
                             <labs:SettingsCard.Description>
                                 <TextBlock Text="设置朗读单词的音量"/>
                             </labs:SettingsCard.Description>
-                            <Slider/>
+                            <Slider Value="{x:Bind _viewModel.AppSettings.TTSVolume,Mode=TwoWay}" Minimum="1" Maximum="10" StepFrequency="1" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
                         </labs:SettingsCard>
                     </labs:SettingsExpander.Items>
                 </labs:SettingsExpander>
 
-                <TextBlock Text="行为" Margin="20,12,0,8" FontWeight="Bold" FontSize="14"/>
+                <TextBlock x:Name="BehaviorSettingsHeaderTextBlock" x:Load="True" Text="行为" Margin="20,12,0,8" FontWeight="Bold" FontSize="14"/>
 
                 <!--开机自启设置-->
-                <labs:SettingsCard Margin="16,2,16,0" HorizontalAlignment="Stretch">
+                <labs:SettingsCard x:Name="StartupSettingsCard" x:Load="True" Margin="16,2,16,0" HorizontalAlignment="Stretch"
+                                   Loaded="OnStartupSettingsCardLoaded">
                     <labs:SettingsCard.HeaderIcon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE7B5;"/>
                     </labs:SettingsCard.HeaderIcon>
@@ -206,7 +207,7 @@
                 </labs:SettingsCard>
 
                 <!--快捷键设置-->
-                <labs:SettingsCard Margin="16,2,16,0" HorizontalAlignment="Stretch">
+                <labs:SettingsCard x:Name="ShortcutSettingsCard" x:Load="True" Margin="16,2,16,0" HorizontalAlignment="Stretch">
                     <labs:SettingsCard.HeaderIcon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEDA7;"/>
                     </labs:SettingsCard.HeaderIcon>
@@ -220,7 +221,7 @@
                 </labs:SettingsCard>
 
                 <!--快捷键窗口模式-->
-                <labs:SettingsCard Margin="16,2,16,0" HorizontalAlignment="Stretch">
+                <labs:SettingsCard x:Name="WindowModeSettingsCard" x:Load="True" Margin="16,2,16,0" HorizontalAlignment="Stretch">
                     <labs:SettingsCard.HeaderIcon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xF8A5;"/>
                     </labs:SettingsCard.HeaderIcon>
@@ -238,9 +239,9 @@
                         <ComboBoxItem Content="简洁"/>
                     </ComboBox>
                 </labs:SettingsCard>
-                
+
                 <!--唤醒自动清除设置-->
-                <labs:SettingsCard Margin="16,2,16,0" HorizontalAlignment="Stretch">
+                <labs:SettingsCard x:Name="AutoClearSettingsCard" x:Load="True" Margin="16,2,16,0" HorizontalAlignment="Stretch">
                     <labs:SettingsCard.HeaderIcon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE13E;"/>
                     </labs:SettingsCard.HeaderIcon>
@@ -254,7 +255,7 @@
                 </labs:SettingsCard>
 
                 <!--关闭按钮设置-->
-                <labs:SettingsCard Margin="16,2,16,0" HorizontalAlignment="Stretch">
+                <labs:SettingsCard x:Name="CloseButtonSettingsCard" x:Load="True" Margin="16,2,16,0" HorizontalAlignment="Stretch">
                     <labs:SettingsCard.HeaderIcon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEA39;"/>
                     </labs:SettingsCard.HeaderIcon>
@@ -275,10 +276,10 @@
                     </ComboBox>
                 </labs:SettingsCard>
 
-                <TextBlock Text="搜索" Margin="20,12,0,8" FontWeight="Bold" FontSize="14"/>
+                <TextBlock x:Name="SearchSettingsHeaderTextBlock" x:Load="True" Text="搜索" Margin="20,12,0,8" FontWeight="Bold" FontSize="14"/>
 
                 <!--搜索框样式设置-->
-                <labs:SettingsExpander Margin="16,2,16,0" HorizontalAlignment="Stretch" IsExpanded="False">
+                <labs:SettingsExpander x:Name="SearchBoxSettingsCard" x:Load="True" Margin="16,2,16,0" HorizontalAlignment="Stretch" IsExpanded="False">
                     <labs:SettingsExpander.HeaderIcon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE773;"/>
                     </labs:SettingsExpander.HeaderIcon>
@@ -364,15 +365,15 @@
                     </labs:SettingsExpander.Items>
                 </labs:SettingsExpander>
 
-                <TextBlock Text="关于" Margin="20,12,0,8" FontWeight="Bold" FontSize="14"/>
+                <TextBlock x:Name="AboutSettingsHeaderTextBlock" x:Load="True" Text="关于" Margin="20,12,0,8" FontWeight="Bold" FontSize="14"/>
 
                 <!--关于版本号-->
-                <labs:SettingsExpander Margin="16,2,16,0" HorizontalAlignment="Stretch">
+                <labs:SettingsExpander x:Name="AboutSettingsCard" x:Load="True" Margin="16,2,16,0" HorizontalAlignment="Stretch">
                     <labs:SettingsExpander.HeaderIcon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE946;"/>
                     </labs:SettingsExpander.HeaderIcon>
                     <labs:SettingsExpander.Header>
-                        <TextBlock x:Name="AppVersionTextBlock"/>
+                        <TextBlock Text="{x:Bind _viewModel.AppVersion,Mode=OneTime}"/>
                     </labs:SettingsExpander.Header>
                     <labs:SettingsExpander.Description>
                         <TextBlock Text="燧石是一款开源的离线英汉词典"/>
@@ -477,11 +478,11 @@
                     </labs:SettingsExpander.Items>
                 </labs:SettingsExpander>
 
+                <TextBlock x:Name="CopyrightHeaderTextBlock" x:Load="True" Text="©2025 NoMewing." FontSize="12" FontFamily="Consolas" FontWeight="Light" Opacity="0.5" Margin="20,8,0,8"/>
 
-                <TextBlock Text="©2025 NoMewing." FontSize="12" FontFamily="Consolas" FontWeight="Light" Opacity="0.5" Margin="20,8,0,8"/>
             </StackPanel>
         </ScrollViewer>
-        
+
         <!--工具栏-->
         <Grid Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Grid.ColumnDefinitions>

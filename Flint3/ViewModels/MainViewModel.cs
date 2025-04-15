@@ -1,6 +1,7 @@
 ﻿using System;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Flint3.Core;
+using Flint3.Core.Utils;
 
 namespace Flint3.ViewModels
 {
@@ -15,6 +16,24 @@ namespace Flint3.ViewModels
         /// 应用程序设置
         /// </summary>
         public SettingsService AppSettings { get; set; } = new SettingsService();
+
+        private string _appVersion = string.Empty;
+
+        /// <summary>
+        /// 应用程序版本号
+        /// </summary>
+        public string AppVersion
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(_appVersion))
+                {
+                    _appVersion = $"Flint {AppVersionUtil.GetAppVersion()}";
+                }
+
+                return _appVersion;
+            }
+        }
 
         private MainViewModel()
         {

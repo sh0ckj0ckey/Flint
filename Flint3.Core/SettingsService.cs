@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Windows.Storage;
 
@@ -14,6 +15,8 @@ namespace Flint3.Core
         private const string SETTING_NAME_ENABLEENGDEF = "EnableEngDefinition";
         private const string SETTING_NAME_ENABLEGLOSSARY = "EnableGlossary";
         private const string SETTING_NAME_ENABLETTS = "EnableTTS";
+        private const string SETTING_NAME_TTSVOICE = "TTSVoice";
+        private const string SETTING_NAME_TTSVOLUME = "TTSVolume";
         private const string SETTING_NAME_WINDOWMODE = "WindowMode";
         private const string SETTING_NAME_AUTOCLEARLASTINPUT = "AutoClearLastInput";
         private const string SETTING_NAME_CLOSEBUTTONMODE = "CloseButtonMode";
@@ -35,6 +38,10 @@ namespace Flint3.Core
 
         private bool? _enableTTS = null;
 
+        private string? _ttsVoice = null;
+
+        private int _ttsVolume = -1;
+
         private int _windowMode = -1;
 
         private bool? _autoClearLastInput = null;
@@ -43,9 +50,9 @@ namespace Flint3.Core
 
         private int _searchBoxStyle = -1;
 
-        public event Action<int> OnAppearanceSettingChanged = null;
+        public event EventHandler<int>? AppearanceSettingChanged = null;
 
-        public event Action<int> OnBackdropSettingChanged = null;
+        public event EventHandler<int>? BackdropSettingChanged = null;
 
         /// <summary>
         /// 主窗口的宽度
@@ -152,7 +159,7 @@ namespace Flint3.Core
             {
                 SetProperty(ref _appearanceIndex, value);
                 ApplicationData.Current.LocalSettings.Values[SETTING_NAME_APPEARANCEINDEX] = _appearanceIndex;
-                OnAppearanceSettingChanged?.Invoke(_appearanceIndex);
+                AppearanceSettingChanged?.Invoke(this, _appearanceIndex);
             }
         }
 
@@ -193,7 +200,7 @@ namespace Flint3.Core
             {
                 SetProperty(ref _backdropIndex, value);
                 ApplicationData.Current.LocalSettings.Values[SETTING_NAME_BACKDROPINDEX] = _backdropIndex;
-                OnBackdropSettingChanged?.Invoke(_backdropIndex);
+                BackdropSettingChanged?.Invoke(this, _backdropIndex);
             }
         }
 
@@ -269,6 +276,9 @@ namespace Flint3.Core
             }
         }
 
+        /// <summary>
+        /// 是否启用朗读单词
+        /// </summary>
         public bool EnableTTS
         {
             get
@@ -295,6 +305,70 @@ namespace Flint3.Core
             {
                 SetProperty(ref _enableTTS, value);
                 ApplicationData.Current.LocalSettings.Values[SETTING_NAME_ENABLETTS] = _enableTTS;
+            }
+        }
+
+        /// <summary>
+        /// 朗读单词使用的声音名称
+        /// </summary>
+        public string TTSVoice
+        {
+            get
+            {
+                try
+                {
+                    if (_ttsVoice is null)
+                    {
+                        if (_localSettings.Values[SETTING_NAME_TTSVOICE] is null)
+                        {
+                            _ttsVoice = "";
+                        }
+                        else
+                        {
+                            _ttsVoice = _localSettings.Values[SETTING_NAME_TTSVOICE].ToString();
+                        }
+                    }
+                }
+                catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
+                if (_ttsVoice is null) _ttsVoice = "";
+                return _ttsVoice ?? "";
+            }
+            set
+            {
+                SetProperty(ref _ttsVoice, value);
+                ApplicationData.Current.LocalSettings.Values[SETTING_NAME_TTSVOICE] = _ttsVoice;
+            }
+        }
+
+        /// <summary>
+        /// 朗读单词的音量 1~10
+        /// </summary>
+        public int TTSVolume
+        {
+            get
+            {
+                try
+                {
+                    if (_ttsVolume < 0)
+                    {
+                        if (int.TryParse(_localSettings.Values[SETTING_NAME_TTSVOLUME]?.ToString(), out int volume))
+                        {
+                            _ttsVolume = volume;
+                        }
+                        else
+                        {
+                            _ttsVolume = 5;
+                        }
+                    }
+                }
+                catch (Exception ex) { System.Diagnostics.Trace.WriteLine(ex); }
+                if (_ttsVolume <= 0) _ttsVolume = 5;
+                return _ttsVolume <= 0 ? 5 : _ttsVolume;
+            }
+            set
+            {
+                SetProperty(ref _ttsVolume, value);
+                ApplicationData.Current.LocalSettings.Values[SETTING_NAME_TTSVOLUME] = _ttsVolume;
             }
         }
 

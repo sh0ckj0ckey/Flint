@@ -36,12 +36,12 @@ namespace Flint3
             this.SetIcon(iconPath);
             this.SetTaskBarIcon(Icon.FromFile(iconPath));
 
-            MainViewModel.Instance.AppSettings.OnAppearanceSettingChanged += (_) =>
+            MainViewModel.Instance.AppSettings.AppearanceSettingChanged += (_, _) =>
             {
                 this.UpdateAppTheme();
             };
 
-            MainViewModel.Instance.AppSettings.OnBackdropSettingChanged += (_) =>
+            MainViewModel.Instance.AppSettings.BackdropSettingChanged += (_, _) =>
             {
                 this.UpdateAppBackdrop();
             };

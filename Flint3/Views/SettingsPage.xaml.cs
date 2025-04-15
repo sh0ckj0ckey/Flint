@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Flint3.Core.Utils;
 using Flint3.ViewModels;
 using Microsoft.UI.Xaml;
@@ -22,63 +23,7 @@ namespace Flint3.Views
         public SettingsPage()
         {
             _viewModel = MainViewModel.Instance;
-
             this.InitializeComponent();
-        }
-
-        private void OnLoaded(object sender, RoutedEventArgs e)
-        {
-            UpdateStartupState();
-
-            if (string.IsNullOrWhiteSpace(AppVersionTextBlock.Text))
-            {
-                AppVersionTextBlock.Text = $"Flint {AppVersionUtil.GetAppVersion()}";
-            }
-        }
-
-        /// <summary>
-        /// 获取当前开机自启动状态，更新按钮
-        /// </summary>
-        private async void UpdateStartupState()
-        {
-            try
-            {
-                var task = await StartupTask.GetAsync("FlintByNoMewing");
-                switch (task.State)
-                {
-                    case StartupTaskState.Disabled:
-                        StartupSettingToggleSwitch.IsEnabled = true;
-                        StartupSettingToggleSwitch.IsOn = false;
-                        StartupDescTextBlock.Text = "登录到 Windows 时自动启动燧石";
-                        break;
-                    case StartupTaskState.Enabled:
-                        StartupSettingToggleSwitch.IsEnabled = true;
-                        StartupSettingToggleSwitch.IsOn = true;
-                        StartupDescTextBlock.Text = "登录到 Windows 时自动启动燧石";
-                        break;
-                    case StartupTaskState.DisabledByUser:
-                        StartupSettingToggleSwitch.IsEnabled = false;
-                        StartupSettingToggleSwitch.IsOn = false;
-                        StartupDescTextBlock.Text = "无法修改，已被系统设置禁用";
-                        break;
-                    case StartupTaskState.DisabledByPolicy:
-                        StartupSettingToggleSwitch.IsEnabled = false;
-                        StartupSettingToggleSwitch.IsOn = false;
-                        StartupDescTextBlock.Text = "无法修改，已被策略禁用";
-                        break;
-                    case StartupTaskState.EnabledByPolicy:
-                        StartupSettingToggleSwitch.IsEnabled = false;
-                        StartupSettingToggleSwitch.IsOn = true;
-                        StartupDescTextBlock.Text = "无法修改，已被策略启用";
-                        break;
-                    default:
-                        break;
-                }
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Trace.WriteLine(ex.Message);
-            }
         }
 
         /// <summary>
@@ -129,6 +74,16 @@ namespace Flint3.Views
             {
                 System.Diagnostics.Trace.WriteLine(ex.Message);
             }
+        }
+
+        /// <summary>
+        /// 开机自启设置卡加载完成时，获取当前开机自启动状态，更新按钮
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnStartupSettingsCardLoaded(object sender, RoutedEventArgs e)
+        {
+            UpdateStartupState();
         }
 
         /// <summary>
@@ -264,7 +219,6 @@ namespace Flint3.Views
 
                 SettingsPageHeaderTitleGrid.Opacity = newOpacity;
                 SettingsPageHeaderSeperatorLineBorder.Opacity = newOpacity;
-                // LogoGrid.Opacity = 1 - newOpacity;
             }
         }
 
@@ -277,11 +231,87 @@ namespace Flint3.Views
         {
             var voices = Flint3.Helpers.TextToSpeechHelper.GetAllVoices();
             TTSVoicesComboBox.ItemsSource = voices;
+            TTSVoicesComboBox.SelectedIndex = voices.IndexOf(MainViewModel.Instance.AppSettings.TTSVoice);
         }
 
+        /// <summary>
+        /// 选择 TTS 语音
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnSelectedVoiceChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count > 0)
+            {
+                var selectedVoice = e.AddedItems[0].ToString();
+                MainViewModel.Instance.AppSettings.TTSVoice = selectedVoice;
+            }
+        }
+
+        /// <summary>
+        /// 点击试听声音
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnClickHearVoice(object sender, RoutedEventArgs e)
         {
-            _ = Flint3.Helpers.TextToSpeechHelper.SpeakTextAsync("The quick brown fox jumps over the lazy dog.", 0.5, TTSVoicesComboBox.SelectedItem?.ToString());
+            try
+            {
+                _ = Flint3.Helpers.TextToSpeechHelper.SpeakTextAsync(
+                    "The quick brown fox jumps over the lazy dog.",
+                    MainViewModel.Instance.AppSettings.TTSVolume / 10,
+                    MainViewModel.Instance.AppSettings.TTSVoice);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Trace.WriteLine(ex);
+            }
         }
+
+        /// <summary>
+        /// 获取当前开机自启动状态，更新按钮
+        /// </summary>
+        private async void UpdateStartupState()
+        {
+            try
+            {
+                var task = await StartupTask.GetAsync("FlintByNoMewing");
+                switch (task.State)
+                {
+                    case StartupTaskState.Disabled:
+                        StartupSettingToggleSwitch.IsEnabled = true;
+                        StartupSettingToggleSwitch.IsOn = false;
+                        StartupDescTextBlock.Text = "登录到 Windows 时自动启动燧石";
+                        break;
+                    case StartupTaskState.Enabled:
+                        StartupSettingToggleSwitch.IsEnabled = true;
+                        StartupSettingToggleSwitch.IsOn = true;
+                        StartupDescTextBlock.Text = "登录到 Windows 时自动启动燧石";
+                        break;
+                    case StartupTaskState.DisabledByUser:
+                        StartupSettingToggleSwitch.IsEnabled = false;
+                        StartupSettingToggleSwitch.IsOn = false;
+                        StartupDescTextBlock.Text = "无法修改，已被系统设置禁用";
+                        break;
+                    case StartupTaskState.DisabledByPolicy:
+                        StartupSettingToggleSwitch.IsEnabled = false;
+                        StartupSettingToggleSwitch.IsOn = false;
+                        StartupDescTextBlock.Text = "无法修改，已被策略禁用";
+                        break;
+                    case StartupTaskState.EnabledByPolicy:
+                        StartupSettingToggleSwitch.IsEnabled = false;
+                        StartupSettingToggleSwitch.IsOn = true;
+                        StartupDescTextBlock.Text = "无法修改，已被策略启用";
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Trace.WriteLine(ex.Message);
+            }
+        }
+
     }
 }
