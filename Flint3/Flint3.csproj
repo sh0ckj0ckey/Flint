@@ -23,7 +23,7 @@
 		<AppxBundle>Always</AppxBundle>
 		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
 		<AppxBundlePlatforms>x64</AppxBundlePlatforms>
-		<AppxPackageDir>C:\Users\Shock Jockey\Desktop\x64</AppxPackageDir>
+		<AppxPackageDir>C:\Users\Shock Jockey\Desktop\x64\</AppxPackageDir>
 		<GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>
 		<DefineConstants>$(DefineConstants);DISABLE_XAML_GENERATED_MAIN</DefineConstants>
 		<WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
