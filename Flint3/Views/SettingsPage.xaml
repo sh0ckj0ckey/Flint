@@ -378,11 +378,12 @@
                     <labs:SettingsExpander.Description>
                         <TextBlock Text="燧石是一款开源的离线英汉词典"/>
                     </labs:SettingsExpander.Description>
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="8">
-                        <Button Height="34" Click="OnClickGoToStoreRate" ToolTipService.ToolTip="去应用商店打分评价">
-                            <TextBlock Text="❤️ 打分评价" VerticalAlignment="Center" FontSize="13"/>
-                        </Button>
-                    </StackPanel>
+                    <Button Height="34" Click="OnClickGoToStoreRate" ToolTipService.ToolTip="去应用商店打分评价">
+                        <StackPanel Orientation="Horizontal" Spacing="4">
+                            <FontIcon FontFamily="Segoe UI Emoji" Glyph="&#x1FAA8;" FontSize="14" VerticalAlignment="Center"/>
+                            <TextBlock Text="打分评价" VerticalAlignment="Center" FontSize="13"/>
+                        </StackPanel>
+                    </Button>
                     <labs:SettingsExpander.Items>
 
                         <!--开源地址-->
