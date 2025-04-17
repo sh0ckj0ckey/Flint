@@ -9,7 +9,7 @@
 
 	<Identity Name="22189NoMewing.6191006733C16"
 			  Publisher="CN=E6D8FAFA-3EF4-4E47-B885-52144C67BFF5"
-			  Version="3.4.1.0" />
+			  Version="3.4.2.0" />
 
 	<mp:PhoneIdentity PhoneProductId="ff7d62c0-a929-4780-b136-6f7859750ece" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
