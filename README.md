@@ -21,13 +21,3 @@
 
 #### 一睹芳容
 ![screenshot.png](README/screenshot.png)
-
----
-
-#### 备注
-##### 数据库文件
-GitHub 的 LFS 空间和带宽不够用，所以压缩成 7z 文件放在 Flint3/Data 中，解压后将文件属性设置为"内容"，这样就可以作为内置的文件来访问了
-
----
-
-NoMewing.
