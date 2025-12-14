@@ -10,7 +10,7 @@ namespace Flint3.Data
 {
     public static class GlossaryDataAccess
     {
-        private static SqliteConnection _glossaryDb = null;
+        private static SqliteConnection? _glossaryDb = null;
 
         public static async Task LoadDatabase()
         {
@@ -19,6 +19,7 @@ namespace Flint3.Data
             var flintFolder = await noMewingFolder.CreateFolderAsync("Flint", CreationCollisionOption.OpenIfExists);
             var file = await flintFolder.CreateFileAsync("flint_glossary.db", CreationCollisionOption.OpenIfExists);
             string dbpath = file.Path;
+
             _glossaryDb = new SqliteConnection($"Filename={dbpath}");
             await _glossaryDb.OpenAsync();
 
@@ -60,9 +61,9 @@ namespace Flint3.Data
         #region 生词本
 
         /// <summary>
-        /// 获取所有的生词本列表
+        /// 获取所有的生词本
         /// </summary>
-        /// <returns></returns>
+        /// <returns>生词本列表</returns>
         public static async Task<List<GlossaryItem>> GetGlossaries()
         {
             try
