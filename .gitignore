@@ -361,5 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
 /Flint3/Data/stardict.db
-/Flint3/Data/stardict.db
+/nuget.exe
