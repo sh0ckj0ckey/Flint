@@ -1,21 +1,26 @@
-<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>        
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net8.0-windows10.0.26100.0</TargetFramework>
-        <TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
+        <TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
+        <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
         <RootNamespace>Flint3</RootNamespace>
         <ApplicationManifest>app.manifest</ApplicationManifest>
-        <Nullable>enable</Nullable>
-        <UseWinUI>true</UseWinUI>
         <Platforms>x64;ARM64</Platforms>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <RuntimeIdentifiers>win-x64;win-arm64</RuntimeIdentifiers>
         <PublishProfile>win-$(Platform).pubxml</PublishProfile>
-        <EnableMsixTooling>true</EnableMsixTooling>
-        <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
+        <Nullable>enable</Nullable>
+        <UseWinUI>true</UseWinUI>
         <DefaultLanguage>zh-CN</DefaultLanguage>
+        <CsWinRTAotOptimizerEnabled>true</CsWinRTAotOptimizerEnabled>
+        <CsWinRTAotWarningLevel>2</CsWinRTAotWarningLevel>
         <SupportedOSPlatformVersion>10.0.22000.0</SupportedOSPlatformVersion>
         <ApplicationIcon>Assets\Logos\flint_logo.ico</ApplicationIcon>
+        <DefineConstants>$(DefineConstants);DISABLE_XAML_GENERATED_MAIN</DefineConstants>
+        <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+        <SelfContained>true</SelfContained>
+        <EnableMsixTooling>true</EnableMsixTooling>
+        <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
         <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
         <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
         <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
@@ -26,9 +31,6 @@
         <AppxBundlePlatforms>x64</AppxBundlePlatforms>
         <AppxPackageDir>C:\Users\Shock Jockey\Desktop\x64\</AppxPackageDir>
         <GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>
-        <DefineConstants>$(DefineConstants);DISABLE_XAML_GENERATED_MAIN</DefineConstants>
-        <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
-        <SelfContained>true</SelfContained>
         <PackageCertificateKeyFile>Flint3_TemporaryKey.pfx</PackageCertificateKeyFile>
     </PropertyGroup>
     <ItemGroup>

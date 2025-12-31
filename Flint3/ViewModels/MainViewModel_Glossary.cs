@@ -8,6 +8,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using Flint3.Data;
 using Flint3.Data.Models;
 using Flint3.Models;
+using Windows.Storage;
 
 namespace Flint3.ViewModels
 {
@@ -393,7 +394,13 @@ namespace Flint3.ViewModels
             try
             {
                 GlossaryDataAccess.CloseDatabase();
-                await GlossaryDataAccess.LoadDatabase();
+
+                StorageFolder documentsFolder = await StorageFolder.GetFolderFromPathAsync(UserDataPaths.GetDefault().Documents);
+                StorageFolder noMewingFolder = await documentsFolder.CreateFolderAsync("NoMewing", CreationCollisionOption.OpenIfExists);
+                StorageFolder flintFolder = await noMewingFolder.CreateFolderAsync("Flint", CreationCollisionOption.OpenIfExists);
+                StorageFile file = await flintFolder.CreateFileAsync("flint_glossary.db", CreationCollisionOption.OpenIfExists);
+                string dbFilePath = file.Path;
+                await GlossaryDataAccess.LoadDatabase(dbFilePath);
 
                 var glossaries = await GlossaryDataAccess.GetGlossaries();
 
